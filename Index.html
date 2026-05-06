@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HandKnot Haven | Handmade Crochet</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Razorpay SDK -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf8f6',
+                            100: '#faeee9',
+                            200: '#f4dacd',
+                            300: '#ecbca7',
+                            400: '#e19579',
+                            500: '#d57252',
+                            600: '#c55737',
+                            700: '#a54429',
+                            800: '#853a25',
+                            900: '#6a3222',
+                        },
+                        neutral: {
+                            850: '#1f1f1f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Nunito', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for things Tailwind doesn't handle natively as easily */
+        .glass-nav {
+            background: rgba(253, 248, 246, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        
+        .product-card {
+            cursor: pointer;
+        }
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        #cart-sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .toast {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #d57252;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        .sparkle-loader {
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-brand-50 text-neutral-800 font-sans antialiased flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="glass-nav fixed w-full z-40 border-b border-brand-200 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Mobile menu button -->
+                <div class="flex items-center lg:hidden">
+                    <button type="button" onclick="toggleMobileMenu()" class="text-brand-800 hover:text-brand-500 focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center justify-center flex-1 lg:flex-none lg:justify-start">
+                    <a href="#" class="font-serif text-2xl lg:text-3xl font-bold text-brand-700 flex items-center gap-2 whitespace-nowrap">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-500 text-xl"></i>
+                        HandKnot Haven
+                    </a>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden lg:flex space-x-1 xl:space-x-2 items-center">
+                    <a href="#home" class="px-4 py-2 rounded-full hover:bg-brand-100 hover:text-brand-800 text-neutral-600 font-bold transition-all duration-300 text-sm xl:text-base">Home</a>
+                    <a href="#shop" class="px-4 py-2 rounded-full hover:bg-brand-100 hover:text-brand-800 text-neutral-600 font-bold transition-all duration-300 text-sm xl:text-base">Shop</a>
+                    <a href="#materials" class="px-4 py-2 rounded-full hover:bg-brand-100 hover:text-brand-800 text-neutral-600 font-bold transition-all duration-300 text-sm xl:text-base">Materials</a>
+                    <a href="#custom" class="px-4 py-2 rounded-full hover:bg-brand-100 hover:text-brand-800 text-neutral-600 font-bold transition-all duration-300 text-sm xl:text-base">Custom</a>
+                    <a href="#shipping" class="px-4 py-2 rounded-full hover:bg-brand-100 hover:text-brand-800 text-neutral-600 font-bold transition-all duration-300 text-sm xl:text-base">Shipping</a>
+                    <a href="#contact" class="px-4 py-2 rounded-full hover:bg-brand-100 hover:text-brand-800 text-neutral-600 font-bold transition-all duration-300 text-sm xl:text-base">Contact</a>
+                    <a href="#" onclick="openOrdersModal(); return false;" class="ml-2 px-5 py-2.5 bg-brand-50 border border-brand-200 text-brand-700 hover:bg-brand-600 hover:text-white hover:border-brand-600 rounded-full font-bold transition-all duration-300 whitespace-nowrap shadow-sm flex items-center gap-2 text-sm xl:text-base">
+                        <i class="fa-solid fa-clock-rotate-left"></i> Order History
+                    </a>
+                </div>
+
+                <!-- Cart Icon -->
+                <div class="flex items-center">
+                    <button onclick="toggleCart()" class="relative p-2 text-brand-800 hover:text-brand-500 transition-colors">
+                        <i class="fa-solid fa-basket-shopping text-2xl"></i>
+                        <span id="cart-badge" class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/4 -translate-y-1/4 bg-brand-600 rounded-full hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden bg-white border-b border-brand-200 absolute w-full shadow-lg">
+            <div class="px-4 pt-2 pb-6 space-y-2">
+                <a href="#home" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Home</a>
+                <a href="#shop" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Shop</a>
+                <a href="#materials" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Materials</a>
+                <a href="#custom" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Custom Orders</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Our Story</a>
+                <a href="#shipping" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Shipping</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-md text-base font-medium text-neutral-800 hover:text-brand-600 hover:bg-brand-50">Contact</a>
+                <a href="#" onclick="toggleMobileMenu(); openOrdersModal(); return false;" class="block px-3 py-2 rounded-md text-base font-bold text-brand-600 hover:text-brand-800 hover:bg-brand-50"><i class="fa-solid fa-clock-rotate-left mr-2"></i>Order History</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Shop Status Banner -->
+    <div id="shop-status-banner" class="hidden fixed top-20 left-0 w-full z-30 bg-amber-100 border-b border-amber-200 text-amber-900 px-4 py-3 text-center text-sm md:text-base font-medium shadow-sm flex justify-center items-center gap-3">
+    </div>
+
+    <!-- Cart Sidebar Overlay -->
+    <div id="cart-overlay" class="fixed inset-0 bg-neutral-900 bg-opacity-50 z-40 hidden transition-opacity" onclick="toggleCart()"></div>
+    
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 transform translate-x-full flex flex-col">
+        <div class="flex items-center justify-between p-6 border-b border-brand-100">
+            <h2 class="text-2xl font-serif font-bold text-brand-800">Your Basket</h2>
+            <button onclick="toggleCart()" class="text-neutral-500 hover:text-brand-600 text-xl p-2 rounded-full hover:bg-brand-50 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-6" id="cart-items-container">
+            <!-- Cart items injected by JS -->
+            <div class="text-center text-neutral-500 mt-10" id="empty-cart-msg">
+                <i class="fa-solid fa-basket-shopping text-4xl mb-4 text-brand-200"></i>
+                <p>Your basket is empty.</p>
+                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-4 text-brand-600 font-semibold hover:underline">Start shopping</button>
+            </div>
+        </div>
+
+        <div class="border-t border-brand-100 p-6 bg-brand-50">
+            <div class="flex justify-between text-lg font-bold text-neutral-800 mb-6">
+                <span>Total</span>
+                <span id="cart-total">₹0.00</span>
+            </div>
+            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg shadow-brand-500/30 transition-all transform hover:-translate-y-0.5 flex justify-center items-center gap-2">
+                Checkout Securely <i class="fa-solid fa-lock text-sm"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-neutral-800 text-white px-6 py-3 rounded-full shadow-xl z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-3">
+        <i class="fa-solid fa-check-circle text-green-400"></i>
+        <span id="toast-message">Item added to cart!</span>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        
+        <!-- Hero Section -->
+        <section id="home" class="relative pt-20 pb-32 lg:pt-32 lg:pb-48 overflow-hidden min-h-[90vh] flex items-center">
+            <div class="absolute inset-0 z-0">
+                <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" alt="Cozy yarn and crochet hooks background" class="w-full h-full object-cover object-center opacity-40">
+                <div class="absolute inset-0 bg-gradient-to-r from-brand-50/90 via-brand-50/70 to-transparent"></div>
+            </div>
+            
+            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="max-w-2xl">
+                    <span class="inline-block py-1 px-3 rounded-full bg-brand-200 text-brand-800 font-bold text-xs tracking-wider uppercase mb-6 shadow-sm">Made with Love</span>
+                    <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-brand-900 leading-tight mb-6">
+                        Handcrafted <br>
+                        <span class="text-brand-600 italic font-normal">coziness</span> to your Home.
+                    </h1>
+                    <p class="text-lg md:text-xl text-neutral-700 mb-6 font-medium leading-relaxed">
+                        Discover unique, lovingly made crochet items. From snuggly amigurumi toys to elegant home decor, every stitch tells a story.
+                    </p>
+                    <div class="inline-flex items-center gap-2 mb-10 px-4 py-2 bg-white/60 rounded-full border border-brand-200 shadow-sm backdrop-blur-sm">
+                        <i class="fa-solid fa-hand-holding-heart text-brand-600"></i>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <a href="#shop" class="inline-flex justify-center items-center px-8 py-4 bg-brand-600 text-white rounded-full font-bold text-lg hover:bg-brand-700 transition-all shadow-lg shadow-brand-500/30 transform hover:-translate-y-1">
+                            Shop Collection
+                        </a>
+                        <a href="#about" class="inline-flex justify-center items-center px-8 py-4 bg-white text-brand-800 border-2 border-brand-200 rounded-full font-bold text-lg hover:border-brand-500 hover:bg-brand-50 transition-all">
+                            Our Story
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Strip -->
+        <div class="bg-brand-800 text-brand-50 py-8 relative z-20 shadow-xl -mt-6">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-brand-600">
+                    <div class="flex flex-col items-center p-4">
+                        <i class="fa-solid fa-hand-holding-heart text-3xl text-brand-300 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">100% Handmade</h3>
+                        <p class="text-brand-200 text-sm">Every single piece is lovingly crafted by hand.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4">
+                        <i class="fa-solid fa-leaf text-3xl text-brand-300 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Good Premium Yarn</h3>
+                        <p class="text-brand-200 text-sm">Sourced from sustainable and organic materials.</p>
+                    </div>
+                    <div class="flex flex-col items-center p-4">
+                        <i class="fa-solid fa-box-open text-3xl text-brand-300 mb-4"></i>
+                        <h3 class="font-bold text-lg mb-2">Custom Orders</h3>
+                        <p class="text-brand-200 text-sm">Have an idea? Let's bring it to life together.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Section -->
+        <section id="shop" class="py-24 bg-brand-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-brand-900 mb-4">Latest Creations</h2>
+                    <div class="h-1 w-24 bg-brand-500 mx-auto rounded-full mb-6"></div>
+                    <p class="text-lg text-neutral-600">Browse our selection of freshly hooked goodies. <b>Every item below can be fully customized</b> to your preferred colors and sizes!</p>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12" id="category-filters">
+                    <button class="filter-btn active px-6 py-2 rounded-full bg-brand-600 text-white font-semibold transition-all shadow-md" data-filter="all">All</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-white text-neutral-600 hover:bg-brand-100 font-semibold transition-all border border-brand-200 shadow-sm" data-filter="Clothing">Clothing</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-white text-neutral-600 hover:bg-brand-100 font-semibold transition-all border border-brand-200 shadow-sm" data-filter="Decor & Flowers">Decor & Flowers</button>
+                    <button class="filter-btn px-6 py-2 rounded-full bg-white text-neutral-600 hover:bg-brand-100 font-semibold transition-all border border-brand-200 shadow-sm" data-filter="Accessories">Accessories</button>
+                </div>
+
+                <!-- Product Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="product-grid">
+                    <!-- Products dynamically injected here via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Story Section -->
+        <section id="about" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col lg:flex-row items-center gap-16">
+                    <div class="lg:w-1/2 relative">
+                        <div class="absolute inset-0 bg-brand-200 rounded-3xl transform translate-x-4 translate-y-4"></div>
+                        <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1974&auto=format&fit=crop" alt="Hands crocheting" class="relative z-10 rounded-3xl shadow-xl w-full h-auto object-cover aspect-[4/5]">
+                        <div class="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl z-20 hidden md:block">
+                            <div class="flex items-center gap-4">
+                                <div class="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center text-brand-600 text-2xl">
+                                    <i class="fa-solid fa-heart"></i>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-brand-900 text-xl">5+ Years</p>
+                                    <p class="text-neutral-500 text-sm">Of crocheting joy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2">
+                        <h2 class="text-4xl font-serif font-bold text-brand-900 mb-6">The Magic Behind the Stitches</h2>
+                        <h3 class="text-xl text-brand-600 font-semibold mb-6">Hi, I'm Vaishali, the maker behind HandKnot Haven.</h3>
+                        <div class="space-y-4 text-neutral-600 text-lg leading-relaxed mb-8">
+                            <p>
+                                What started as a hobby to make a Flower for my home decor blossomed into a full-time passion. There is something profoundly magical about taking a single continuous string of yarn and turning it into something beautiful, functional, and comforting.
+                            </p>
+                            <p>
+                                Every item in this shop is made entirely by me in my small studio. I focus on slow fashion, sustainable materials, and creating heirlooms that you can pass down or cherish for years.
+                            </p>
+                            <p>
+                                When I'm not crocheting, you can find me sipping chamomile tea, watching vintage movies, or organizing my ever-growing yarn stash!
+                            </p>
+                        </div>
+                        <p class="font-serif text-3xl text-brand-800 italic mt-4">Vaishali</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Materials Section -->
+        <section id="materials" class="py-24 bg-brand-50 border-t border-brand-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-brand-900 mb-4">Our Premium Materials</h2>
+                    <div class="h-1 w-24 bg-brand-500 mx-auto rounded-full mb-6"></div>
+                    <p class="text-lg text-neutral-600">The secret to beautiful, long-lasting crochet lies in the quality of the yarn. We source only the best materials for your custom pieces.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-24 h-24 mx-auto bg-brand-100 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-white shadow-md">
+                            <img src="https://images.unsplash.com/photo-1584288417180-2c35848ba335?q=80&w=2070&auto=format&fit=crop" alt="Cotton yarn" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-serif font-bold text-brand-800 mb-3">Organic Cotton</h3>
+                        <p class="text-neutral-600 leading-relaxed">Perfect for our summer clothing, crop tops, and delicate flowers. Breathable, hypoallergenic, and exceptionally soft against the skin.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-24 h-24 mx-auto bg-brand-100 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-white shadow-md">
+                            <img src="https://images.unsplash.com/photo-1612456425129-87c10b78e1c6?q=80&w=2070&auto=format&fit=crop" alt="Wool yarn" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-serif font-bold text-brand-800 mb-3">Merino Wool</h3>
+                        <p class="text-neutral-600 leading-relaxed">Our go-to for cozy blankets, winter shawls, and thick socks. Temperature-regulating and incredibly warm without the scratchiness.</p>
+                    </div>
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-24 h-24 mx-auto bg-brand-100 rounded-full flex items-center justify-center mb-6 overflow-hidden border-4 border-white shadow-md">
+                            <img src="https://images.unsplash.com/photo-1518933221381-19d6dff77636?q=80&w=2070&auto=format&fit=crop" alt="Acrylic yarn" class="w-full h-full object-cover">
+                        </div>
+                        <h3 class="text-2xl font-serif font-bold text-brand-800 mb-3">Premium Blends</h3>
+                        <p class="text-neutral-600 leading-relaxed">Used for durable accessories like phone cases, purses, and charms. These strong, vibrant blends hold their shape and stay bright for years.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Orders Section -->
+        <section id="custom" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-brand-800 rounded-[3rem] overflow-hidden shadow-2xl relative">
+                    <!-- Background pattern overlay -->
+                    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#fff 2px, transparent 2px); background-size: 30px 30px;"></div>
+                    
+                    <div class="flex flex-col lg:flex-row relative z-10">
+                        <div class="lg:w-1/2 p-12 lg:p-20 text-white flex flex-col justify-center">
+                            <span class="inline-block py-1 px-3 rounded-full bg-brand-600 text-brand-100 font-bold text-xs tracking-wider uppercase mb-6 self-start">Made To Order</span>
+                            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">Dream it. We'll crochet it.</h2>
+                            <p class="text-brand-100 text-lg mb-8 leading-relaxed">
+                                Can't find exactly what you're looking for? Whether it's a perfectly sized skirt, a customized sunflower bouquet, or a unique color scheme for a blanket—everything we make can be crafted to your exact demands.
+                            </p>
+                            
+                            <div class="space-y-6 mb-10">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center font-bold flex-shrink-0">1</div>
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-1">Share Your Vision</h4>
+                                        <p class="text-brand-200">Tell us what clothing, decor, or accessory you want.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center font-bold flex-shrink-0">2</div>
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-1">Choose Colors & Materials</h4>
+                                        <p class="text-brand-200">Select from our premium cottons, wools, and blends.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="w-10 h-10 rounded-full bg-brand-600 flex items-center justify-center font-bold flex-shrink-0">3</div>
+                                    <div>
+                                        <h4 class="font-bold text-xl mb-1">Handcrafted for You</h4>
+                                        <p class="text-brand-200">We carefully crochet your custom piece right in our studio.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col sm:flex-row gap-4 self-start">
+                                <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-white text-brand-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-50 transition-colors shadow-lg border-2 border-transparent">
+                                    Start Custom Order
+                                </button>
+                                <button onclick="openAiModal()" class="bg-brand-900 text-brand-100 border-2 border-brand-400 px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-800 transition-colors shadow-lg flex items-center gap-2">
+                                    ✨ Magic Gift Finder
+                                </button>
+                            </div>
+                        </div>
+                        <div class="lg:w-1/2 min-h-[400px] relative">
+                            <img src="https://images.unsplash.com/photo-1598209279122-8541213a0387?q=80&w=2070&auto=format&fit=crop" alt="Custom crochet work" class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shipping & Delivery Section -->
+        <section id="shipping" class="py-24 bg-brand-50 border-t border-brand-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-brand-900 mb-4">Shipping & Delivery</h2>
+                    <div class="h-1 w-24 bg-brand-500 mx-auto rounded-full mb-6"></div>
+                    <p class="text-lg text-neutral-600 mb-6">We take pride in safely delivering your handcrafted items. Here is everything you need to know about our shipping process.</p>
+                    <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-brand-200 rounded-full shadow-sm">
+                        <i class="fa-solid fa-hand-holding-heart text-brand-600"></i>
+                        <span class="text-brand-800 font-bold text-sm">Handmade with care. Each piece takes time to craft.</span>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Processing Time -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mb-6 text-2xl">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">Processing Time</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">Made to order: Typically 3–5 days (please refer to individual item details for exact crafting times).</p>
+                    </div>
+                    
+                    <!-- Delivery Time -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mb-6 text-2xl">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">Delivery Time</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">Expect delivery within 3–7 days across India once your customized item is crafted and dispatched.</p>
+                    </div>
+                    
+                    <!-- Courier Partner -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mb-6 text-2xl">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">Courier Partners</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">We use highly reliable delivery partners like Shiprocket to ensure your package arrives safely.</p>
+                    </div>
+                    
+                    <!-- Tracking Info -->
+                    <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-xl transition-shadow">
+                        <div class="w-16 h-16 mx-auto bg-brand-100 text-brand-600 rounded-full flex items-center justify-center mb-6 text-2xl">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">Tracking Info</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">A live tracking link will be shared with you immediately via email/SMS after your order is dispatched.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Returns & Cancellations Section -->
+        <section id="policies" class="py-24 bg-white border-t border-brand-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2 class="text-4xl font-serif font-bold text-brand-900 mb-4">Returns & Cancellations</h2>
+                    <div class="h-1 w-24 bg-brand-500 mx-auto rounded-full mb-6"></div>
+                    <p class="text-lg text-neutral-600">Clear and transparent policies because your trust means everything to us.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- No Returns -->
+                    <div class="bg-brand-50 p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-md transition-all group">
+                        <div class="w-16 h-16 mx-auto bg-white text-brand-500 rounded-full flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">No Returns</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">Because every single piece is meticulously handcrafted to order specifically for you, we are unable to accept returns or exchanges.</p>
+                    </div>
+
+                    <!-- Replacements -->
+                    <div class="bg-brand-50 p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-md transition-all group">
+                        <div class="w-16 h-16 mx-auto bg-white text-brand-500 rounded-full flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">Damage Replacements</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">If your handmade item arrives damaged, please reach out to us within 48 hours of delivery with photos, and we will happily provide a replacement.</p>
+                    </div>
+
+                    <!-- Cancellations -->
+                    <div class="bg-brand-50 p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-md transition-all group">
+                        <div class="w-16 h-16 mx-auto bg-white text-brand-500 rounded-full flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                        </div>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">24-Hour Cancellations</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">Changed your mind? You can cancel or modify your order within 24 hours of placement. After this window, the crafting process begins!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Product Details Modal -->
+    <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeProductModal()"></div>
+        <div class="relative bg-white w-full max-w-4xl mx-4 rounded-3xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0" id="product-modal-content">
+            
+            <!-- Image Section -->
+            <div class="md:w-1/2 h-64 md:h-auto relative bg-brand-50">
+                <img id="modal-img" src="" class="w-full h-full object-cover">
+                <button onclick="closeProductModal()" class="md:hidden absolute top-4 right-4 text-neutral-400 hover:text-brand-600 text-xl p-2 bg-white rounded-full shadow-md z-10">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Details Section -->
+            <div class="md:w-1/2 p-6 md:p-8 overflow-y-auto flex flex-col relative">
+                <button onclick="closeProductModal()" class="hidden md:block absolute top-4 right-4 text-neutral-400 hover:text-brand-600 text-xl p-2 bg-transparent rounded-full z-10 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="text-sm text-brand-500 font-bold tracking-wider uppercase mb-1" id="modal-category"></div>
+                <h3 class="text-3xl font-serif font-bold text-neutral-800 mb-2" id="modal-title"></h3>
+                <div class="text-2xl font-bold text-brand-700 mb-4" id="modal-price"></div>
+                <p class="text-neutral-600 mb-6 leading-relaxed" id="modal-desc"></p>
+
+                <!-- Material Info Section -->
+                <div class="bg-brand-50 rounded-2xl p-4 mb-4 border border-brand-100 flex items-start gap-4 shadow-sm">
+                    <div class="bg-brand-200 text-brand-700 p-3 rounded-full flex-shrink-0"><i class="fa-solid fa-leaf text-lg"></i></div>
+                    <div>
+                        <h4 class="font-bold text-brand-900 text-sm mb-1" id="modal-material-name">Material</h4>
+                        <p class="text-neutral-600 text-sm leading-relaxed" id="modal-material-benefit">Benefit</p>
+                    </div>
+                </div>
+
+                <!-- Crafting Time Info Section -->
+                <div class="bg-amber-50 rounded-2xl p-4 mb-6 border border-amber-100 flex items-start gap-4 shadow-sm">
+                    <div class="bg-amber-200 text-amber-700 p-3 rounded-full flex-shrink-0"><i class="fa-solid fa-clock text-lg"></i></div>
+                    <div>
+                        <h4 class="font-bold text-amber-900 text-sm mb-1">Crafting Time</h4>
+                        <p class="text-neutral-600 text-sm leading-relaxed">As this is a handmade piece, it will take <span class="font-bold text-amber-800" id="modal-crafting-time"></span> to meticulously craft.</p>
+                    </div>
+                </div>
+
+                <!-- Customization Form -->
+                <div class="space-y-6 mb-8 flex-grow">
+                    <!-- Size Selection (Conditional) -->
+                    <div id="modal-size-section" class="hidden">
+                        <h4 class="font-bold text-neutral-800 mb-2 text-sm"><i class="fa-solid fa-ruler-combined text-brand-500 mr-2"></i>Custom Measurements</h4>
+                        <div class="bg-brand-50 rounded-xl p-4 border border-brand-100 mb-3 flex flex-col sm:flex-row gap-4 items-center sm:items-start">
+                            <div class="w-24 h-24 bg-white rounded-lg border border-brand-200 flex-shrink-0 overflow-hidden shadow-sm">
+                                <img src="https://images.unsplash.com/photo-1605280263929-1c42c62ef169?q=80&w=300&auto=format&fit=crop" alt="Measurement Guide" class="w-full h-full object-cover">
+                            </div>
+                            <div class="text-xs text-neutral-600 flex-1">
+                                <p class="font-bold text-brand-800 mb-1">How to measure for a perfect fit:</p>
+                                <ul class="list-disc pl-4 space-y-1">
+                                    <li><strong>Bust:</strong> Measure around the fullest part of the chest.</li>
+                                    <li><strong>Waist:</strong> Measure around the narrowest part of the torso.</li>
+                                    <li><strong>Hips:</strong> Measure around the fullest part of the hips.</li>
+                                    <li><strong>Length:</strong> Desired length from shoulder to hem.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <input type="text" id="measure-bust" placeholder="Bust (in/cm)" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-400 text-neutral-700 bg-white text-sm transition-colors">
+                            <input type="text" id="measure-waist" placeholder="Waist (in/cm)" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-400 text-neutral-700 bg-white text-sm transition-colors">
+                            <input type="text" id="measure-hips" placeholder="Hips (in/cm)" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-400 text-neutral-700 bg-white text-sm transition-colors">
+                            <input type="text" id="measure-length" placeholder="Length (in/cm)" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-400 text-neutral-700 bg-white text-sm transition-colors">
+                        </div>
+                    </div>
+
+                    <!-- Other Customizations -->
+                    <div>
+                        <h4 class="font-bold text-neutral-800 mb-2 text-sm"><i class="fa-solid fa-palette text-brand-500 mr-2"></i>Other Customizations</h4>
+                        <textarea id="modal-custom" rows="2" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-400 text-neutral-700 bg-white resize-none transition-colors mb-3 shadow-sm" placeholder="Add custom measurements, preferred colors, or special adjustments..."></textarea>
+                        
+                        <label class="block text-sm font-bold text-neutral-700 mb-2"><i class="fa-solid fa-camera text-brand-500 mr-2"></i>Reference Photos (Optional)</label>
+                        <input type="file" id="modal-photos" multiple accept="image/*" class="block w-full text-sm text-neutral-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-100 file:text-brand-700 hover:file:bg-brand-200 transition-colors mb-3 cursor-pointer">
+                        
+                        <div class="bg-brand-600/10 border border-brand-200 rounded-xl p-3 flex gap-3 items-start">
+                            <i class="fa-solid fa-circle-info text-brand-600 mt-0.5"></i>
+                            <p class="text-xs text-brand-800 leading-relaxed font-medium">We will connect with you via email to finalize your customization details and photos once we begin crafting your order.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info Box (Redesigned) -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <div class="bg-gradient-to-br from-brand-50 to-white rounded-2xl p-5 border border-brand-100 shadow-sm relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 text-brand-100 opacity-50 text-7xl transform group-hover:scale-110 transition-transform"><i class="fa-solid fa-gift"></i></div>
+                        <h4 class="font-bold text-brand-800 text-sm mb-2 relative z-10 flex items-center gap-2"><i class="fa-solid fa-star text-brand-500"></i> Perfect For</h4>
+                        <p class="text-neutral-600 text-sm relative z-10 leading-relaxed" id="modal-perfect"></p>
+                    </div>
+                    <div class="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-5 border border-blue-100 shadow-sm relative overflow-hidden group">
+                        <div class="absolute -right-4 -top-4 text-blue-100 opacity-50 text-7xl transform group-hover:scale-110 transition-transform"><i class="fa-solid fa-hand-sparkles"></i></div>
+                        <h4 class="font-bold text-blue-800 text-sm mb-2 relative z-10 flex items-center gap-2"><i class="fa-solid fa-droplet text-blue-500"></i> Care Instructions</h4>
+                        <p class="text-neutral-600 text-sm relative z-10 leading-relaxed" id="modal-care"></p>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="mt-auto pt-4 border-t border-brand-100">
+                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg shadow-brand-500/30 transition-all flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-basket-shopping"></i> Add to Basket - <span id="modal-btn-price"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Confirmation & Status Modal -->
+    <div id="order-confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeOrderConfirmation()"></div>
+        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0" id="order-confirmation-content">
+            
+            <div class="p-8 text-center bg-brand-50 border-b border-brand-100 relative">
+                <button onclick="closeOrderConfirmation()" class="absolute top-4 right-4 text-neutral-400 hover:text-brand-600 text-2xl p-2 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="w-20 h-20 mx-auto bg-green-100 text-green-500 rounded-full flex items-center justify-center text-4xl mb-4 shadow-sm animate-bounce">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h2 class="text-3xl font-serif font-bold text-brand-900 mb-2">Order received 🎉</h2>
+                <p class="text-neutral-600 text-lg">Thank you! Your order <span class="font-bold text-brand-800" id="confirm-order-id"></span> has been placed.</p>
+            </div>
+            
+            <div class="p-8 overflow-y-auto flex-1">
+                <!-- Dispatch Notice -->
+                <div class="bg-amber-50 rounded-2xl p-4 mb-8 border border-amber-100 flex items-center gap-4 shadow-sm">
+                    <i class="fa-solid fa-calendar-check text-amber-600 text-3xl"></i>
+                    <div>
+                        <h4 class="font-bold text-amber-900 mb-1">Expected Dispatch Date</h4>
+                        <p class="text-neutral-700 font-medium" id="confirm-dispatch-date"></p>
+                    </div>
+                </div>
+
+                <h3 class="text-xl font-bold text-brand-800 mb-6 border-b border-neutral-100 pb-2">Live Order Status</h3>
+                
+                <!-- Status Timeline (Crochet Theme) -->
+                <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-8 pb-4 mt-6">
+                    
+                    <!-- Status 1: Confirmed (Active) -->
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full bg-yellow-100 border-[3px] border-yellow-400 text-yellow-600 shadow-md flex items-center justify-center z-10">
+                            <i class="fa-solid fa-clipboard-check text-sm"></i>
+                        </div>
+                        <h4 class="font-bold text-yellow-700 text-lg">Order Confirmed</h4>
+                        <div class="mt-2 bg-yellow-50/50 border-yellow-200 p-3 rounded-xl border relative shadow-sm">
+                            <div class="absolute w-2.5 h-2.5 bg-yellow-50/50 border-yellow-200 border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                            <p class="text-sm text-yellow-900 leading-relaxed font-medium">Payment received and order accepted by Vaishali.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Status 2: Processing (Pending) -->
+                    <div class="relative pl-8 opacity-50 grayscale">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400 flex items-center justify-center z-10">
+                            <i class="fa-solid fa-hand-sparkles text-sm"></i>
+                        </div>
+                        <h4 class="font-bold text-neutral-500 text-lg">Processing</h4>
+                        <div class="mt-2 bg-neutral-50 border-neutral-200 p-3 rounded-xl border relative shadow-sm">
+                            <div class="absolute w-2.5 h-2.5 bg-neutral-50 border-neutral-200 border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                            <p class="text-sm text-neutral-500 leading-relaxed font-medium">Your piece is currently being handcrafted. Please allow time for meticulous crafting.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Status 3: Shipped (Pending) -->
+                    <div class="relative pl-8 opacity-50 grayscale">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400 flex items-center justify-center z-10">
+                            <i class="fa-solid fa-truck-fast text-sm"></i>
+                        </div>
+                        <h4 class="font-bold text-neutral-500 text-lg">Shipped</h4>
+                        <div class="mt-2 bg-neutral-50 border-neutral-200 p-3 rounded-xl border relative shadow-sm">
+                            <div class="absolute w-2.5 h-2.5 bg-neutral-50 border-neutral-200 border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                            <p class="text-sm text-neutral-500 leading-relaxed font-medium">Courier has picked up your package via Shiprocket. Tracking link will be sent shortly.</p>
+                        </div>
+                    </div>
+
+                    <!-- Status 4: Delivered (Pending) -->
+                    <div class="relative pl-8 opacity-50 grayscale">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400 flex items-center justify-center z-10">
+                            <i class="fa-solid fa-house-chimney-window text-sm"></i>
+                        </div>
+                        <h4 class="font-bold text-neutral-500 text-lg">Delivered</h4>
+                        <div class="mt-2 bg-neutral-50 border-neutral-200 p-3 rounded-xl border relative shadow-sm">
+                            <div class="absolute w-2.5 h-2.5 bg-neutral-50 border-neutral-200 border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                            <p class="text-sm text-neutral-500 leading-relaxed font-medium">Package has been successfully delivered to your doorstep.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-10 flex flex-col sm:flex-row gap-4">
+                    <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full sm:w-1/2 bg-white border-2 border-brand-600 text-brand-700 py-4 rounded-full font-bold text-lg hover:bg-brand-50 transition-colors shadow-sm">
+                        Track My Order
+                    </button>
+                    <button onclick="closeOrderConfirmation()" class="w-full sm:w-1/2 bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 transition-colors shadow-md">
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-70 backdrop-blur-sm" onclick="closePaymentModal()"></div>
+        <div class="relative bg-white w-full max-w-md mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-y-auto transform transition-all scale-95 opacity-0" id="payment-modal-content">
+            
+            <div class="p-6 bg-brand-50 border-b border-brand-100 flex justify-between items-center sticky top-0 z-10">
+                <h3 class="text-xl font-serif font-bold text-brand-900 flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-brand-500"></i> Secure Checkout
+                </h3>
+                <button onclick="closePaymentModal()" class="text-neutral-400 hover:text-brand-600 text-2xl p-1 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 md:p-8">
+                <!-- Order Total Summary -->
+                <div class="text-center mb-8">
+                    <p class="text-sm font-bold tracking-wider text-neutral-500 uppercase mb-1">Amount to Pay</p>
+                    <h2 class="text-4xl font-bold text-brand-900" id="payment-total-amount">₹0.00</h2>
+                </div>
+
+                <!-- Primary: Razorpay -->
+                <div class="mb-6">
+                    <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-[#02042B] text-white py-4 rounded-2xl font-bold text-lg hover:bg-[#0A0D3A] shadow-lg shadow-[#02042B]/30 transition-all flex flex-col items-center justify-center transform hover:-translate-y-0.5">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-building-columns"></i> Pay via Razorpay</span>
+                    </button>
+                    <div class="flex justify-center gap-4 mt-3 text-neutral-400 text-sm">
+                        <span class="flex items-center gap-1"><i class="fa-brands fa-cc-visa"></i> Cards</span>
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-mobile-screen"></i> UPI</span>
+                        <span class="flex items-center gap-1"><i class="fa-solid fa-wallet"></i> Wallets</span>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="relative flex items-center py-4">
+                    <div class="flex-grow border-t border-neutral-200"></div>
+                    <span class="flex-shrink-0 mx-4 text-neutral-400 text-sm font-bold uppercase tracking-wider">Or</span>
+                    <div class="flex-grow border-t border-neutral-200"></div>
+                </div>
+
+                <!-- Fallback: Manual UPI -->
+                <div class="bg-brand-50 border-2 border-dashed border-brand-200 rounded-2xl p-6 text-center mt-2">
+                    <h4 class="font-bold text-brand-800 mb-2">Manual UPI Payment</h4>
+                    <p class="text-xs text-brand-600 mb-4 px-2">If standard checkout fails, scan the QR code below or use our UPI ID directly.</p>
+                    
+                    <!-- Mock QR Code Graphic -->
+                    <div class="w-32 h-32 mx-auto bg-white rounded-xl shadow-sm border border-brand-100 flex items-center justify-center mb-3 relative">
+                        <!-- Decorative corners -->
+                        <div class="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-brand-500"></div>
+                        <div class="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-brand-500"></div>
+                        <div class="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-brand-500"></div>
+                        <div class="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-brand-500"></div>
+                        <i class="fa-solid fa-qrcode text-6xl text-neutral-800"></i>
+                    </div>
+                    
+                    <div class="bg-white px-4 py-2 rounded-lg text-sm font-bold tracking-wider text-neutral-700 border border-brand-100 mb-5 inline-block">
+                        handknothaven@upi
+                    </div>
+                    
+                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-white border-2 border-brand-600 text-brand-700 py-3 rounded-xl font-bold hover:bg-brand-600 hover:text-white transition-colors flex items-center justify-center gap-2">
+                        I have paid via UPI <i class="fa-solid fa-check"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Order History & Tracking Modal -->
+    <div id="orders-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeOrdersModal()"></div>
+        <div class="relative bg-white w-full max-w-4xl mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0" id="orders-modal-content">
+            
+            <div class="p-6 md:p-8 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
+                <h3 class="text-2xl font-serif font-bold text-brand-900 flex items-center gap-3" id="orders-modal-title">
+                    <i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History
+                </h3>
+                <button onclick="closeOrdersModal()" class="text-neutral-400 hover:text-brand-600 text-2xl p-2 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <!-- Tracking Search Bar -->
+            <div id="tracking-search-bar" class="p-6 md:px-8 md:pt-8 bg-white border-b border-neutral-100">
+                <label class="block text-sm font-bold text-neutral-700 mb-2">Track a specific order ID:</label>
+                <div class="flex gap-3">
+                    <input type="text" id="track-order-input" placeholder="e.g., HKH123456" class="flex-1 p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-400 text-neutral-800 font-medium">
+                    <button onclick="trackOrderSubmit()" class="px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm">Track</button>
+                </div>
+            </div>
+
+            <!-- List View -->
+            <div id="orders-list-view" class="p-6 md:p-8 overflow-y-auto flex-1 bg-white">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Detail & Tracking View -->
+            <div id="order-detail-view" class="p-6 md:p-8 overflow-y-auto flex-1 bg-white hidden">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Gift Finder Modal -->
+    <div id="ai-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeAiModal()"></div>
+        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0" id="ai-modal-content">
+            
+            <div class="p-6 md:p-8 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold text-brand-900 flex items-center gap-2">
+                        ✨ Magic Gift Finder
+                    </h3>
+                    <p class="text-neutral-600 mt-1">Let Vaishali's AI assistant brainstorm the perfect custom crochet gift!</p>
+                </div>
+                <button onclick="closeAiModal()" class="text-neutral-400 hover:text-brand-600 text-2xl p-2 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 md:p-8 overflow-y-auto flex-1">
+                <div id="ai-input-view">
+                    <label class="block text-neutral-800 font-bold mb-3">Who is this gift for, or what's the occasion?</label>
+                    <textarea id="ai-prompt" rows="4" class="w-full p-4 border-2 border-brand-200 rounded-xl focus:outline-none focus:border-brand-500 text-neutral-700 bg-white placeholder-neutral-400 resize-none transition-colors" placeholder="e.g., My 5-year-old niece who loves space and the color pink, or a housewarming gift for my friend who loves boho decor..."></textarea>
+                    
+                    <button onclick="generateIdea()" class="mt-6 w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg shadow-brand-500/30 transition-all flex justify-center items-center gap-2">
+                        ✨ Generate Ideas
+                    </button>
+                </div>
+
+                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-12 text-center">
+                    <i class="fa-solid fa-wand-magic-sparkles text-4xl text-brand-400 sparkle-loader mb-4"></i>
+                    <h4 class="text-xl font-serif font-bold text-brand-800 mb-2">Dreaming up ideas...</h4>
+                    <p class="text-neutral-500">Consulting the digital yarn stash.</p>
+                </div>
+
+                <div id="ai-result-view" class="hidden flex-col">
+                    <div id="ai-result-content" class="prose prose-brand text-neutral-700 max-w-none space-y-4 text-lg leading-relaxed">
+                        <!-- AI content goes here -->
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-brand-100 flex flex-col sm:flex-row gap-4">
+                        <button onclick="resetAiModal()" class="px-6 py-3 border border-brand-200 rounded-full font-bold text-neutral-600 hover:bg-brand-50 transition-colors">
+                            Try Again
+                        </button>
+                        <button onclick="closeAiModal(); document.getElementById('contact').scrollIntoView();" class="px-6 py-3 bg-brand-600 text-white rounded-full font-bold hover:bg-brand-700 transition-colors shadow-md flex-1 text-center">
+                            Request This Custom Order
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="ai-error-view" class="hidden flex-col items-center justify-center py-10 text-center text-red-500">
+                    <i class="fa-solid fa-circle-exclamation text-4xl mb-4"></i>
+                    <p id="ai-error-message">Oops! Our magic yarn tangled. Please try again.</p>
+                    <button onclick="resetAiModal()" class="mt-6 px-6 py-3 border border-brand-200 rounded-full font-bold text-neutral-600 hover:bg-brand-50 transition-colors text-neutral-800">
+                        Go Back
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Order Request Modal -->
+    <div id="custom-order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeCustomOrderModal()"></div>
+        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0" id="custom-order-modal-content">
+            
+            <div class="p-6 md:p-8 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-serif font-bold text-brand-900 flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i> Request a Custom Order
+                    </h3>
+                    <p class="text-neutral-600 mt-1">Tell us your vision and we'll bring it to life!</p>
+                </div>
+                <button onclick="closeCustomOrderModal()" class="text-neutral-400 hover:text-brand-600 text-2xl p-2 transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 md:p-8 overflow-y-auto flex-1">
+                <form id="custom-order-form" onsubmit="submitCustomOrder(event)">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-neutral-800 font-bold mb-2">Describe Your Dream Item <span class="text-red-500">*</span></label>
+                            <textarea id="custom-req-desc" required rows="4" class="w-full p-4 border-2 border-brand-200 rounded-xl focus:outline-none focus:border-brand-500 text-neutral-700 bg-white placeholder-neutral-400 resize-none transition-colors" placeholder="e.g., I would like a king-size blanket featuring a sunflower granny square pattern, mostly using mustard yellow and forest green colors..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-neutral-800 font-bold mb-2">Reference Photos (Optional)</label>
+                            <input type="file" id="custom-req-photos" multiple accept="image/*" class="block w-full text-sm text-neutral-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-100 file:text-brand-700 hover:file:bg-brand-200 transition-colors cursor-pointer border-2 border-dashed border-brand-200 rounded-xl p-4">
+                            <p class="text-xs text-neutral-500 mt-2">Upload sketches, color palettes, or inspiration photos.</p>
+                        </div>
+
+                        <div class="bg-brand-50 border border-brand-200 rounded-xl p-4 flex gap-3 items-start">
+                            <i class="fa-solid fa-envelope-open-text text-brand-600 mt-1 text-lg"></i>
+                            <div>
+                                <h4 class="font-bold text-brand-900 text-sm mb-1">What happens next?</h4>
+                                <p class="text-sm text-brand-800 leading-relaxed">Once you submit this request, we will review your idea and connect with you via email within 24-48 hours to discuss details, pricing, and exact materials before we begin crafting your order.</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg shadow-brand-500/30 transition-all flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
+                            Submit Request <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gradient-to-br from-brand-800 to-brand-900 text-brand-50 pt-10 pb-6 relative overflow-hidden">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-400 via-brand-300 to-brand-500 opacity-50"></div>
+        <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-brand-700 rounded-full mix-blend-multiply filter blur-3xl opacity-50 pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 border-b border-brand-700/60 pb-8 mb-6">
+                
+                <!-- Brand Info -->
+                <div class="text-center lg:text-left lg:max-w-sm xl:max-w-md w-full">
+                    <a href="#" class="font-serif text-3xl font-bold text-white flex items-center justify-center lg:justify-start gap-2 mb-3">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-300 text-2xl"></i> HandKnot Haven
+                    </a>
+                    <p class="text-brand-200 text-sm leading-relaxed mx-auto lg:mx-0">
+                        Handcrafted crochet items designed to bring warmth, joy, and a touch of magic into your everyday life.
+                    </p>
+                </div>
+
+                <!-- Contact Cards -->
+                <div class="flex flex-wrap gap-4 w-full justify-center lg:justify-end">
+                    <!-- WhatsApp Card -->
+                    <a href="https://wa.me/919925617845" target="_blank" class="flex items-center gap-4 text-brand-100 bg-white/5 hover:bg-white/10 transition-colors px-5 py-3.5 rounded-2xl border border-white/10 shadow-sm group backdrop-blur-sm w-full sm:w-auto">
+                        <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white flex-shrink-0 shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-brands fa-whatsapp text-xl"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] text-brand-300 font-bold uppercase tracking-wider mb-0.5">Chat with us</p>
+                            <span class="font-bold text-base text-white whitespace-nowrap">+91 99256 17845</span>
+                        </div>
+                    </a>
+                    
+                    <!-- Website Card -->
+                    <a href="#" class="flex items-center gap-4 text-brand-100 bg-white/5 hover:bg-white/10 transition-colors px-5 py-3.5 rounded-2xl border border-white/10 shadow-sm group backdrop-blur-sm w-full sm:w-auto">
+                        <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white flex-shrink-0 shadow-md group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-globe text-lg"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] text-brand-300 font-bold uppercase tracking-wider mb-0.5">Visit Online</p>
+                            <span class="font-bold text-base text-white whitespace-nowrap">www.handknot.com</span>
+                        </div>
+                    </a>
+
+                    <!-- Location Card -->
+                    <div class="flex items-center gap-4 text-brand-100 bg-white/5 px-5 py-3.5 rounded-2xl border border-white/10 shadow-sm backdrop-blur-sm w-full sm:w-auto">
+                        <div class="w-10 h-10 rounded-full bg-brand-500 flex items-center justify-center text-white flex-shrink-0 shadow-md">
+                            <i class="fa-solid fa-location-dot text-lg"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="text-[10px] text-brand-300 font-bold uppercase tracking-wider mb-0.5">Studio Location</p>
+                            <span class="font-bold text-base text-white whitespace-nowrap">Piplod, Surat</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="flex justify-center items-center text-brand-300 text-xs font-medium">
+                <p>&copy; 2026 HandKnot Haven. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // --- SHOP CONFIGURATION ---
+        // Vaishali, change 'takingOrders' to true when you want to resume accepting orders!
+        const SHOP_CONFIG = {
+            takingOrders: true, 
+            pausedMessage: "Hi! Due to high demand, my hands are full crafting existing orders! ✨ I am currently not taking new orders. Please check back soon!"
+        };
+
+        // --- DATA ---
+        // Prices updated to Indian Rupees (₹)
+        const products = [
+            {
+                id: 1,
+                name: "Ruby Bloom Crochet Baby Dress",
+                price: 1500.00,
+                category: "Clothing",
+                image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=1972&auto=format&fit=crop",
+                badge: "Customisation Available",
+                description: "A charming handmade crochet baby dress crafted with love and attention to detail. This elegant piece features a rich ruby-red body with delicate ivory accents around the neckline and hem, giving it a soft and timeless look. The intricate stitch pattern adds texture and breathability, making it perfect for both comfort and style. The highlight of this dress is the adorable handcrafted floral detail on the side.",
+                perfectFor: "Baby showers, first birthdays, and special occasions.",
+                careInstructions: "Hand wash cold, lay flat to dry. Do not bleach or iron.",
+                materialName: "Organic Cotton",
+                materialBenefit: "Highly breathable, hypoallergenic, and exceptionally soft against sensitive baby skin. Provides comfort in all seasons.",
+                craftingTime: "5-7 days"
+            },
+            {
+                id: 2,
+                name: "Azure Lace Crochet Crop Top",
+                price: 2200,
+                category: "Clothing",
+                image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=80&w=2000&auto=format&fit=crop",
+                badge: "Customisation Available",
+                description: "A beautifully handcrafted crochet crop top designed for effortless style and comfort. This piece features a rich azure blue tone with an airy, breathable stitch pattern, making it perfect for warm days and casual outings.The highlight of this top is its intricate floral lace hem, adding a delicate, boho-inspired touch that makes it stand out. With its sleeveless design and relaxed fit, it pairs perfectly with jeans, skirts, or shorts for a chic, laid-back look.",
+                perfectFor: "High-waisted jeans for a casual look, Flowy skirts for a boho vibe, Shorts for summer outings.",
+                careInstructions: "Hand wash gently in cold water, Use mild detergent, Dry flat to maintain shape.",
+                materialName: "Organic Cotton",
+                materialBenefit: "Highly breathable, hypoallergenic, and exceptionally soft against sensitive baby skin. Provides comfort in all seasons.",
+                craftingTime: "4-5 days"
+            },
+            {
+                id: 3,
+                name: "Sunny Bloom Crochet Sunflower Pot",
+                price: 300.00,
+                category: "Decor & Flowers",
+                image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=2070&auto=format&fit=crop",
+                badge: "Bestseller",
+                description: "Bring a little sunshine indoors with this beautifully handcrafted crochet sunflower pot. Each piece is carefully made with vibrant yellow petals, a rich brown center, and lush green leaves, all placed in a soft crochet pot for a cozy, aesthetic look.Unlike real plants, this sunflower never fades—making it a timeless decor piece that adds warmth, positivity, and charm to any space.",
+                perfectFor: "Home decor (desk, shelf, bedside table), Office workspace aesthetics, Gifting (birthdays, anniversaries, housewarming).",
+                careInstructions: "Dust gently with a soft cloth. Do not machine wash.",
+                materialName: "Organic Cotton",
+                materialBenefit: "Flexible yet firm structure that keeps the sunflower upright and well-shaped.",
+                craftingTime: "2-3 days"
+            },
+            {
+                id: 4,
+                name: "Golden Bloom Crochet Bouquet",
+                price: 300,
+                category: "Decor & Flowers",
+                image: "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=2070&auto=format&fit=crop",
+                badge: "Customisation Available",
+                description: "A beautifully handcrafted crochet bouquet that blends the warmth of a sunflower with the softness of delicate pink roses. Wrapped elegantly in premium paper and finished with a ribbon, this bouquet is a timeless alternative to fresh flowers—one that never fades.Each flower is carefully crocheted to capture realistic textures and vibrant colors, making it a unique keepsake filled with charm and emotion. It’s not just a gift, but a memory that lasts forever.",
+                perfectFor: "Birthdays, Anniversaries, Valentine’s Day, Surprise gifts for loved ones.",
+                careInstructions: "Keep away from water and moisture.Clean gently with a dry cloth.",
+                materialName: "Organic Cotton",
+                materialBenefit: "Long-lasting – doesn’t wilt or fade",
+                craftingTime: "3-4 days"
+            },
+            {
+                id: 5,
+                name: "Amigurumi Buddy Charm",
+                price: 400.00,
+                category: "Accessories",
+                image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=2070&auto=format&fit=crop",
+                badge: "Customisation Available",
+                description: "A cute and playful handmade amigurumi toy crafted with fine crochet detailing. Inspired by fun cartoon-style characters, this little buddy features bright colors, expressive eyes, and a soft, huggable form.Designed with a hanging loop, it can be used as a charm, decor piece, or a tiny companion that adds personality wherever it goes. Every piece is handmade, making each one slightly unique and special.",
+                perfectFor: "Keychains or bag charms, Car hanging decor, Gifting (return gifts, birthdays).",
+                careInstructions: "Hand clean with a damp cloth, Avoid soaking in water, Keep away from rough pulling.",
+                materialName: "Organic Cotton",
+                materialBenefit: "Soft & safe – gentle for kids.",
+                craftingTime: "1-2 days"
+            },
+            {
+                id: 6,
+                name: "Amigurumi Berry Bliss Pouch",
+                price: 350.00,
+                category: "Accessories",
+                image: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?q=80&w=2070&auto=format&fit=crop",
+                badge: "Customisation Available",
+                description: "A charming handmade amigurumi-style crochet pouch designed with a soft, textured base and topped with adorable berry-like crochet buds. This cute and compact pouch blends functionality with aesthetic appeal, making it both a practical accessory and a decorative piece.The intricate stitching and playful design give it a cozy, handcrafted feel, while the detailed berry accents add a touch of uniqueness and sweetness to the overall look.",
+                perfectFor: "Storing small essentials (coins, earphones, keys), Cute mini pouch for daily use, Gifting (return gifts, handmade gift lovers).",
+                careInstructions: "Hand wash gently with mild detergent. Do not machine wash.",
+                materialName: "Organic Cotton",
+                materialBenefit: "Soft yet sturdy – holds shape well.",
+                craftingTime: "2-3 days"
+            },
+            {
+                id: 7,
+                name: "Pastel Pop Crochet Bucket Bag",
+                price: 2500.00,
+                category: "Accessories",
+                image: "https://images.unsplash.com/photo-1622340579998-ebdf98fb5f09?q=80&w=2070&auto=format&fit=crop",
+                badge: "Customization Available",
+                description: "A vibrant handmade crochet bucket bag crafted with chunky multicolor yarn, designed to bring a playful yet stylish touch to your everyday look. Featuring a soft drawstring closure, sturdy structure, and a comfortable sling strap, this bag blends functionality with a bold aesthetic.Its unique color mix of pastel blues, yellows, peaches, and whites makes every piece one-of-a-kind—perfect for those who love standing out with handcrafted fashion.",
+                perfectFor: "Casual outings & day trips, College or daily use, Gifting for fashion lovers.",
+                careInstructions: "Do not machine wash. Avoid overloading to maintain shape.",
+                materialName: "Premium chunky acrylic yarn",
+                materialBenefit: "Lightweight – comfortable for daily carry.",
+                craftingTime: "4-6 days"
+            },
+            {
+                id: 8,
+                name: "Petite Charm Crochet Sling Bag",
+                price: 1500.00,
+                category: "Accessories",
+                image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=1974&auto=format&fit=crop",
+                badge: "Customization Available",
+                description: "A beautifully handcrafted mini crochet sling bag designed for style and convenience. Featuring a compact structure with a delicate flap pattern and playful tassel detailing, this bag is perfect for carrying your essentials while adding a cute, handmade touch to your outfit.Available in vibrant color options, each piece is uniquely crafted, making it a charming blend of fashion and functionality.",
+                perfectFor: "Daily essentials (phone, cash, keys), Travel light carry option, and Gifting (handmade lovers).",
+                careInstructions: "Do not machine wash. Avoid overloading.",
+                materialName: "Premium chunky acrylic yarn",
+                materialBenefit: "Lightweight & compact – easy to carry anywhere.",
+                craftingTime: "3-4 days"
+            },
+            {
+                id: 9,
+                name: "CozyPods Amigurumi AirPods Case",
+                price: 200.00,
+                category: "Accessories",
+                image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=1974&auto=format&fit=crop",
+                badge: "Customization Available",
+                description: "A stylish and protective handmade crochet AirPods case designed with a beautiful blue gradient pattern and a soft textured finish. Crafted using intricate stitches, this case not only keeps your AirPods safe but also adds a cozy, aesthetic touch to your everyday essentials.The attached loop makes it easy to carry or hang on bags, keys, or hooks—combining convenience with handcrafted charm.",
+                perfectFor: "Protecting AirPods from scratches & dust, Gifting for tech lovers, and Minimal yet aesthetic accessories.",
+                careInstructions: "Hand wash gently if needed. Avoid excessive stretching.",
+                materialName: "Premium chunky acrylic yarn",
+                materialBenefit: "Lightweight & compact – easy to carry anywhere.",
+                craftingTime: "1-2 days"
+            }
+        ];
+
+        let cart = [];
+        let currentFilter = 'all';
+        let currentModalProductId = null;
+        
+        // Mock Order History populated for preview
+        let userOrders = [
+            {
+                id: 'HKH918273',
+                placedDate: '01 May 2026',
+                dispatchDate: '05 May 2026',
+                items: [
+                    { name: "Pastel Pop Crochet Bucket Bag", quantity: 1, price: 2500, image: "https://images.unsplash.com/photo-1622340579998-ebdf98fb5f09?q=80&w=2070&auto=format&fit=crop", size: null, customText: "" }
+                ],
+                total: 2500,
+                statusText: 'Shipped',
+                statusLevel: 3
+            },
+            {
+                id: 'HKH482910',
+                placedDate: '12 Apr 2026',
+                dispatchDate: '19 Apr 2026',
+                items: [
+                    { name: "Sunny Bloom Crochet Sunflower Pot", quantity: 1, price: 300, image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=2070&auto=format&fit=crop", size: null, customText: "" },
+                    { name: "Amigurumi Buddy Charm", quantity: 2, price: 400, image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=2070&auto=format&fit=crop", size: null, customText: "" }
+                ],
+                total: 1100,
+                statusText: 'Delivered',
+                statusLevel: 4
+            }
+        ];
+
+        // --- GEMINI API CONFIG ---
+        const apiKey = ""; // API key is injected by the environment
+
+        // --- DOM ELEMENTS ---
+        const productGrid = document.getElementById('product-grid');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const cartOverlay = document.getElementById('cart-overlay');
+        const cartBadge = document.getElementById('cart-badge');
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const emptyCartMsg = document.getElementById('empty-cart-msg');
+        const cartTotalEl = document.getElementById('cart-total');
+        const toast = document.getElementById('toast');
+        
+        // AI Modal Elements
+        const aiModal = document.getElementById('ai-modal');
+        const aiModalContent = document.getElementById('ai-modal-content');
+        const aiInputView = document.getElementById('ai-input-view');
+        const aiLoadingView = document.getElementById('ai-loading-view');
+        const aiResultView = document.getElementById('ai-result-view');
+        const aiErrorView = document.getElementById('ai-error-view');
+        const aiPromptInput = document.getElementById('ai-prompt');
+        const aiResultContent = document.getElementById('ai-result-content');
+
+        // Product Modal Elements
+        const productModal = document.getElementById('product-modal');
+        const productModalContent = document.getElementById('product-modal-content');
+
+        // Custom Order Modal Elements
+        const customOrderModal = document.getElementById('custom-order-modal');
+        const customOrderModalContent = document.getElementById('custom-order-modal-content');
+
+        // Payment Modal Elements
+        const paymentModal = document.getElementById('payment-modal');
+        const paymentModalContent = document.getElementById('payment-modal-content');
+
+        // Order Confirmation Modal Elements
+        const orderConfirmationModal = document.getElementById('order-confirmation-modal');
+        const orderConfirmationContent = document.getElementById('order-confirmation-content');
+
+        // Order History Modal Elements
+        const ordersModal = document.getElementById('orders-modal');
+        const ordersModalContent = document.getElementById('orders-modal-content');
+        const ordersListView = document.getElementById('orders-list-view');
+        const orderDetailView = document.getElementById('order-detail-view');
+
+        // --- INITIALIZATION ---
+        function init() {
+            applyShopStatus();
+            renderProducts();
+            setupFilters();
+            
+            // Navbar scroll effect
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('navbar');
+                if (window.scrollY > 20) {
+                    nav.classList.add('shadow-md');
+                } else {
+                    nav.classList.remove('shadow-md');
+                }
+            });
+        }
+
+        // --- PRODUCT RENDERING ---
+        function applyShopStatus() {
+            const banner = document.getElementById('shop-status-banner');
+            const customBtn = document.getElementById('trigger-custom-order-btn');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            if (!SHOP_CONFIG.takingOrders) {
+                // Show banner
+                banner.innerHTML = `<i class="fa-solid fa-ban text-brand-600 text-xl"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`;
+                banner.classList.remove('hidden');
+
+                // Disable Custom Order Button
+                if (customBtn) {
+                    customBtn.disabled = true;
+                    customBtn.classList.replace('bg-white', 'bg-neutral-200');
+                    customBtn.classList.replace('text-brand-900', 'text-neutral-500');
+                    customBtn.classList.replace('border-transparent', 'border-neutral-300');
+                    customBtn.classList.remove('hover:bg-brand-50', 'shadow-lg');
+                    customBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Custom Orders Paused';
+                    customBtn.style.cursor = 'not-allowed';
+                }
+
+                // Disable Checkout Button
+                if (checkoutBtn) {
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.classList.replace('bg-brand-600', 'bg-neutral-400');
+                    checkoutBtn.classList.remove('hover:bg-brand-700', 'hover:-translate-y-0.5', 'shadow-lg');
+                    checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Checkout Paused';
+                    checkoutBtn.style.cursor = 'not-allowed';
+                }
+            }
+        }
+
+        function renderProducts() {
+            productGrid.innerHTML = '';
+            
+            const filteredProducts = currentFilter === 'all' 
+                ? products 
+                : products.filter(p => p.category === currentFilter);
+
+            if(filteredProducts.length === 0) {
+                productGrid.innerHTML = `<p class="col-span-full text-center text-neutral-500 py-10">No items found in this category.</p>`;
+                return;
+            }
+
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-brand-100 flex flex-col group';
+                // Clicking anywhere on the card opens the details modal
+                card.onclick = () => openProductModal(product.id);
+                
+                const badgeHtml = product.badge ? `<span class="absolute top-4 left-4 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">${product.badge}</span>` : '';
+                const descHtml = product.description ? `<p class="text-sm text-neutral-600 mb-4 flex-grow line-clamp-3">${product.description}</p>` : '<div class="flex-grow"></div>';
+
+                card.innerHTML = `
+                    <div class="relative h-72 overflow-hidden bg-brand-50">
+                        ${badgeHtml}
+                        <img src="${product.image}" alt="${product.name}" class="product-img w-full h-full object-cover transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="bg-white text-brand-800 font-bold py-3 px-6 rounded-full hover:bg-brand-600 hover:text-white transition-colors transform translate-y-4 group-hover:translate-y-0 duration-300 shadow-lg pointer-events-none">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <div class="text-sm text-brand-500 font-bold tracking-wider uppercase mb-1">${product.category}</div>
+                        <h3 class="text-xl font-serif font-bold text-neutral-800 mb-2">${product.name}</h3>
+                        ${descHtml}
+                        <div class="mt-auto pt-4 border-t border-brand-50">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-xl font-bold text-brand-700">₹${product.price.toFixed(2)}</span>
+                                <button class="text-brand-500 hover:text-brand-700 bg-brand-50 hover:bg-brand-100 p-2 rounded-full transition-colors md:hidden pointer-events-none">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="text-xs text-amber-600 font-medium flex items-center gap-1">
+                                <i class="fa-regular fa-clock"></i> Takes ${product.craftingTime} to make
+                            </div>
+                        </div>
+                    </div>
+                `;
+                productGrid.appendChild(card);
+            });
+        }
+
+        // --- FILTERING ---
+        function setupFilters() {
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('bg-brand-600', 'text-white');
+                        b.classList.add('bg-white', 'text-neutral-600');
+                    });
+                    const clicked = e.target;
+                    clicked.classList.remove('bg-white', 'text-neutral-600');
+                    clicked.classList.add('bg-brand-600', 'text-white');
+
+                    currentFilter = clicked.dataset.filter;
+                    renderProducts();
+                });
+            });
+        }
+
+        // --- PRODUCT MODAL LOGIC ---
+        function openProductModal(productId) {
+            const product = products.find(p => p.id === productId);
+            currentModalProductId = productId;
+
+            // Populate Modal Data
+            document.getElementById('modal-img').src = product.image;
+            document.getElementById('modal-category').textContent = product.category;
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = `₹${product.price.toFixed(2)}`;
+            document.getElementById('modal-desc').textContent = product.description;
+            
+            document.getElementById('modal-material-name').textContent = `Crafted with ${product.materialName || 'Premium Yarn'}`;
+            document.getElementById('modal-material-benefit').textContent = product.materialBenefit || '';
+            
+            document.getElementById('modal-crafting-time').textContent = product.craftingTime || 'a few days';
+            document.getElementById('modal-perfect').textContent = product.perfectFor || 'Anyone who loves handmade items!';
+            document.getElementById('modal-care').textContent = product.careInstructions || 'Hand wash carefully and handle with love.';
+            
+            const addToCartBtn = document.getElementById('modal-add-to-cart-btn');
+            if (!SHOP_CONFIG.takingOrders) {
+                addToCartBtn.disabled = true;
+                addToCartBtn.classList.replace('bg-brand-600', 'bg-neutral-400');
+                addToCartBtn.classList.remove('hover:bg-brand-700', 'hover:-translate-y-0.5', 'shadow-lg');
+                addToCartBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Orders Currently Paused';
+                addToCartBtn.style.cursor = 'not-allowed';
+            } else {
+                addToCartBtn.disabled = false;
+                addToCartBtn.innerHTML = `<i class="fa-solid fa-basket-shopping"></i> Add to Basket - ₹${product.price.toFixed(2)}`;
+            }
+
+            // Handle Size Section visibility
+            const sizeSection = document.getElementById('modal-size-section');
+            if (product.category === 'Clothing') {
+                sizeSection.classList.remove('hidden');
+                document.getElementById('measure-bust').value = '';
+                document.getElementById('measure-waist').value = '';
+                document.getElementById('measure-hips').value = '';
+                document.getElementById('measure-length').value = '';
+            } else {
+                sizeSection.classList.add('hidden');
+            }
+
+            // Reset inputs
+            document.getElementById('modal-custom').value = '';
+            document.getElementById('modal-photos').value = '';
+
+            // Show Modal
+            productModal.classList.remove('hidden');
+            productModal.classList.add('flex');
+            setTimeout(() => {
+                productModalContent.classList.remove('scale-95', 'opacity-0');
+                productModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeProductModal() {
+            productModalContent.classList.remove('scale-100', 'opacity-100');
+            productModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                productModal.classList.add('hidden');
+                productModal.classList.remove('flex');
+            }, 300);
+        }
+
+        function addToCartFromModal() {
+            const product = products.find(p => p.id === currentModalProductId);
+            
+            let sizeText = null;
+            if (product.category === 'Clothing') {
+                const bust = document.getElementById('measure-bust').value.trim();
+                const waist = document.getElementById('measure-waist').value.trim();
+                const hips = document.getElementById('measure-hips').value.trim();
+                const length = document.getElementById('measure-length').value.trim();
+                
+                let measurements = [];
+                if(bust) measurements.push(`Bust: ${bust}`);
+                if(waist) measurements.push(`Waist: ${waist}`);
+                if(hips) measurements.push(`Hips: ${hips}`);
+                if(length) measurements.push(`Length: ${length}`);
+                
+                sizeText = measurements.length > 0 ? measurements.join(', ') : 'Measurements pending';
+            }
+            
+            let customText = document.getElementById('modal-custom').value.trim();
+            const hasPhotos = document.getElementById('modal-photos').files.length > 0;
+            
+            if (hasPhotos) {
+                customText += (customText ? ' | ' : '') + '[Reference Photos Attached]';
+            }
+            
+            addToCart(currentModalProductId, sizeText, customText);
+            closeProductModal();
+        }
+
+        // --- CART LOGIC ---
+        function toggleCart() {
+            const isClosed = cartSidebar.classList.contains('translate-x-full');
+            if (isClosed) {
+                cartSidebar.classList.remove('translate-x-full');
+                cartOverlay.classList.remove('hidden');
+                setTimeout(() => cartOverlay.classList.remove('opacity-0'), 10);
+            } else {
+                cartSidebar.classList.add('translate-x-full');
+                cartOverlay.classList.add('opacity-0');
+                setTimeout(() => cartOverlay.classList.add('hidden'), 300);
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        function addToCart(productId, size = null, customText = '') {
+            if (!SHOP_CONFIG.takingOrders) {
+                showToast("We are currently not accepting new orders. Please check back later!");
+                return;
+            }
+
+            const product = products.find(p => p.id === productId);
+            
+            // Check if exact same item (with same size and custom text) exists in cart
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === productId && 
+                item.size === size && 
+                item.customText === customText
+            );
+
+            if (existingItemIndex > -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                // Add unique cartItemId to distinguish between same products with different customizations
+                cart.push({ 
+                    ...product, 
+                    cartItemId: Date.now() + Math.random(),
+                    quantity: 1,
+                    size: size,
+                    customText: customText
+                });
+            }
+
+            updateCartUI();
+            showToast(`Added ${product.name} to basket!`);
+        }
+
+        function removeFromCart(cartItemId) {
+            cart = cart.filter(item => item.cartItemId !== cartItemId);
+            updateCartUI();
+        }
+
+        function updateQuantity(cartItemId, delta) {
+            const item = cart.find(item => item.cartItemId === cartItemId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(cartItemId);
+                } else {
+                    updateCartUI();
+                }
+            }
+        }
+
+        function updateCartUI() {
+            // Update Badge
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartBadge.textContent = totalItems;
+            if (totalItems > 0) {
+                cartBadge.classList.remove('hidden');
+            } else {
+                cartBadge.classList.add('hidden');
+            }
+
+            // Update Cart Content
+            const existingItems = document.querySelectorAll('.cart-item-row');
+            existingItems.forEach(el => el.remove());
+
+            if (cart.length === 0) {
+                emptyCartMsg.style.display = 'block';
+            } else {
+                emptyCartMsg.style.display = 'none';
+                
+                cart.forEach(item => {
+                    const row = document.createElement('div');
+                    row.className = 'cart-item-row flex items-start gap-4 py-4 border-b border-brand-50';
+                    
+                    const sizeBadge = item.size ? `<div class="text-xs text-neutral-700 bg-white border border-brand-200 px-2 py-1.5 rounded mt-1 mb-1 max-w-full break-words shadow-sm"><span class="font-bold text-brand-800"><i class="fa-solid fa-ruler-combined mr-1"></i></span> ${item.size}</div>` : '';
+                    const customBadge = item.customText ? `<div class="text-xs text-brand-600 bg-brand-50 px-2 py-1 rounded inline-block mt-1 max-w-[200px] whitespace-normal break-words"><i class="fa-solid fa-note-sticky mr-1"></i> ${item.customText}</div>` : '';
+
+                    row.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-xl shadow-sm mt-1">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="font-bold text-neutral-800 leading-tight mb-1 text-sm md:text-base truncate">${item.name}</h4>
+                            <div class="flex flex-col">
+                                ${sizeBadge}
+                            </div>
+                            ${customBadge}
+                            <div class="text-brand-600 font-bold mt-2 mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
+                            <div class="flex items-center gap-3">
+                                <div class="flex items-center bg-brand-50 rounded-full px-2 py-1">
+                                    <button onclick="updateQuantity(${item.cartItemId}, -1)" class="text-brand-600 hover:text-brand-800 w-6 h-6 flex items-center justify-center"><i class="fa-solid fa-minus text-xs"></i></button>
+                                    <span class="text-sm font-bold w-6 text-center">${item.quantity}</span>
+                                    <button onclick="updateQuantity(${item.cartItemId}, 1)" class="text-brand-600 hover:text-brand-800 w-6 h-6 flex items-center justify-center"><i class="fa-solid fa-plus text-xs"></i></button>
+                                </div>
+                                <button onclick="removeFromCart(${item.cartItemId})" class="text-neutral-400 hover:text-red-500 text-sm underline transition-colors">Remove</button>
+                            </div>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(row);
+                });
+            }
+
+            // Update Total
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalEl.textContent = `₹${total.toFixed(2)}`;
+        }
+
+        // --- UTILS ---
+        let toastTimeout;
+        function showToast(message) {
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            }, 3000);
+        }
+
+        function checkout() {
+            if (!SHOP_CONFIG.takingOrders) {
+                showToast("Checkout is temporarily disabled. Please check back later!");
+                return;
+            }
+
+            if (cart.length === 0) {
+                showToast("Your basket is empty!");
+                return;
+            }
+            
+            // Close Cart UI
+            toggleCart();
+            
+            // Set Amount and Open Payment Modal
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('payment-total-amount').textContent = `₹${total.toFixed(2)}`;
+            openPaymentModal();
+        }
+
+        // --- PAYMENT FLOW LOGIC ---
+
+        function openPaymentModal() {
+            paymentModal.classList.remove('hidden');
+            paymentModal.classList.add('flex');
+            setTimeout(() => {
+                paymentModalContent.classList.remove('scale-95', 'opacity-0');
+                paymentModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closePaymentModal() {
+            paymentModalContent.classList.remove('scale-100', 'opacity-100');
+            paymentModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                paymentModal.classList.add('hidden');
+                paymentModal.classList.remove('flex');
+            }, 300);
+        }
+
+        function initiateRazorpayPayment() {
+            const btn = document.getElementById('razorpay-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<div class="loader mx-auto"></div>`;
+            btn.disabled = true;
+
+            // Mocking Razorpay Initialization Delay
+            setTimeout(() => {
+                // Here is where you would normally configure and open Razorpay:
+                // const options = { key: 'YOUR_KEY_ID', amount: total * 100, ... };
+                // const rzp1 = new Razorpay(options);
+                // rzp1.open();
+                
+                // Simulating a successful payment callback directly for the prototype:
+                finalizeOrderProcess();
+                
+                // Reset button for future (hidden)
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                }, 500);
+            }, 1500);
+        }
+
+        function confirmManualUPIPayment() {
+            const btn = document.getElementById('manual-upi-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<div class="loader border-brand-600 mx-auto"></div>`;
+            btn.disabled = true;
+
+            // Simulating verification delay
+            setTimeout(() => {
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Verification Pending`;
+                btn.classList.replace('text-brand-700', 'text-white');
+                btn.classList.replace('bg-white', 'bg-green-600');
+                btn.classList.replace('border-brand-600', 'border-green-600');
+                
+                setTimeout(() => {
+                    finalizeOrderProcess();
+                    
+                    // Reset button for future (hidden)
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.disabled = false;
+                        btn.classList.replace('text-white', 'text-brand-700');
+                        btn.classList.replace('bg-green-600', 'bg-white');
+                        btn.classList.replace('border-green-600', 'border-brand-600');
+                    }, 500);
+                }, 1000);
+            }, 1500);
+        }
+
+        function finalizeOrderProcess() {
+            // Generate mock order info
+            const orderId = 'HKH' + Math.floor(100000 + Math.random() * 900000);
+            const dispatchDate = new Date();
+            dispatchDate.setDate(dispatchDate.getDate() + 7); // Assume ~7 days max craft time
+            const formattedDate = dispatchDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const placedDate = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+            const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Save to Order History
+            userOrders.push({
+                id: orderId,
+                placedDate: placedDate,
+                dispatchDate: formattedDate,
+                items: [...cart],
+                total: totalPaid,
+                statusText: 'Order Confirmed',
+                statusLevel: 1 // 1: Confirmed, 2: Processing, 3: Shipped, 4: Delivered
+            });
+
+            // Reset Cart
+            cart = [];
+            updateCartUI();
+            
+            // Transition from Payment to Confirmation
+            closePaymentModal();
+            setTimeout(() => {
+                openOrderConfirmation(orderId, formattedDate);
+            }, 300); // Wait for modal to close before opening next
+        }
+
+        // --- ORDER CONFIRMATION ---
+
+        function openOrderConfirmation(orderId, dispatchDate) {
+            document.getElementById('confirm-order-id').textContent = '#' + orderId;
+            document.getElementById('confirm-dispatch-date').textContent = dispatchDate;
+            
+            orderConfirmationModal.classList.remove('hidden');
+            orderConfirmationModal.classList.add('flex');
+            setTimeout(() => {
+                orderConfirmationContent.classList.remove('scale-95', 'opacity-0');
+                orderConfirmationContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeOrderConfirmation() {
+            orderConfirmationContent.classList.remove('scale-100', 'opacity-100');
+            orderConfirmationContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                orderConfirmationModal.classList.add('hidden');
+                orderConfirmationModal.classList.remove('flex');
+            }, 300);
+        }
+
+        // --- ORDER HISTORY & TRACKING ---
+
+        function openOrdersModal() {
+            document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History';
+            document.getElementById('tracking-search-bar').classList.remove('hidden');
+            ordersListView.classList.remove('hidden');
+            orderDetailView.classList.add('hidden');
+            
+            renderOrdersList();
+
+            ordersModal.classList.remove('hidden');
+            ordersModal.classList.add('flex');
+            setTimeout(() => {
+                ordersModalContent.classList.remove('scale-95', 'opacity-0');
+                ordersModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeOrdersModal() {
+            ordersModalContent.classList.remove('scale-100', 'opacity-100');
+            ordersModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                ordersModal.classList.add('hidden');
+                ordersModal.classList.remove('flex');
+                document.getElementById('track-order-input').value = '';
+            }, 300);
+        }
+
+        function trackOrderSubmit() {
+            const input = document.getElementById('track-order-input').value.trim();
+            if(!input) return;
+            const searchId = input.replace('#', '').toUpperCase();
+            const order = userOrders.find(o => o.id === searchId);
+            
+            if(order) {
+                viewOrderDetails(searchId);
+            } else {
+                showToast("Order not found. Please check your ID.");
+            }
+        }
+
+        function renderOrdersList() {
+            ordersListView.innerHTML = '';
+            
+            if (userOrders.length === 0) {
+                ordersListView.innerHTML = `
+                    <div class="text-center py-10 text-neutral-500 flex flex-col items-center">
+                        <div class="w-24 h-24 bg-brand-50 rounded-full flex items-center justify-center text-brand-200 text-4xl mb-4">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+                        <h4 class="text-xl font-serif font-bold text-neutral-800 mb-2">No past orders yet.</h4>
+                        <p>Place an order to see your history here.</p>
+                        <button onclick="closeOrdersModal(); document.getElementById('shop').scrollIntoView();" class="mt-6 text-brand-600 font-bold hover:underline">Browse the Shop</button>
+                    </div>`;
+                return;
+            }
+
+            // Status Badge Helper
+            function getStatusBadge(level, text) {
+                if (level === 1) return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300"><i class="fa-solid fa-circle text-[8px] text-yellow-500"></i> ${text}</div>`;
+                if (level === 2) return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300"><i class="fa-solid fa-circle text-[8px] text-blue-500"></i> ${text}</div>`;
+                if (level === 3) return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300"><i class="fa-solid fa-circle text-[8px] text-purple-500"></i> ${text}</div>`;
+                return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-300"><i class="fa-solid fa-circle text-[8px] text-green-500"></i> ${text}</div>`;
+            }
+
+            // Sort orders newest first
+            const sortedOrders = [...userOrders].sort((a, b) => new Date(b.placedDate) - new Date(a.placedDate));
+
+            sortedOrders.forEach(order => {
+                const itemsSummary = order.items.map(i => `${i.quantity}x ${i.name}`).join(', ');
+                const displaySummary = itemsSummary.length > 55 ? itemsSummary.substring(0, 55) + '...' : itemsSummary;
+
+                const card = document.createElement('div');
+                card.className = "bg-white border-2 border-brand-50 rounded-2xl p-5 mb-4 shadow-sm hover:shadow-md hover:border-brand-200 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4";
+                
+                card.innerHTML = `
+                    <div class="flex-1">
+                        <div class="font-bold text-brand-900 text-lg mb-1">Order #${order.id}</div>
+                        <div class="text-sm text-neutral-500 mb-2"><i class="fa-regular fa-calendar mr-1"></i> Placed on ${order.placedDate}</div>
+                        <div class="text-sm text-neutral-600 mb-3 italic">Items: ${displaySummary}</div>
+                        ${getStatusBadge(order.statusLevel, order.statusText)}
+                    </div>
+                    <div class="text-left sm:text-right flex flex-col justify-center border-t sm:border-t-0 sm:border-l border-brand-50 pt-4 sm:pt-0 sm:pl-4 mt-2 sm:mt-0">
+                        <div class="font-bold text-neutral-800 text-xl mb-3">₹${order.total.toFixed(2)}</div>
+                        <button onclick="viewOrderDetails('${order.id}')" class="px-6 py-2.5 bg-brand-50 text-brand-700 font-bold rounded-full hover:bg-brand-600 hover:text-white transition-colors text-sm whitespace-nowrap shadow-sm">
+                            Details & Track <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                `;
+                ordersListView.appendChild(card);
+            });
+        }
+
+        function viewOrderDetails(orderId) {
+            const order = userOrders.find(o => o.id === orderId);
+            if(!order) return;
+
+            document.getElementById('tracking-search-bar').classList.add('hidden');
+            ordersListView.classList.add('hidden');
+            orderDetailView.classList.remove('hidden');
+
+            // Update Header with Back Button
+            document.getElementById('orders-modal-title').innerHTML = `
+                <button onclick="document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class=\\'fa-solid fa-clock-rotate-left text-brand-500\\'></i> Order History';" class="text-brand-600 hover:text-brand-800 mr-2 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
+                Order #${order.id}
+            `;
+
+            // Render Items
+            let itemsHtml = order.items.map(item => `
+                <div class="flex items-start gap-4 py-4 border-b border-neutral-100 last:border-0">
+                    <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl shadow-sm">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-neutral-800 text-sm md:text-base leading-tight mb-1 truncate">${item.name}</h4>
+                        <div class="text-xs text-neutral-500 mb-2">Qty: ${item.quantity} ${item.size ? '| Size: '+item.size : ''}</div>
+                        ${item.customText ? `<div class="text-xs text-brand-700 bg-brand-50 px-2 py-1 rounded inline-block"><i class="fa-solid fa-note-sticky mr-1"></i> ${item.customText}</div>` : ''}
+                    </div>
+                    <div class="font-bold text-brand-800">₹${(item.price * item.quantity).toFixed(2)}</div>
+                </div>
+            `).join('');
+
+            // Render Split View
+            orderDetailView.innerHTML = `
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    
+                    <!-- Left: Tracking Timeline -->
+                    <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100">
+                        <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
+                        </h3>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
+                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Expected Dispatch</p>
+                                <p class="text-brand-900 font-bold text-lg">${order.dispatchDate}</p>
+                            </div>
+                        </div>
+
+                        <!-- Timeline (Crochet Theme) -->
+                        <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-8 pb-4 mt-6">
+                            
+                            <!-- Status 1 -->
+                            <div class="relative pl-8 ${order.statusLevel >= 1 ? '' : 'opacity-50 grayscale'}">
+                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 1 ? 'bg-yellow-100 border-[3px] border-yellow-400 text-yellow-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                                    <i class="fa-solid fa-clipboard-check text-sm"></i>
+                                </div>
+                                <h4 class="font-bold ${order.statusLevel >= 1 ? 'text-yellow-700' : 'text-neutral-500'} text-lg">Order Confirmed</h4>
+                                <div class="mt-2 ${order.statusLevel >= 1 ? 'bg-yellow-50/50 border-yellow-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
+                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 1 ? 'bg-yellow-50/50 border-yellow-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                                    <p class="text-sm ${order.statusLevel >= 1 ? 'text-yellow-900' : 'text-neutral-500'} leading-relaxed font-medium">Payment received and order accepted by Vaishali.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Status 2 -->
+                            <div class="relative pl-8 ${order.statusLevel >= 2 ? '' : 'opacity-50 grayscale'}">
+                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 2 ? 'bg-blue-100 border-[3px] border-blue-400 text-blue-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                                    <i class="fa-solid fa-hand-sparkles text-sm"></i>
+                                </div>
+                                <h4 class="font-bold ${order.statusLevel >= 2 ? 'text-blue-700' : 'text-neutral-500'} text-lg">Processing</h4>
+                                <div class="mt-2 ${order.statusLevel >= 2 ? 'bg-blue-50/50 border-blue-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
+                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 2 ? 'bg-blue-50/50 border-blue-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                                    <p class="text-sm ${order.statusLevel >= 2 ? 'text-blue-900' : 'text-neutral-500'} leading-relaxed font-medium">Your piece is currently being handcrafted. Please allow time for meticulous crafting.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Status 3 -->
+                            <div class="relative pl-8 ${order.statusLevel >= 3 ? '' : 'opacity-50 grayscale'}">
+                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 3 ? 'bg-purple-100 border-[3px] border-purple-400 text-purple-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                                    <i class="fa-solid fa-truck-fast text-sm"></i>
+                                </div>
+                                <h4 class="font-bold ${order.statusLevel >= 3 ? 'text-purple-700' : 'text-neutral-500'} text-lg">Shipped</h4>
+                                <div class="mt-2 ${order.statusLevel >= 3 ? 'bg-purple-50/50 border-purple-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
+                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 3 ? 'bg-purple-50/50 border-purple-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                                    <p class="text-sm ${order.statusLevel >= 3 ? 'text-purple-900' : 'text-neutral-500'} leading-relaxed font-medium">Courier has picked up your package via Shiprocket. Tracking link will be sent shortly.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Status 4 -->
+                            <div class="relative pl-8 ${order.statusLevel >= 4 ? '' : 'opacity-50 grayscale'}">
+                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 4 ? 'bg-green-100 border-[3px] border-green-400 text-green-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                                    <i class="fa-solid fa-house-chimney-window text-sm"></i>
+                                </div>
+                                <h4 class="font-bold ${order.statusLevel >= 4 ? 'text-green-700' : 'text-neutral-500'} text-lg">Delivered</h4>
+                                <div class="mt-2 ${order.statusLevel >= 4 ? 'bg-green-50/50 border-green-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
+                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 4 ? 'bg-green-50/50 border-green-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                                    <p class="text-sm ${order.statusLevel >= 4 ? 'text-green-900' : 'text-neutral-500'} leading-relaxed font-medium">Package has been successfully delivered to your doorstep.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Order Summary -->
+                    <div>
+                        <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-receipt text-brand-500"></i> Order Summary
+                        </h3>
+                        <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm">
+                            <div class="max-h-72 overflow-y-auto pr-2 mb-4 space-y-2">
+                                ${itemsHtml}
+                            </div>
+                            <div class="border-t-2 border-dashed border-neutral-200 pt-4 mt-4">
+                                <div class="flex justify-between items-center mb-2 text-neutral-600">
+                                    <span>Subtotal</span>
+                                    <span>₹${order.total.toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4 text-neutral-600">
+                                    <span>Shipping</span>
+                                    <span class="text-green-600 font-bold">Free</span>
+                                </div>
+                                <div class="flex justify-between items-center bg-brand-50 p-4 rounded-xl">
+                                    <span class="font-bold text-brand-900 text-lg">Total Paid</span>
+                                    <span class="font-bold text-2xl text-brand-700">₹${order.total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+        }
+
+        // --- GEMINI AI FEATURES ---
+
+        function openCustomOrderModal() {
+            customOrderModal.classList.remove('hidden');
+            customOrderModal.classList.add('flex');
+            setTimeout(() => {
+                customOrderModalContent.classList.remove('scale-95', 'opacity-0');
+                customOrderModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeCustomOrderModal() {
+            customOrderModalContent.classList.remove('scale-100', 'opacity-100');
+            customOrderModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                customOrderModal.classList.add('hidden');
+                customOrderModal.classList.remove('flex');
+                document.getElementById('custom-order-form').reset();
+            }, 300);
+        }
+
+        function submitCustomOrder(event) {
+            event.preventDefault();
+            const btn = document.getElementById('custom-order-submit-btn');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = `<div class="loader"></div> Sending...`;
+            btn.disabled = true;
+
+            // Mock submission delay
+            setTimeout(() => {
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Sent!`;
+                btn.classList.replace('bg-brand-600', 'bg-green-600');
+                
+                setTimeout(() => {
+                    closeCustomOrderModal();
+                    setTimeout(() => {
+                        btn.innerHTML = originalContent;
+                        btn.classList.replace('bg-green-600', 'bg-brand-600');
+                        btn.disabled = false;
+                        showToast("Custom order request sent! We'll be in touch.");
+                    }, 300);
+                }, 1500);
+            }, 1500);
+        }
+
+        function openAiModal() {
+            aiModal.classList.remove('hidden');
+            aiModal.classList.add('flex');
+            setTimeout(() => {
+                aiModalContent.classList.remove('scale-95', 'opacity-0');
+                aiModalContent.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeAiModal() {
+            aiModalContent.classList.remove('scale-100', 'opacity-100');
+            aiModalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                aiModal.classList.add('hidden');
+                aiModal.classList.remove('flex');
+                resetAiModal();
+            }, 300);
+        }
+
+        function resetAiModal() {
+            aiInputView.classList.remove('hidden');
+            aiLoadingView.classList.add('hidden');
+            aiResultView.classList.add('hidden');
+            aiErrorView.classList.add('hidden');
+            aiPromptInput.value = '';
+        }
+
+        async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    await new Promise(res => setTimeout(res, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        async function generateIdea() {
+            const prompt = aiPromptInput.value.trim();
+            if (!prompt) return;
+
+            // Update UI to loading state
+            aiInputView.classList.add('hidden');
+            aiLoadingView.classList.remove('hidden');
+            aiLoadingView.classList.add('flex');
+
+            const systemPrompt = `You are a creative, warm, and helpful AI assistant for 'HandKnot Haven', a handmade crochet shop run by Vaishali. 
+            The user will describe a person they want to buy a gift for, or an occasion.
+            Your job is to suggest ONE amazing, custom crochet item that Vaishali could make for them. 
+            Include:
+            1. A catchy name for the custom item wrapped in a strong tag (e.g., "<strong>The Galaxy Explorer Granny Square Blanket</strong>").
+            2. A brief, enthusiastic description of the item and why it fits the prompt.
+            3. Material Recommendation: Explicitly choose either Organic Cotton, Merino Wool, or Premium Blends (these are Vaishali's materials) and explain why.
+            4. Color Palette: Suggest 3-4 specific colors.
+            Format the response nicely in HTML using <p> and <ul>/<li> tags. Keep it concise, friendly, and under 150 words. Do NOT use markdown (like **bold**), only use raw HTML tags.`;
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+
+            try {
+                const result = await fetchWithRetry(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                if (generatedText) {
+                    aiResultContent.innerHTML = generatedText;
+                    aiLoadingView.classList.remove('flex');
+                    aiLoadingView.classList.add('hidden');
+                    aiResultView.classList.remove('hidden');
+                    aiResultView.classList.add('flex');
+                } else {
+                    throw new Error("No text generated.");
+                }
+
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                aiLoadingView.classList.remove('flex');
+                aiLoadingView.classList.add('hidden');
+                aiErrorView.classList.remove('hidden');
+                aiErrorView.classList.add('flex');
+            }
+        }
+
+        // Start app
+        init();
+
+    </script>
+</body>
+</html>
