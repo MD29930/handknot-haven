@@ -116,7 +116,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
     <script>
-        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co/rest/v1/'
+        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co'
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
 
         const supabaseClient = supabase.createClient(
@@ -2360,59 +2360,6 @@ function closeOrderConfirmation() {
         // Start app
         init();
 
-    </script>
-    <script>
-        async function loadProductsFromSupabase() {
-
-            const { data, error } = await supabaseClient
-                .from('products')
-                .select('*')
-
-            if (error) {
-                console.error("Supabase fetch error:", error)
-                return
-            }
-
-            console.log("Database Products:", data)
-
-            if (data.length > 0) {
-
-                products = data.map(product => ({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    category: product.category,
-                    image: product.image_url,
-                    badge: "Handmade",
-                    description: product.description,
-                    perfectFor: "Handmade crochet lovers",
-                    careInstructions: "Handle with care",
-                    materialName: "Premium Yarn",
-                    materialBenefit: "Soft and durable",
-                    craftingTime: "3-5 days"
-                }))
-
-                renderProducts()
-            }
-        }
-
-        loadProductsFromSupabase()
-    </script>
-    <script>
-        async function saveOrder(orderData) {
-
-            console.log("Trying to save order:", orderData);
-
-            const { data, error } = await supabaseClient
-                .from('orders')
-                .insert([orderData])
-
-            if (error) {
-                console.error("Supabase Order Error:", error)
-            } else {
-                console.log("Order Saved Successfully:", data)
-            }
-        }
     </script>
     <script>
 
