@@ -1493,7 +1493,8 @@
         // --- INITIALIZATION ---
         function init() {
             applyShopStatus();
-            renderProducts();
+            // Call the Supabase fetch function instead of the local render
+            loadProducts();
             setupFilters();
 
             // Navbar scroll effect
