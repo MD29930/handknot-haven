@@ -1880,72 +1880,104 @@
             }, 1500);
         }
 
-        function finalizeOrderProcess() {
-            console.log("FINALIZE ORDER FUNCTION RUNNING");
-            // Generate mock order info
-            const orderId = 'HKH' + Math.floor(100000 + Math.random() * 900000);
-            const dispatchDate = new Date();
-            dispatchDate.setDate(dispatchDate.getDate() + 7); // Assume ~7 days max craft time
-            const formattedDate = dispatchDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const placedDate = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
-            const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            console.log("Trying to save order");
 
-            saveOrder({
-                customer_name: "Test User",
-                phone: "9999999999",
-                address: "Test Address",
-                product_name: cart.map(item => item.name).join(", "),
-                quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
-                total: totalPaid,
-                payment_status: "paid",
-                order_status: "confirmed"
-            });
+            function finalizeOrderProcess() {
 
-            // Save to Order History
-            userOrders.push({
-                id: orderId,
-                placedDate: placedDate,
-                dispatchDate: formattedDate,
-                items: [...cart],
-                total: totalPaid,
-                statusText: 'Order Confirmed',
-                statusLevel: 1 // 1: Confirmed, 2: Processing, 3: Shipped, 4: Delivered
-            });
+    // Generate order info
+    const orderId = 'HKH' + Math.floor(100000 + Math.random() * 900000);
 
-            // Reset Cart
-            cart = [];
-            updateCartUI();
+    const dispatchDate = new Date();
+    dispatchDate.setDate(dispatchDate.getDate() + 7);
 
-            // Transition from Payment to Confirmation
-            closePaymentModal();
-            setTimeout(() => {
-                openOrderConfirmation(orderId, formattedDate);
-            }, 300); // Wait for modal to close before opening next
-        }
+    const formattedDate = dispatchDate.toLocaleDateString('en-IN', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
 
-        // --- ORDER CONFIRMATION ---
+    const placedDate = new Date().toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
 
-        function openOrderConfirmation(orderId, dispatchDate) {
-            document.getElementById('confirm-order-id').textContent = '#' + orderId;
-            document.getElementById('confirm-dispatch-date').textContent = dispatchDate;
+    const totalPaid = cart.reduce(
+        (sum, item) => sum + (item.price * item.quantity),
+        0
+    );
 
-            orderConfirmationModal.classList.remove('hidden');
-            orderConfirmationModal.classList.add('flex');
-            setTimeout(() => {
-                orderConfirmationContent.classList.remove('scale-95', 'opacity-0');
-                orderConfirmationContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
+    // Save order to Supabase
+    saveOrder(totalPaid);
 
-        function closeOrderConfirmation() {
-            orderConfirmationContent.classList.remove('scale-100', 'opacity-100');
-            orderConfirmationContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                orderConfirmationModal.classList.add('hidden');
-                orderConfirmationModal.classList.remove('flex');
-            }, 300);
-        }
+    // Save locally for order history
+    userOrders.push({
+        id: orderId,
+        placedDate: placedDate,
+        dispatchDate: formattedDate,
+        items: [...cart],
+        total: totalPaid,
+        statusText: 'Order Confirmed',
+        statusLevel: 1
+    });
+
+    // Reset Cart
+    cart = [];
+    updateCartUI();
+
+    // Close payment modal
+    closePaymentModal();
+
+    // Open confirmation modal
+    setTimeout(() => {
+        openOrderConfirmation(orderId, formattedDate);
+    }, 300);
+}
+
+
+// --- ORDER CONFIRMATION ---
+
+function openOrderConfirmation(orderId, dispatchDate) {
+
+    document.getElementById('confirm-order-id').textContent =
+        '#' + orderId;
+
+    document.getElementById('confirm-dispatch-date').textContent =
+        dispatchDate;
+
+    orderConfirmationModal.classList.remove('hidden');
+    orderConfirmationModal.classList.add('flex');
+
+    setTimeout(() => {
+        orderConfirmationContent.classList.remove(
+            'scale-95',
+            'opacity-0'
+        );
+
+        orderConfirmationContent.classList.add(
+            'scale-100',
+            'opacity-100'
+        );
+    }, 10);
+}
+
+function closeOrderConfirmation() {
+
+    orderConfirmationContent.classList.remove(
+        'scale-100',
+        'opacity-100'
+    );
+
+    orderConfirmationContent.classList.add(
+        'scale-95',
+        'opacity-0'
+    );
+
+    setTimeout(() => {
+        orderConfirmationModal.classList.add('hidden');
+        orderConfirmationModal.classList.remove('flex');
+    }, 300);
+}
 
         // --- ORDER HISTORY & TRACKING ---
 
@@ -2369,18 +2401,68 @@
     </script>
     <script>
 
-        console.log("Manual test starting");
+        async function loadProducts() {
 
-        finalizeOrderProcess();
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
 
+            if (error) {
+                console.error(error)
+                return
+            }
+
+            products = data.map(product => ({
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                category: product.category,
+                image: product.image_url,
+                badge: "Handmade",
+                description: product.description,
+                perfectFor: product.perfect_for,
+                careInstructions: product.care_instructions,
+                materialName: product.material_name,
+                materialBenefit: product.material_benefit,
+                craftingTime: product.crafting_time
+            }))
+
+            renderProducts()
+        }
+
+        loadProducts()
 
     </script>
+    <script>
 
+async function saveOrder(totalPaid) {
+
+    const orderData = {
+        customer_name: "Customer",
+        phone: "Not Provided",
+        address: "Not Provided",
+        product_name: cart.map(item => item.name).join(", "),
+        quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
+        total: totalPaid,
+        payment_status: "paid",
+        order_status: "confirmed"
+    }
+
+    const { error } = await supabaseClient
+        .from('orders')
+        .insert([orderData])
+
+    if (error) {
+        console.error(error)
+    }
+}
+
+</script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
     <script>
-        const supabaseUrl = 'YOUR_URL'
-        const supabaseKey = 'YOUR_KEY'
+        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co/rest/v1/'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
 
         const supabaseClient = supabase.createClient(
             supabaseUrl,
@@ -2388,11 +2470,7 @@
         )
 
         console.log("Supabase connected!")
-        console.log("BOTTOM SCRIPT WORKING");
 
-    </script>
-    <script>
-    console.log("LATEST VERSION LOADED");
     </script>
 </body>
 
