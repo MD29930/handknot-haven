@@ -112,6 +112,21 @@
         }
     </style>
 </head>
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+    <script>
+        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co/rest/v1/'
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
+
+        const supabaseClient = supabase.createClient(
+            supabaseUrl,
+            supabaseKey
+        )
+
+        console.log("Supabase connected!")
+
+</script>
 
 <body class="bg-brand-50 text-neutral-800 font-sans antialiased flex flex-col min-h-screen">
 
@@ -2434,44 +2449,26 @@ function closeOrderConfirmation() {
 
     </script>
     <script>
+        async function saveOrder(totalPaid) {
+            const orderData = {
+                customer_name: "Customer",
+                phone: "Not Provided",
+                address: "Not Provided",
+                product_name: cart.map(item => item.name).join(", "),
+                quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
+                total: totalPaid,
+                payment_status: "paid",
+                order_status: "confirmed"
+            };
 
-async function saveOrder(totalPaid) {
+            const { error } = await supabaseClient
+                .from('orders')
+                .insert([orderData]);
 
-    const orderData = {
-        customer_name: "Customer",
-        phone: "Not Provided",
-        address: "Not Provided",
-        product_name: cart.map(item => item.name).join(", "),
-        quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
-        total: totalPaid,
-        payment_status: "paid",
-        order_status: "confirmed"
-    }
-
-    const { error } = await supabaseClient
-        .from('orders')
-        .insert([orderData])
-
-    if (error) {
-        console.error(error)
-    }
-}
-
-</script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-
-    <script>
-        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co/rest/v1/'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
-
-        const supabaseClient = supabase.createClient(
-            supabaseUrl,
-            supabaseKey
-        )
-
-        console.log("Supabase connected!")
-
+            if (error) {
+                console.error(error);
+            }
+        }
     </script>
 </body>
-
 </html>
