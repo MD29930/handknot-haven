@@ -911,7 +911,7 @@
         </div>
     </div>
 
-    // --- Chekout Modal ---
+    <!-- Chekout Modal -->
     <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
         <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
         <div class="relative bg-white w-full max-w-lg mx-4 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0"
@@ -1557,10 +1557,26 @@
                 card.className = 'product-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-brand-100 flex flex-col group';
                 // Clicking anywhere on the card opens the details modal
                 card.onclick = () => openProductModal(product.id);
+                // 1. Define colors based on badge text
+                const badgeColors = {
+                    'Bestseller': 'bg-amber-500',    // Gold
+                    'New': 'bg-blue-500',           // Blue
+                    'Sale': 'bg-red-500',           // Red
+                    'Limited': 'bg-purple-600',     // Purple
+                    'Handmade': 'bg-brand-500'      // Your standard brand color
+                };
 
-                const badgeHtml = product.badge ? `<span class="absolute top-4 left-4 bg-brand-500 text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">${product.badge}</span>` : '';
-                const descHtml = product.description ? `<p class="text-sm text-neutral-600 mb-4 flex-grow line-clamp-3">${product.description}</p>` : '<div class="flex-grow"></div>';
+                // 2. Select the color based on the badge value, or use brand-500 as a default
+                const colorClass = badgeColors[product.badge] || 'bg-brand-500';
 
+                // 3. Generate the dynamic HTML
+                const badgeHtml = product.badge
+                    ? `<span class="absolute top-4 left-4 ${colorClass} text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">${product.badge}</span>`
+                    : '';
+
+                const descHtml = product.description
+                    ? `<p class="text-sm text-neutral-600 mb-4 flex-grow line-clamp-3">${product.description}</p>`
+                    : '<div class="flex-grow"></div>';
                 card.innerHTML = `
                     <div class="relative h-72 overflow-hidden bg-brand-50">
                         ${badgeHtml}
@@ -2444,14 +2460,13 @@
     <script>
 
         async function loadProducts() {
-
             const { data, error } = await supabaseClient
                 .from('products')
-                .select('*')
+                .select('*');
 
             if (error) {
-                console.error(error)
-                return
+                console.error(error);
+                return;
             }
 
             products = data.map(product => ({
@@ -2460,19 +2475,18 @@
                 price: product.price,
                 category: product.category,
                 image: product.image_url,
-                badge: "Customisation Available",
+                // CHANGED: Use the badge from the DB column, fallback to "Customization Available" if empty
+                badge: product.badge || "Customization Available",
                 description: product.description,
                 perfectFor: product.perfect_for,
                 careInstructions: product.care_instructions,
                 materialName: product.material_name,
                 materialBenefit: product.material_benefit,
                 craftingTime: product.crafting_time
-            }))
+            }));
 
-            renderProducts()
+            renderProducts();
         }
-
-        loadProducts()
 
     </script>
     <script>
