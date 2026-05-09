@@ -113,18 +113,18 @@
     </style>
 </head>
 </script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-    <script>
-        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co'
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
+<script>
+    const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co'
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
 
-        const supabaseClient = supabase.createClient(
-            supabaseUrl,
-            supabaseKey
-        )
+    const supabaseClient = supabase.createClient(
+        supabaseUrl,
+        supabaseKey
+    )
 
-        console.log("Supabase connected!")
+    console.log("Supabase connected!")
 
 </script>
 
@@ -698,7 +698,8 @@
                         <h4 class="font-bold text-amber-900 text-sm mb-1">Crafting Time</h4>
                         <p class="text-neutral-600 text-sm leading-relaxed">As this is a handmade piece, it will take
                             <span class="font-bold text-amber-800" id="modal-crafting-time"></span> to meticulously
-                            craft.</p>
+                            craft.
+                        </p>
                     </div>
                 </div>
 
@@ -765,7 +766,8 @@
                         class="bg-gradient-to-br from-brand-50 to-white rounded-2xl p-5 border border-brand-100 shadow-sm relative overflow-hidden group">
                         <div
                             class="absolute -right-4 -top-4 text-brand-100 opacity-50 text-7xl transform group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-gift"></i></div>
+                            <i class="fa-solid fa-gift"></i>
+                        </div>
                         <h4 class="font-bold text-brand-800 text-sm mb-2 relative z-10 flex items-center gap-2"><i
                                 class="fa-solid fa-star text-brand-500"></i> Perfect For</h4>
                         <p class="text-neutral-600 text-sm relative z-10 leading-relaxed" id="modal-perfect"></p>
@@ -774,7 +776,8 @@
                         class="bg-gradient-to-br from-blue-50 to-white rounded-2xl p-5 border border-blue-100 shadow-sm relative overflow-hidden group">
                         <div
                             class="absolute -right-4 -top-4 text-blue-100 opacity-50 text-7xl transform group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-hand-sparkles"></i></div>
+                            <i class="fa-solid fa-hand-sparkles"></i>
+                        </div>
                         <h4 class="font-bold text-blue-800 text-sm mb-2 relative z-10 flex items-center gap-2"><i
                                 class="fa-solid fa-droplet text-blue-500"></i> Care Instructions</h4>
                         <p class="text-neutral-600 text-sm relative z-10 leading-relaxed" id="modal-care"></p>
@@ -1801,24 +1804,95 @@
         }
 
         function checkout() {
+            // 1. Maintain existing safety check
             if (!SHOP_CONFIG.takingOrders) {
                 showToast("Checkout is temporarily disabled. Please check back later!");
                 return;
             }
 
+            // 2. Maintain existing empty cart check
             if (cart.length === 0) {
                 showToast("Your basket is empty!");
                 return;
             }
 
-            // Close Cart UI
-            toggleCart();
-
-            // Set Amount and Open Payment Modal
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            document.getElementById('payment-total-amount').textContent = `₹${total.toFixed(2)}`;
-            openPaymentModal();
+            // 3. UI transition
+            toggleCart(); // Close the sidebar
+            openCheckoutForm(); // Open the delivery details form
         }
+
+        // 2. Form Modal Controls
+        function openCheckoutForm() {
+            const modal = document.getElementById('checkout-form-modal');
+            const content = document.getElementById('checkout-form-content');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                // If your original CSS used scale-95/opacity-0, replace them here
+                content.classList.replace('scale-95', 'scale-100');
+                content.classList.replace('opacity-0', 'opacity-100');
+            }, 10);
+        }
+
+        function closeCheckoutForm() {
+            const modal = document.getElementById('checkout-form-modal');
+            const content = document.getElementById('checkout-form-content');
+
+            content.classList.replace('scale-100', 'scale-95');
+            content.classList.replace('opacity-100', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        // 3. Handle Form Submission
+        function handleCheckoutForm(event) {
+            event.preventDefault();
+
+            // Calculate total based on existing logic
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            // Set the amount in the payment modal UI
+            document.getElementById('payment-total-amount').textContent = `₹${total.toFixed(2)}`;
+
+            // Move from Step 1 (Form) to Step 2 (Payment)
+            closeCheckoutForm();
+            setTimeout(() => {
+                openPaymentModal();
+            }, 350); // Slight delay for smooth modal transition
+        }
+
+        // --- Chekout Modal ---
+        <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+            <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
+            <div class="relative bg-white w-full max-w-lg mx-4 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0" id="checkout-form-content">
+                <div class="p-6 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
+                    <h3 class="text-2xl font-serif font-bold text-brand-900">Delivery Details</h3>
+                    <button onclick="closeCheckoutForm()" class="text-neutral-400 hover:text-brand-600 text-2xl transition-colors">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Full Name *</label>
+                        <input type="text" id="cust-name" required class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Phone Number *</label>
+                        <input type="tel" id="cust-phone" required class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-neutral-700 mb-1">Shipping Address *</label>
+                        <textarea id="cust-address" required rows="3" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none resize-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg transition-all">
+                        Proceed to Payment
+                    </button>
+                </form>
+            </div>
+        </div>
 
         // --- PAYMENT FLOW LOGIC ---
 
@@ -1896,103 +1970,103 @@
         }
 
 
-            function finalizeOrderProcess() {
+        function finalizeOrderProcess() {
 
-    // Generate order info
-    const orderId = 'HKH' + Math.floor(100000 + Math.random() * 900000);
+            // Generate order info
+            const orderId = 'HKH' + Math.floor(100000 + Math.random() * 900000);
 
-    const dispatchDate = new Date();
-    dispatchDate.setDate(dispatchDate.getDate() + 7);
+            const dispatchDate = new Date();
+            dispatchDate.setDate(dispatchDate.getDate() + 7);
 
-    const formattedDate = dispatchDate.toLocaleDateString('en-IN', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
+            const formattedDate = dispatchDate.toLocaleDateString('en-IN', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
 
-    const placedDate = new Date().toLocaleDateString('en-IN', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-    });
+            const placedDate = new Date().toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
 
-    const totalPaid = cart.reduce(
-        (sum, item) => sum + (item.price * item.quantity),
-        0
-    );
+            const totalPaid = cart.reduce(
+                (sum, item) => sum + (item.price * item.quantity),
+                0
+            );
 
-    // Save order to Supabase
-    saveOrder(totalPaid);
+            // Save order to Supabase
+            saveOrder(totalPaid);
 
-    // Save locally for order history
-    userOrders.push({
-        id: orderId,
-        placedDate: placedDate,
-        dispatchDate: formattedDate,
-        items: [...cart],
-        total: totalPaid,
-        statusText: 'Order Confirmed',
-        statusLevel: 1
-    });
+            // Save locally for order history
+            userOrders.push({
+                id: orderId,
+                placedDate: placedDate,
+                dispatchDate: formattedDate,
+                items: [...cart],
+                total: totalPaid,
+                statusText: 'Order Confirmed',
+                statusLevel: 1
+            });
 
-    // Reset Cart
-    cart = [];
-    updateCartUI();
+            // Reset Cart
+            cart = [];
+            updateCartUI();
 
-    // Close payment modal
-    closePaymentModal();
+            // Close payment modal
+            closePaymentModal();
 
-    // Open confirmation modal
-    setTimeout(() => {
-        openOrderConfirmation(orderId, formattedDate);
-    }, 300);
-}
+            // Open confirmation modal
+            setTimeout(() => {
+                openOrderConfirmation(orderId, formattedDate);
+            }, 300);
+        }
 
 
-// --- ORDER CONFIRMATION ---
+        // --- ORDER CONFIRMATION ---
 
-function openOrderConfirmation(orderId, dispatchDate) {
+        function openOrderConfirmation(orderId, dispatchDate) {
 
-    document.getElementById('confirm-order-id').textContent =
-        '#' + orderId;
+            document.getElementById('confirm-order-id').textContent =
+                '#' + orderId;
 
-    document.getElementById('confirm-dispatch-date').textContent =
-        dispatchDate;
+            document.getElementById('confirm-dispatch-date').textContent =
+                dispatchDate;
 
-    orderConfirmationModal.classList.remove('hidden');
-    orderConfirmationModal.classList.add('flex');
+            orderConfirmationModal.classList.remove('hidden');
+            orderConfirmationModal.classList.add('flex');
 
-    setTimeout(() => {
-        orderConfirmationContent.classList.remove(
-            'scale-95',
-            'opacity-0'
-        );
+            setTimeout(() => {
+                orderConfirmationContent.classList.remove(
+                    'scale-95',
+                    'opacity-0'
+                );
 
-        orderConfirmationContent.classList.add(
-            'scale-100',
-            'opacity-100'
-        );
-    }, 10);
-}
+                orderConfirmationContent.classList.add(
+                    'scale-100',
+                    'opacity-100'
+                );
+            }, 10);
+        }
 
-function closeOrderConfirmation() {
+        function closeOrderConfirmation() {
 
-    orderConfirmationContent.classList.remove(
-        'scale-100',
-        'opacity-100'
-    );
+            orderConfirmationContent.classList.remove(
+                'scale-100',
+                'opacity-100'
+            );
 
-    orderConfirmationContent.classList.add(
-        'scale-95',
-        'opacity-0'
-    );
+            orderConfirmationContent.classList.add(
+                'scale-95',
+                'opacity-0'
+            );
 
-    setTimeout(() => {
-        orderConfirmationModal.classList.add('hidden');
-        orderConfirmationModal.classList.remove('flex');
-    }, 300);
-}
+            setTimeout(() => {
+                orderConfirmationModal.classList.add('hidden');
+                orderConfirmationModal.classList.remove('flex');
+            }, 300);
+        }
 
         // --- ORDER HISTORY & TRACKING ---
 
@@ -2398,9 +2472,9 @@ function closeOrderConfirmation() {
     <script>
         async function saveOrder(totalPaid) {
             const orderData = {
-                customer_name: "Customer",
-                phone: "Not Provided",
-                address: "Not Provided",
+                customer_name: document.getElementById('cust-name').value,
+                phone: document.getElementById('cust-phone').value,
+                address: document.getElementById('cust-address').value,
                 product_name: cart.map(item => item.name).join(", "),
                 quantity: cart.reduce((sum, item) => sum + item.quantity, 0),
                 total: totalPaid,
@@ -2412,10 +2486,9 @@ function closeOrderConfirmation() {
                 .from('orders')
                 .insert([orderData]);
 
-            if (error) {
-                console.error(error);
-            }
+            if (error) console.error("Database Error:", error);
         }
     </script>
 </body>
+
 </html>
