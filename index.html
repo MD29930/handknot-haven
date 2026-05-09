@@ -911,6 +911,42 @@
         </div>
     </div>
 
+    // --- Chekout Modal ---
+    <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
+        <div class="relative bg-white w-full max-w-lg mx-4 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0"
+            id="checkout-form-content">
+            <div class="p-6 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
+                <h3 class="text-2xl font-serif font-bold text-brand-900">Delivery Details</h3>
+                <button onclick="closeCheckoutForm()"
+                    class="text-neutral-400 hover:text-brand-600 text-2xl transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-neutral-700 mb-1">Full Name *</label>
+                    <input type="text" id="cust-name" required
+                        class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-neutral-700 mb-1">Phone Number *</label>
+                    <input type="tel" id="cust-phone" required
+                        class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none" />
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-neutral-700 mb-1">Shipping Address *</label>
+                    <textarea id="cust-address" required rows="3"
+                        class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none resize-none"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg transition-all">
+                    Proceed to Payment
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Payment Processing Modal -->
     <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
         <div class="absolute inset-0 bg-neutral-900 bg-opacity-70 backdrop-blur-sm" onclick="closePaymentModal()"></div>
@@ -1863,36 +1899,6 @@
                 openPaymentModal();
             }, 350); // Slight delay for smooth modal transition
         }
-
-        // --- Chekout Modal ---
-        <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-            <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
-            <div class="relative bg-white w-full max-w-lg mx-4 rounded-3xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0" id="checkout-form-content">
-                <div class="p-6 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
-                    <h3 class="text-2xl font-serif font-bold text-brand-900">Delivery Details</h3>
-                    <button onclick="closeCheckoutForm()" class="text-neutral-400 hover:text-brand-600 text-2xl transition-colors">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-neutral-700 mb-1">Full Name *</label>
-                        <input type="text" id="cust-name" required class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-neutral-700 mb-1">Phone Number *</label>
-                        <input type="tel" id="cust-phone" required class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none" />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-neutral-700 mb-1">Shipping Address *</label>
-                        <textarea id="cust-address" required rows="3" class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-400 outline-none resize-none"></textarea>
-                    </div>
-                    <button type="submit" class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg transition-all">
-                        Proceed to Payment
-                    </button>
-                </form>
-            </div>
-        </div>
 
         // --- PAYMENT FLOW LOGIC ---
 
