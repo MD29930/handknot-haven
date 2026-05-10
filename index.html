@@ -110,6 +110,16 @@
                 transform: rotate(360deg);
             }
         }
+
+        #navbar {
+            transition: top 0.3s ease, background-color 0.3s ease, backdrop-filter 0.3s ease;
+        }
+
+        #promo-text {
+            /* Using Playfair Display for that high-end boutique feel */
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 0.05em;
+        }
     </style>
 </head>
 </script>
@@ -131,12 +141,16 @@
 <body class="bg-brand-50 text-neutral-800 font-sans antialiased flex flex-col min-h-screen">
 
     <!-- Promotional Sale Banner -->
-    <div id="promo-banner"
-        class="hidden bg-gradient-to-r from-brand-600 to-brand-800 text-white py-2.5 px-4 text-center relative z-50">
-        <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
-            <span class="animate-pulse">✨</span>
-            <p id="promo-text" class="text-sm md:text-base font-bold tracking-wide uppercase"></p>
-            <span class="animate-pulse">✨</span>
+    <div id="promo-banner" class="hidden bg-neutral-900 text-white overflow-hidden relative z-50">
+        <!-- Animated background element for extra aesthetics -->
+        <div
+            class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]">
+        </div>
+
+        <div class="max-w-7xl mx-auto py-2.5 px-4 flex items-center justify-center gap-4 relative z-10">
+            <span class="text-brand-400 animate-pulse text-lg">✦</span>
+            <p id="promo-text" class="font-serif italic text-sm md:text-base tracking-wide font-medium"></p>
+            <span class="text-brand-400 animate-pulse text-lg">✦</span>
         </div>
     </div>
 
@@ -1511,8 +1525,18 @@
 
             window.addEventListener('scroll', () => {
                 const nav = document.getElementById('navbar');
-                if (window.scrollY > 20) nav.classList.add('shadow-md');
-                else nav.classList.remove('shadow-md');
+                const promoBanner = document.getElementById('promo-banner');
+                const bannerHeight = promoBanner && SHOP_CONFIG.showSaleBanner ? promoBanner.offsetHeight : 0;
+
+                if (window.scrollY > 0) {
+                    // As soon as user scrolls, stick navbar to absolute top (0)
+                    nav.style.top = '0px';
+                    nav.classList.add('shadow-lg', 'glass-nav');
+                } else {
+                    // When at the very top, push navbar down to show banner
+                    nav.style.top = bannerHeight + 'px';
+                    nav.classList.remove('shadow-lg');
+                }
             });
         }
 
@@ -1529,11 +1553,12 @@
             if (SHOP_CONFIG.showSaleBanner) {
                 promoBanner.classList.remove('hidden');
                 promoText.textContent = SHOP_CONFIG.saleMessage;
-                // Adjust navbar position if banner is visible
-                document.getElementById('navbar').style.top = promoBanner.offsetHeight + 'px';
+
+                // Initial positioning
+                navbar.style.top = promoBanner.offsetHeight + 'px';
             } else {
                 promoBanner.classList.add('hidden');
-                document.getElementById('navbar').style.top = '0px';
+                navbar.style.top = '0px';
             }
 
             if (!SHOP_CONFIG.takingOrders) {
