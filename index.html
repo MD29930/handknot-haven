@@ -130,8 +130,18 @@
 
 <body class="bg-brand-50 text-neutral-800 font-sans antialiased flex flex-col min-h-screen">
 
+    <!-- Promotional Sale Banner -->
+    <div id="promo-banner"
+        class="hidden bg-gradient-to-r from-brand-600 to-brand-800 text-white py-2.5 px-4 text-center relative z-50">
+        <div class="max-w-7xl mx-auto flex items-center justify-center gap-3">
+            <span class="animate-pulse">✨</span>
+            <p id="promo-text" class="text-sm md:text-base font-bold tracking-wide uppercase"></p>
+            <span class="animate-pulse">✨</span>
+        </div>
+    </div>
+
     <!-- Navigation -->
-    <nav class="glass-nav fixed w-full z-40 border-b border-brand-200 transition-all duration-300" id="navbar">
+    <nav class="glass-nav fixed w-full z-40 border-b border-brand-200 transition-all duration-300 top-0" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <!-- Mobile menu button -->
@@ -1279,7 +1289,10 @@
         // Vaishali, change 'takingOrders' to true when you want to resume accepting orders!
         const SHOP_CONFIG = {
             takingOrders: true,
-            pausedMessage: "Hi! Due to high demand, my hands are full crafting existing orders! ✨ I am currently not taking new orders. Please check back soon!"
+            pausedMessage: "Hi! Due to high demand, my hands are full crafting existing orders! ✨ I am currently not taking new orders. Please check back soon!",
+            // BANNER CONFIGURATION
+            showSaleBanner: true, // Set to false to hide the banner
+            saleMessage: "🪔 Opening Sale: Upto Flat 30% OFF on all items! 🪔"
         };
 
         // --- DATA ---
@@ -1508,6 +1521,20 @@
             const banner = document.getElementById('shop-status-banner');
             const customBtn = document.getElementById('trigger-custom-order-btn');
             const checkoutBtn = document.getElementById('checkout-btn');
+
+            // --- NEW: Promo Banner Logic ---
+            const promoBanner = document.getElementById('promo-banner');
+            const promoText = document.getElementById('promo-text');
+
+            if (SHOP_CONFIG.showSaleBanner) {
+                promoBanner.classList.remove('hidden');
+                promoText.textContent = SHOP_CONFIG.saleMessage;
+                // Adjust navbar position if banner is visible
+                document.getElementById('navbar').style.top = promoBanner.offsetHeight + 'px';
+            } else {
+                promoBanner.classList.add('hidden');
+                document.getElementById('navbar').style.top = '0px';
+            }
 
             if (!SHOP_CONFIG.takingOrders) {
                 // Show banner
