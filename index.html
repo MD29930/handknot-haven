@@ -2138,6 +2138,41 @@
             }, 300);
         }
 
+        // --- POLICY HELPERS ---
+
+        function canCancelOrder(placedDateStr) {
+            const placedDate = new Date(placedDateStr);
+            const now = new Date();
+            const hoursDiff = (now - placedDate) / (1000 * 60 * 60);
+            return hoursDiff <= 24;
+        }
+
+        function canReportDamage(statusLevel, deliveryDateStr) {
+            // Assuming statusLevel 4 is 'Delivered'
+            if (statusLevel !== 4 || !deliveryDateStr) return false;
+
+            const deliveryDate = new Date(deliveryDateStr);
+            const now = new Date();
+            const hoursDiff = (now - deliveryDate) / (1000 * 60 * 60);
+            return hoursDiff <= 48;
+        }
+
+        // Function to handle the actual cancellation
+        function requestCancellation(orderId) {
+            if (confirm(`Are you sure you want to cancel order #${orderId}?`)) {
+                // Here you would normally call Supabase to update order_status to 'cancelled'
+                showToast(`Cancellation request sent for #${orderId}`);
+                closeOrdersModal();
+            }
+        }
+
+        // Function to handle damage reporting
+        function reportDamage(orderId) {
+            // Redirect to WhatsApp or open a specific form
+            const message = encodeURIComponent(`Hi Vaishali, I am reporting damage for my order #${orderId}. [Attached Photos]`);
+            window.open(`https://wa.me/919925617845?text=${message}`, '_blank');
+        }
+
         // --- ORDER HISTORY & TRACKING ---
 
         function openOrdersModal() {
@@ -2241,124 +2276,135 @@
 
             // Update Header with Back Button
             document.getElementById('orders-modal-title').innerHTML = `
-                <button onclick="document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class=\\'fa-solid fa-clock-rotate-left text-brand-500\\'></i> Order History';" class="text-brand-600 hover:text-brand-800 mr-2 transition-colors"><i class="fa-solid fa-arrow-left"></i></button>
-                Order #${order.id}
-            `;
+        <button onclick="document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class=\\'fa-solid fa-clock-rotate-left text-brand-500\\'></i> Order History';" class="text-brand-600 hover:text-brand-800 mr-2 transition-colors">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        Order #${order.id}
+    `;
 
-            // Render Items
+            // Calculate visibility for policy buttons
+            const showCancelBtn = canCancelOrder(order.placedDate);
+            const showDamageBtn = canReportDamage(order.statusLevel, order.deliveryDate);
+
+            // Generate Items HTML
             let itemsHtml = order.items.map(item => `
-                <div class="flex items-start gap-4 py-4 border-b border-neutral-100 last:border-0">
-                    <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl shadow-sm">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-neutral-800 text-sm md:text-base leading-tight mb-1 truncate">${item.name}</h4>
-                        <div class="text-xs text-neutral-500 mb-2">Qty: ${item.quantity} ${item.size ? '| Size: ' + item.size : ''}</div>
-                        ${item.customText ? `<div class="text-xs text-brand-700 bg-brand-50 px-2 py-1 rounded inline-block"><i class="fa-solid fa-note-sticky mr-1"></i> ${item.customText}</div>` : ''}
-                    </div>
-                    <div class="font-bold text-brand-800">₹${(item.price * item.quantity).toFixed(2)}</div>
-                </div>
-            `).join('');
+        <div class="flex items-start gap-4 py-4 border-b border-neutral-100 last:border-0">
+            <img src="${item.image}" class="w-20 h-20 object-cover rounded-xl shadow-sm">
+            <div class="flex-1 min-w-0">
+                <h4 class="font-bold text-neutral-800 text-sm md:text-base leading-tight mb-1 truncate">${item.name}</h4>
+                <div class="text-xs text-neutral-500 mb-2">Qty: ${item.quantity} ${item.size ? '| Size: ' + item.size : ''}</div>
+                ${item.customText ? `<div class="text-xs text-brand-700 bg-brand-50 px-2 py-1 rounded inline-block"><i class="fa-solid fa-note-sticky mr-1"></i> ${item.customText}</div>` : ''}
+            </div>
+            <div class="font-bold text-brand-800">₹${(item.price * item.quantity).toFixed(2)}</div>
+        </div>
+    `).join('');
 
-            // Render Split View
+            // POLICY ACTION BUTTONS HTML
+            const actionButtonsHtml = `
+        <div class="mt-8 pt-6 border-t border-neutral-200 flex flex-col gap-3">
+            ${showCancelBtn ? `
+                <button onclick="requestCancellation('${order.id}')" 
+                    class="w-full py-3 border-2 border-red-100 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-rectangle-xmark"></i> Cancel Order (24h Window)
+                </button>
+            ` : ''}
+            
+            ${showDamageBtn ? `
+                <button onclick="reportDamage('${order.id}')" 
+                    class="w-full py-3 bg-amber-50 text-amber-800 border-2 border-amber-200 font-bold rounded-xl hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-camera"></i> Report Damage / Replacement
+                </button>
+            ` : ''}
+
+            ${(!showCancelBtn && order.statusLevel < 4) ? `
+                <p class="text-center text-[10px] text-neutral-400 italic">Crafting has begun. Cancellation window is closed.</p>
+            ` : ''}
+        </div>
+    `;
+
+            // Update Detail View Content
             orderDetailView.innerHTML = `
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    
-                    <!-- Left: Tracking Timeline -->
-                    <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100">
-                        <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
-                            <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
-                        </h3>
-                        
-                        <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
-                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
-                                <i class="fa-solid fa-calendar-check"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Expected Dispatch</p>
-                                <p class="text-brand-900 font-bold text-lg">${order.dispatchDate}</p>
-                            </div>
-                        </div>
-
-                        <!-- Timeline (Crochet Theme) -->
-                        <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-8 pb-4 mt-6">
-                            
-                            <!-- Status 1 -->
-                            <div class="relative pl-8 ${order.statusLevel >= 1 ? '' : 'opacity-50 grayscale'}">
-                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 1 ? 'bg-yellow-100 border-[3px] border-yellow-400 text-yellow-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
-                                    <i class="fa-solid fa-clipboard-check text-sm"></i>
-                                </div>
-                                <h4 class="font-bold ${order.statusLevel >= 1 ? 'text-yellow-700' : 'text-neutral-500'} text-lg">Order Confirmed</h4>
-                                <div class="mt-2 ${order.statusLevel >= 1 ? 'bg-yellow-50/50 border-yellow-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
-                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 1 ? 'bg-yellow-50/50 border-yellow-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
-                                    <p class="text-sm ${order.statusLevel >= 1 ? 'text-yellow-900' : 'text-neutral-500'} leading-relaxed font-medium">Payment received and order accepted by Vaishali.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Status 2 -->
-                            <div class="relative pl-8 ${order.statusLevel >= 2 ? '' : 'opacity-50 grayscale'}">
-                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 2 ? 'bg-blue-100 border-[3px] border-blue-400 text-blue-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
-                                    <i class="fa-solid fa-hand-sparkles text-sm"></i>
-                                </div>
-                                <h4 class="font-bold ${order.statusLevel >= 2 ? 'text-blue-700' : 'text-neutral-500'} text-lg">Processing</h4>
-                                <div class="mt-2 ${order.statusLevel >= 2 ? 'bg-blue-50/50 border-blue-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
-                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 2 ? 'bg-blue-50/50 border-blue-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
-                                    <p class="text-sm ${order.statusLevel >= 2 ? 'text-blue-900' : 'text-neutral-500'} leading-relaxed font-medium">Your piece is currently being handcrafted. Please allow time for meticulous crafting.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Status 3 -->
-                            <div class="relative pl-8 ${order.statusLevel >= 3 ? '' : 'opacity-50 grayscale'}">
-                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 3 ? 'bg-purple-100 border-[3px] border-purple-400 text-purple-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
-                                    <i class="fa-solid fa-truck-fast text-sm"></i>
-                                </div>
-                                <h4 class="font-bold ${order.statusLevel >= 3 ? 'text-purple-700' : 'text-neutral-500'} text-lg">Shipped</h4>
-                                <div class="mt-2 ${order.statusLevel >= 3 ? 'bg-purple-50/50 border-purple-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
-                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 3 ? 'bg-purple-50/50 border-purple-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
-                                    <p class="text-sm ${order.statusLevel >= 3 ? 'text-purple-900' : 'text-neutral-500'} leading-relaxed font-medium">Courier has picked up your package via Shiprocket. Tracking link will be sent shortly.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Status 4 -->
-                            <div class="relative pl-8 ${order.statusLevel >= 4 ? '' : 'opacity-50 grayscale'}">
-                                <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 4 ? 'bg-green-100 border-[3px] border-green-400 text-green-600 shadow-md' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
-                                    <i class="fa-solid fa-house-chimney-window text-sm"></i>
-                                </div>
-                                <h4 class="font-bold ${order.statusLevel >= 4 ? 'text-green-700' : 'text-neutral-500'} text-lg">Delivered</h4>
-                                <div class="mt-2 ${order.statusLevel >= 4 ? 'bg-green-50/50 border-green-200' : 'bg-neutral-50 border-neutral-200'} p-3 rounded-xl border relative shadow-sm">
-                                    <div class="absolute w-2.5 h-2.5 ${order.statusLevel >= 4 ? 'bg-green-50/50 border-green-200' : 'bg-neutral-50 border-neutral-200'} border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
-                                    <p class="text-sm ${order.statusLevel >= 4 ? 'text-green-900' : 'text-neutral-500'} leading-relaxed font-medium">Package has been successfully delivered to your doorstep.</p>
-                                </div>
-                            </div>
-                        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100">
+                <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
+                </h3>
+                
+                <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-calendar-check"></i>
                     </div>
-
-                    <!-- Right: Order Summary -->
                     <div>
-                        <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
-                            <i class="fa-solid fa-receipt text-brand-500"></i> Order Summary
-                        </h3>
-                        <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm">
-                            <div class="max-h-72 overflow-y-auto pr-2 mb-4 space-y-2">
-                                ${itemsHtml}
-                            </div>
-                            <div class="border-t-2 border-dashed border-neutral-200 pt-4 mt-4">
-                                <div class="flex justify-between items-center mb-2 text-neutral-600">
-                                    <span>Subtotal</span>
-                                    <span>₹${order.total.toFixed(2)}</span>
-                                </div>
-                                <div class="flex justify-between items-center mb-4 text-neutral-600">
-                                    <span>Shipping</span>
-                                    <span class="text-green-600 font-bold">Free</span>
-                                </div>
-                                <div class="flex justify-between items-center bg-brand-50 p-4 rounded-xl">
-                                    <span class="font-bold text-brand-900 text-lg">Total Paid</span>
-                                    <span class="font-bold text-2xl text-brand-700">₹${order.total.toFixed(2)}</span>
-                                </div>
-                            </div>
+                        <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Expected Dispatch</p>
+                        <p class="text-brand-900 font-bold text-lg">${order.dispatchDate}</p>
+                    </div>
+                </div>
+
+                <!-- Timeline Section -->
+                <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-8 pb-4 mt-6">
+                    <div class="relative pl-8">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full bg-yellow-100 border-[3px] border-yellow-400 text-yellow-600 shadow-md flex items-center justify-center z-10">
+                            <i class="fa-solid fa-clipboard-check text-sm"></i>
+                        </div>
+                        <h4 class="font-bold text-yellow-700 text-lg">Order Confirmed</h4>
+                        <div class="mt-2 bg-yellow-50/50 border-yellow-200 p-3 rounded-xl border relative shadow-sm">
+                            <div class="absolute w-2.5 h-2.5 bg-yellow-50/50 border-yellow-200 border-t border-l transform -rotate-45 -left-[6px] top-3"></div>
+                            <p class="text-sm text-yellow-900 leading-relaxed font-medium">Payment received and order accepted by Vaishali.</p>
                         </div>
                     </div>
 
+                    <div class="relative pl-8 ${order.statusLevel >= 2 ? '' : 'opacity-50 grayscale'}">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 2 ? 'bg-blue-100 border-[3px] border-blue-400 text-blue-600' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                            <i class="fa-solid fa-hand-sparkles text-sm"></i>
+                        </div>
+                        <h4 class="font-bold ${order.statusLevel >= 2 ? 'text-blue-700' : 'text-neutral-500'} text-lg">Processing</h4>
+                    </div>
+
+                    <div class="relative pl-8 ${order.statusLevel >= 3 ? '' : 'opacity-50 grayscale'}">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 3 ? 'bg-purple-100 border-[3px] border-purple-400 text-purple-600' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                            <i class="fa-solid fa-truck-fast text-sm"></i>
+                        </div>
+                        <h4 class="font-bold ${order.statusLevel >= 3 ? 'text-purple-700' : 'text-neutral-500'} text-lg">Shipped</h4>
+                    </div>
+
+                    <div class="relative pl-8 ${order.statusLevel >= 4 ? '' : 'opacity-50 grayscale'}">
+                        <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full ${order.statusLevel >= 4 ? 'bg-green-100 border-[3px] border-green-400 text-green-600' : 'bg-neutral-100 border-[3px] border-neutral-300 text-neutral-400'} flex items-center justify-center z-10">
+                            <i class="fa-solid fa-house-chimney-window text-sm"></i>
+                        </div>
+                        <h4 class="font-bold ${order.statusLevel >= 4 ? 'text-green-700' : 'text-neutral-500'} text-lg">Delivered</h4>
+                    </div>
                 </div>
-            `;
+
+                <!-- POLICY ACTION BUTTONS -->
+                ${actionButtonsHtml}
+            </div>
+
+            <div>
+                <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                    <i class="fa-solid fa-receipt text-brand-500"></i> Order Summary
+                </h3>
+                <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm">
+                    <div class="max-h-72 overflow-y-auto pr-2 mb-4 space-y-2">
+                        ${itemsHtml}
+                    </div>
+                    <div class="border-t-2 border-dashed border-neutral-200 pt-4 mt-4">
+                        <div class="flex justify-between items-center mb-2 text-neutral-600">
+                            <span>Subtotal</span>
+                            <span>₹${Number(order.total).toFixed(2)}</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4 text-neutral-600">
+                            <span>Shipping</span>
+                            <span class="text-green-600 font-bold">Free</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-brand-50 p-4 rounded-xl">
+                            <span class="font-bold text-brand-900 text-lg">Total Paid</span>
+                            <span class="font-bold text-2xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
         }
 
         // --- GEMINI AI FEATURES ---
