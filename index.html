@@ -1440,32 +1440,6 @@
         let currentFilter = 'all';
         let currentModalProductId = null;
 
-        // Mock Order History populated for preview
-        let userOrders = [
-            {
-                id: 'HKH918273',
-                placedDate: '01 May 2026',
-                dispatchDate: '05 May 2026',
-                items: [
-                    { name: "Pastel Pop Crochet Bucket Bag", quantity: 1, price: 2500, image: "https://images.unsplash.com/photo-1622340579998-ebdf98fb5f09?q=80&w=2070&auto=format&fit=crop", size: null, customText: "" }
-                ],
-                total: 2500,
-                statusText: 'Shipped',
-                statusLevel: 3
-            },
-            {
-                id: 'HKH482910',
-                placedDate: '12 Apr 2026',
-                dispatchDate: '19 Apr 2026',
-                items: [
-                    { name: "Sunny Bloom Crochet Sunflower Pot", quantity: 1, price: 300, image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=2070&auto=format&fit=crop", size: null, customText: "" },
-                    { name: "Amigurumi Buddy Charm", quantity: 2, price: 400, image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=2070&auto=format&fit=crop", size: null, customText: "" }
-                ],
-                total: 1100,
-                statusText: 'Delivered',
-                statusLevel: 4
-            }
-        ];
 
         // --- GEMINI API CONFIG ---
         const apiKey = ""; // API key is injected by the environment
@@ -2214,56 +2188,120 @@
             }
         }
 
-        function renderOrdersList() {
-            ordersListView.innerHTML = '';
+        // Global variable to hold user orders
 
-            if (userOrders.length === 0) {
+        let userOrders = [];
+
+        async function fetchUserOrders() {
+            const searchInput = document.getElementById('track-order-input').value.trim();
+
+            // You can fetch by Phone Number or by a specific Order ID
+            let query = supabaseClient.from('orders').select('*');
+
+            if (searchInput) {
+                // If user typed something in the search bar, filter by ID or Phone
+                query = query.or(`id.eq.${searchInput},phone.eq.${searchInput}`);
+            } else {
+                // Default: Get recent orders (Limit to 5 if no search)
+                query = query.order('created_at', { ascending: false }).limit(5);
+            }
+
+            const { data, error } = await query;
+
+            if (error) {
+                console.error("Error fetching orders:", error);
+                return [];
+            }
+            return data;
+        }
+
+        async function renderOrdersList() {
+            const ordersListView = document.getElementById('orders-list-view');
+
+            // 1. Show Loading State
+            ordersListView.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-12 text-neutral-400">
+            <div class="relative w-16 h-16 mb-4">
+                <i class="fa-solid fa-circle-notch animate-spin text-4xl text-brand-500"></i>
+                <i class="fa-solid fa-heart text-brand-200 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs"></i>
+            </div>
+            <p class="font-serif italic text-neutral-500">Finding your magic packages...</p>
+        </div>
+    `;
+
+            // 2. Fetch live data from Supabase
+            userOrders = await fetchUserOrders();
+
+            // 3. Handle Empty State
+            if (!userOrders || userOrders.length === 0) {
                 ordersListView.innerHTML = `
-                    <div class="text-center py-10 text-neutral-500 flex flex-col items-center">
-                        <div class="w-24 h-24 bg-brand-50 rounded-full flex items-center justify-center text-brand-200 text-4xl mb-4">
-                            <i class="fa-solid fa-box-open"></i>
-                        </div>
-                        <h4 class="text-xl font-serif font-bold text-neutral-800 mb-2">No past orders yet.</h4>
-                        <p>Place an order to see your history here.</p>
-                        <button onclick="closeOrdersModal(); document.getElementById('shop').scrollIntoView();" class="mt-6 text-brand-600 font-bold hover:underline">Browse the Shop</button>
-                    </div>`;
+            <div class="text-center py-12 px-6">
+                <div class="w-24 h-24 bg-brand-50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
+                    <i class="fa-solid fa-box-open text-brand-200 text-4xl"></i>
+                </div>
+                <h4 class="text-xl font-serif font-bold text-neutral-800 mb-2">No past orders yet.</h4>
+                <p class="text-neutral-500 text-sm mb-6">Try searching with your Order ID or Phone Number if you placed an order recently.</p>
+                <button onclick="closeOrdersModal(); document.getElementById('shop').scrollIntoView();" 
+                    class="px-8 py-3 bg-brand-600 text-white font-bold rounded-full hover:bg-brand-700 transition-all shadow-md active:scale-95">
+                    Browse the Shop
+                </button>
+            </div>
+        `;
                 return;
             }
 
-            // Status Badge Helper
-            function getStatusBadge(level, text) {
-                if (level === 1) return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300"><i class="fa-solid fa-circle text-[8px] text-yellow-500"></i> ${text}</div>`;
-                if (level === 2) return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 border border-blue-300"><i class="fa-solid fa-circle text-[8px] text-blue-500"></i> ${text}</div>`;
-                if (level === 3) return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300"><i class="fa-solid fa-circle text-[8px] text-purple-500"></i> ${text}</div>`;
-                return `<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-800 border border-green-300"><i class="fa-solid fa-circle text-[8px] text-green-500"></i> ${text}</div>`;
+            // 4. Status Badge Helper for modern look
+            function getStatusBadge(status) {
+                const s = (status || 'confirmed').toLowerCase();
+                if (s === 'confirmed') return `bg-yellow-100 text-yellow-800 border-yellow-200`;
+                if (s === 'processing') return `bg-blue-100 text-blue-800 border-blue-200`;
+                if (s === 'shipped') return `bg-purple-100 text-purple-800 border-purple-200`;
+                return `bg-green-100 text-green-800 border-green-200`;
             }
 
-            // Sort orders newest first
-            const sortedOrders = [...userOrders].sort((a, b) => new Date(b.placedDate) - new Date(a.placedDate));
+            // 5. Render the List
+            ordersListView.innerHTML = userOrders.map(order => {
+                const orderDate = new Date(order.created_at);
+                const day = orderDate.toLocaleDateString('en-IN', { day: '2-digit' });
+                const month = orderDate.toLocaleDateString('en-IN', { month: 'short' });
 
-            sortedOrders.forEach(order => {
-                const itemsSummary = order.items.map(i => `${i.quantity}x ${i.name}`).join(', ');
-                const displaySummary = itemsSummary.length > 55 ? itemsSummary.substring(0, 55) + '...' : itemsSummary;
+                const status = (order.order_status || 'confirmed').toLowerCase();
+                const badgeClass = getStatusBadge(status);
 
-                const card = document.createElement('div');
-                card.className = "bg-white border-2 border-brand-50 rounded-2xl p-5 mb-4 shadow-sm hover:shadow-md hover:border-brand-200 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4";
+                return `
+            <div onclick="viewOrderDetails('${order.id}')" 
+                class="group bg-white border-2 border-brand-50/50 rounded-2xl p-4 mb-4 shadow-sm hover:shadow-md hover:border-brand-200 transition-all cursor-pointer flex items-center gap-4">
+                
+                <!-- Date Box -->
+                <div class="w-14 h-14 bg-brand-50 rounded-2xl flex flex-col items-center justify-center text-brand-600 border border-brand-100 group-hover:bg-brand-600 group-hover:text-white transition-colors">
+                    <span class="text-[10px] font-bold uppercase leading-none mb-1">${month}</span>
+                    <span class="text-xl font-black leading-none">${day}</span>
+                </div>
 
-                card.innerHTML = `
-                    <div class="flex-1">
-                        <div class="font-bold text-brand-900 text-lg mb-1">Order #${order.id}</div>
-                        <div class="text-sm text-neutral-500 mb-2"><i class="fa-regular fa-calendar mr-1"></i> Placed on ${order.placedDate}</div>
-                        <div class="text-sm text-neutral-600 mb-3 italic">Items: ${displaySummary}</div>
-                        ${getStatusBadge(order.statusLevel, order.statusText)}
+                <!-- Order Info -->
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start gap-2 mb-1.5">
+                        <h4 class="font-bold text-neutral-800 text-base">Order #${order.id.toString().slice(0, 8)}</h4>
+                        <div class="font-bold text-brand-800">₹${Number(order.total).toFixed(2)}</div>
                     </div>
-                    <div class="text-left sm:text-right flex flex-col justify-center border-t sm:border-t-0 sm:border-l border-brand-50 pt-4 sm:pt-0 sm:pl-4 mt-2 sm:mt-0">
-                        <div class="font-bold text-neutral-800 text-xl mb-3">₹${order.total.toFixed(2)}</div>
-                        <button onclick="viewOrderDetails('${order.id}')" class="px-6 py-2.5 bg-brand-50 text-brand-700 font-bold rounded-full hover:bg-brand-600 hover:text-white transition-colors text-sm whitespace-nowrap shadow-sm">
-                            Details & Track <i class="fa-solid fa-arrow-right ml-1"></i>
-                        </button>
+                    
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full border ${badgeClass} uppercase tracking-wider">
+                            <i class="fa-solid fa-circle text-[6px] mr-1 opacity-70"></i> ${status}
+                        </span>
+                        <p class="text-xs text-neutral-500 truncate italic">
+                            ${order.product_name}
+                        </p>
                     </div>
-                `;
-                ordersListView.appendChild(card);
-            });
+                </div>
+
+                <!-- Arrow -->
+                <div class="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:bg-brand-100 group-hover:text-brand-600 transition-all">
+                    <i class="fa-solid fa-chevron-right text-sm"></i>
+                </div>
+            </div>
+        `;
+            }).join('');
         }
 
         function viewOrderDetails(orderId) {
@@ -2548,6 +2586,24 @@
         }
 
     </script>
+    // --- EVENT LISTENERS ---
+
+    // Place the search listener at the bottom so all functions are already loaded
+    const trackInput = document.getElementById('track-order-input');
+    if (trackInput) {
+    trackInput.addEventListener('input', debounce(() => {
+    renderOrdersList();
+    }, 500));
+    }
+
+    // Simple debounce to prevent hitting Supabase on every single keystroke
+    function debounce(func, timeout = 300) {
+    let timer;
+    return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+    };
+    }
     <script>
 
         async function loadProducts() {
