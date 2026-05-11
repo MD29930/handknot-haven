@@ -220,7 +220,7 @@
         </div>
     </main>
 
-    <!-- UI Logic -->
+    <!-- UI Logic & Supabase Integration -->
     <script>
         let isShopOpen = true;
         let orders = [];
@@ -228,7 +228,7 @@
         // --- INITIALIZATION ---
         async function init() {
             await loadOrders();
-            // You could also fetch stats here in a real app
+            // Optional: Set up real-time listener here if needed later
         }
 
         // --- SHOP STATUS LOGIC ---
@@ -249,12 +249,11 @@
                 label.textContent = "Paused";
                 label.classList.replace('text-green-600', 'text-neutral-500');
             }
-            // TIP: You should save this state to a Supabase 'settings' table 
-            // so the main website can read if it should take orders or not.
         }
 
         // --- DATA FETCHING ---
         async function loadOrders() {
+            console.log("Fetching orders from Supabase...");
             const { data, error } = await supabaseClient
                 .from('orders')
                 .select('*')
@@ -266,98 +265,94 @@
             }
 
             orders = data;
+            console.log("Orders loaded:", orders);
             renderOrdersTable();
             updateStats();
         }
 
         // --- UI RENDERING ---
         function renderOrdersTable() {
+            // Use ID specifically to avoid selector confusion
             const tbody = document.getElementById('orders-tbody');
-            // Safety check in case the ID is missing
-            if (!tbody) return;
+            if (!tbody) {
+                console.error("Table body 'orders-tbody' not found in HTML!");
+                return;
+            }
 
             tbody.innerHTML = '';
 
             if (orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-neutral-400">No orders found yet.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" class="p-10 text-center text-neutral-400 font-bold">No orders found in database.</td></tr>';
                 return;
             }
 
             orders.forEach(order => {
-                // 1. POLICY CALCULATION
-                // Calculates the difference between now and order time in hours
+                // Policy Calculation
                 const hoursSinceOrdered = (new Date() - new Date(order.created_at)) / (1000 * 60 * 60);
                 const isCancellable = hoursSinceOrdered <= 24;
 
-                // Define the visual note based on the 24h window
                 const policyNote = isCancellable
                     ? `<p class="text-[10px] text-amber-600 font-bold mt-1 uppercase flex items-center gap-1">
-                <i class="fa-solid fa-clock"></i> 24h Window Active
-               </p>`
+                        <i class="fa-solid fa-clock"></i> 24h Window Active</p>`
                     : `<p class="text-[10px] text-green-600 font-bold mt-1 uppercase flex items-center gap-1">
-                <i class="fa-solid fa-check-double"></i> Ready to Craft
-               </p>`;
+                        <i class="fa-solid fa-check-double"></i> Ready to Craft</p>`;
 
-                // Format the date for display
                 const date = new Date(order.created_at).toLocaleDateString('en-IN', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
+                    day: '2-digit', month: 'short', year: 'numeric'
                 });
 
-                // Status Badge Logic
+                // Status Styling
                 let statusClass = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                if (order.order_status === 'processing') statusClass = 'bg-blue-100 text-blue-800 border-blue-200';
                 if (order.order_status === 'shipped') statusClass = 'bg-purple-100 text-purple-800 border-purple-200';
                 if (order.order_status === 'delivered') statusClass = 'bg-green-100 text-green-800 border-green-200';
 
                 const row = document.createElement('tr');
                 row.className = 'hover:bg-neutral-50 transition-colors border-b border-neutral-100 last:border-0';
-
                 row.innerHTML = `
-            <td class="p-4">
-                <p class="font-bold text-brand-700">#${order.id.toString().slice(0, 8)}</p>
-                <p class="text-[10px] text-neutral-400 uppercase font-semibold">${date}</p>
-            </td>
-            <td class="p-4">
-                <p class="font-bold text-neutral-800">${order.customer_name}</p>
-                <p class="text-neutral-500 text-xs">${order.phone || 'No Phone'}</p>
-                <!-- 2. POLICY NOTE INSERTED HERE -->
-                ${policyNote}
-            </td>
-            <td class="p-4 text-neutral-600 max-w-[200px] truncate" title="${order.product_name}">
-                ${order.product_name}
-            </td>
-            <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
-            <td class="p-4">
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border ${statusClass} capitalize">
-                    ${order.order_status}
-                </span>
-            </td>
-            <td class="p-4 text-right">
-                <button onclick="manageOrder(${order.id})" 
-                    class="px-4 py-2 bg-neutral-100 text-neutral-700 font-bold rounded-lg hover:bg-brand-600 hover:text-white transition-all text-xs">
-                    Update
-                </button>
-            </td>
-        `;
+                    <td class="p-4">
+                        <p class="font-bold text-brand-700">#${order.id.toString().slice(0, 8)}</p>
+                        <p class="text-[10px] text-neutral-400 uppercase font-bold">${date}</p>
+                    </td>
+                    <td class="p-4">
+                        <p class="font-bold text-neutral-800">${order.customer_name}</p>
+                        <p class="text-neutral-500 text-xs">${order.phone || 'No Phone'}</p>
+                        ${policyNote}
+                    </td>
+                    <td class="p-4 text-neutral-600 max-w-[200px] truncate" title="${order.product_name}">
+                        ${order.product_name}
+                    </td>
+                    <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
+                    <td class="p-4">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border ${statusClass} capitalize">
+                            ${order.order_status}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="manageOrder('${order.id}')" 
+                            class="px-4 py-2 bg-neutral-100 text-neutral-700 font-bold rounded-lg hover:bg-brand-600 hover:text-white transition-all text-xs">
+                            Update
+                        </button>
+                    </td>
+                `;
                 tbody.appendChild(row);
             });
         }
 
         function updateStats() {
-            // Dynamic stats calculation
-            const totalRevenue = orders.reduce((sum, o) => sum + Number(order.total), 0);
-            const pendingOrders = orders.filter(o => o.order_status === 'confirmed').length;
+            // Logic to update your 3 cards at the top
+            const revenue = orders.reduce((sum, o) => sum + Number(o.total), 0);
+            const toCraft = orders.filter(o => o.order_status === 'confirmed' || o.order_status === 'processing').length;
+            const shipped = orders.filter(o => o.order_status === 'shipped' || o.order_status === 'delivered').length;
 
-            // Update the DOM elements (ensure you add IDs to your stat headers)
-            // document.getElementById('stat-revenue').textContent = `₹${totalRevenue}`;
+            // Note: Add IDs to your HTML h3 tags to make these work
+            // document.getElementById('rev-stat').innerText = `₹${revenue.toLocaleString('en-IN')}`;
         }
 
         function manageOrder(orderId) {
-            // Logic to change status in Supabase (confirmed -> processing -> shipped -> delivered)
-            const newStatus = prompt("Enter new status (processing, shipped, delivered):");
+            const newStatus = prompt("Enter new status (processing, shipped, delivered, cancelled):");
             if (newStatus) {
-                updateOrderStatus(orderId, newStatus.toLowerCase());
+                updateOrderStatus(orderId, newStatus.toLowerCase().trim());
             }
         }
 
@@ -367,12 +362,15 @@
                 .update({ order_status: status })
                 .eq('id', id);
 
-            if (!error) {
-                alert("Status Updated!");
-                loadOrders();
+            if (error) {
+                alert("Error updating status: " + error.message);
+            } else {
+                console.log("Status updated successfully");
+                loadOrders(); // Refresh table
             }
         }
 
+        // Run on load
         init();
     </script>
     <script>
