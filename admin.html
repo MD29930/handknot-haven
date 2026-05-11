@@ -310,6 +310,27 @@
             }
         }
     </script>
+    <script>
+
+        async function loadOrders() {
+
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false })
+
+            if (error) {
+                console.error(error)
+                return
+            }
+
+            console.log(data)
+
+        }
+
+        loadOrders()
+
+    </script>
 </body>
 
 </html>
