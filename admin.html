@@ -286,7 +286,15 @@
     <!-- UI Logic -->
     <script>
         let isShopOpen = true;
+        let orders = [];
 
+        // --- INITIALIZATION ---
+        async function init() {
+            await loadOrders();
+            // You could also fetch stats here in a real app
+        }
+
+        // --- SHOP STATUS LOGIC ---
         function toggleShopStatus() {
             isShopOpen = !isShopOpen;
             const knob = document.getElementById('shop-status-knob');
@@ -294,21 +302,113 @@
             const label = document.getElementById('shop-status-label');
 
             if (isShopOpen) {
-                knob.classList.remove('translate-x-0');
-                knob.classList.add('translate-x-6');
-                toggle.classList.remove('bg-neutral-300');
-                toggle.classList.add('bg-green-500');
+                knob.classList.replace('translate-x-0', 'translate-x-6');
+                toggle.classList.replace('bg-neutral-300', 'bg-green-500');
                 label.textContent = "Open";
                 label.classList.replace('text-neutral-500', 'text-green-600');
             } else {
-                knob.classList.remove('translate-x-6');
-                knob.classList.add('translate-x-0');
-                toggle.classList.remove('bg-green-500');
-                toggle.classList.add('bg-neutral-300');
+                knob.classList.replace('translate-x-6', 'translate-x-0');
+                toggle.classList.replace('bg-green-500', 'bg-neutral-300');
                 label.textContent = "Paused";
                 label.classList.replace('text-green-600', 'text-neutral-500');
             }
+            // TIP: You should save this state to a Supabase 'settings' table 
+            // so the main website can read if it should take orders or not.
         }
+
+        // --- DATA FETCHING ---
+        async function loadOrders() {
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error("Fetch Error:", error);
+                return;
+            }
+
+            orders = data;
+            renderOrdersTable();
+            updateStats();
+        }
+
+        // --- UI RENDERING ---
+        function renderOrdersTable() {
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = '';
+
+            orders.forEach(order => {
+                const date = new Date(order.created_at).toLocaleDateString('en-IN', {
+                    day: '2-digit', month: 'short', year: 'numeric'
+                });
+
+                // Status Badge Logic matching main site
+                let statusClass = 'bg-yellow-100 text-yellow-800 border-yellow-200';
+                if (order.order_status === 'shipped') statusClass = 'bg-purple-100 text-purple-800 border-purple-200';
+                if (order.order_status === 'delivered') statusClass = 'bg-green-100 text-green-800 border-green-200';
+
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-neutral-50 transition-colors';
+                row.innerHTML = `
+                <td class="p-4">
+                    <p class="font-bold text-brand-700">#${order.id.toString().slice(0, 8)}</p>
+                    <p class="text-[10px] text-neutral-400 uppercase">${date}</p>
+                </td>
+                <td class="p-4">
+                    <p class="font-bold text-neutral-800">${order.customer_name}</p>
+                    <p class="text-neutral-500 text-xs">${order.phone}</p>
+                </td>
+                <td class="p-4 text-neutral-600 max-w-[200px] truncate" title="${order.product_name}">
+                    ${order.product_name}
+                </td>
+                <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
+                <td class="p-4">
+                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-bold border ${statusClass}">
+                        ${order.order_status}
+                    </span>
+                </td>
+                <td class="p-4 text-right">
+                    <button onclick="manageOrder(${order.id})" 
+                        class="px-4 py-2 bg-neutral-100 text-neutral-700 font-bold rounded-lg hover:bg-brand-600 hover:text-white transition-all">
+                        Update
+                    </button>
+                </td>
+            `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateStats() {
+            // Dynamic stats calculation
+            const totalRevenue = orders.reduce((sum, o) => sum + Number(order.total), 0);
+            const pendingOrders = orders.filter(o => o.order_status === 'confirmed').length;
+
+            // Update the DOM elements (ensure you add IDs to your stat headers)
+            // document.getElementById('stat-revenue').textContent = `₹${totalRevenue}`;
+        }
+
+        function manageOrder(orderId) {
+            // Logic to change status in Supabase (confirmed -> processing -> shipped -> delivered)
+            const newStatus = prompt("Enter new status (processing, shipped, delivered):");
+            if (newStatus) {
+                updateOrderStatus(orderId, newStatus.toLowerCase());
+            }
+        }
+
+        async function updateOrderStatus(id, status) {
+            const { error } = await supabaseClient
+                .from('orders')
+                .update({ order_status: status })
+                .eq('id', id);
+
+            if (!error) {
+                alert("Status Updated!");
+                loadOrders();
+            }
+        }
+
+        init();
     </script>
     <script>
 
