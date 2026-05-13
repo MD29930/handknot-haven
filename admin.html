@@ -191,7 +191,6 @@
                                 <th class="p-4 font-bold">Items</th>
                                 <th class="p-4 font-bold">Total</th>
                                 <th class="p-4 font-bold">Status</th>
-                                <th class="p-4 font-bold text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
@@ -361,13 +360,6 @@
             document.getElementById('stat-to-craft').textContent = `${toCraftCount} Orders`;
             document.getElementById('stat-completed').textContent = `${completedCount} Orders`;
         }
-
-        //function manageOrder(orderId) {
-        //const newStatus = prompt("Enter new status (processing, shipped, delivered, cancelled):");
-        // if (newStatus) {
-        //  updateOrderStatus(orderId, newStatus.toLowerCase().trim());
-        //  }
-        //   }
 
         // --- STATUS UPDATE (Triggered by dropdown) ---
         async function updateOrderStatus(id, newStatus) {
