@@ -1489,6 +1489,18 @@
 
         // --- INITIALIZATION ---
         function init() {
+
+            // 1. Load saved cart from localStorage if it exists
+            const savedCart = localStorage.getItem('handknot_cart');
+            if (savedCart) {
+                try {
+                    cart = JSON.parse(savedCart);
+                    updateCartUI(); // Refresh the display with loaded items
+                } catch (e) {
+                    console.error("Error loading cart from storage:", e);
+                    localStorage.removeItem('handknot_cart'); // Clear corrupted data
+                }
+            }
             applyShopStatus();
             loadProducts(); // Call Supabase
             setupFilters();
@@ -1863,6 +1875,9 @@
             // Update Total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartTotalEl.textContent = `₹${total.toFixed(2)}`;
+
+            // Local Storage
+            localStorage.setItem('handknot_cart', JSON.stringify(cart));
         }
 
         // --- UTILS ---
@@ -2056,6 +2071,7 @@
 
             // Reset Cart
             cart = [];
+            localStorage.removeItem('handknot_cart'); // Clear cart after order
             updateCartUI();
 
             // Close payment modal
@@ -2587,24 +2603,24 @@
 
     </script>
     <script>
-    // --- EVENT LISTENERS ---
+        // --- EVENT LISTENERS ---
 
-    // Place the search listener at the bottom so all functions are already loaded
-    const trackInput = document.getElementById('track-order-input');
-    if (trackInput) {
-    trackInput.addEventListener('input', debounce(() => {
-    renderOrdersList();
-    }, 500));
-    }
+        // Place the search listener at the bottom so all functions are already loaded
+        const trackInput = document.getElementById('track-order-input');
+        if (trackInput) {
+            trackInput.addEventListener('input', debounce(() => {
+                renderOrdersList();
+            }, 500));
+        }
 
-    // Simple debounce to prevent hitting Supabase on every single keystroke
-    function debounce(func, timeout = 300) {
-    let timer;
-    return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
-    };
-    }
+        // Simple debounce to prevent hitting Supabase on every single keystroke
+        function debounce(func, timeout = 300) {
+            let timer;
+            return (...args) => {
+                clearTimeout(timer);
+                timer = setTimeout(() => { func.apply(this, args); }, timeout);
+            };
+        }
     </script>
     <script>
 
