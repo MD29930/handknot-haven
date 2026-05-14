@@ -311,13 +311,12 @@
 
                 const row = document.createElement('tr');
 
-                // HIGHLIGHT LOGIC: If cancelled, add a light red background and a red left border
+                // HIGHLIGHT LOGIC: Keep the red highlight for cancelled orders
                 row.className = `border-b border-neutral-100 transition-colors ${isCancelled
                     ? 'bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500'
                     : 'hover:bg-neutral-50'
                     }`;
 
-                // Status Dropdown Logic (Ensure 'cancelled' is an option)
                 const statuses = ['confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
 
                 row.innerHTML = `
@@ -325,7 +324,7 @@
             <p class="font-bold ${isCancelled ? 'text-red-700' : 'text-brand-700'}">
                 #${order.id.toString().slice(0, 8)}
             </p>
-            ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Action Required</span>' : ''}
+            ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Permanently Cancelled</span>' : ''}
         </td>
         <td class="p-4">
             <p class="font-bold text-neutral-800">${order.customer_name}</p>
@@ -334,11 +333,18 @@
         <td class="p-4 text-neutral-600 truncate max-w-[150px]">${order.product_name}</td>
         <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
         <td class="p-4">
+            <!-- ADDED 'disabled' attribute if isCancelled is true -->
             <select onchange="updateOrderStatus('${order.id}', this.value)" 
-                class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none cursor-pointer capitalize 
-                ${isCancelled ? 'bg-red-100 text-red-700 border-red-300' :
-                        order.order_status === 'delivered' ? 'bg-green-100 text-green-700' : 'bg-neutral-100'}">
-                ${statuses.map(s => `<option value="${s}" ${order.order_status === s ? 'selected' : ''}>${s}</option>`).join('')}
+                ${isCancelled ? 'disabled' : ''} 
+                class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none capitalize 
+                ${isCancelled ? 'bg-red-100 text-red-700 border-red-300 cursor-not-allowed opacity-80' :
+                        order.order_status === 'delivered' ? 'bg-green-100 text-green-700 cursor-pointer' : 'bg-neutral-100 cursor-pointer'}">
+                
+                ${statuses.map(s => `
+                    <option value="${s}" ${order.order_status === s ? 'selected' : ''}>
+                        ${s}
+                    </option>
+                `).join('')}
             </select>
         </td>
     `;
@@ -370,6 +376,14 @@
 
         // --- STATUS UPDATE (Triggered by dropdown) ---
         async function updateOrderStatus(id, newStatus) {
+            // 1. Find the current order in your local array
+            const currentOrder = orders.find(o => o.id == id);
+
+            // 2. Extra safety: Stop the function if the current status is already cancelled
+            if (currentOrder && currentOrder.order_status === 'cancelled') {
+                alert("Cancelled orders cannot be modified.");
+                return;
+            }
             const { error } = await supabaseClient
                 .from('orders')
                 .update({ order_status: newStatus })
