@@ -2154,12 +2154,26 @@
             return hoursDiff <= 48; // 48 hours after delivery
         }
 
-        // Function to handle the actual cancellation
-        function requestCancellation(orderId) {
-            if (confirm(`Are you sure you want to cancel order #${orderId}?`)) {
-                // Here you would normally call Supabase to update order_status to 'cancelled'
-                showToast(`Cancellation request sent for #${orderId}`);
-                closeOrdersModal();
+        async function requestCancellation(orderId) {
+            if (confirm(`Are you sure you want to cancel order #${orderId}? This action cannot be undone.`)) {
+                try {
+                    const { error } = await supabaseClient
+                        .from('orders')
+                        .update({ order_status: 'cancelled' })
+                        .eq('id', orderId);
+
+                    if (error) throw error;
+
+                    showToast("Order cancelled successfully.");
+
+                    // Refresh the list and go back to the history view
+                    await renderOrdersList();
+                    backToOrderList();
+
+                } catch (error) {
+                    console.error("Cancellation Error:", error);
+                    alert("Could not cancel order. Please contact support.");
+                }
             }
         }
 
@@ -2446,7 +2460,7 @@
             document.getElementById('orders-list-view').classList.remove('hidden');
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History';
-        }
+        } n
 
         // --- GEMINI AI FEATURES ---
 
