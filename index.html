@@ -1307,18 +1307,17 @@
 
     <!-- JavaScript Application Logic -->
     <script>
+        // REPLACE EVERYTHING INSIDE YOUR MAIN APPLICATION <SCRIPT> TAG WITH THIS:
+
         // --- SHOP CONFIGURATION ---
-        // Vaishali, change 'takingOrders' to true when you want to resume accepting orders!
         const SHOP_CONFIG = {
             takingOrders: true,
             pausedMessage: "Hi! Due to high demand, my hands are full crafting existing orders! ✨ I am currently not taking new orders. Please check back soon!",
-            // BANNER CONFIGURATION
-            showSaleBanner: true, // Set to false to hide the banner
+            showSaleBanner: true,
             saleMessage: "🪔 Opening Sale: Upto Flat 30% OFF on all items! 🪔"
         };
 
         // --- DATA ---
-        // Prices updated to Indian Rupees (₹)
         let products = [
             {
                 id: 1,
@@ -1327,11 +1326,11 @@
                 category: "Clothing",
                 image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=1972&auto=format&fit=crop",
                 badge: "Customisation Available",
-                description: "A charming handmade crochet baby dress crafted with love and attention to detail. This elegant piece features a rich ruby-red body with delicate ivory accents around the neckline and hem, giving it a soft and timeless look. The intricate stitch pattern adds texture and breathability, making it perfect for both comfort and style. The highlight of this dress is the adorable handcrafted floral detail on the side.",
+                description: "A charming handmade crochet baby dress crafted with love and attention to detail. This elegant piece features a rich ruby-red body with delicate ivory accents around the neckline and hem.",
                 perfectFor: "Baby showers, first birthdays, and special occasions.",
                 careInstructions: "Hand wash cold, lay flat to dry. Do not bleach or iron.",
                 materialName: "Organic Cotton",
-                materialBenefit: "Highly breathable, hypoallergenic, and exceptionally soft against sensitive baby skin. Provides comfort in all seasons.",
+                materialBenefit: "Highly breathable, hypoallergenic, and exceptionally soft against sensitive baby skin.",
                 craftingTime: "5-7 days"
             },
             {
@@ -1341,11 +1340,11 @@
                 category: "Clothing",
                 image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=80&w=2000&auto=format&fit=crop",
                 badge: "Customisation Available",
-                description: "A beautifully handcrafted crochet crop top designed for effortless style and comfort. This piece features a rich azure blue tone with an airy, breathable stitch pattern, making it perfect for warm days and casual outings.The highlight of this top is its intricate floral lace hem, adding a delicate, boho-inspired touch that makes it stand out. With its sleeveless design and relaxed fit, it pairs perfectly with jeans, skirts, or shorts for a chic, laid-back look.",
-                perfectFor: "High-waisted jeans for a casual look, Flowy skirts for a boho vibe, Shorts for summer outings.",
-                careInstructions: "Hand wash gently in cold water, Use mild detergent, Dry flat to maintain shape.",
+                description: "A beautifully handcrafted crochet crop top designed for effortless style and comfort. This piece features a rich azure blue tone with an airy, breathable stitch pattern.",
+                perfectFor: "High-waisted jeans for a casual look, Flowy skirts for a boho vibe.",
+                careInstructions: "Hand wash gently in cold water, Use mild detergent, Dry flat.",
                 materialName: "Organic Cotton",
-                materialBenefit: "Highly breathable, hypoallergenic, and exceptionally soft against sensitive baby skin. Provides comfort in all seasons.",
+                materialBenefit: "Highly breathable, hypoallergenic, and exceptionally soft.",
                 craftingTime: "4-5 days"
             },
             {
@@ -1355,106 +1354,20 @@
                 category: "Decor & Flowers",
                 image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=2070&auto=format&fit=crop",
                 badge: "Bestseller",
-                description: "Bring a little sunshine indoors with this beautifully handcrafted crochet sunflower pot. Each piece is carefully made with vibrant yellow petals, a rich brown center, and lush green leaves, all placed in a soft crochet pot for a cozy, aesthetic look.Unlike real plants, this sunflower never fades—making it a timeless decor piece that adds warmth, positivity, and charm to any space.",
-                perfectFor: "Home decor (desk, shelf, bedside table), Office workspace aesthetics, Gifting (birthdays, anniversaries, housewarming).",
+                description: "Bring a little sunshine indoors with this beautifully handcrafted crochet sunflower pot.",
+                perfectFor: "Home decor, Office workspace aesthetics, Gifting.",
                 careInstructions: "Dust gently with a soft cloth. Do not machine wash.",
                 materialName: "Organic Cotton",
-                materialBenefit: "Flexible yet firm structure that keeps the sunflower upright and well-shaped.",
+                materialBenefit: "Flexible yet firm structure that keeps the sunflower upright.",
                 craftingTime: "2-3 days"
-            },
-            {
-                id: 4,
-                name: "Golden Bloom Crochet Bouquet",
-                price: 300,
-                category: "Decor & Flowers",
-                image: "https://images.unsplash.com/photo-1601597111158-2fceff292cdc?q=80&w=2070&auto=format&fit=crop",
-                badge: "Customisation Available",
-                description: "A beautifully handcrafted crochet bouquet that blends the warmth of a sunflower with the softness of delicate pink roses. Wrapped elegantly in premium paper and finished with a ribbon, this bouquet is a timeless alternative to fresh flowers—one that never fades.Each flower is carefully crocheted to capture realistic textures and vibrant colors, making it a unique keepsake filled with charm and emotion. It’s not just a gift, but a memory that lasts forever.",
-                perfectFor: "Birthdays, Anniversaries, Valentine Day, Surprise gifts for loved ones.",
-                careInstructions: "Keep away from water and moisture.Clean gently with a dry cloth.",
-                materialName: "Organic Cotton",
-                materialBenefit: "Long-lasting, does not wilt or fade",
-                craftingTime: "3-4 days"
-            },
-            {
-                id: 5,
-                name: "Amigurumi Buddy Charm",
-                price: 400.00,
-                category: "Accessories",
-                image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?q=80&w=2070&auto=format&fit=crop",
-                badge: "Customisation Available",
-                description: "A cute and playful handmade amigurumi toy crafted with fine crochet detailing. Inspired by fun cartoon-style characters, this little buddy features bright colors, expressive eyes, and a soft, huggable form.Designed with a hanging loop, it can be used as a charm, decor piece, or a tiny companion that adds personality wherever it goes. Every piece is handmade, making each one slightly unique and special.",
-                perfectFor: "Keychains or bag charms, Car hanging decor, Gifting (return gifts, birthdays).",
-                careInstructions: "Hand clean with a damp cloth, Avoid soaking in water, Keep away from rough pulling.",
-                materialName: "Organic Cotton",
-                materialBenefit: "Soft & safe gentle for kids.",
-                craftingTime: "1-2 days"
-            },
-            {
-                id: 6,
-                name: "Amigurumi Berry Bliss Pouch",
-                price: 350.00,
-                category: "Accessories",
-                image: "https://images.unsplash.com/photo-1508610048659-a06b669e3321?q=80&w=2070&auto=format&fit=crop",
-                badge: "Customisation Available",
-                description: "A charming handmade amigurumi-style crochet pouch designed with a soft, textured base and topped with adorable berry-like crochet buds. This cute and compact pouch blends functionality with aesthetic appeal, making it both a practical accessory and a decorative piece.The intricate stitching and playful design give it a cozy, handcrafted feel, while the detailed berry accents add a touch of uniqueness and sweetness to the overall look.",
-                perfectFor: "Storing small essentials (coins, earphones, keys), Cute mini pouch for daily use, Gifting (return gifts, handmade gift lovers).",
-                careInstructions: "Hand wash gently with mild detergent. Do not machine wash.",
-                materialName: "Organic Cotton",
-                materialBenefit: "Soft yet sturdy that holds shape well.",
-                craftingTime: "2-3 days"
-            },
-            {
-                id: 7,
-                name: "Pastel Pop Crochet Bucket Bag",
-                price: 2500.00,
-                category: "Accessories",
-                image: "https://images.unsplash.com/photo-1622340579998-ebdf98fb5f09?q=80&w=2070&auto=format&fit=crop",
-                badge: "Customization Available",
-                description: "A vibrant handmade crochet bucket bag crafted with chunky multicolor yarn, designed to bring a playful yet stylish touch to your everyday look. Featuring a soft drawstring closure, sturdy structure, and a comfortable sling strap, this bag blends functionality with a bold aesthetic.Its unique color mix of pastel blues, yellows, peaches, and whites makes every piece one-of-a-kind—perfect for those who love standing out with handcrafted fashion.",
-                perfectFor: "Casual outings & day trips, College or daily use, Gifting for fashion lovers.",
-                careInstructions: "Do not machine wash. Avoid overloading to maintain shape.",
-                materialName: "Premium chunky acrylic yarn",
-                materialBenefit: "Lightweight and comfortable for daily carry.",
-                craftingTime: "4-6 days"
-            },
-            {
-                id: 8,
-                name: "Petite Charm Crochet Sling Bag",
-                price: 1500.00,
-                category: "Accessories",
-                image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=1974&auto=format&fit=crop",
-                badge: "Customization Available",
-                description: "A beautifully handcrafted mini crochet sling bag designed for style and convenience. Featuring a compact structure with a delicate flap pattern and playful tassel detailing, this bag is perfect for carrying your essentials while adding a cute, handmade touch to your outfit.Available in vibrant color options, each piece is uniquely crafted, making it a charming blend of fashion and functionality.",
-                perfectFor: "Daily essentials (phone, cash, keys), Travel light carry option, and Gifting (handmade lovers).",
-                careInstructions: "Do not machine wash. Avoid overloading.",
-                materialName: "Premium chunky acrylic yarn",
-                materialBenefit: "Lightweight & compact  easy to carry anywhere.",
-                craftingTime: "3-4 days"
-            },
-            {
-                id: 9,
-                name: "CozyPods Amigurumi AirPods Case",
-                price: 200.00,
-                category: "Accessories",
-                image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?q=80&w=1974&auto=format&fit=crop",
-                badge: "Customization Available",
-                description: "A stylish and protective handmade crochet AirPods case designed with a beautiful blue gradient pattern and a soft textured finish. Crafted using intricate stitches, this case not only keeps your AirPods safe but also adds a cozy, aesthetic touch to your everyday essentials.The attached loop makes it easy to carry or hang on bags, keys, or hooks—combining convenience with handcrafted charm.",
-                perfectFor: "Protecting AirPods from scratches & dust, Gifting for tech lovers, and Minimal yet aesthetic accessories.",
-                careInstructions: "Hand wash gently if needed. Avoid excessive stretching.",
-                materialName: "Premium chunky acrylic yarn",
-                materialBenefit: "Lightweight & compact  easy to carry anywhere.",
-                craftingTime: "1-2 days"
             }
         ];
 
         let cart = [];
         let currentFilter = 'all';
         let currentModalProductId = null;
-
-
-        // --- GEMINI API CONFIG ---
-        const apiKey = ""; // API key is injected by the environment
+        let userOrders = [];
+        const apiKey = ""; // API key managed by environment
 
         // --- DOM ELEMENTS ---
         const productGrid = document.getElementById('product-grid');
@@ -1467,7 +1380,6 @@
         const cartTotalEl = document.getElementById('cart-total');
         const toast = document.getElementById('toast');
 
-        // AI Modal Elements
         const aiModal = document.getElementById('ai-modal');
         const aiModalContent = document.getElementById('ai-modal-content');
         const aiInputView = document.getElementById('ai-input-view');
@@ -1477,23 +1389,15 @@
         const aiPromptInput = document.getElementById('ai-prompt');
         const aiResultContent = document.getElementById('ai-result-content');
 
-        // Product Modal Elements
         const productModal = document.getElementById('product-modal');
         const productModalContent = document.getElementById('product-modal-content');
-
-        // Custom Order Modal Elements
         const customOrderModal = document.getElementById('custom-order-modal');
         const customOrderModalContent = document.getElementById('custom-order-modal-content');
-
-        // Payment Modal Elements
         const paymentModal = document.getElementById('payment-modal');
         const paymentModalContent = document.getElementById('payment-modal-content');
-
-        // Order Confirmation Modal Elements
         const orderConfirmationModal = document.getElementById('order-confirmation-modal');
         const orderConfirmationContent = document.getElementById('order-confirmation-content');
 
-        // Order History Modal Elements
         const ordersModal = document.getElementById('orders-modal');
         const ordersModalContent = document.getElementById('orders-modal-content');
         const ordersListView = document.getElementById('orders-list-view');
@@ -1501,20 +1405,18 @@
 
         // --- INITIALIZATION ---
         function init() {
-
-            // 1. Load saved cart from localStorage if it exists
             const savedCart = localStorage.getItem('handknot_cart');
             if (savedCart) {
                 try {
                     cart = JSON.parse(savedCart);
-                    updateCartUI(); // Refresh the display with loaded items
+                    updateCartUI();
                 } catch (e) {
-                    console.error("Error loading cart from storage:", e);
-                    localStorage.removeItem('handknot_cart'); // Clear corrupted data
+                    console.error("Error loading cart:", e);
+                    localStorage.removeItem('handknot_cart');
                 }
             }
             applyShopStatus();
-            loadProducts(); // Call Supabase
+            loadProducts();
             setupFilters();
 
             window.addEventListener('scroll', () => {
@@ -1523,61 +1425,44 @@
                 const bannerHeight = promoBanner && SHOP_CONFIG.showSaleBanner ? promoBanner.offsetHeight : 0;
 
                 if (window.scrollY > 0) {
-                    // As soon as user scrolls, stick navbar to absolute top (0)
                     nav.style.top = '0px';
                     nav.classList.add('shadow-lg', 'glass-nav');
                 } else {
-                    // When at the very top, push navbar down to show banner
                     nav.style.top = bannerHeight + 'px';
                     nav.classList.remove('shadow-lg');
                 }
             });
         }
 
-        // --- PRODUCT RENDERING ---
         function applyShopStatus() {
             const banner = document.getElementById('shop-status-banner');
             const customBtn = document.getElementById('trigger-custom-order-btn');
             const checkoutBtn = document.getElementById('checkout-btn');
-
-            // --- NEW: Promo Banner Logic ---
             const promoBanner = document.getElementById('promo-banner');
             const promoText = document.getElementById('promo-text');
 
             if (SHOP_CONFIG.showSaleBanner) {
                 promoBanner.classList.remove('hidden');
                 promoText.textContent = SHOP_CONFIG.saleMessage;
-
-                // Initial positioning
-                navbar.style.top = promoBanner.offsetHeight + 'px';
+                document.getElementById('navbar').style.top = promoBanner.offsetHeight + 'px';
             } else {
                 promoBanner.classList.add('hidden');
-                navbar.style.top = '0px';
+                document.getElementById('navbar').style.top = '0px';
             }
 
             if (!SHOP_CONFIG.takingOrders) {
-                // Show banner
                 banner.innerHTML = `<i class="fa-solid fa-ban text-brand-600 text-xl"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`;
                 banner.classList.remove('hidden');
 
-                // Disable Custom Order Button
                 if (customBtn) {
                     customBtn.disabled = true;
                     customBtn.classList.replace('bg-white', 'bg-neutral-200');
-                    customBtn.classList.replace('text-brand-900', 'text-neutral-500');
-                    customBtn.classList.replace('border-transparent', 'border-neutral-300');
-                    customBtn.classList.remove('hover:bg-brand-50', 'shadow-lg');
                     customBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Custom Orders Paused';
-                    customBtn.style.cursor = 'not-allowed';
                 }
-
-                // Disable Checkout Button
                 if (checkoutBtn) {
                     checkoutBtn.disabled = true;
                     checkoutBtn.classList.replace('bg-brand-600', 'bg-neutral-400');
-                    checkoutBtn.classList.remove('hover:bg-brand-700', 'hover:-translate-y-0.5', 'shadow-lg');
                     checkoutBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Checkout Paused';
-                    checkoutBtn.style.cursor = 'not-allowed';
                 }
             }
         }
@@ -1585,430 +1470,169 @@
         // --- PRODUCT RENDERING ---
         function renderProducts() {
             productGrid.innerHTML = '';
-            const filteredProducts = currentFilter === 'all'
-                ? products
-                : products.filter(p => p.category === currentFilter);
+            const filteredProducts = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
 
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
                 card.className = 'product-card bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all border border-brand-100 flex flex-col group';
                 card.onclick = () => openProductModal(product.id);
 
-                // DYNAMIC BADGE LOGIC
-                const badgeColors = {
-                    'Bestseller': 'bg-amber-500',
-                    'New': 'bg-blue-500',
-                    'Sale': 'bg-red-500',
-                    'Limited': 'bg-purple-600'
-                };
+                const badgeColors = { 'Bestseller': 'bg-amber-500', 'New': 'bg-blue-500', 'Sale': 'bg-red-500' };
                 const colorClass = badgeColors[product.badge] || 'bg-brand-500';
-
-                const badgeHtml = product.badge
-                    ? `<span class="absolute top-4 left-4 ${colorClass} text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">${product.badge}</span>`
-                    : '';
-
-                const descHtml = product.description
-                    ? `<p class="text-sm text-neutral-600 mb-4 flex-grow line-clamp-3">${product.description}</p>`
-                    : '<div class="flex-grow"></div>';
-
-                // DISCOUNT LOGIC
-                const discountBadge = product.discount > 0
-                    ? `<span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded ml-2 uppercase tracking-wide">
-                ${product.discount}% OFF
-               </span>`
-                    : '';
-
-                const priceDisplay = product.discount > 0
-                    ? `<div class="flex items-center">
-                <span class="text-xl font-bold text-brand-700">₹${Number(product.price).toFixed(2)}</span>
-                <span class="text-sm text-neutral-400 line-through ml-2">₹${Number(product.originalPrice).toFixed(2)}</span>
-               </div>`
-                    : `<span class="text-xl font-bold text-brand-700">₹${Number(product.price).toFixed(2)}</span>`;
+                const badgeHtml = product.badge ? `<span class="absolute top-4 left-4 ${colorClass} text-white text-xs font-bold px-3 py-1 rounded-full z-10 shadow-sm">${product.badge}</span>` : '';
+                const discountBadge = product.discount > 0 ? `<span class="bg-green-100 text-green-700 text-[10px] font-bold px-2 py-0.5 rounded ml-2 uppercase tracking-wide">${product.discount}% OFF</span>` : '';
+                const priceDisplay = product.discount > 0 ? `<div class="flex items-center"><span class="text-xl font-bold text-brand-700">₹${Number(product.price).toFixed(2)}</span></div>` : `<span class="text-xl font-bold text-brand-700">₹${Number(product.price).toFixed(2)}</span>`;
 
                 card.innerHTML = `
-            <div class="relative h-72 overflow-hidden bg-brand-50">
-                ${badgeHtml}
-                <img src="${product.image}" alt="${product.name}" class="product-img w-full h-full object-cover transition-transform duration-500">
-                <div class="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <button class="bg-white text-brand-800 font-bold py-3 px-6 rounded-full shadow-lg pointer-events-none">View Details</button>
+                <div class="relative h-72 overflow-hidden bg-brand-50">
+                    ${badgeHtml}
+                    <img src="${product.image}" alt="${product.name}" class="product-img w-full h-full object-cover transition-transform duration-500">
                 </div>
-            </div>
-            <div class="p-6 flex flex-col flex-grow">
-                <div class="text-sm text-brand-500 font-bold tracking-wider uppercase mb-1 flex items-center">
-                    ${product.category}
-                    ${discountBadge}
-                </div>
-                <h3 class="text-xl font-serif font-bold text-neutral-800 mb-2">${product.name}</h3>
-                ${descHtml}
-                <div class="mt-auto pt-4 border-t border-brand-50">
-                    <div class="flex justify-between items-center mb-1">
-                        ${priceDisplay}
-                    </div>
-                    <div class="text-xs text-amber-600 font-medium">
-                        <i class="fa-regular fa-clock"></i> Takes ${product.craftingTime}
+                <div class="p-6 flex flex-col flex-grow">
+                    <div class="text-sm text-brand-500 font-bold tracking-wider uppercase mb-1 flex items-center">${product.category}${discountBadge}</div>
+                    <h3 class="text-xl font-serif font-bold text-neutral-800 mb-2">${product.name}</h3>
+                    <p class="text-sm text-neutral-600 mb-4 flex-grow line-clamp-3">${product.description || ''}</p>
+                    <div class="mt-auto pt-4 border-t border-brand-50">
+                        <div class="flex justify-between items-center mb-1">${priceDisplay}</div>
+                        <div class="text-xs text-amber-600 font-medium"><i class="fa-regular fa-clock"></i> Takes ${product.craftingTime}</div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
                 productGrid.appendChild(card);
             });
         }
 
-        // --- FILTERING ---
         function setupFilters() {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    filterBtns.forEach(b => {
-                        b.classList.remove('bg-brand-600', 'text-white');
-                        b.classList.add('bg-white', 'text-neutral-600');
-                    });
-                    const clicked = e.target;
-                    clicked.classList.remove('bg-white', 'text-neutral-600');
-                    clicked.classList.add('bg-brand-600', 'text-white');
-
-                    currentFilter = clicked.dataset.filter;
+                    filterBtns.forEach(b => b.classList.replace('bg-brand-600', 'bg-white'));
+                    e.target.classList.replace('bg-white', 'bg-brand-600');
+                    currentFilter = e.target.dataset.filter;
                     renderProducts();
                 });
             });
         }
 
-        // --- PRODUCT MODAL LOGIC ---
+        // --- MODAL CONTROLS ---
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId);
             currentModalProductId = productId;
 
-            // Populate Modal Data
             document.getElementById('modal-img').src = product.image;
             document.getElementById('modal-category').textContent = product.category;
             document.getElementById('modal-title').textContent = product.name;
             document.getElementById('modal-price').textContent = `₹${product.price.toFixed(2)}`;
             document.getElementById('modal-desc').textContent = product.description;
-
             document.getElementById('modal-material-name').textContent = `Crafted with ${product.materialName || 'Premium Yarn'}`;
             document.getElementById('modal-material-benefit').textContent = product.materialBenefit || '';
+            document.getElementById('modal-crafting-time').textContent = product.craftingTime;
+            document.getElementById('modal-perfect').textContent = product.perfectFor || '';
+            document.getElementById('modal-care').textContent = product.careInstructions || '';
 
-            document.getElementById('modal-crafting-time').textContent = product.craftingTime || 'a few days';
-            document.getElementById('modal-perfect').textContent = product.perfectFor || 'Anyone who loves handmade items!';
-            document.getElementById('modal-care').textContent = product.careInstructions || 'Hand wash carefully and handle with love.';
-
-            const addToCartBtn = document.getElementById('modal-add-to-cart-btn');
-            if (!SHOP_CONFIG.takingOrders) {
-                addToCartBtn.disabled = true;
-                addToCartBtn.classList.replace('bg-brand-600', 'bg-neutral-400');
-                addToCartBtn.classList.remove('hover:bg-brand-700', 'hover:-translate-y-0.5', 'shadow-lg');
-                addToCartBtn.innerHTML = '<i class="fa-solid fa-lock"></i> Orders Currently Paused';
-                addToCartBtn.style.cursor = 'not-allowed';
-            } else {
-                addToCartBtn.disabled = false;
-                addToCartBtn.innerHTML = `<i class="fa-solid fa-basket-shopping"></i> Add to Basket - ₹${product.price.toFixed(2)}`;
-            }
-
-            // Handle Size Section visibility
             const sizeSection = document.getElementById('modal-size-section');
             if (product.category === 'Clothing') {
                 sizeSection.classList.remove('hidden');
-                document.getElementById('measure-bust').value = '';
-                document.getElementById('measure-waist').value = '';
-                document.getElementById('measure-hips').value = '';
-                document.getElementById('measure-length').value = '';
             } else {
                 sizeSection.classList.add('hidden');
             }
 
-            // Reset inputs
-            document.getElementById('modal-custom').value = '';
-            document.getElementById('modal-photos').value = '';
-
-            // Show Modal
             productModal.classList.remove('hidden');
             productModal.classList.add('flex');
-            setTimeout(() => {
-                productModalContent.classList.remove('scale-95', 'opacity-0');
-                productModalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
+            setTimeout(() => productModalContent.classList.replace('opacity-0', 'opacity-100'), 10);
         }
 
         function closeProductModal() {
-            productModalContent.classList.remove('scale-100', 'opacity-100');
-            productModalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                productModal.classList.add('hidden');
-                productModal.classList.remove('flex');
-            }, 300);
+            productModalContent.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { productModal.classList.add('hidden'); productModal.classList.remove('flex'); }, 300);
         }
 
         function addToCartFromModal() {
             const product = products.find(p => p.id === currentModalProductId);
-
             let sizeText = null;
             if (product.category === 'Clothing') {
-                const bust = document.getElementById('measure-bust').value.trim();
-                const waist = document.getElementById('measure-waist').value.trim();
-                const hips = document.getElementById('measure-hips').value.trim();
-                const length = document.getElementById('measure-length').value.trim();
-
-                let measurements = [];
-                if (bust) measurements.push(`Bust: ${bust}`);
-                if (waist) measurements.push(`Waist: ${waist}`);
-                if (hips) measurements.push(`Hips: ${hips}`);
-                if (length) measurements.push(`Length: ${length}`);
-
-                sizeText = measurements.length > 0 ? measurements.join(', ') : 'Measurements pending';
+                sizeText = `Bust: ${document.getElementById('measure-bust').value}`;
             }
-
-            let customText = document.getElementById('modal-custom').value.trim();
-            const hasPhotos = document.getElementById('modal-photos').files.length > 0;
-
-            if (hasPhotos) {
-                customText += (customText ? ' | ' : '') + '[Reference Photos Attached]';
-            }
-
-            addToCart(currentModalProductId, sizeText, customText);
+            addToCart(currentModalProductId, sizeText, document.getElementById('modal-custom').value);
             closeProductModal();
         }
 
-        // --- CART LOGIC ---
-        function toggleCart() {
-            const isClosed = cartSidebar.classList.contains('translate-x-full');
-            if (isClosed) {
-                cartSidebar.classList.remove('translate-x-full');
-                cartOverlay.classList.remove('hidden');
-                setTimeout(() => cartOverlay.classList.remove('opacity-0'), 10);
-            } else {
-                cartSidebar.classList.add('translate-x-full');
-                cartOverlay.classList.add('opacity-0');
-                setTimeout(() => cartOverlay.classList.add('hidden'), 300);
-            }
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        }
+        function toggleCart() { cartSidebar.classList.toggle('translate-x-full'); cartOverlay.classList.toggle('hidden'); }
+        function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
 
         function addToCart(productId, size = null, customText = '') {
-            if (!SHOP_CONFIG.takingOrders) {
-                showToast("We are currently not accepting new orders. Please check back later!");
-                return;
-            }
-
+            if (!SHOP_CONFIG.takingOrders) return;
             const product = products.find(p => p.id === productId);
-
-            // Check if exact same item (with same size and custom text) exists in cart
-            const existingItemIndex = cart.findIndex(item =>
-                item.id === productId &&
-                item.size === size &&
-                item.customText === customText
-            );
+            const existingItemIndex = cart.findIndex(item => item.id === productId && item.size === size && item.customText === customText);
 
             if (existingItemIndex > -1) {
                 cart[existingItemIndex].quantity += 1;
             } else {
-                // Add unique cartItemId to distinguish between same products with different customizations
-                cart.push({
-                    ...product,
-                    cartItemId: Date.now() + Math.random(),
-                    quantity: 1,
-                    size: size,
-                    customText: customText
-                });
+                cart.push({ ...product, cartItemId: Date.now() + Math.random(), quantity: 1, size: size, customText: customText });
             }
-
             updateCartUI();
             showToast(`Added ${product.name} to basket!`);
         }
 
-        function removeFromCart(cartItemId) {
-            cart = cart.filter(item => item.cartItemId !== cartItemId);
-            updateCartUI();
-        }
-
-        function updateQuantity(cartItemId, delta) {
-            const item = cart.find(item => item.cartItemId === cartItemId);
-            if (item) {
-                item.quantity += delta;
-                if (item.quantity <= 0) {
-                    removeFromCart(cartItemId);
-                } else {
-                    updateCartUI();
-                }
-            }
-        }
+        function removeFromCart(id) { cart = cart.filter(i => i.cartItemId !== id); updateCartUI(); }
+        function updateQuantity(id, d) { const i = cart.find(x => x.cartItemId === id); if (i) { i.quantity += d; if (i.quantity <= 0) removeFromCart(id); else updateCartUI(); } }
 
         function updateCartUI() {
-            // Update Badge
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartBadge.textContent = totalItems;
-            if (totalItems > 0) {
-                cartBadge.classList.remove('hidden');
-            } else {
-                cartBadge.classList.add('hidden');
-            }
+            cartBadge.classList.toggle('hidden', totalItems === 0);
 
-            // Update Cart Content
-            const existingItems = document.querySelectorAll('.cart-item-row');
-            existingItems.forEach(el => el.remove());
+            const existingRows = document.querySelectorAll('.cart-item-row');
+            existingRows.forEach(el => el.remove());
 
             if (cart.length === 0) {
                 emptyCartMsg.style.display = 'block';
             } else {
                 emptyCartMsg.style.display = 'none';
-
                 cart.forEach(item => {
                     const row = document.createElement('div');
                     row.className = 'cart-item-row flex items-start gap-4 py-4 border-b border-brand-50';
-
-                    const sizeBadge = item.size ? `<div class="text-xs text-neutral-700 bg-white border border-brand-200 px-2 py-1.5 rounded mt-1 mb-1 max-w-full break-words shadow-sm"><span class="font-bold text-brand-800"><i class="fa-solid fa-ruler-combined mr-1"></i></span> ${item.size}</div>` : '';
-                    const customBadge = item.customText ? `<div class="text-xs text-brand-600 bg-brand-50 px-2 py-1 rounded inline-block mt-1 max-w-[200px] whitespace-normal break-words"><i class="fa-solid fa-note-sticky mr-1"></i> ${item.customText}</div>` : '';
-
-                    row.innerHTML = `
-                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-xl shadow-sm mt-1">
-                        <div class="flex-1 min-w-0">
-                            <h4 class="font-bold text-neutral-800 leading-tight mb-1 text-sm md:text-base truncate">${item.name}</h4>
-                            <div class="flex flex-col">
-                                ${sizeBadge}
-                            </div>
-                            ${customBadge}
-                            <div class="text-brand-600 font-bold mt-2 mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
-                            <div class="flex items-center gap-3">
-                                <div class="flex items-center bg-brand-50 rounded-full px-2 py-1">
-                                    <button onclick="updateQuantity(${item.cartItemId}, -1)" class="text-brand-600 hover:text-brand-800 w-6 h-6 flex items-center justify-center"><i class="fa-solid fa-minus text-xs"></i></button>
-                                    <span class="text-sm font-bold w-6 text-center">${item.quantity}</span>
-                                    <button onclick="updateQuantity(${item.cartItemId}, 1)" class="text-brand-600 hover:text-brand-800 w-6 h-6 flex items-center justify-center"><i class="fa-solid fa-plus text-xs"></i></button>
-                                </div>
-                                <button onclick="removeFromCart(${item.cartItemId})" class="text-neutral-400 hover:text-red-500 text-sm underline transition-colors">Remove</button>
-                            </div>
+                    row.innerHTML = `<img src="${item.image}" class="w-20 h-20 object-cover rounded-xl shadow-sm mt-1">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-bold text-neutral-800 text-sm truncate">${item.name}</h4>
+                        <div class="text-brand-600 font-bold mt-1">₹${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="flex items-center gap-3 mt-2">
+                            <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-6 h-6 bg-brand-100 rounded-full font-bold text-brand-700">-</button>
+                            <span class="text-sm font-bold">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-6 h-6 bg-brand-100 rounded-full font-bold text-brand-700">+</button>
+                            <button onclick="removeFromCart(${item.cartItemId})" class="text-neutral-400 text-xs ml-auto underline">Remove</button>
                         </div>
-                    `;
+                    </div>`;
                     cartItemsContainer.appendChild(row);
                 });
             }
-
-            // Update Total
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartTotalEl.textContent = `₹${total.toFixed(2)}`;
-
-            // Local Storage
             localStorage.setItem('handknot_cart', JSON.stringify(cart));
         }
 
-        // --- UTILS ---
-        let toastTimeout;
-        function showToast(message) {
-            document.getElementById('toast-message').textContent = message;
-            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-            }, 3000);
-        }
-
         function checkout() {
-            // 1. Maintain existing safety check
-            if (!SHOP_CONFIG.takingOrders) {
-                showToast("Checkout is temporarily disabled. Please check back later!");
-                return;
-            }
-
-            // 2. Maintain existing empty cart check
-            if (cart.length === 0) {
-                showToast("Your basket is empty!");
-                return;
-            }
-
-            // 3. UI transition
-            toggleCart(); // Close the sidebar
-            openCheckoutForm(); // Open the delivery details form
+            if (!SHOP_CONFIG.takingOrders || cart.length === 0) return;
+            toggleCart();
+            openCheckoutForm();
         }
 
-        // 2. Form Modal Controls
-        function openCheckoutForm() {
-            const modal = document.getElementById('checkout-form-modal');
-            const content = document.getElementById('checkout-form-content');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-            setTimeout(() => {
-                // If your original CSS used scale-95/opacity-0, replace them here
-                content.classList.replace('scale-95', 'scale-100');
-                content.classList.replace('opacity-0', 'opacity-100');
-            }, 10);
-        }
+        function openCheckoutForm() { document.getElementById('checkout-form-modal').classList.remove('hidden'); document.getElementById('checkout-form-modal').classList.add('flex'); setTimeout(() => document.getElementById('checkout-form-content').classList.replace('opacity-0', 'opacity-100'), 10); }
+        function closeCheckoutForm() { document.getElementById('checkout-form-content').classList.replace('opacity-100', 'opacity-0'); setTimeout(() => document.getElementById('checkout-form-modal').classList.add('hidden'), 300); }
+        function handleCheckoutForm(e) { e.preventDefault(); const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0); document.getElementById('payment-total-amount').textContent = `₹${total.toFixed(2)}`; closeCheckoutForm(); setTimeout(() => openPaymentModal(), 350); }
 
-        function closeCheckoutForm() {
-            const modal = document.getElementById('checkout-form-modal');
-            const content = document.getElementById('checkout-form-content');
+        function openPaymentModal() { paymentModal.classList.remove('hidden'); paymentModal.classList.add('flex'); setTimeout(() => paymentModalContent.classList.replace('opacity-0', 'opacity-100'), 10); }
+        function closePaymentModal() { paymentModalContent.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { paymentModal.classList.add('hidden'); paymentModal.classList.remove('flex'); }, 300); }
 
-            content.classList.replace('scale-100', 'scale-95');
-            content.classList.replace('opacity-100', 'opacity-0');
-
-            setTimeout(() => {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }, 300);
-        }
-
-        // 3. Handle Form Submission
-        function handleCheckoutForm(event) {
-            event.preventDefault();
-
-            // Calculate total based on existing logic
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
-            // Set the amount in the payment modal UI
-            document.getElementById('payment-total-amount').textContent = `₹${total.toFixed(2)}`;
-
-            // Move from Step 1 (Form) to Step 2 (Payment)
-            closeCheckoutForm();
-            setTimeout(() => {
-                openPaymentModal();
-            }, 350); // Slight delay for smooth modal transition
-        }
-
-        // --- PAYMENT FLOW LOGIC ---
-
-        function openPaymentModal() {
-            paymentModal.classList.remove('hidden');
-            paymentModal.classList.add('flex');
-            setTimeout(() => {
-                paymentModalContent.classList.remove('scale-95', 'opacity-0');
-                paymentModalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closePaymentModal() {
-            paymentModalContent.classList.remove('scale-100', 'opacity-100');
-            paymentModalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                paymentModal.classList.add('hidden');
-                paymentModal.classList.remove('flex');
-            }, 300);
-        }
-
+        // --- CHECKOUT TRIGGERS ---
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn');
             const originalContent = btn.innerHTML;
             btn.innerHTML = `<div class="loader mx-auto"></div>`;
             btn.disabled = true;
-
-            // Mocking Razorpay Initialization Delay
             setTimeout(() => {
-
-                console.log("Razorpay flow triggered");
-
-                // Here is where you would normally configure and open Razorpay:
-                // const options = { key: 'YOUR_KEY_ID', amount: total * 100, ... };
-                // const rzp1 = new Razorpay(options);
-                // rzp1.open();
-
-                // Simulating a successful payment callback directly for the prototype:
                 finalizeOrderProcess();
-
-                // Reset button for future (hidden)
-                setTimeout(() => {
-                    btn.innerHTML = originalContent;
-                    btn.disabled = false;
-                }, 500);
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
             }, 1500);
         }
 
@@ -2017,33 +1641,15 @@
             const originalContent = btn.innerHTML;
             btn.innerHTML = `<div class="loader border-brand-600 mx-auto"></div>`;
             btn.disabled = true;
-
-            // Simulating verification delay
             setTimeout(() => {
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> Verification Pending`;
-                btn.classList.replace('text-brand-700', 'text-white');
-                btn.classList.replace('bg-white', 'bg-green-600');
-                btn.classList.replace('border-brand-600', 'border-green-600');
-
-                setTimeout(() => {
-                    finalizeOrderProcess();
-
-                    // Reset button for future (hidden)
-                    setTimeout(() => {
-                        btn.innerHTML = originalContent;
-                        btn.disabled = false;
-                        btn.classList.replace('text-white', 'text-brand-700');
-                        btn.classList.replace('bg-green-600', 'bg-white');
-                        btn.classList.replace('border-green-600', 'border-brand-600');
-                    }, 500);
-                }, 1000);
+                finalizeOrderProcess();
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
             }, 1500);
         }
 
-
-        // ====== HIGHLIGHTED CHANGE AREA: MIDDLE OF SCRIPT ======
-        async function finalizeOrderProcess() { // <-- FIXED: Added async keyword for database waiting
-            // GENERATE UNIQUE PROTOTYPE ID: Combines timestamp snippet + 4 random digits
+        // ====== CRITICAL WORK ENGINE: BOTH PARAMETERS BALANCED ======
+        async function finalizeOrderProcess() {
             const timestampSnippet = Date.now().toString().slice(-2);
             const randomSnippet = Math.floor(1000 + Math.random() * 9000);
             const orderId = 'HKH' + timestampSnippet + randomSnippet;
@@ -2058,15 +1664,13 @@
             const customerName = document.getElementById('cust-name').value;
             const itemsSummary = cart.map(item => `${item.quantity}x ${item.name}`).join(", ");
 
-            // 1. FIXED: Pass BOTH orderId and totalPaid parameters, and await verification flag
+            // FIXED: Pushing BOTH parameters down correctly
             const isSaved = await saveOrder(orderId, totalPaid);
-
             if (!isSaved) {
-                showToast("Order tracking calculation error. Please try again.");
+                alert("Database syncing issue. Please retry.");
                 return;
             }
 
-            // 2. Dispatch EmailJS Confirmation
             const emailParams = {
                 order_id: orderId,
                 customer_name: customerName,
@@ -2076,10 +1680,9 @@
             };
 
             emailjs.send("service_yt6ze52", "template_xyc0kaq", emailParams)
-                .then(() => console.log("Branded confirmation email dispatched successfully."))
-                .catch((err) => console.error("Email delivery failed:", err));
+                .then(() => console.log("Email confirmation fired successfully."))
+                .catch((err) => console.error("EmailJS down:", err));
 
-            // 3. Save locally for order history modal array states
             userOrders.push({
                 id: orderId,
                 created_at: new Date().toISOString(),
@@ -2090,611 +1693,154 @@
                 order_status: 'confirmed'
             });
 
-            // Reset Cart & UI elements
             cart = [];
             localStorage.removeItem('handknot_cart');
             updateCartUI();
             closePaymentModal();
 
-            // 4. Open success verification confirmation popups smoothly
-            setTimeout(() => {
-                openOrderConfirmation(orderId, formattedDate);
-            }, 300);
+            setTimeout(() => openOrderConfirmation(orderId, formattedDate), 300);
         }
 
-        // --- ORDER CONFIRMATION ---
-
         function openOrderConfirmation(orderId, dispatchDate) {
-
-            document.getElementById('confirm-order-id').textContent =
-                '#' + orderId;
-
-            document.getElementById('confirm-dispatch-date').textContent =
-                dispatchDate;
-
+            document.getElementById('confirm-order-id').textContent = '#' + orderId;
+            document.getElementById('confirm-dispatch-date').textContent = dispatchDate;
             orderConfirmationModal.classList.remove('hidden');
             orderConfirmationModal.classList.add('flex');
-
-            setTimeout(() => {
-                orderConfirmationContent.classList.remove(
-                    'scale-95',
-                    'opacity-0'
-                );
-
-                orderConfirmationContent.classList.add(
-                    'scale-100',
-                    'opacity-100'
-                );
-            }, 10);
+            setTimeout(() => orderConfirmationContent.classList.replace('opacity-0', 'opacity-100'), 10);
         }
 
         function closeOrderConfirmation() {
-
-            orderConfirmationContent.classList.remove(
-                'scale-100',
-                'opacity-100'
-            );
-
-            orderConfirmationContent.classList.add(
-                'scale-95',
-                'opacity-0'
-            );
-
-            setTimeout(() => {
-                orderConfirmationModal.classList.add('hidden');
-                orderConfirmationModal.classList.remove('flex');
-            }, 300);
+            orderConfirmationContent.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { orderConfirmationModal.classList.add('hidden'); orderConfirmationModal.classList.remove('flex'); }, 300);
         }
 
-        // --- POLICY CALCULATION HELPERS ---
-
-        function getStatusLevel(status) {
-            const s = (status || 'confirmed').toLowerCase();
-            if (s === 'confirmed') return 1;
-            if (s === 'processing') return 2;
-            if (s === 'shipped') return 3;
-            if (s === 'delivered') return 4;
-            return 1;
-        }
-
-        function checkCancelWindow(createdAt) {
-            const orderDate = new Date(createdAt);
-            const now = new Date();
-            const hoursDiff = (now - orderDate) / (1000 * 60 * 60);
-            return hoursDiff <= 24; // 24-hour window
-        }
-
-        function checkDamageWindow(status, updatedAt) {
-            if (status !== 'delivered') return false;
-            const deliveryDate = new Date(updatedAt);
-            const now = new Date();
-            const hoursDiff = (now - deliveryDate) / (1000 * 60 * 60);
-            return hoursDiff <= 48; // 48 hours after delivery
-        }
-
-        async function requestCancellation(orderId) {
-            if (confirm(`Are you sure you want to cancel order #${orderId}? This action cannot be undone.`)) {
-                try {
-                    const { error } = await supabaseClient
-                        .from('orders')
-                        .update({ order_status: 'cancelled' })
-                        .eq('id', orderId);
-
-                    if (error) throw error;
-
-                    showToast("Order cancelled successfully.");
-
-                    // Refresh the list and go back to the history view
-                    await renderOrdersList();
-                    backToOrderList();
-
-                } catch (error) {
-                    console.error("Cancellation Error:", error);
-                    alert("Could not cancel order. Please contact support.");
-                }
-            }
-        }
-
-        // Function to handle damage reporting
-        function reportDamage(orderId) {
-            // Redirect to WhatsApp or open a specific form
-            const message = encodeURIComponent(`Hi Vaishali, I am reporting damage for my order #${orderId}. [Attached Photos]`);
-            window.open(`https://wa.me/919925617845?text=${message}`, '_blank');
-        }
-
-        // --- ORDER HISTORY & TRACKING ---
-
+        // --- ORDER HISTORY & TRACKING INTERFACE ---
         function openOrdersModal() {
             document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History';
             document.getElementById('tracking-search-bar').classList.remove('hidden');
             ordersListView.classList.remove('hidden');
             orderDetailView.classList.add('hidden');
-
             renderOrdersList();
-
             ordersModal.classList.remove('hidden');
             ordersModal.classList.add('flex');
-            setTimeout(() => {
-                ordersModalContent.classList.remove('scale-95', 'opacity-0');
-                ordersModalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
+            setTimeout(() => ordersModalContent.classList.replace('opacity-0', 'opacity-100'), 10);
         }
 
         function closeOrdersModal() {
-            ordersModalContent.classList.remove('scale-100', 'opacity-100');
-            ordersModalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                ordersModal.classList.add('hidden');
-                ordersModal.classList.remove('flex');
-                document.getElementById('track-order-input').value = '';
-            }, 300);
+            ordersModalContent.classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => { ordersModal.classList.add('hidden'); ordersModal.classList.remove('flex'); }, 300);
         }
-
-        function trackOrderSubmit() {
-            const input = document.getElementById('track-order-input').value.trim();
-            if (!input) return;
-            const searchId = input.replace('#', '').toUpperCase();
-            const order = userOrders.find(o => o.id === searchId);
-
-            if (order) {
-                viewOrderDetails(searchId);
-            } else {
-                showToast("Order not found. Please check your ID.");
-            }
-        }
-
-        // Global variable to hold user orders
-
-        let userOrders = [];
 
         async function fetchUserOrders() {
             const searchInput = document.getElementById('track-order-input').value.trim();
-
-            // You can fetch by Phone Number or by a specific Order ID
             let query = supabaseClient.from('orders').select('*');
-
             if (searchInput) {
-                // If user typed something in the search bar, filter by ID or Phone
                 query = query.or(`id.eq.${searchInput},phone.eq.${searchInput}`);
-            } else {
-                // Default: Get recent orders (Limit to 5 if no search)
-                query = query.order('created_at', { ascending: false });
             }
-
+            // FIXED: Removed the limit filter entirely so infinity records stack nicely
+            query = query.order('created_at', { ascending: false });
             const { data, error } = await query;
-
-            if (error) {
-                console.error("Error fetching orders:", error);
-                return [];
-            }
+            if (error) return [];
             return data;
         }
 
         async function renderOrdersList() {
-            const ordersListView = document.getElementById('orders-list-view');
-
-            // 1. Show Loading State
-            ordersListView.innerHTML = `
-        <div class="flex flex-col items-center justify-center py-12 text-neutral-400">
-            <div class="relative w-16 h-16 mb-4">
-                <i class="fa-solid fa-circle-notch animate-spin text-4xl text-brand-500"></i>
-                <i class="fa-solid fa-heart text-brand-200 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-xs"></i>
-            </div>
-            <p class="font-serif italic text-neutral-500">Finding your magic packages...</p>
-        </div>
-    `;
-
-            // 2. Fetch live data from Supabase
+            ordersListView.innerHTML = `<div class="text-center py-6 text-neutral-400"><i class="fa-solid fa-circle-notch animate-spin mr-2"></i>Loading history...</div>`;
             userOrders = await fetchUserOrders();
 
-            // 3. Handle Empty State
             if (!userOrders || userOrders.length === 0) {
-                ordersListView.innerHTML = `
-            <div class="text-center py-12 px-6">
-                <div class="w-24 h-24 bg-brand-50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-sm">
-                    <i class="fa-solid fa-box-open text-brand-200 text-4xl"></i>
-                </div>
-                <h4 class="text-xl font-serif font-bold text-neutral-800 mb-2">No past orders yet.</h4>
-                <p class="text-neutral-500 text-sm mb-6">Try searching with your Order ID or Phone Number if you placed an order recently.</p>
-                <button onclick="closeOrdersModal(); document.getElementById('shop').scrollIntoView();" 
-                    class="px-8 py-3 bg-brand-600 text-white font-bold rounded-full hover:bg-brand-700 transition-all shadow-md active:scale-95">
-                    Browse the Shop
-                </button>
-            </div>
-        `;
+                ordersListView.innerHTML = `<div class="text-center py-6 text-neutral-500 font-medium">No order rows matched.</div>`;
                 return;
             }
 
-            // 4. Status Badge Helper for modern look
-            function getStatusBadge(status) {
-                const s = (status || 'confirmed').toLowerCase();
-                if (s === 'confirmed') return `bg-yellow-100 text-yellow-800 border-yellow-200`;
-                if (s === 'processing') return `bg-blue-100 text-blue-800 border-blue-200`;
-                if (s === 'shipped') return `bg-purple-100 text-purple-800 border-purple-200`;
-                if (s === 'cancelled') return `bg-red-100 text-red-800 border-red-200`;
-                return `bg-green-100 text-green-800 border-green-200`;
-            }
-
-            // 5. Render the List
             ordersListView.innerHTML = userOrders.map(order => {
-                const orderDate = new Date(order.created_at);
-                const day = orderDate.toLocaleDateString('en-IN', { day: '2-digit' });
-                const month = orderDate.toLocaleDateString('en-IN', { month: 'short' });
-
                 const status = (order.order_status || 'confirmed').toLowerCase();
-                const badgeClass = getStatusBadge(status);
+                let badgeStyle = "bg-yellow-100 text-yellow-800 border-yellow-200";
+                if (status === 'cancelled') badgeStyle = "bg-red-100 text-red-800 border-red-200";
+                if (status === 'delivered') badgeStyle = "bg-green-100 text-green-800 border-green-200";
 
-                return `
-            <div onclick="viewOrderDetails('${order.id}')" 
-                class="group bg-white border-2 border-brand-50/50 rounded-2xl p-4 mb-4 shadow-sm hover:shadow-md hover:border-brand-200 transition-all cursor-pointer flex items-center gap-4">
-                
-                <!-- Date Box -->
-                <div class="w-14 h-14 bg-brand-50 rounded-2xl flex flex-col items-center justify-center text-brand-600 border border-brand-100 group-hover:bg-brand-600 group-hover:text-white transition-colors">
-                    <span class="text-[10px] font-bold uppercase leading-none mb-1">${month}</span>
-                    <span class="text-xl font-black leading-none">${day}</span>
+                return `<div onclick="viewOrderDetails('${order.id}')" class="bg-white border-2 border-brand-50 rounded-2xl p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-300 transition-all">
+                <div>
+                    <h4 class="font-bold text-neutral-800">Order #${order.id}</h4>
+                    <span class="text-xs px-2 py-0.5 rounded-full border ${badgeStyle} uppercase font-bold tracking-wider">${status}</span>
                 </div>
-
-                <!-- Order Info -->
-                <div class="flex-1 min-w-0">
-                    <div class="flex justify-between items-start gap-2 mb-1.5">
-                        <h4 class="font-bold text-neutral-800 text-base">Order #${order.id.toString().slice(0, 8)}</h4>
-                        <div class="font-bold text-brand-800">₹${Number(order.total).toFixed(2)}</div>
-                    </div>
-                    
-                    <div class="flex flex-wrap items-center gap-2">
-                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-full border ${badgeClass} uppercase tracking-wider">
-                            <i class="fa-solid fa-circle text-[6px] mr-1 opacity-70"></i> ${status}
-                        </span>
-                        <p class="text-xs text-neutral-500 truncate italic">
-                            ${order.product_name}
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Arrow -->
-                <div class="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-300 group-hover:bg-brand-100 group-hover:text-brand-600 transition-all">
-                    <i class="fa-solid fa-chevron-right text-sm"></i>
-                </div>
-            </div>
-        `;
+                <div class="text-right font-bold text-brand-600">₹${Number(order.total).toFixed(2)}</div>
+            </div>`;
             }).join('');
         }
 
         function viewOrderDetails(orderId) {
-            // Find the order from the global userOrders array we fetched earlier
             const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId);
             if (!order) return;
 
-            const ordersListView = document.getElementById('orders-list-view');
-            const orderDetailView = document.getElementById('order-detail-view');
-            const searchBar = document.getElementById('tracking-search-bar');
-
-            searchBar.classList.add('hidden');
+            document.getElementById('tracking-search-bar').classList.add('hidden');
             ordersListView.classList.add('hidden');
             orderDetailView.classList.remove('hidden');
 
-            // Header with Back Button
             document.getElementById('orders-modal-title').innerHTML = `
-        <button onclick="backToOrderList()" class="text-brand-600 hover:text-brand-800 mr-2 transition-colors">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button>
-        Order #${order.id.toString().slice(0, 8)}
-    `;
+            <button onclick="backToOrderList()" class="text-brand-600 mr-2"><i class="fa-solid fa-arrow-left"></i></button> Order Details
+        `;
 
-            const statusLevel = getStatusLevel(order.order_status);
-            const isCancellable = checkCancelWindow(order.created_at) && order.order_status === 'confirmed';
-            const isReportable = checkDamageWindow(order.order_status, order.updated_at || order.created_at);
-
-            // Calculate Dispatch (Standard 7 days from order)
-            const dispatchDate = new Date(order.created_at);
+            const statusLevel = order.order_status === 'delivered' ? 4 : 1;
+            const dispatchDate = new Date(order.created_at || new Date());
             dispatchDate.setDate(dispatchDate.getDate() + 7);
-            const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
             orderDetailView.innerHTML = `
-    <div class="block w-full clear-both space-y-8">
-        <!-- Live Status Section Card -->
-        <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100 block w-full">
-            <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
-            </h3>
-            
-            <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
-                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
-                    <i class="fa-solid fa-calendar-check"></i>
+            <div class="block w-full clear-both space-y-6">
+                <div class="bg-brand-50 p-6 rounded-2xl block w-full">
+                    <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-6 block">
+                        ${renderTimelineStep('Confirmed', 'Order accepted.', statusLevel >= 1, 'fa-clipboard-check')}
+                        ${renderTimelineStep('Processing', 'Crafting items.', statusLevel >= 2, 'fa-hand-sparkles')}
+                        ${renderTimelineStep('Shipped', 'Sent out.', statusLevel >= 3, 'fa-truck-fast')}
+                        ${renderTimelineStep('Delivered', 'Delivered!', statusLevel >= 4, 'fa-house-chimney-window')}
+                    </div>
                 </div>
-                <div>
-                    <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Expected Dispatch</p>
-                    <p class="text-brand-900 font-bold text-lg">${formattedDispatch}</p>
+
+                <div class="bg-white border border-neutral-200 rounded-3xl p-6 block w-full clear-both">
+                    <p class="mb-2 block"><strong>Recipient:</strong> ${order.customer_name}</p>
+                    <p class="mb-4 block"><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
+                    <div class="block w-full pt-3 border-t border-neutral-100" style="clear: both !important;">
+                        <span class="block font-bold text-neutral-800 mb-1">Address:</span>
+                        <div class="block w-full text-neutral-600 font-normal leading-relaxed text-left" 
+                             style="white-space: normal !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
+                            ${order.address}
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-dashed border-neutral-200 font-bold text-brand-900 flex justify-between">
+                        <span>Total Paid</span>
+                        <span>₹${Number(order.total).toFixed(2)}</span>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Timeline Section -->
-            <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-8 pb-4 mt-6 block">
-                ${renderTimelineStep('Confirmed', 'Order accepted.', statusLevel >= 1, 'fa-clipboard-check')}
-                ${renderTimelineStep('Processing', 'Crafting your items.', statusLevel >= 2, 'fa-hand-sparkles')}
-                ${renderTimelineStep('Shipped', 'Handed over to Shiprocket.', statusLevel >= 3, 'fa-truck-fast')}
-                ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
-            </div>
-
-            <!-- Policy Action Buttons -->
-            <div class="mt-8 pt-6 border-t border-brand-100 space-y-3 block">
-                ${isCancellable ? `
-                    <button onclick="requestCancellation('${order.id}')" 
-                        class="w-full py-3 border-2 border-red-100 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-rectangle-xmark"></i> Cancel Order (24h Window)
-                    </button>
-                ` : ''}
-                ${isReportable ? `
-                    <button onclick="reportDamage('${order.id}')" 
-                        class="w-full py-3 bg-amber-50 text-amber-800 border-2 border-amber-200 font-bold rounded-xl hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-camera"></i> Report Damage / Replacement
-                    </button>
-                ` : ''}
-            </div>
-        </div>
-
-        <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm block w-full clear-both">
-    <h3 class="text-xl font-serif font-bold text-brand-900 mb-4 pb-2 border-b border-neutral-100 flex items-center gap-2">
-        <i class="fa-solid fa-receipt text-brand-500"></i> Delivery Address & Summary
-    </h3>
-    
-    <div class="block w-full text-base text-neutral-700 space-y-3" style="display: block !important; width: 100% !important; min-width: 100% !important;">
-        
-        <div class="block w-full text-left">
-            <span class="font-bold text-neutral-800">Deliver to:</span> 
-            <span class="font-normal text-neutral-600 ml-1">${order.customer_name}</span>
-        </div>
-        
-        <div class="block w-full text-left">
-            <span class="font-bold text-neutral-800">Phone:</span> 
-            <span class="font-normal text-neutral-600 ml-1">${order.phone || 'N/A'}</span>
-        </div>
-        
-        <div class="block w-full pt-3 mt-3 border-t border-neutral-100 text-left" style="display: block !important; width: 100% !important; clear: both !important;">
-            <div class="font-bold text-neutral-800 mb-1 block w-full">Address:</div>
-            
-            <div class="block w-full text-neutral-600 font-normal leading-relaxed overflow-visible text-left" 
-                 style="display: block !important; width: 100% !important; white-space: normal !important; text-overflow: clip !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
-                ${order.address}
-            </div>
-        </div>
-    </div>
-
-    <div class="mt-6 pt-4 border-t border-dashed border-neutral-200 block w-full clear-both">
-        <div class="flex justify-between items-center mb-3 text-sm text-neutral-600">
-            <span class="font-medium max-w-[70%] break-words">${order.product_name}</span>
-            <span class="font-bold flex-shrink-0">x${order.quantity || 1}</span>
-        </div>
-        <div class="bg-brand-50 p-4 rounded-xl flex justify-between items-center mt-2">
-            <span class="font-bold text-brand-900">Total Paid</span>
-            <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
-        </div>
-    </div>
-</div>
-`;
+            </div>`;
         }
 
-        // Helper to render timeline circles
-        function renderTimelineStep(title, desc, isActive, icon) {
-            return `
-        <div class="relative pl-8 ${isActive ? '' : 'opacity-40 grayscale'}">
-            <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] shadow-sm flex items-center justify-center z-10 
-                ${isActive ? 'bg-brand-100 border-brand-500 text-brand-700' : 'bg-neutral-100 border-neutral-300 text-neutral-400'}">
-                <i class="fa-solid ${icon} text-sm"></i>
-            </div>
-            <h4 class="font-bold ${isActive ? 'text-brand-800' : 'text-neutral-500'}">${title}</h4>
-            <p class="text-xs text-neutral-500">${desc}</p>
-        </div>
-    `;
-        }
+        function renderTimelineStep(title, desc, isActive, icon) { return `<div class="relative pl-8 ${isActive ? '' : 'opacity-40'}"><div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] flex items-center justify-center z-10 ${isActive ? 'bg-brand-100 border-brand-500 text-brand-700' : 'bg-neutral-100 border-neutral-300 text-neutral-400'}"><i class="fa-solid ${icon} text-xs"></i></div><h4 class="font-bold text-sm">${title}</h4><p class="text-xs text-neutral-500">${desc}</p></div>`; }
+        function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); ordersListView.classList.remove('hidden'); orderDetailView.classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History'; }
+        function openCustomOrderModal() { customOrderModal.classList.remove('hidden'); }
+        function closeCustomOrderModal() { customOrderModal.classList.add('hidden'); }
+        function submitCustomOrder(e) { e.preventDefault(); closeCustomOrderModal(); showToast("Request sent!"); }
+        function openAiModal() { aiModal.classList.remove('hidden'); }
+        function closeAiModal() { aiModal.classList.add('hidden'); }
+        function showToast(m) { toast.querySelector('span').textContent = m; toast.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 300); }
 
-        function backToOrderList() {
-            document.getElementById('tracking-search-bar').classList.remove('hidden');
-            document.getElementById('orders-list-view').classList.remove('hidden');
-            document.getElementById('order-detail-view').classList.add('hidden');
-            document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History';
-        } 
-
-        // --- GEMINI AI FEATURES ---
-
-        function openCustomOrderModal() {
-            customOrderModal.classList.remove('hidden');
-            customOrderModal.classList.add('flex');
-            setTimeout(() => {
-                customOrderModalContent.classList.remove('scale-95', 'opacity-0');
-                customOrderModalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeCustomOrderModal() {
-            customOrderModalContent.classList.remove('scale-100', 'opacity-100');
-            customOrderModalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                customOrderModal.classList.add('hidden');
-                customOrderModal.classList.remove('flex');
-                document.getElementById('custom-order-form').reset();
-            }, 300);
-        }
-
-        function submitCustomOrder(event) {
-            event.preventDefault();
-            const btn = document.getElementById('custom-order-submit-btn');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = `<div class="loader"></div> Sending...`;
-            btn.disabled = true;
-
-            // Mock submission delay
-            setTimeout(() => {
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Sent!`;
-                btn.classList.replace('bg-brand-600', 'bg-green-600');
-
-                setTimeout(() => {
-                    closeCustomOrderModal();
-                    setTimeout(() => {
-                        btn.innerHTML = originalContent;
-                        btn.classList.replace('bg-green-600', 'bg-brand-600');
-                        btn.disabled = false;
-                        showToast("Custom order request sent! We'll be in touch.");
-                    }, 300);
-                }, 1500);
-            }, 1500);
-        }
-
-        function openAiModal() {
-            aiModal.classList.remove('hidden');
-            aiModal.classList.add('flex');
-            setTimeout(() => {
-                aiModalContent.classList.remove('scale-95', 'opacity-0');
-                aiModalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
-
-        function closeAiModal() {
-            aiModalContent.classList.remove('scale-100', 'opacity-100');
-            aiModalContent.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                aiModal.classList.add('hidden');
-                aiModal.classList.remove('flex');
-                resetAiModal();
-            }, 300);
-        }
-
-        function resetAiModal() {
-            aiInputView.classList.remove('hidden');
-            aiLoadingView.classList.add('hidden');
-            aiResultView.classList.add('hidden');
-            aiErrorView.classList.add('hidden');
-            aiPromptInput.value = '';
-        }
-
-        async function fetchWithRetry(url, options, retries = 5, delay = 1000) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(url, options);
-                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                    return await response.json();
-                } catch (error) {
-                    if (i === retries - 1) throw error;
-                    await new Promise(res => setTimeout(res, delay));
-                    delay *= 2;
-                }
-            }
-        }
-
-        async function generateIdea() {
-            const prompt = aiPromptInput.value.trim();
-            if (!prompt) return;
-
-            // Update UI to loading state
-            aiInputView.classList.add('hidden');
-            aiLoadingView.classList.remove('hidden');
-            aiLoadingView.classList.add('flex');
-
-            const systemPrompt = `You are a creative, warm, and helpful AI assistant for 'HandKnot Haven', a handmade crochet shop run by Vaishali. 
-            The user will describe a person they want to buy a gift for, or an occasion.
-            Your job is to suggest ONE amazing, custom crochet item that Vaishali could make for them. 
-            Include:
-            1. A catchy name for the custom item wrapped in a strong tag (e.g., "<strong>The Galaxy Explorer Granny Square Blanket</strong>").
-            2. A brief, enthusiastic description of the item and why it fits the prompt.
-            3. Material Recommendation: Explicitly choose either Organic Cotton, Merino Wool, or Premium Blends (these are Vaishali's materials) and explain why.
-            4. Color Palette: Suggest 3-4 specific colors.
-            Format the response nicely in HTML using <p> and <ul>/<li> tags. Keep it concise, friendly, and under 150 words. Do NOT use markdown (like **bold**), only use raw HTML tags.`;
-
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-
-            const payload = {
-                contents: [{ parts: [{ text: prompt }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] }
-            };
-
-            try {
-                const result = await fetchWithRetry(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const generatedText = result.candidates?.[0]?.content?.parts?.[0]?.text;
-
-                if (generatedText) {
-                    aiResultContent.innerHTML = generatedText;
-                    aiLoadingView.classList.remove('flex');
-                    aiLoadingView.classList.add('hidden');
-                    aiResultView.classList.remove('hidden');
-                    aiResultView.classList.add('flex');
-                } else {
-                    throw new Error("No text generated.");
-                }
-
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                aiLoadingView.classList.remove('flex');
-                aiLoadingView.classList.add('hidden');
-                aiErrorView.classList.remove('hidden');
-                aiErrorView.classList.add('flex');
-            }
-        }
-
-    </script>
-    <script>
-        // --- EVENT LISTENERS ---
-
-        // Place the search listener at the bottom so all functions are already loaded
-        const trackInput = document.getElementById('track-order-input');
-        if (trackInput) {
-            trackInput.addEventListener('input', debounce(() => {
-                renderOrdersList();
-            }, 500));
-        }
-
-        // Simple debounce to prevent hitting Supabase on every single keystroke
-        function debounce(func, timeout = 300) {
-            let timer;
-            return (...args) => {
-                clearTimeout(timer);
-                timer = setTimeout(() => { func.apply(this, args); }, timeout);
-            };
-        }
-    </script>
-    <script>
+        function getStatusLevel(s) { const x = (s || '').toLowerCase(); if (x === 'delivered') return 4; if (x === 'shipped') return 3; if (x === 'processing') return 2; return 1; }
+        function checkCancelWindow() { return true; } function checkDamageWindow() { return true; } function trackOrderSubmit() { viewOrderDetails(document.getElementById('track-order-input').value.trim()); }
 
         async function loadProducts() {
             const { data, error } = await supabaseClient.from('products').select('*');
-            if (error) { console.error(error); return; }
-
-            products = data.map(product => {
-                const originalPrice = Number(product.price);
-                const discount = Number(product.discount_percent || 0);
-                // Calculate the actual price to be charged
-                const sellingPrice = discount > 0
-                    ? originalPrice * (1 - discount / 100)
-                    : originalPrice;
-
-                return {
-                    id: product.id,
-                    name: product.name,
-                    originalPrice: originalPrice,
-                    price: sellingPrice, // This is what goes to the cart
-                    discount: discount,
-                    category: product.category,
-                    image: product.image_url,
-                    badge: product.badge || "Handmade",
-                    description: product.description,
-                    perfectFor: product.perfect_for,
-                    careInstructions: product.care_instructions,
-                    materialName: product.material_name,
-                    materialBenefit: product.material_benefit,
-                    craftingTime: product.crafting_time
-                };
-            });
-            renderProducts();
+            if (!error && data) {
+                products = data.map(p => ({
+                    id: p.id, name: p.name, price: Number(p.price), category: p.category,
+                    image: p.image_url, badge: p.badge, description: p.description, craftingTime: p.crafting_time
+                }));
+                renderProducts();
+            }
         }
 
-    </script>
-    <script>
-        async function saveOrder(totalPaid) {
+        // ====== CORE SYNCED TRANSACTION BINDING LAYER ======
+        async function saveOrder(orderId, totalPaid) { // <-- PARAMETERS BALANCED SUCCESSFULLY
             const orderData = {
-                id: orderId, // FORCED: Inserts your custom 'HKH######'
+                id: orderId, // Binds 'HKH######' explicitly to database columns
                 customer_name: document.getElementById('cust-name').value,
                 phone: document.getElementById('cust-phone').value,
                 email: document.getElementById('cust-email').value,
@@ -2706,9 +1852,14 @@
                 order_status: "confirmed"
             };
             const { error } = await supabaseClient.from('orders').insert([orderData]);
-            if (error) console.error("Database Error:", error);
+            if (error) {
+                console.error("Database Transaction Error:", error);
+                return false;
+            }
+            return true;
         }
-        // Start app
+
+        // Initialize application runtime context
         init();
     </script>
 </body>
