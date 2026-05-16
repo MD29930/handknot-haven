@@ -2270,7 +2270,7 @@
                 query = query.or(`id.eq.${searchInput},phone.eq.${searchInput}`);
             } else {
                 // Default: Get recent orders (Limit to 5 if no search)
-                query = query.order('created_at', { ascending: false }).limit(5);
+                query = query.order('created_at', { ascending: false });
             }
 
             const { data, error } = await query;
@@ -2323,6 +2323,7 @@
                 if (s === 'confirmed') return `bg-yellow-100 text-yellow-800 border-yellow-200`;
                 if (s === 'processing') return `bg-blue-100 text-blue-800 border-blue-200`;
                 if (s === 'shipped') return `bg-purple-100 text-purple-800 border-purple-200`;
+                if (s === 'cancelled') return `bg-red-100 text-red-800 border-red-200`;
                 return `bg-green-100 text-green-800 border-green-200`;
             }
 
