@@ -1899,6 +1899,44 @@
     </div>
 `;
         }
+        // =========================================================================
+        // HIGHLIGHTED CHANGE: ACTIVE CLICK HANDLERS FOR CANCEL & DAMAGE OPERATIONS
+        // =========================================================================
+
+        async function requestCancellation(orderId) {
+            if (confirm(`Are you sure you want to cancel order #${orderId}? This action cannot be undone.`)) {
+                try {
+                    // Update status live inside your Supabase database table
+                    const { error } = await supabaseClient
+                        .from('orders')
+                        .update({ order_status: 'cancelled' })
+                        .eq('id', orderId);
+
+                    if (error) throw error;
+
+                    showToast("Order cancelled successfully.");
+
+                    // Refresh the historical rows state and return to list view cleanly
+                    await renderOrdersList();
+                    backToOrderList();
+
+                } catch (error) {
+                    console.error("Cancellation Transaction Error:", error);
+                    alert("Could not process cancellation request. Please try again.");
+                }
+            }
+        }
+
+        function reportDamage(orderId) {
+            // Generates an automated, pre-filled high-end string for WhatsApp dispatch
+            const baselineMessage = `Hi Vaishali, I am reporting transit damage for my HandKnot Haven order #${orderId}. [Attaching reference photos below]`;
+            const formattedUrlString = encodeURIComponent(baselineMessage);
+
+            // Smoothly opens your verified routing connection window in a clean tab
+            window.open(`https://wa.me/919925617845?text=${formattedUrlString}`, '_blank');
+        }
+
+        // =========================================================================
 
         function renderTimelineStep(title, desc, isActive, icon) { return `<div class="relative pl-8 ${isActive ? '' : 'opacity-40'}"><div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] flex items-center justify-center z-10 ${isActive ? 'bg-brand-100 border-brand-500 text-brand-700' : 'bg-neutral-100 border-neutral-300 text-neutral-400'}"><i class="fa-solid ${icon} text-xs"></i></div><h4 class="font-bold text-sm">${title}</h4><p class="text-xs text-neutral-500">${desc}</p></div>`; }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); ordersListView.classList.remove('hidden'); orderDetailView.classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History'; }
