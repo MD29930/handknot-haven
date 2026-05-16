@@ -1785,33 +1785,93 @@
             const dispatchDate = new Date(order.created_at || new Date());
             dispatchDate.setDate(dispatchDate.getDate() + 7);
 
-            orderDetailView.innerHTML = `
-            <div class="block w-full clear-both space-y-6">
-                <div class="bg-brand-50 p-6 rounded-2xl block w-full">
-                    <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-6 block">
-                        ${renderTimelineStep('Confirmed', 'Order accepted.', statusLevel >= 1, 'fa-clipboard-check')}
-                        ${renderTimelineStep('Processing', 'Crafting items.', statusLevel >= 2, 'fa-hand-sparkles')}
-                        ${renderTimelineStep('Shipped', 'Sent out.', statusLevel >= 3, 'fa-truck-fast')}
-                        ${renderTimelineStep('Delivered', 'Delivered!', statusLevel >= 4, 'fa-house-chimney-window')}
-                    </div>
-                </div>
+            // ====== REPLACE YOUR ENTIRE orderDetailView.innerHTML BLOCK WITH THIS ======
 
-                <div class="bg-white border border-neutral-200 rounded-3xl p-6 block w-full clear-both">
-                    <p class="mb-2 block"><strong>Recipient:</strong> ${order.customer_name}</p>
-                    <p class="mb-4 block"><strong>Phone:</strong> ${order.phone || 'N/A'}</p>
-                    <div class="block w-full pt-3 border-t border-neutral-100" style="clear: both !important;">
-                        <span class="block font-bold text-neutral-800 mb-1">Address:</span>
-                        <div class="block w-full text-neutral-600 font-normal leading-relaxed text-left" 
-                             style="white-space: normal !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
+            orderDetailView.innerHTML = `
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full block clear-both">
+        
+        <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100 block w-full">
+            <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
+            </h3>
+            
+            <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Est. Dispatch</p>
+                    <p class="text-brand-900 font-bold text-lg">${formattedDispatch}</p>
+                </div>
+            </div>
+
+            <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-10 pb-4 mt-6 block">
+                ${renderTimelineStep('Confirmed', 'Order accepted.', statusLevel >= 1, 'fa-clipboard-check')}
+                ${renderTimelineStep('Processing', 'Crafting your items.', statusLevel >= 2, 'fa-hand-sparkles')}
+                ${renderTimelineStep('Shipped', 'Handed over to Shiprocket.', statusLevel >= 3, 'fa-truck-fast')}
+                ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-brand-100 space-y-3 block">
+                ${isCancellable ? `
+                    <button onclick="requestCancellation('${order.id}')" 
+                        class="w-full py-3 border-2 border-red-100 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rectangle-xmark"></i> Cancel Order (24h Window)
+                    </button>
+                ` : (order.order_status.toLowerCase() === 'confirmed' ? '' : `<p class="text-center text-[10px] text-neutral-400 italic">Order is in progress. Cancellation window closed.</p>`)}
+
+                ${isReportable ? `
+                    <button onclick="reportDamage('${order.id}')" 
+                        class="w-full py-3 bg-amber-50 text-amber-800 border-2 border-amber-200 font-bold rounded-xl hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-camera"></i> Report Damage (48h Post-Delivery)
+                    </button>
+                ` : ''}
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-receipt text-brand-500"></i> Order Details
+            </h3>
+            
+            <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm block w-full clear-both">
+                
+                <div class="text-sm text-neutral-600 mb-4 pb-4 border-b border-neutral-100 block w-full">
+                    <div class="block w-full text-left mb-2">
+                        <span class="font-bold text-neutral-800">Deliver to:</span> 
+                        <span class="font-normal text-neutral-600 ml-1">${order.customer_name}</span>
+                    </div>
+                    
+                    <div class="block w-full text-left mb-4">
+                        <span class="font-bold text-neutral-800">Phone:</span> 
+                        <span class="font-normal text-neutral-600 ml-1">${order.phone || 'N/A'}</span>
+                    </div>
+                    
+                    <div class="block w-full pt-3 mt-3 border-t border-neutral-100 text-left" style="display: block !important; width: 100% !important; clear: both !important;">
+                        <div class="font-bold text-neutral-800 mb-1 block w-full">Address:</div>
+                        <div class="block w-full text-neutral-600 font-normal leading-relaxed overflow-visible text-left" 
+                             style="display: block !important; width: 100% !important; white-space: normal !important; text-overflow: clip !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
                             ${order.address}
                         </div>
                     </div>
-                    <div class="mt-4 pt-4 border-t border-dashed border-neutral-200 font-bold text-brand-900 flex justify-between">
-                        <span>Total Paid</span>
-                        <span>₹${Number(order.total).toFixed(2)}</span>
+                </div>
+
+                <div class="space-y-4 mb-6 block w-full clear-both">
+                    <div class="flex justify-between items-center text-neutral-800 font-medium">
+                        <span class="max-w-[80%] break-words text-left">${order.product_name}</span>
+                        <span class="flex-shrink-0 font-bold text-neutral-500">x${order.quantity || 1}</span>
                     </div>
                 </div>
-            </div>`;
+
+                <div class="bg-brand-50 p-4 rounded-2xl flex justify-between items-center block w-full clear-both">
+                    <span class="font-bold text-brand-900">Total Paid</span>
+                    <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+`;
         }
 
         function renderTimelineStep(title, desc, isActive, icon) { return `<div class="relative pl-8 ${isActive ? '' : 'opacity-40'}"><div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] flex items-center justify-center z-10 ${isActive ? 'bg-brand-100 border-brand-500 text-brand-700' : 'bg-neutral-100 border-neutral-300 text-neutral-400'}"><i class="fa-solid ${icon} text-xs"></i></div><h4 class="font-bold text-sm">${title}</h4><p class="text-xs text-neutral-500">${desc}</p></div>`; }
