@@ -50,6 +50,12 @@
             }
         }
     </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+            (function () {
+                emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS Public Key
+            })();
+    </script>
     <style>
         /* Custom styles for things Tailwind doesn't handle natively as easily */
         .glass-nav {
@@ -2050,13 +2056,31 @@
                 day: 'numeric'
             });
 
-            const totalPaid = cart.reduce(
-                (sum, item) => sum + (item.price * item.quantity),
-                0
-            );
+            const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const customerEmail = document.getElementById('cust-email').value;
+            const customerName = document.getElementById('cust-name').value;
+            const itemsSummary = cart.map(item => `${item.quantity}x ${item.name}`).join(", ");
 
             // Save order to Supabase
             saveOrder(totalPaid);
+
+            // Match the variables inside your EmailJS Dashboard template exactly
+            const emailParams = {
+                order_id: orderId,
+                customer_name: customerName,
+                customer_email: customerEmail, // EmailJS uses this to know who to send it to
+                product_name: itemsSummary,
+                total_amount: totalPaid.toFixed(2)
+            };
+
+            // Replace these placeholders with the actual IDs from your EmailJS Account
+            emailjs.send("service_yt6ze52", "template_xyc0kaq", emailParams)
+                .then(() => {
+                    console.log("Branded confirmation email dispatched successfully.");
+                })
+                .catch((err) => {
+                    console.error("Email delivery failed:", err);
+                });
 
             // Save locally for order history
             userOrders.push({
@@ -2416,28 +2440,29 @@
             </div>
 
             <!-- Right Side: Order Summary -->
-            <div>
-                <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-receipt text-brand-500"></i> Order Details
-                </h3>
-                <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm">
-                    <div class="text-sm text-neutral-600 mb-4 pb-4 border-b border-neutral-100">
-                        <p><strong>Deliver to:</strong> ${order.customer_name}</p>
-                        <p class="truncate"><strong>Address:</strong> ${order.address}</p>
-                    </div>
-                    <div class="space-y-4 mb-6">
-                        <div class="flex justify-between items-center text-neutral-800 font-medium">
-                            <span>${order.product_name}</span>
-                            <span>x${order.quantity || 1}</span>
-                        </div>
-                    </div>
-                    <div class="bg-brand-50 p-4 rounded-2xl flex justify-between items-center">
-                        <span class="font-bold text-brand-900">Total Paid</span>
-                        <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
-                    </div>
-                </div>
+           // Locate this section inside viewOrderDetails(orderId)
+<div>
+    <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+        <i class="fa-solid fa-receipt text-brand-500"></i> Order Details
+    </h3>
+    <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm">
+        <div class="text-sm text-neutral-600 mb-4 pb-4 border-b border-neutral-100 space-y-1">
+            <p><strong>Deliver to:</strong> ${order.customer_name}</p>
+            <!-- FIXED: Removed 'truncate' and added 'whitespace-pre-line' to show the full multi-line address safely -->
+            <p class="whitespace-pre-line break-words"><strong>Address:</strong> ${order.address}</p>
+        </div>
+        <div class="space-y-4 mb-6">
+            <div class="flex justify-between items-center text-neutral-800 font-medium">
+                <span>${order.product_name}</span>
+                <span>x${order.quantity || 1}</span>
             </div>
         </div>
+        <div class="bg-brand-50 p-4 rounded-2xl flex justify-between items-center">
+            <span class="font-bold text-brand-900">Total Paid</span>
+            <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
+        </div>
+    </div>
+</div>
     `;
         }
 
