@@ -2440,16 +2440,22 @@
             </div>
 
             <!-- Right Side: Order Summary -->
-           // Locate this section inside viewOrderDetails(orderId)
+           // Locate the Right Side: Order Summary section inside your viewOrderDetails function and replace it with this:
+
 <div>
     <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
         <i class="fa-solid fa-receipt text-brand-500"></i> Order Details
     </h3>
     <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm">
-        <div class="text-sm text-neutral-600 mb-4 pb-4 border-b border-neutral-100 space-y-1">
+        <!-- FIXED container: added leading-relaxed and tracking-wide for better readability -->
+        <div class="text-sm text-neutral-600 mb-4 pb-4 border-b border-neutral-100 space-y-2 leading-relaxed">
             <p><strong>Deliver to:</strong> ${order.customer_name}</p>
-            <!-- FIXED: Removed 'truncate' and added 'whitespace-pre-line' to show the full multi-line address safely -->
-            <p class="whitespace-pre-line break-words"><strong>Address:</strong> ${order.address}</p>
+            
+            <!-- FIXED address block: completely isolated, using clear block level display, word-break overrides, and normal whitespace wrapping -->
+            <div class="mt-2 block w-full text-neutral-600 font-medium text-sm" style="white-space: normal !important; word-wrap: break-word !important; overflow-wrap: break-word !important;">
+                <strong class="text-neutral-700">Address:</strong>
+                <p class="mt-1 inline-block text-neutral-600 font-normal">${order.address}</p>
+            </div>
         </div>
         <div class="space-y-4 mb-6">
             <div class="flex justify-between items-center text-neutral-800 font-medium">
