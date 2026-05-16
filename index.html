@@ -2396,88 +2396,82 @@
             const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
             orderDetailView.innerHTML = `
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Left Side: Tracking & Status -->
-            <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100">
-                <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
-                    <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
-                </h3>
-                
-                <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
-                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
-                        <i class="fa-solid fa-calendar-check"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Est. Dispatch</p>
-                        <p class="text-brand-900 font-bold text-lg">${formattedDispatch}</p>
-                    </div>
-                </div>
-
-                <!-- Vertical Timeline -->
-                <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-10 pb-4">
-                    ${renderTimelineStep('Confirmed', 'Order accepted.', statusLevel >= 1, 'fa-clipboard-check')}
-                    ${renderTimelineStep('Processing', 'Crafting your items.', statusLevel >= 2, 'fa-hand-sparkles')}
-                    ${renderTimelineStep('Shipped', 'Handed over to Shiprocket.', statusLevel >= 3, 'fa-truck-fast')}
-                    ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
-                </div>
-
-                <!-- Policy Buttons -->
-                <div class="mt-10 pt-6 border-t border-brand-100 space-y-3">
-                    ${isCancellable ? `
-                        <button onclick="requestCancellation('${order.id}')" 
-                            class="w-full py-3 border-2 border-red-100 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-rectangle-xmark"></i> Cancel Order (24h Window)
-                        </button>
-                    ` : `<p class="text-center text-[10px] text-neutral-400 italic">Order is in progress. Cancellation window closed.</p>`}
-
-                    ${isReportable ? `
-                        <button onclick="reportDamage('${order.id}')" 
-                            class="w-full py-3 bg-amber-50 text-amber-800 border-2 border-amber-200 font-bold rounded-xl hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-camera"></i> Report Damage (48h Post-Delivery)
-                        </button>
-                    ` : ''}
-                </div>
-            </div>
-
-            <!-- Right Side: Order Summary -->
-
-<div>
-    <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
-        <i class="fa-solid fa-receipt text-brand-500"></i> Order Details
-    </h3>
-    <!-- Added table-layout isolation class 'block clear-both' to destroy any inheritance traps -->
-    <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm block clear-both">
-        
-        <!-- Customer Info Box -->
-        <div class="text-sm text-neutral-600 mb-4 pb-4 border-b border-neutral-100 block">
-            <p class="mb-2 block"><strong>Deliver to:</strong> ${order.customer_name}</p>
+    <div class="block w-full clear-both space-y-8">
+        <!-- Live Status Section Card -->
+        <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100 block w-full">
+            <h3 class="text-xl font-serif font-bold text-brand-900 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-map-location-dot text-brand-500"></i> Live Status
+            </h3>
             
-            <!-- HARD OVERRIDE: Using clean semantic block elements to guarantee wrapping onto a second line -->
-            <div class="block w-full text-neutral-700 font-bold mb-1">
-                Address:
+            <div class="bg-white rounded-2xl p-4 mb-8 border border-brand-100 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl flex-shrink-0">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                    <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-0.5">Expected Dispatch</p>
+                    <p class="text-brand-900 font-bold text-lg">${formattedDispatch}</p>
+                </div>
             </div>
-            <div class="block w-full text-neutral-600 font-normal leading-relaxed overflow-visible text-left" 
-                 style="white-space: normal !important; text-overflow: clip !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
-                ${order.address}
+
+            <!-- Timeline Section -->
+            <div class="relative border-l-[3px] border-dashed border-brand-300 ml-6 space-y-8 pb-4 mt-6 block">
+                ${renderTimelineStep('Confirmed', 'Order accepted.', statusLevel >= 1, 'fa-clipboard-check')}
+                ${renderTimelineStep('Processing', 'Crafting your items.', statusLevel >= 2, 'fa-hand-sparkles')}
+                ${renderTimelineStep('Shipped', 'Handed over to Shiprocket.', statusLevel >= 3, 'fa-truck-fast')}
+                ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
+            </div>
+
+            <!-- Policy Action Buttons -->
+            <div class="mt-8 pt-6 border-t border-brand-100 space-y-3 block">
+                ${isCancellable ? `
+                    <button onclick="requestCancellation('${order.id}')" 
+                        class="w-full py-3 border-2 border-red-100 text-red-600 font-bold rounded-xl hover:bg-red-50 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-rectangle-xmark"></i> Cancel Order (24h Window)
+                    </button>
+                ` : ''}
+                ${isReportable ? `
+                    <button onclick="reportDamage('${order.id}')" 
+                        class="w-full py-3 bg-amber-50 text-amber-800 border-2 border-amber-200 font-bold rounded-xl hover:bg-amber-100 transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-camera"></i> Report Damage / Replacement
+                    </button>
+                ` : ''}
             </div>
         </div>
 
-        <!-- Items Summary -->
-        <div class="space-y-4 mb-6 block">
-            <div class="flex justify-between items-center text-neutral-800 font-medium">
-                <span class="truncate pr-4">${order.product_name}</span>
-                <span class="flex-shrink-0">x${order.quantity || 1}</span>
+        <!-- Destination Details Card Summary -->
+        <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm block w-full">
+            <h3 class="text-xl font-serif font-bold text-brand-900 mb-4 pb-2 border-b border-neutral-100 flex items-center gap-2">
+                <i class="fa-solid fa-receipt text-brand-500"></i> Delivery Address & Summary
+            </h3>
+            
+            <div class="text-base text-neutral-700 space-y-4 block w-full" style="display: block !important;">
+                <p class="block w-full"><strong>Recipient:</strong> ${order.customer_name}</p>
+                <p class="block w-full"><strong>Phone:</strong> ${order.phone}</p>
+                
+                <!-- THE INDEPENDENT ADDRESS CARD BOUNDARY: Completely breaks out of layout hierarchies -->
+                <div class="block w-full pt-2 border-t border-neutral-50" style="display: block !important; clear: both !important;">
+                    <span class="block text-neutral-800 font-bold mb-1">Shipping Address:</span>
+                    <div class="block text-neutral-600 font-normal leading-relaxed text-left" 
+                         style="display: block !important; white-space: normal !important; text-overflow: clip !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
+                        ${order.address}
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Price Footer -->
-        <div class="bg-brand-50 p-4 rounded-2xl flex justify-between items-center block">
-            <span class="font-bold text-brand-900">Total Paid</span>
-            <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
+            <!-- Item Totals Details -->
+            <div class="mt-6 pt-4 border-t border-dashed border-neutral-200 block w-full">
+                <div class="flex justify-between items-center mb-3 text-sm text-neutral-600">
+                    <span class="font-medium max-w-[70%] break-words">${order.product_name}</span>
+                    <span class="font-bold flex-shrink-0">x${order.quantity || 1}</span>
+                </div>
+                <div class="bg-brand-50 p-4 rounded-xl flex justify-between items-center mt-2">
+                    <span class="font-bold text-brand-900">Total Paid</span>
+                    <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-    `;
+`;
         }
 
         // Helper to render timeline circles
