@@ -1769,32 +1769,45 @@
             }).join('');
         }
 
-        // ====== ADD/PASTE THESE CALCULATION LINES HERE ======
-        const statusLevel = getStatusLevel(order.order_status);
-        const isCancellable = checkCancelWindow(order.created_at) && (order.order_status || '').toLowerCase() === 'confirmed';
-        const isReportable = checkDamageWindow(order.order_status, order.updated_at || order.created_at);
+        function viewOrderDetails(orderId) {
+            // 1. Find the order from your global array
+            const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId);
+            if (!order) return;
 
-        // Calculate Expected Dispatch Date (7 days from order creation)
-        const dispatchDate = new Date(order.created_at || new Date());
-        dispatchDate.setDate(dispatchDate.getDate() + 7);
-        const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        });
-        // ====================================================
+            const ordersListView = document.getElementById('orders-list-view');
+            const orderDetailView = document.getElementById('order-detail-view');
+            const searchBar = document.getElementById('tracking-search-bar');
 
-        // Header with Back Button
-        document.getElementById('orders-modal-title').innerHTML = `
+            searchBar.classList.add('hidden');
+            ordersListView.classList.add('hidden');
+            orderDetailView.classList.remove('hidden');
+
+            // ====== ADD/PASTE THESE CALCULATION LINES HERE ======
+            const statusLevel = getStatusLevel(order.order_status);
+            const isCancellable = checkCancelWindow(order.created_at) && (order.order_status || '').toLowerCase() === 'confirmed';
+            const isReportable = checkDamageWindow(order.order_status, order.updated_at || order.created_at);
+
+            // Calculate Expected Dispatch Date (7 days from order creation)
+            const dispatchDate = new Date(order.created_at || new Date());
+            dispatchDate.setDate(dispatchDate.getDate() + 7);
+            const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            // ====================================================
+
+            // Header with Back Button
+            document.getElementById('orders-modal-title').innerHTML = `
         <button onclick="backToOrderList()" class="text-brand-600 hover:text-brand-800 mr-2 transition-colors">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
         Order #${order.id.toString().slice(0, 8)}
     `;
 
-        // ====== REPLACE YOUR ENTIRE orderDetailView.innerHTML BLOCK WITH THIS ======
+            // ====== REPLACE YOUR ENTIRE orderDetailView.innerHTML BLOCK WITH THIS ======
 
-        orderDetailView.innerHTML = `
+            orderDetailView.innerHTML = `
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full block clear-both">
         
         <div class="bg-brand-50/50 rounded-3xl p-6 border border-brand-100 block w-full">
@@ -1879,7 +1892,7 @@
 
     </div>
 `;
-
+        }
 
         function renderTimelineStep(title, desc, isActive, icon) { return `<div class="relative pl-8 ${isActive ? '' : 'opacity-40'}"><div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] flex items-center justify-center z-10 ${isActive ? 'bg-brand-100 border-brand-500 text-brand-700' : 'bg-neutral-100 border-neutral-300 text-neutral-400'}"><i class="fa-solid ${icon} text-xs"></i></div><h4 class="font-bold text-sm">${title}</h4><p class="text-xs text-neutral-500">${desc}</p></div>`; }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); ordersListView.classList.remove('hidden'); orderDetailView.classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History'; }
