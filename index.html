@@ -2438,39 +2438,44 @@
             </div>
         </div>
 
-        <!-- Destination Details Card Summary -->
-        <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm block w-full">
-            <h3 class="text-xl font-serif font-bold text-brand-900 mb-4 pb-2 border-b border-neutral-100 flex items-center gap-2">
-                <i class="fa-solid fa-receipt text-brand-500"></i> Delivery Address & Summary
-            </h3>
+        <div class="bg-white rounded-3xl p-6 border border-neutral-200 shadow-sm block w-full clear-both">
+    <h3 class="text-xl font-serif font-bold text-brand-900 mb-4 pb-2 border-b border-neutral-100 flex items-center gap-2">
+        <i class="fa-solid fa-receipt text-brand-500"></i> Delivery Address & Summary
+    </h3>
+    
+    <div class="block w-full text-base text-neutral-700 space-y-3" style="display: block !important; width: 100% !important; min-width: 100% !important;">
+        
+        <div class="block w-full text-left">
+            <span class="font-bold text-neutral-800">Deliver to:</span> 
+            <span class="font-normal text-neutral-600 ml-1">${order.customer_name}</span>
+        </div>
+        
+        <div class="block w-full text-left">
+            <span class="font-bold text-neutral-800">Phone:</span> 
+            <span class="font-normal text-neutral-600 ml-1">${order.phone || 'N/A'}</span>
+        </div>
+        
+        <div class="block w-full pt-3 mt-3 border-t border-neutral-100 text-left" style="display: block !important; width: 100% !important; clear: both !important;">
+            <div class="font-bold text-neutral-800 mb-1 block w-full">Address:</div>
             
-            <div class="text-base text-neutral-700 space-y-4 block w-full" style="display: block !important;">
-                <p class="block w-full"><strong>Recipient:</strong> ${order.customer_name}</p>
-                <p class="block w-full"><strong>Phone:</strong> ${order.phone}</p>
-                
-                <!-- THE INDEPENDENT ADDRESS CARD BOUNDARY: Completely breaks out of layout hierarchies -->
-                <div class="block w-full pt-2 border-t border-neutral-50" style="display: block !important; clear: both !important;">
-                    <span class="block text-neutral-800 font-bold mb-1">Shipping Address:</span>
-                    <div class="block text-neutral-600 font-normal leading-relaxed text-left" 
-                         style="display: block !important; white-space: normal !important; text-overflow: clip !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
-                        ${order.address}
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item Totals Details -->
-            <div class="mt-6 pt-4 border-t border-dashed border-neutral-200 block w-full">
-                <div class="flex justify-between items-center mb-3 text-sm text-neutral-600">
-                    <span class="font-medium max-w-[70%] break-words">${order.product_name}</span>
-                    <span class="font-bold flex-shrink-0">x${order.quantity || 1}</span>
-                </div>
-                <div class="bg-brand-50 p-4 rounded-xl flex justify-between items-center mt-2">
-                    <span class="font-bold text-brand-900">Total Paid</span>
-                    <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
-                </div>
+            <div class="block w-full text-neutral-600 font-normal leading-relaxed overflow-visible text-left" 
+                 style="display: block !important; width: 100% !important; white-space: normal !important; text-overflow: clip !important; word-break: break-word !important; overflow-wrap: anywhere !important;">
+                ${order.address}
             </div>
         </div>
     </div>
+
+    <div class="mt-6 pt-4 border-t border-dashed border-neutral-200 block w-full clear-both">
+        <div class="flex justify-between items-center mb-3 text-sm text-neutral-600">
+            <span class="font-medium max-w-[70%] break-words">${order.product_name}</span>
+            <span class="font-bold flex-shrink-0">x${order.quantity || 1}</span>
+        </div>
+        <div class="bg-brand-50 p-4 rounded-xl flex justify-between items-center mt-2">
+            <span class="font-bold text-brand-900">Total Paid</span>
+            <span class="font-bold text-xl text-brand-700">₹${Number(order.total).toFixed(2)}</span>
+        </div>
+    </div>
+</div>
 `;
         }
 
