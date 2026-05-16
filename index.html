@@ -1837,10 +1837,10 @@
             }
         }
 
-        // ====== CORE SYNCED TRANSACTION BINDING LAYER ======
-        async function saveOrder(orderId, totalPaid) { // <-- PARAMETERS BALANCED SUCCESSFULLY
+        // Change ONLY this function block at the very bottom of your HTML file:
+        async function saveOrder(orderId, totalPaid) {
             const orderData = {
-                id: orderId, // Binds 'HKH######' explicitly to database columns
+                id: orderId, // Passes your custom 'HKH######' string directly
                 customer_name: document.getElementById('cust-name').value,
                 phone: document.getElementById('cust-phone').value,
                 email: document.getElementById('cust-email').value,
@@ -1851,9 +1851,14 @@
                 payment_status: "paid",
                 order_status: "confirmed"
             };
-            const { error } = await supabaseClient.from('orders').insert([orderData]);
+
+            // Await the insertion so execution doesn't race ahead
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .insert([orderData]);
+
             if (error) {
-                console.error("Database Transaction Error:", error);
+                console.error("Supabase Database Error:", error);
                 return false;
             }
             return true;
