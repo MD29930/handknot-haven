@@ -66,28 +66,23 @@
         </div>
 
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <a href="#"
+            <a href="#" id="nav-overview-tab" onclick="switchAdminTab('overview-tab'); return false;"
                 class="flex items-center gap-3 px-4 py-3 bg-brand-800 text-white rounded-xl font-bold transition-colors">
                 <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
             </a>
+
             <a href="#"
                 class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
                 <i class="fa-solid fa-box-open w-5"></i> Orders
                 <span class="ml-auto bg-brand-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
             </a>
-            <a href="#" onclick="switchAdminTab('custom-requests-tab')" id="nav-custom-requests-tab"
-                class="admin-nav-item flex items-center gap-3 px-4 py-3 rounded-xl text-neutral-600 font-bold hover:bg-brand-50 hover:text-brand-900 transition-all duration-200">
-                <i class="fa-solid fa-wand-magic-sparkles text-lg text-brand-500"></i>
+
+            <a href="#" onclick="switchAdminTab('custom-requests-tab'); return false;" id="nav-custom-requests-tab"
+                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-all duration-200">
+                <i class="fa-solid fa-wand-magic-sparkles w-5 text-brand-400"></i>
                 <span>Custom Requests</span>
             </a>
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
-                <i class="fa-solid fa-tags w-5"></i> Products
-            </a>
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
-                <i class="fa-solid fa-users w-5"></i> Customers
-            </a>
+
         </nav>
 
         <div class="p-4 border-t border-brand-800">
@@ -492,20 +487,37 @@
         // ====== ADMIN SIDE JAVASCRIPT INTERACTIVE HANDLERS ======
 
         // Extend your routing controller tab switcher function to clear/highlight states safely
+        // ====== REPLACE YOUR EXISTING switchAdminTab FUNCTION WITH THIS ======
         function switchAdminTab(targetTabId) {
-            // Hide all contents blocks safely
-            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('bg-brand-100', 'text-brand-900'));
+            // 1. Hide all main content block tab panels completely
+            document.querySelectorAll('.admin-tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
 
-            // Reveal target block workspace view panel
-            document.getElementById(targetTabId).classList.remove('hidden');
-            document.getElementById('nav-' + targetTabId).classList.add('bg-brand-100', 'text-brand-900');
+            // 2. Remove premium active background color highlights from ALL sidebar nav links
+            document.querySelectorAll('aside nav a').forEach(el => {
+                el.classList.remove('bg-brand-800', 'text-white');
+                el.classList.add('text-brand-200', 'hover:bg-brand-800/50');
+            });
 
+            // 3. Reveal the specific targeted panel screen cleanly
+            const targetPanel = document.getElementById(targetTabId);
+            if (targetPanel) {
+                targetPanel.classList.remove('hidden');
+            }
+
+            // 4. Assign the active styling state onto the clicked tab link element
+            const activeNav = document.getElementById('nav-' + targetTabId);
+            if (activeNav) {
+                activeNav.classList.remove('text-brand-200', 'hover:bg-brand-800/50');
+                activeNav.classList.add('bg-brand-800', 'text-white');
+            }
+
+            // 5. If navigating to custom requests, fire the database table builder
             if (targetTabId === 'custom-requests-tab') {
                 loadAdminCustomRequests();
             }
         }
-
         async function loadAdminCustomRequests() {
             const tableBody = document.getElementById('admin-custom-requests-table-body');
             if (!tableBody) return;
