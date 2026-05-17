@@ -486,17 +486,21 @@
                 const dateTarget = req.created_at ? new Date(req.created_at) : new Date();
                 const dateParsed = isNaN(dateTarget.getTime()) ? 'Recent' : dateTarget.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
-                // FIXED: Handles native device data strings dynamically for instant image previews
+                // ====== HIGHLIGHTED CHANGE: REWRITTEN IMAGE COLUMN VIEW LINK ======
                 let imageColumnContent = `<span class="text-neutral-400 italic text-xs">None Provided</span>`;
                 if (req.reference_image) {
+                    // Securely escape quotes inside the data block string to prevent rendering errors
+                    const safeImageString = req.reference_image.replace(/'/g, "\\'");
+
                     imageColumnContent = `
                 <div class="flex flex-col items-center gap-1">
                     <img src="${req.reference_image}" class="w-16 h-16 object-cover rounded-xl border border-neutral-200 shadow-sm" />
-                    <a href="${req.reference_image}" target="_blank" class="text-[11px] font-bold text-brand-600 hover:underline">
+                    <button onclick="openCustomImageInNewTab('${safeImageString}')" class="text-[11px] font-bold text-brand-600 hover:underline cursor-pointer focus:outline-none bg-transparent border-0 p-0">
                         <i class="fa-solid fa-expand"></i> View Full
-                    </a>
+                    </button>
                 </div>`;
                 }
+                // =================================================================
 
                 return `
             <tr class="hover:bg-brand-50/30 transition-colors">
@@ -529,28 +533,35 @@
         `;
             }).join('');
         }
-        function openFullCustomImage(base64Data) {
-            const imageWindow = window.open();
-            if (imageWindow) {
-                imageWindow.document.write(`
-            <html>
-                <head>
-                    <title>HandKnot Haven | Custom Reference Photo View</title>
-                    <style>
-                        body { margin: 0; background-color: #171717; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; }
-                        img { max-width: 95vw; max-height: 92vh; object-fit: contain; border-radius: 12px; shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 2px solid #262626; }
-                        .close-btn { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 30px; cursor: pointer; backdrop-blur: sm; transition: background 0.2s; }
-                        .close-btn:hover { background: rgba(255,255,255,0.4); }
-                    </style>
-                </head>
-                <body>
-                    <button class="close-btn" onclick="window.close()">Close Preview</button>
-                    <img src="${base64Data}" alt="HandKnot Haven Reference Image Preview" />
-                </body>
-            </html>
-        `);
-            } else {
-                alert("Pop-up blocked! Please allow pop-ups for this admin tab dashboard page to see full-size references.");
+
+        // ====== HIGHLIGHTED CHANGE: ALL-NEW BLOB NEW-TAB INJECTION ENGINE ======
+        function openCustomImageInNewTab(base64Data) {
+            try {
+                // 1. Split out data type metadata and decode raw base64 contents
+                const parts = base64Data.split(',');
+                const byteString = atob(parts[1]);
+                const mimeString = parts[0].split(':')[1].split(';')[0];
+
+                // 2. Map structural values arrays into a safe binary array stream 
+                const ab = new ArrayBuffer(byteString.length);
+                const ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+                // 3. Create a clean system Object Blob URL 
+                const blob = new Blob([ab], { type: mimeString });
+                const blobUrl = URL.createObjectURL(blob);
+
+                // 4. Open it instantly inside a true, fresh blank tab
+                const newTab = window.open(blobUrl, '_blank');
+
+                if (!newTab) {
+                    alert("Pop-up blocked! Please allow pop-ups for this dashboard to inspect customer reference items.");
+                }
+            } catch (err) {
+                console.error("Failed to compile image blob array layout:", err);
+                alert("Could not render full preview file. Check browser console logs.");
             }
         }
 
