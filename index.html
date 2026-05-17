@@ -1991,7 +1991,7 @@
             // A. GENERATE LOGIC TRACKING IDENTIFIER CODE STRING
             const timestampSnippet = Date.now().toString().slice(-4);
             const randomSnippet = Math.floor(100 + Math.random() * 900);
-            const customOrderId = 'HKH-CUST-' + timestampSnippet + randomSnippet; // Unique Custom Tracking ID Sequence
+            const customOrderId = 'HKH-CUST-' + timestampSnippet + randomSnippet;
 
             const customerName = document.getElementById('custom-req-name').value;
             const customerPhone = document.getElementById('custom-req-phone').value;
@@ -1999,19 +1999,22 @@
             const itemDescription = document.getElementById('custom-req-desc').value;
             const referenceImgUrl = document.getElementById('custom-req-image').value || null;
 
-            // TRANSACTION BLOCK 1: Write structural info straight into main 'orders' table
-            // This inserts it directly into the regular customer order history portal with an "Unpriced / Pending Review" total 
+            // =========================================================================
+            // 🌟 CHANGED REGION: PARALLEL DATABASE INSERTION 
+            // =========================================================================
+
+            // 1. Write structural info straight into main 'orders' table (For Overview & Tracking History)
             const mainOrderRowData = {
                 id: customOrderId,
                 customer_name: customerName,
                 phone: customerPhone,
                 email: customerEmail,
-                address: "Custom Order Details Provided - Pricing/Address Pending Vaishali's Review",
+                address: "Custom Order Details Provided - Pricing/Address Pending Review",
                 product_name: `Bespoke Custom Crochet Request: "${itemDescription.slice(0, 45)}..."`,
                 quantity: 1,
-                total: 0.00, // Price is set to zero initially until you email/message them your quote
+                total: 0.00,
                 payment_status: "pending_quote",
-                order_status: "confirmed" // Places it immediately into their active website profile timeline tracking index
+                order_status: "confirmed"
             };
 
             const { error: errorMainTable } = await supabaseClient
@@ -2026,16 +2029,25 @@
                 return;
             }
 
-            // TRANSACTION BLOCK 2: Secondary Insertion for tracking column data in custom_orders
-            await supabaseClient.from('custom_orders').insert([{
-                id: customOrderId,
-                customer_name: customerName,
-                phone: customerPhone,
-                email: customerEmail,
-                description: itemDescription,
-                reference_image: referenceImgUrl,
-                status: 'pending_review'
-            }]);
+            // 2. Write exact same details into 'custom_orders' table (For Custom Requests Tab)
+            const { error: errorCustomTable } = await supabaseClient
+                .from('custom_orders')
+                .insert([{
+                    id: customOrderId,
+                    customer_name: customerName,
+                    phone: customerPhone,
+                    email: customerEmail,
+                    description: itemDescription,
+                    reference_image: referenceImgUrl,
+                    status: 'pending_review'
+                }]);
+
+            if (errorCustomTable) {
+                console.error("Custom Table Insertion Error:", errorCustomTable);
+                // We won't block the user since the main tracking table caught it, but we log it for safety
+            }
+
+            // =========================================================================
 
             // TRANSACTION BLOCK 3: Dispatch confirmation alert copy text safely using EmailJS
             const emailParams = {
@@ -2043,7 +2055,7 @@
                 customer_name: customerName,
                 customer_email: customerEmail,
                 product_name: `Bespoke Custom Crochet Craft [${itemDescription.slice(0, 60)}...]`,
-                total_amount: "Pending Quote Review" // Clearly displays unpriced status in your email invoice templates!
+                total_amount: "Pending Quote Review"
             };
 
             emailjs.send("service_yt6ze52", "template_xyc0kaq", emailParams)
@@ -2052,7 +2064,7 @@
 
             // TRANSACTION BLOCK 4: Push layout directly into active user order state arrays
             const dispatchDate = new Date();
-            dispatchDate.setDate(dispatchDate.getDate() + 10); // Custom items generally take a little longer to design
+            dispatchDate.setDate(dispatchDate.getDate() + 10);
             const formattedDispatchDate = dispatchDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
             const placedDateString = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
 
@@ -2076,11 +2088,9 @@
                 btn.classList.replace('bg-green-600', 'bg-brand-600');
                 btn.disabled = false;
 
-                // Triggers the standard confirmation screen showing your newly minted custom tracking string parameter
                 openOrderConfirmation(customOrderId, "Pending Review (Check your email!)");
             }, 1500);
         }
-
         function getStatusLevel(s) {
             const x = (s || '').toLowerCase();
             if (x === 'delivered') return 4;
