@@ -1174,7 +1174,7 @@
     <div id="custom-order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
         <div class="absolute inset-0 bg-neutral-900 bg-opacity-60 backdrop-blur-sm" onclick="closeCustomOrderModal()">
         </div>
-        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0"
+        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-100 opacity-100"
             id="custom-order-modal-content">
 
             <div class="p-6 md:p-8 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
@@ -1192,36 +1192,53 @@
 
             <div class="p-6 md:p-8 overflow-y-auto flex-1">
                 <form id="custom-order-form" onsubmit="submitCustomOrder(event)">
-                    <div class="space-y-6">
+                    <div class="space-y-4">
                         <div>
-                            <label class="block text-neutral-800 font-bold mb-2">Describe Your Dream Item <span
-                                    class="text-red-500">*</span></label>
-                            <textarea id="custom-req-desc" required rows="4"
-                                class="w-full p-4 border-2 border-brand-200 rounded-xl focus:outline-none focus:border-brand-500 text-neutral-700 bg-white placeholder-neutral-400 resize-none transition-colors"
-                                placeholder="e.g., I would like a king-size blanket featuring a sunflower granny square pattern, mostly using mustard yellow and forest green colors..."></textarea>
+                            <label class="block text-neutral-800 font-bold mb-1 text-sm">Your Name *</label>
+                            <input type="text" id="custom-req-name" required
+                                class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-500 outline-none font-medium" />
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-neutral-800 font-bold mb-1 text-sm">Phone Number *</label>
+                                <input type="tel" id="custom-req-phone" required
+                                    class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-500 outline-none font-medium" />
+                            </div>
+                            <div>
+                                <label class="block text-neutral-800 font-bold mb-1 text-sm">Email Address *</label>
+                                <input type="email" id="custom-req-email" required
+                                    class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-500 outline-none font-medium" />
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-neutral-800 font-bold mb-1 text-sm">Describe Your Dream Item
+                                *</label>
+                            <textarea id="custom-req-desc" required rows="3"
+                                class="w-full p-3 border-2 border-brand-200 rounded-xl focus:outline-none focus:border-brand-500 text-neutral-700 bg-white placeholder-neutral-400 resize-none transition-colors"
+                                placeholder="e.g., I would like a king-size blanket featuring a sunflower granny square pattern..."></textarea>
                         </div>
 
                         <div>
-                            <label class="block text-neutral-800 font-bold mb-2">Reference Photos (Optional)</label>
-                            <input type="file" id="custom-req-photos" multiple accept="image/*"
-                                class="block w-full text-sm text-neutral-500 file:mr-4 file:py-3 file:px-6 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-100 file:text-brand-700 hover:file:bg-brand-200 transition-colors cursor-pointer border-2 border-dashed border-brand-200 rounded-xl p-4">
-                            <p class="text-xs text-neutral-500 mt-2">Upload sketches, color palettes, or inspiration
-                                photos.</p>
+                            <label class="block text-neutral-800 font-bold mb-1 text-sm">Reference Image URL
+                                (Optional)</label>
+                            <input type="url" id="custom-req-image"
+                                class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-500 outline-none font-medium text-sm"
+                                placeholder="Paste an image link from Pinterest or Google drive..." />
                         </div>
 
                         <div class="bg-brand-50 border border-brand-200 rounded-xl p-4 flex gap-3 items-start">
                             <i class="fa-solid fa-envelope-open-text text-brand-600 mt-1 text-lg"></i>
                             <div>
                                 <h4 class="font-bold text-brand-900 text-sm mb-1">What happens next?</h4>
-                                <p class="text-sm text-brand-800 leading-relaxed">Once you submit this request, we will
-                                    review your idea and connect with you via email within 24-48 hours to discuss
-                                    details, pricing, and exact materials before we begin crafting your order.</p>
+                                <p class="text-xs text-brand-800 leading-relaxed">Once you submit, we will review your
+                                    idea and connect with you via email within 24-48 hours to discuss details and
+                                    pricing before crafting.</p>
                             </div>
                         </div>
 
                         <button type="submit" id="custom-order-submit-btn"
-                            class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg shadow-brand-500/30 transition-all flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
-                            Submit Request <i class="fa-solid fa-paper-plane"></i>
+                            class="w-full bg-brand-600 text-white py-4 rounded-full font-bold text-lg hover:bg-brand-700 shadow-lg transition-all flex justify-center items-center gap-2">
+                            Submit Request <i class="fa-solid fa-paper-plane text-sm"></i>
                         </button>
                     </div>
                 </form>
@@ -1940,12 +1957,72 @@
 
         function renderTimelineStep(title, desc, isActive, icon) { return `<div class="relative pl-8 ${isActive ? '' : 'opacity-40'}"><div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] flex items-center justify-center z-10 ${isActive ? 'bg-brand-100 border-brand-500 text-brand-700' : 'bg-neutral-100 border-neutral-300 text-neutral-400'}"><i class="fa-solid ${icon} text-xs"></i></div><h4 class="font-bold text-sm">${title}</h4><p class="text-xs text-neutral-500">${desc}</p></div>`; }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); ordersListView.classList.remove('hidden'); orderDetailView.classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History'; }
-        function openCustomOrderModal() { customOrderModal.classList.remove('hidden'); }
-        function closeCustomOrderModal() { customOrderModal.classList.add('hidden'); }
-        function submitCustomOrder(e) { e.preventDefault(); closeCustomOrderModal(); showToast("Request sent!"); }
         function openAiModal() { aiModal.classList.remove('hidden'); }
         function closeAiModal() { aiModal.classList.add('hidden'); }
         function showToast(m) { toast.querySelector('span').textContent = m; toast.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 300); }
+
+        // ====== FRONT-END JAVASCRIPT HANDLERS FOR CUSTOM ORDERS ======
+
+        function openCustomOrderModal() {
+            if (!SHOP_CONFIG.takingOrders) {
+                showToast("Custom requests are temporarily paused.");
+                return;
+            }
+            const modal = document.getElementById('custom-order-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCustomOrderModal() {
+            const modal = document.getElementById('custom-order-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.getElementById('custom-order-form').reset();
+        }
+
+        async function submitCustomOrder(event) {
+            event.preventDefault();
+            const btn = document.getElementById('custom-order-submit-btn');
+            const originalContent = btn.innerHTML;
+
+            btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Processing...`;
+            btn.disabled = true;
+
+            // Gather inputs directly from form elements
+            const customOrderData = {
+                customer_name: document.getElementById('custom-req-name').value,
+                phone: document.getElementById('custom-req-phone').value,
+                email: document.getElementById('custom-req-email').value,
+                description: document.getElementById('custom-req-desc').value,
+                reference_image: document.getElementById('custom-req-image').value || null,
+                status: 'pending_review'
+            };
+
+            // Push record into your Supabase 'custom_orders' table
+            const { error } = await supabaseClient
+                .from('custom_orders')
+                .insert([customOrderData]);
+
+            if (error) {
+                console.error("Supabase Error saving Custom Request:", error);
+                alert("Failed to submit request. Please try again.");
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                return;
+            }
+
+            // Success UI Flow transitions
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Sent!`;
+            btn.classList.replace('bg-brand-600', 'bg-green-600');
+
+            setTimeout(() => {
+                closeCustomOrderModal();
+                btn.innerHTML = originalContent;
+                btn.classList.replace('bg-green-600', 'bg-brand-600');
+                btn.disabled = false;
+                showToast("Custom order request sent! Vaishali will contact you shortly.");
+            }, 1500);
+        }
 
         function getStatusLevel(s) {
             const x = (s || '').toLowerCase();
