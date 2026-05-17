@@ -1210,20 +1210,27 @@
                                     class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-500 outline-none font-medium" />
                             </div>
                         </div>
+
+                        <div>
+                            <label class="block text-neutral-800 font-bold mb-1 text-sm">Delivery Address *</label>
+                            <textarea id="custom-req-address" required rows="2"
+                                class="w-full p-3 border-2 border-brand-100 rounded-xl focus:outline-none focus:border-brand-500 text-neutral-700 bg-white placeholder-neutral-400 resize-none transition-colors"
+                                placeholder="Enter complete shipping address with pincode..."></textarea>
+                        </div>
+
                         <div>
                             <label class="block text-neutral-800 font-bold mb-1 text-sm">Describe Your Dream Item
                                 *</label>
-                            <textarea id="custom-req-desc" required rows="3"
+                            <textarea id="custom-req-desc" required rows="2"
                                 class="w-full p-3 border-2 border-brand-200 rounded-xl focus:outline-none focus:border-brand-500 text-neutral-700 bg-white placeholder-neutral-400 resize-none transition-colors"
                                 placeholder="e.g., I would like a king-size blanket featuring a sunflower granny square pattern..."></textarea>
                         </div>
 
                         <div>
-                            <label class="block text-neutral-800 font-bold mb-1 text-sm">Reference Image URL
+                            <label class="block text-neutral-800 font-bold mb-1 text-sm">Upload Reference Image
                                 (Optional)</label>
-                            <input type="url" id="custom-req-image"
-                                class="w-full p-3 border-2 border-brand-100 rounded-xl focus:border-brand-500 outline-none font-medium text-sm"
-                                placeholder="Paste an image link from Pinterest or Google drive..." />
+                            <input type="file" id="custom-req-image" accept="image/*"
+                                class="block w-full text-sm text-neutral-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-brand-100 file:text-brand-700 hover:file:bg-brand-200 transition-colors cursor-pointer border-2 border-dashed border-brand-200 rounded-xl p-2 bg-neutral-50" />
                         </div>
 
                         <div class="bg-brand-50 border border-brand-200 rounded-xl p-4 flex gap-3 items-start">

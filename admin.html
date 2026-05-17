@@ -461,6 +461,7 @@
         }
 
         // --- FETCH AND GENERATE CUSTOM REQUEST ENTRIES ---
+        // ====== UPDATE THIS FUNCTION IN YOUR ADMIN DASHBOARD JAVASCRIPT CODES ======
         async function loadAdminCustomRequests() {
             const tableBody = document.getElementById('admin-custom-requests-table-body');
             if (!tableBody) return;
@@ -485,38 +486,42 @@
 
             tableBody.innerHTML = requests.map(req => {
                 const dateTarget = req.created_at ? new Date(req.created_at) : new Date();
-                const dateParsed = isNaN(dateTarget.getTime())
-                    ? 'Recent'
-                    : dateTarget.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                const dateParsed = isNaN(dateTarget.getTime()) ? 'Recent' : dateTarget.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
+                // Checks if image data block starts with file signature, renders a preview thumbnail link
                 const imageColumnContent = req.reference_image
-                    ? `<a href="${req.reference_image}" target="_blank" class="px-3 py-1.5 bg-brand-50 border border-brand-200 text-brand-700 font-bold rounded-xl text-xs inline-flex items-center gap-1 hover:bg-brand-600 hover:text-white transition-colors shadow-sm"><i class="fa-solid fa-image"></i> View Pic</a>`
+                    ? `<a href="${req.reference_image}" target="_blank" class="px-2.5 py-1.5 bg-amber-50 border border-amber-200 text-amber-800 font-bold rounded-xl text-xs inline-flex items-center gap-1 hover:bg-amber-600 hover:text-white transition-colors shadow-sm"><i class="fa-solid fa-camera"></i> Open Photo</a>`
                     : `<span class="text-neutral-400 italic text-xs">None Provided</span>`;
 
                 return `
-                    <tr class="hover:bg-brand-50/30 transition-colors">
-                        <td class="p-4 font-medium text-neutral-800">
-                            <p class="font-bold text-neutral-900">${req.customer_name || 'Anonymous'}</p>
-                            <p class="text-xs text-neutral-500">${req.phone || 'N/A'}</p>
-                            <p class="text-xs text-brand-600 underline font-semibold">${req.email || ''}</p>
-                        </td>
-                        <td class="p-4 max-w-xs">
-                            <p class="text-neutral-700 leading-relaxed text-xs font-normal break-words">${req.description || 'No description provided.'}</p>
-                        </td>
-                        <td class="p-4 text-center">
-                            ${imageColumnContent}
-                        </td>
-                        <td class="p-4 text-neutral-500 font-medium text-xs">
-                            ${dateParsed}
-                        </td>
-                        <td class="p-4 text-right">
-                            <a href="mailto:${req.email || ''}?subject=HandKnot Haven - Your Custom Request" 
-                               class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold rounded-xl hover:from-amber-600 hover:to-amber-700 shadow transition-all inline-flex items-center gap-1.5">
-                                <i class="fa-solid fa-reply"></i> Contact Client
-                            </a>
-                        </td>
-                    </tr>
-                `;
+            <tr class="hover:bg-brand-50/30 transition-colors">
+                <td class="p-4 font-medium text-neutral-800">
+                    <p class="font-bold text-neutral-900">${req.customer_name || 'Anonymous'}</p>
+                    <p class="text-xs text-neutral-500">${req.phone || 'N/A'}</p>
+                    <p class="text-xs text-brand-600 underline font-semibold">${req.email || ''}</p>
+                    <span class="text-[10px] block font-mono bg-neutral-100 text-neutral-600 px-1.5 py-0.5 rounded border mt-1 w-max">${req.id || ''}</span>
+                </td>
+                <td class="p-4 max-w-xs">
+                    <p class="text-neutral-700 leading-relaxed text-xs font-semibold mb-1">Description:</p>
+                    <p class="text-neutral-600 leading-relaxed text-xs font-normal break-words mb-2">${req.description || 'No details provided.'}</p>
+                    
+                    <p class="text-neutral-700 leading-relaxed text-xs font-semibold mb-0.5"><i class="fa-solid fa-location-dot text-brand-500"></i> Shipping Address:</p>
+                    <p class="text-neutral-500 text-xs italic break-words bg-neutral-50 p-1.5 rounded border border-neutral-100">${req.address || 'No address provided.'}</p>
+                </td>
+                <td class="p-4 text-center">
+                    ${imageColumnContent}
+                </td>
+                <td class="p-4 text-neutral-500 font-medium text-xs whitespace-nowrap">
+                    ${dateParsed}
+                </td>
+                <td class="p-4 text-right">
+                    <a href="mailto:${req.email || ''}?subject=HandKnot Haven - Quote Update for Request ${req.id || ''}" 
+                       class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold rounded-xl hover:from-amber-600 hover:to-amber-700 shadow transition-all inline-flex items-center gap-1.5">
+                        <i class="fa-solid fa-reply"></i> Contact Client
+                    </a>
+                </td>
+            </tr>
+        `;
             }).join('');
         }
 
