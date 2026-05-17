@@ -215,74 +215,11 @@
                 <div id="overview-tab" class="admin-tab-content space-y-6">
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                        <div
-                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                            <div
-                                class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-indian-rupee-sign"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Total
-                                    Revenue</p>
-                                <h3 id="stat-revenue" class="text-2xl font-bold text-neutral-800">₹0</h3>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                            <div
-                                class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-hand-sparkles"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">To Craft</p>
-                                <h3 id="stat-to-craft" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                            <div
-                                class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-truck-fast"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Completed
-                                </p>
-                                <h3 id="stat-completed" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
-                            </div>
-                        </div>
                     </div>
 
                     <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
-                        <div class="p-6 border-b border-neutral-200 flex justify-between items-center bg-neutral-50/50">
-                            <h3 class="text-lg font-bold text-neutral-800">Recent Orders</h3>
-                            <button class="text-sm font-bold text-brand-600 hover:text-brand-800">View All</button>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr
-                                        class="bg-white border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-500">
-                                        <th class="p-4 font-bold">Order ID</th>
-                                        <th class="p-4 font-bold">Customer</th>
-                                        <th class="p-4 font-bold">Items</th>
-                                        <th class="p-4 font-bold">Total</th>
-                                        <th class="p-4 font-bold">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
-                                    <tr>
-                                        <td colspan="5" class="p-10 text-center text-neutral-400">
-                                            <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
-                                            database...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
+
                 </div>
                 <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
                     <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
@@ -313,26 +250,57 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Custom Request Notification -->
-            <div
-                class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <div
-                        class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
-                        <i class="fa-solid fa-envelope-open-text"></i>
-                    </div>
+            </div>
+            <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
+                <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                     <div>
-                        <h4 class="font-bold text-lg mb-1">New Custom Request!</h4>
-                        <p class="text-brand-100 text-sm">Meera asked for a custom King-size blanket.</p>
+                        <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
+                        <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
+                            submissions.</p>
                     </div>
                 </div>
-                <button
-                    class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
-                    Review Request
-                </button>
+
+                <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-brand-50 border-b border-brand-100 text-neutral-700 text-xs font-bold uppercase tracking-wider">
+                                    <th class="p-4">Customer Details</th>
+                                    <th class="p-4">Dream Item Description</th>
+                                    <th class="p-4 text-center">Reference Image</th>
+                                    <th class="p-4">Received On</th>
+                                    <th class="p-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-custom-requests-table-body"
+                                class="divide-y divide-neutral-100 text-sm text-neutral-600">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+        </div>
+
+        <!-- Custom Request Notification -->
+        <div
+            class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
+                    <i class="fa-solid fa-envelope-open-text"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-lg mb-1">New Custom Request!</h4>
+                    <p class="text-brand-100 text-sm">Meera asked for a custom King-size blanket.</p>
+                </div>
+            </div>
+            <button
+                class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
+                Review Request
+            </button>
+        </div>
 
         </div>
     </main>
