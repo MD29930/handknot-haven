@@ -213,15 +213,82 @@
             <div class="flex-1 overflow-y-auto p-6 lg:p-10 pb-24">
 
                 <div id="overview-tab" class="admin-tab-content space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">...</div>
 
-                    <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">...</div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                        <div
+                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
+                            <div
+                                class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-indian-rupee-sign"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Total
+                                    Revenue</p>
+                                <h3 id="stat-revenue" class="text-2xl font-bold text-neutral-800">₹0</h3>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
+                            <div
+                                class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-hand-sparkles"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">To Craft</p>
+                                <h3 id="stat-to-craft" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
+                            <div
+                                class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-truck-fast"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Completed
+                                </p>
+                                <h3 id="stat-completed" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-neutral-200 flex justify-between items-center bg-neutral-50/50">
+                            <h3 class="text-lg font-bold text-neutral-800">Recent Orders</h3>
+                            <button class="text-sm font-bold text-brand-600 hover:text-brand-800">View All</button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr
+                                        class="bg-white border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-500">
+                                        <th class="p-4 font-bold">Order ID</th>
+                                        <th class="p-4 font-bold">Customer</th>
+                                        <th class="p-4 font-bold">Items</th>
+                                        <th class="p-4 font-bold">Total</th>
+                                        <th class="p-4 font-bold">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
+                                    <tr>
+                                        <td colspan="5" class="p-10 text-center text-neutral-400">
+                                            <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
+                                            database...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
                 <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
                     <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                         <div>
                             <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
-                            <p class="text-sm text-neutral-500">Review and follow up on custom design request
+                            <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
                                 submissions.</p>
                         </div>
                     </div>
@@ -245,15 +312,6 @@
                             </table>
                         </div>
                     </div>
-                </div>
-
-
-                <div
-                    class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
-                    <button onclick="switchAdminTab('custom-requests-tab')"
-                        class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
-                        Review Request
-                    </button>
                 </div>
 
             </div>
@@ -420,28 +478,38 @@
             // =============================================================
         }
 
-        function updateStats() {
+        async function updateStats() {
             if (!orders || orders.length === 0) return;
 
-            // 1. Calculate Total Revenue (Sum of all order totals)
+            // 1. Calculate Total Revenue (Only summing standard catalog sales transactions)
             const totalRevenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
 
-            // 2. Calculate Orders "To Craft" (Confirmed or Processing status)
-            const toCraftCount = orders.filter(order =>
+            // 2. Fetch length count of incoming unpriced custom items from your database table
+            const { count: customPendingCount, error } = await supabaseClient
+                .from('custom_orders')
+                .select('*', { count: 'exact', head: true });
+
+            if (error) {
+                console.error("Error reading custom orders count metadata:", error);
+            }
+
+            // 3. Calculate regular orders inside processing streams
+            const standardToCraft = orders.filter(order =>
                 order.order_status === 'confirmed' || order.order_status === 'processing'
             ).length;
 
-            // 3. Calculate Completed/Shipped Orders (Shipped or Delivered status)
+            // Combine custom queues + standard queues into one single live "To Craft" number!
+            const combinedToCraft = standardToCraft + (customPendingCount || 0);
+
             const completedCount = orders.filter(order =>
                 order.order_status === 'shipped' || order.order_status === 'delivered'
             ).length;
 
-            // Update the DOM with the new values
+            // Update Dashboard DOM metrics displays safely with uniform styles
             document.getElementById('stat-revenue').textContent = `₹${totalRevenue.toLocaleString('en-IN')}`;
-            document.getElementById('stat-to-craft').textContent = `${toCraftCount} Orders`;
+            document.getElementById('stat-to-craft').textContent = `${combinedToCraft} Orders`;
             document.getElementById('stat-completed').textContent = `${completedCount} Orders`;
         }
-
         // --- STATUS UPDATE (Triggered by dropdown) ---
         async function updateOrderStatus(id, newStatus) {
             // 1. Find the current order in your local array

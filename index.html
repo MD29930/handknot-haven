@@ -1985,34 +1985,89 @@
             const btn = document.getElementById('custom-order-submit-btn');
             const originalContent = btn.innerHTML;
 
-            btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Processing...`;
+            btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Submitting Request...`;
             btn.disabled = true;
 
-            // Gather inputs directly from form elements
-            const customOrderData = {
-                customer_name: document.getElementById('custom-req-name').value,
-                phone: document.getElementById('custom-req-phone').value,
-                email: document.getElementById('custom-req-email').value,
-                description: document.getElementById('custom-req-desc').value,
-                reference_image: document.getElementById('custom-req-image').value || null,
-                status: 'pending_review'
+            // A. GENERATE LOGIC TRACKING IDENTIFIER CODE STRING
+            const timestampSnippet = Date.now().toString().slice(-4);
+            const randomSnippet = Math.floor(100 + Math.random() * 900);
+            const customOrderId = 'HKH-CUST-' + timestampSnippet + randomSnippet; // Unique Custom Tracking ID Sequence
+
+            const customerName = document.getElementById('custom-req-name').value;
+            const customerPhone = document.getElementById('custom-req-phone').value;
+            const customerEmail = document.getElementById('custom-req-email').value;
+            const itemDescription = document.getElementById('custom-req-desc').value;
+            const referenceImgUrl = document.getElementById('custom-req-image').value || null;
+
+            // TRANSACTION BLOCK 1: Write structural info straight into main 'orders' table
+            // This inserts it directly into the regular customer order history portal with an "Unpriced / Pending Review" total 
+            const mainOrderRowData = {
+                id: customOrderId,
+                customer_name: customerName,
+                phone: customerPhone,
+                email: customerEmail,
+                address: "Custom Order Details Provided - Pricing/Address Pending Vaishali's Review",
+                product_name: `Bespoke Custom Crochet Request: "${itemDescription.slice(0, 45)}..."`,
+                quantity: 1,
+                total: 0.00, // Price is set to zero initially until you email/message them your quote
+                payment_status: "pending_quote",
+                order_status: "confirmed" // Places it immediately into their active website profile timeline tracking index
             };
 
-            // Push record into your Supabase 'custom_orders' table
-            const { error } = await supabaseClient
-                .from('custom_orders')
-                .insert([customOrderData]);
+            const { error: errorMainTable } = await supabaseClient
+                .from('orders')
+                .insert([mainOrderRowData]);
 
-            if (error) {
-                console.error("Supabase Error saving Custom Request:", error);
-                alert("Failed to submit request. Please try again.");
+            if (errorMainTable) {
+                console.error("Main Table Mirror Error:", errorMainTable);
+                alert("Failed to securely log custom tracking ID row. Please retry.");
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
                 return;
             }
 
-            // Success UI Flow transitions
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Sent!`;
+            // TRANSACTION BLOCK 2: Secondary Insertion for tracking column data in custom_orders
+            await supabaseClient.from('custom_orders').insert([{
+                id: customOrderId,
+                customer_name: customerName,
+                phone: customerPhone,
+                email: customerEmail,
+                description: itemDescription,
+                reference_image: referenceImgUrl,
+                status: 'pending_review'
+            }]);
+
+            // TRANSACTION BLOCK 3: Dispatch confirmation alert copy text safely using EmailJS
+            const emailParams = {
+                order_id: customOrderId,
+                customer_name: customerName,
+                customer_email: customerEmail,
+                product_name: `Bespoke Custom Crochet Craft [${itemDescription.slice(0, 60)}...]`,
+                total_amount: "Pending Quote Review" // Clearly displays unpriced status in your email invoice templates!
+            };
+
+            emailjs.send("service_yt6ze52", "template_xyc0kaq", emailParams)
+                .then(() => console.log("Bespoke email confirmation dispatched successfully."))
+                .catch((err) => console.error("Email layout pipeline rejected:", err));
+
+            // TRANSACTION BLOCK 4: Push layout directly into active user order state arrays
+            const dispatchDate = new Date();
+            dispatchDate.setDate(dispatchDate.getDate() + 10); // Custom items generally take a little longer to design
+            const formattedDispatchDate = dispatchDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const placedDateString = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+
+            userOrders.push({
+                id: customOrderId,
+                created_at: new Date().toISOString(),
+                placedDate: placedDateString,
+                dispatchDate: formattedDispatchDate,
+                items: [{ name: `Custom Crochet Item Request: ${itemDescription}`, price: 0, quantity: 1, image: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=300' }],
+                total: 0.00,
+                order_status: 'confirmed'
+            });
+
+            // Close inputs, update numbers, open success popups instantly
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Registered!`;
             btn.classList.replace('bg-brand-600', 'bg-green-600');
 
             setTimeout(() => {
@@ -2020,7 +2075,9 @@
                 btn.innerHTML = originalContent;
                 btn.classList.replace('bg-green-600', 'bg-brand-600');
                 btn.disabled = false;
-                showToast("Custom order request sent! Vaishali will contact you shortly.");
+
+                // Triggers the standard confirmation screen showing your newly minted custom tracking string parameter
+                openOrderConfirmation(customOrderId, "Pending Review (Check your email!)");
             }, 1500);
         }
 
