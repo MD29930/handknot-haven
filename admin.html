@@ -529,6 +529,30 @@
         `;
             }).join('');
         }
+        function openFullCustomImage(base64Data) {
+            const imageWindow = window.open();
+            if (imageWindow) {
+                imageWindow.document.write(`
+            <html>
+                <head>
+                    <title>HandKnot Haven | Custom Reference Photo View</title>
+                    <style>
+                        body { margin: 0; background-color: #171717; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; }
+                        img { max-width: 95vw; max-height: 92vh; object-fit: contain; border-radius: 12px; shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 2px solid #262626; }
+                        .close-btn { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: white; border: none; padding: 10px 20px; font-weight: bold; border-radius: 30px; cursor: pointer; backdrop-blur: sm; transition: background 0.2s; }
+                        .close-btn:hover { background: rgba(255,255,255,0.4); }
+                    </style>
+                </head>
+                <body>
+                    <button class="close-btn" onclick="window.close()">Close Preview</button>
+                    <img src="${base64Data}" alt="HandKnot Haven Reference Image Preview" />
+                </body>
+            </html>
+        `);
+            } else {
+                alert("Pop-up blocked! Please allow pop-ups for this admin tab dashboard page to see full-size references.");
+            }
+        }
 
         // Run on load
         init();
