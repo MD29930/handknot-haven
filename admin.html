@@ -318,28 +318,25 @@
                     </div>
                 </div>
 
-            </div>
-
-            <!-- Custom Request Notification -->
-            <div
-                class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <div
-                        class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
-                        <i class="fa-solid fa-envelope-open-text"></i>
+                <div
+                    class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-lg mb-1">New Custom Request!</h4>
+                            <p class="text-brand-100 text-sm">Meera asked for a custom King-size blanket.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="font-bold text-lg mb-1">New Custom Request!</h4>
-                        <p class="text-brand-100 text-sm">Meera asked for a custom King-size blanket.</p>
-                    </div>
+                    <button onclick="switchAdminTab('custom-requests-tab'); return false;"
+                        class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
+                        Review Request
+                    </button>
                 </div>
-                <button
-                    class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
-                    Review Request
-                </button>
-            </div>
 
-        </div>
+            </div>
     </main>
 
     <!-- UI Logic & Supabase Integration -->
