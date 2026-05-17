@@ -1980,6 +1980,7 @@
             document.getElementById('custom-order-form').reset();
         }
 
+        // ====== REPLACE THIS FUNCTION IN YOUR MAIN WEBSITE CODE ======
         async function submitCustomOrder(event) {
             event.preventDefault();
             const btn = document.getElementById('custom-order-submit-btn');
@@ -1988,28 +1989,26 @@
             btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Submitting Request...`;
             btn.disabled = true;
 
-            // A. GENERATE LOGIC TRACKING IDENTIFIER CODE STRING
+            // 1. Generate unique Custom Tracking ID Sequence
             const timestampSnippet = Date.now().toString().slice(-4);
             const randomSnippet = Math.floor(100 + Math.random() * 900);
             const customOrderId = 'HKH-CUST-' + timestampSnippet + randomSnippet;
 
+            // 2. Fetch all values safely from your modal inputs
             const customerName = document.getElementById('custom-req-name').value;
             const customerPhone = document.getElementById('custom-req-phone').value;
             const customerEmail = document.getElementById('custom-req-email').value;
             const itemDescription = document.getElementById('custom-req-desc').value;
             const referenceImgUrl = document.getElementById('custom-req-image').value || null;
 
-            // =========================================================================
-            // 🌟 CHANGED REGION: PARALLEL DATABASE INSERTION 
-            // =========================================================================
-
-            // 1. Write structural info straight into main 'orders' table (For Overview & Tracking History)
+            // 3. TARGET TABLE A: Save row info straight into main 'orders' table 
+            // This feeds your main dashboard's Recent Orders view and tracks customer history
             const mainOrderRowData = {
                 id: customOrderId,
                 customer_name: customerName,
                 phone: customerPhone,
                 email: customerEmail,
-                address: "Custom Order Details Provided - Pricing/Address Pending Review",
+                address: "Custom Order Details Provided - Pricing Pending Review",
                 product_name: `Bespoke Custom Crochet Request: "${itemDescription.slice(0, 45)}..."`,
                 quantity: 1,
                 total: 0.00,
@@ -2023,33 +2022,34 @@
 
             if (errorMainTable) {
                 console.error("Main Table Mirror Error:", errorMainTable);
-                alert("Failed to securely log custom tracking ID row. Please retry.");
+                alert("Failed to log tracking ID row to main history. Please retry.");
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
                 return;
             }
 
-            // 2. Write exact same details into 'custom_orders' table (For Custom Requests Tab)
+            // 4. TARGET TABLE B: Save specific columns down to 'custom_orders' table
+            // This feeds your isolated full-screen "Custom Requests" workspace screen
+            const customOrderRowData = {
+                id: customOrderId,
+                customer_name: customerName,
+                phone: customerPhone,
+                email: customerEmail,
+                description: itemDescription,
+                reference_image: referenceImgUrl,
+                status: 'pending_review'
+            };
+
             const { error: errorCustomTable } = await supabaseClient
                 .from('custom_orders')
-                .insert([{
-                    id: customOrderId,
-                    customer_name: customerName,
-                    phone: customerPhone,
-                    email: customerEmail,
-                    description: itemDescription,
-                    reference_image: referenceImgUrl,
-                    status: 'pending_review'
-                }]);
+                .insert([customOrderRowData]);
 
             if (errorCustomTable) {
-                console.error("Custom Table Insertion Error:", errorCustomTable);
-                // We won't block the user since the main tracking table caught it, but we log it for safety
+                console.error("Custom Orders Table Insertion Error:", errorCustomTable);
+                alert("Main order tracked, but custom specifications failed to save. Please notify support.");
             }
 
-            // =========================================================================
-
-            // TRANSACTION BLOCK 3: Dispatch confirmation alert copy text safely using EmailJS
+            // 5. EmailJS: Dispatch confirmation alert template context safely
             const emailParams = {
                 order_id: customOrderId,
                 customer_name: customerName,
@@ -2060,9 +2060,9 @@
 
             emailjs.send("service_yt6ze52", "template_xyc0kaq", emailParams)
                 .then(() => console.log("Bespoke email confirmation dispatched successfully."))
-                .catch((err) => console.error("Email layout pipeline rejected:", err));
+                .catch((err) => console.error("Email template pipeline rejected:", err));
 
-            // TRANSACTION BLOCK 4: Push layout directly into active user order state arrays
+            // 6. Push local layout array elements directly into the customer's active session state arrays
             const dispatchDate = new Date();
             dispatchDate.setDate(dispatchDate.getDate() + 10);
             const formattedDispatchDate = dispatchDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -2078,7 +2078,7 @@
                 order_status: 'confirmed'
             });
 
-            // Close inputs, update numbers, open success popups instantly
+            // Animate visual indicators to absolute success states
             btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Registered!`;
             btn.classList.replace('bg-brand-600', 'bg-green-600');
 
@@ -2088,6 +2088,7 @@
                 btn.classList.replace('bg-green-600', 'bg-brand-600');
                 btn.disabled = false;
 
+                // Triggers the standard tracking screen parameters on the user's interface
                 openOrderConfirmation(customOrderId, "Pending Review (Check your email!)");
             }, 1500);
         }
