@@ -1987,35 +1987,57 @@
             document.getElementById('custom-order-form').reset();
         }
 
-        // ====== REPLACE THIS FUNCTION IN YOUR MAIN WEBSITE CODE ======
         async function submitCustomOrder(event) {
             event.preventDefault();
             const btn = document.getElementById('custom-order-submit-btn');
             const originalContent = btn.innerHTML;
 
-            btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Submitting Request...`;
+            btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Processing File...`;
             btn.disabled = true;
 
-            // 1. Generate unique Custom Tracking ID Sequence
             const timestampSnippet = Date.now().toString().slice(-4);
             const randomSnippet = Math.floor(100 + Math.random() * 900);
             const customOrderId = 'HKH-CUST-' + timestampSnippet + randomSnippet;
 
-            // 2. Fetch all values safely from your modal inputs
             const customerName = document.getElementById('custom-req-name').value;
             const customerPhone = document.getElementById('custom-req-phone').value;
             const customerEmail = document.getElementById('custom-req-email').value;
+            const customerAddress = document.getElementById('custom-req-address').value;
             const itemDescription = document.getElementById('custom-req-desc').value;
-            const referenceImgUrl = document.getElementById('custom-req-image').value || null;
 
-            // 3. TARGET TABLE A: Save row info straight into main 'orders' table 
-            // This feeds your main dashboard's Recent Orders view and tracks customer history
+            const fileInput = document.getElementById('custom-req-image');
+            let referenceImgUrl = null;
+
+            // Convert local device image file to base64 text string safely
+            if (fileInput.files && fileInput.files[0]) {
+                try {
+                    const file = fileInput.files[0];
+                    if (file.size > 4500000) {
+                        alert("File size too large! Please upload a photo smaller than 4MB.");
+                        btn.innerHTML = originalContent;
+                        btn.disabled = false;
+                        return;
+                    }
+                    referenceImgUrl = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result);
+                        reader.onerror = error => reject(error);
+                        reader.readAsDataURL(file);
+                    });
+                } catch (fileErr) {
+                    console.error("Local file processing failed:", fileErr);
+                }
+            }
+
+            btn.innerHTML = `<div class="loader animate-spin border-t-white mx-auto"></div> Registering Request...`;
+
+            // A. WRITE TO TABLE 1: Main orders list history registry
             const mainOrderRowData = {
                 id: customOrderId,
                 customer_name: customerName,
                 phone: customerPhone,
                 email: customerEmail,
-                address: "Custom Order Details Provided - Pricing Pending Review",
+                address: customerAddress,
                 product_name: `Bespoke Custom Crochet Request: "${itemDescription.slice(0, 45)}..."`,
                 quantity: 1,
                 total: 0.00,
@@ -2029,21 +2051,21 @@
 
             if (errorMainTable) {
                 console.error("Main Table Mirror Error:", errorMainTable);
-                alert("Failed to log tracking ID row to main history. Please retry.");
+                alert("Failed to track ID row. Please retry.");
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
                 return;
             }
 
-            // 4. TARGET TABLE B: Save specific columns down to 'custom_orders' table
-            // This feeds your isolated full-screen "Custom Requests" workspace screen
+            // B. WRITE TO TABLE 2: Custom Crochet Request queue parameters
             const customOrderRowData = {
                 id: customOrderId,
                 customer_name: customerName,
                 phone: customerPhone,
                 email: customerEmail,
+                address: customerAddress, // Storing address in custom_orders
                 description: itemDescription,
-                reference_image: referenceImgUrl,
+                reference_image: referenceImgUrl, // Storing device photo in custom_orders
                 status: 'pending_review'
             };
 
@@ -2053,10 +2075,9 @@
 
             if (errorCustomTable) {
                 console.error("Custom Orders Table Insertion Error:", errorCustomTable);
-                alert("Main order tracked, but custom specifications failed to save. Please notify support.");
             }
 
-            // 5. EmailJS: Dispatch confirmation alert template context safely
+            // EmailJS Confirmation Trigger
             const emailParams = {
                 order_id: customOrderId,
                 customer_name: customerName,
@@ -2066,26 +2087,19 @@
             };
 
             emailjs.send("service_yt6ze52", "template_xyc0kaq", emailParams)
-                .then(() => console.log("Bespoke email confirmation dispatched successfully."))
-                .catch((err) => console.error("Email template pipeline rejected:", err));
-
-            // 6. Push local layout array elements directly into the customer's active session state arrays
-            const dispatchDate = new Date();
-            dispatchDate.setDate(dispatchDate.getDate() + 10);
-            const formattedDispatchDate = dispatchDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            const placedDateString = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
+                .then(() => console.log("Confirmation email dispatched."))
+                .catch((err) => console.error("Email setup failed:", err));
 
             userOrders.push({
                 id: customOrderId,
                 created_at: new Date().toISOString(),
-                placedDate: placedDateString,
-                dispatchDate: formattedDispatchDate,
-                items: [{ name: `Custom Crochet Item Request: ${itemDescription}`, price: 0, quantity: 1, image: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=300' }],
+                placedDate: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' }),
+                dispatchDate: "Pending Review",
+                items: [{ name: `Custom Request: ${itemDescription}`, price: 0, quantity: 1, image: referenceImgUrl || 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=300' }],
                 total: 0.00,
                 order_status: 'confirmed'
             });
 
-            // Animate visual indicators to absolute success states
             btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Registered!`;
             btn.classList.replace('bg-brand-600', 'bg-green-600');
 
@@ -2094,9 +2108,7 @@
                 btn.innerHTML = originalContent;
                 btn.classList.replace('bg-green-600', 'bg-brand-600');
                 btn.disabled = false;
-
-                // Triggers the standard tracking screen parameters on the user's interface
-                openOrderConfirmation(customOrderId, "Pending Review (Check your email!)");
+                openOrderConfirmation(customOrderId, "Pending Review");
             }, 1500);
         }
         function getStatusLevel(s) {
