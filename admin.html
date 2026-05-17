@@ -6,15 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HandKnot Haven | Admin Dashboard</title>
 
-    <!-- Google Fonts -->
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap"
         rel="stylesheet">
 
-    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -39,25 +36,19 @@
         }
     </script>
 </head>
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
     const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co'
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY'
 
-    const supabaseClient = supabase.createClient(
-        supabaseUrl,
-        supabaseKey
-    )
-
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey)
     console.log("Supabase connected!")
-
 </script>
 
 <body class="bg-neutral-100 font-sans text-neutral-800 flex h-screen overflow-hidden">
 
-    <!-- Sidebar -->
     <aside class="w-64 bg-brand-900 text-brand-50 flex flex-col hidden md:flex h-full shadow-xl z-20 relative">
         <div class="p-6 border-b border-brand-800">
             <h1 class="font-serif text-2xl font-bold flex items-center gap-2 text-white">
@@ -102,10 +93,8 @@
         </div>
     </aside>
 
-    <!-- Main Content -->
     <main class="flex-1 flex flex-col h-full overflow-hidden relative">
 
-        <!-- Top Header -->
         <header
             class="bg-white shadow-sm border-b border-neutral-200 h-20 flex items-center justify-between px-6 lg:px-10 z-10">
             <div class="flex items-center gap-4">
@@ -116,7 +105,6 @@
             </div>
 
             <div class="flex items-center gap-6">
-                <!-- Shop Status Toggle -->
                 <div class="flex items-center gap-3 bg-neutral-50 px-4 py-2 rounded-full border border-neutral-200">
                     <span class="text-sm font-bold text-neutral-600">Taking Orders:</span>
                     <button id="shop-status-toggle" onclick="toggleShopStatus()"
@@ -127,7 +115,6 @@
                     <span id="shop-status-label" class="text-sm font-bold text-green-600 w-12">Open</span>
                 </div>
 
-                <!-- Profile -->
                 <div class="flex items-center gap-3 pl-6 border-l border-neutral-200">
                     <div class="text-right hidden md:block">
                         <p class="text-sm font-bold text-neutral-800">Vaishali</p>
@@ -141,205 +128,129 @@
             </div>
         </header>
 
-        <!-- Scrollable Content -->
         <div class="flex-1 overflow-y-auto p-6 lg:p-10 pb-24">
 
-            <!-- Quick Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <!-- Revenue Stat -->
-                <div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                    <div
-                        class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl">
-                        <i class="fa-solid fa-indian-rupee-sign"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Total Revenue</p>
-                        <h3 id="stat-revenue" class="text-2xl font-bold text-neutral-800">₹0</h3>
-                    </div>
-                </div>
+            <div id="overview-tab" class="admin-tab-content space-y-6">
 
-                <!-- Processing/To Craft Stat -->
-                <div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                    <div
-                        class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-2xl">
-                        <i class="fa-solid fa-hand-sparkles"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">To Craft</p>
-                        <h3 id="stat-to-craft" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
-                    </div>
-                </div>
-
-                <!-- Shipped/Delivered Stat -->
-                <div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                    <div
-                        class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
-                        <i class="fa-solid fa-truck-fast"></i>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Completed</p>
-                        <h3 id="stat-completed" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Orders Table -->
-            <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
-                <div class="p-6 border-b border-neutral-200 flex justify-between items-center bg-neutral-50/50">
-                    <h3 class="text-lg font-bold text-neutral-800">Recent Orders</h3>
-                    <button class="text-sm font-bold text-brand-600 hover:text-brand-800">View All</button>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr
-                                class="bg-white border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-500">
-                                <th class="p-4 font-bold">Order ID</th>
-                                <th class="p-4 font-bold">Customer</th>
-                                <th class="p-4 font-bold">Items</th>
-                                <th class="p-4 font-bold">Total</th>
-                                <th class="p-4 font-bold">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
-                            <tr>
-                                <td colspan="6" class="p-10 text-center text-neutral-400">
-                                    <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
-                                    database...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="flex-1 overflow-y-auto p-6 lg:p-10 pb-24">
-
-                <div id="overview-tab" class="admin-tab-content space-y-6">
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
                         <div
-                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                            <div
-                                class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-indian-rupee-sign"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Total
-                                    Revenue</p>
-                                <h3 id="stat-revenue" class="text-2xl font-bold text-neutral-800">₹0</h3>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                            <div
-                                class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-hand-sparkles"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">To Craft</p>
-                                <h3 id="stat-to-craft" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
-                            <div
-                                class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
-                                <i class="fa-solid fa-truck-fast"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Completed
-                                </p>
-                                <h3 id="stat-completed" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
-                        <div class="p-6 border-b border-neutral-200 flex justify-between items-center bg-neutral-50/50">
-                            <h3 class="text-lg font-bold text-neutral-800">Recent Orders</h3>
-                            <button class="text-sm font-bold text-brand-600 hover:text-brand-800">View All</button>
-                        </div>
-
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr
-                                        class="bg-white border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-500">
-                                        <th class="p-4 font-bold">Order ID</th>
-                                        <th class="p-4 font-bold">Customer</th>
-                                        <th class="p-4 font-bold">Items</th>
-                                        <th class="p-4 font-bold">Total</th>
-                                        <th class="p-4 font-bold">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
-                                    <tr>
-                                        <td colspan="5" class="p-10 text-center text-neutral-400">
-                                            <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
-                                            database...
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
-                    <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
-                        <div>
-                            <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
-                            <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
-                                submissions.</p>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr
-                                        class="bg-brand-50 border-b border-brand-100 text-neutral-700 text-xs font-bold uppercase tracking-wider">
-                                        <th class="p-4">Customer Details</th>
-                                        <th class="p-4">Dream Item Description</th>
-                                        <th class="p-4 text-center">Reference Image</th>
-                                        <th class="p-4">Received On</th>
-                                        <th class="p-4 text-right">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="admin-custom-requests-table-body"
-                                    class="divide-y divide-neutral-100 text-sm text-neutral-600">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div
-                    class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
-                            <i class="fa-solid fa-envelope-open-text"></i>
+                            class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-indian-rupee-sign"></i>
                         </div>
                         <div>
-                            <h4 class="font-bold text-lg mb-1">New Custom Request!</h4>
-                            <p class="text-brand-100 text-sm">Meera asked for a custom King-size blanket.</p>
+                            <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Total Revenue
+                            </p>
+                            <h3 id="stat-revenue" class="text-2xl font-bold text-neutral-800">₹0</h3>
                         </div>
                     </div>
-                    <button onclick="switchAdminTab('custom-requests-tab'); return false;"
-                        class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
-                        Review Request
-                    </button>
+
+                    <div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
+                        <div
+                            class="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-hand-sparkles"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">To Craft</p>
+                            <h3 id="stat-to-craft" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm flex items-center gap-4">
+                        <div
+                            class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-truck-fast"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-neutral-500 uppercase tracking-wider mb-1">Completed</p>
+                            <h3 id="stat-completed" class="text-2xl font-bold text-neutral-800">0 Orders</h3>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-neutral-200 flex justify-between items-center bg-neutral-50/50">
+                        <h3 class="text-lg font-bold text-neutral-800">Recent Orders</h3>
+                        <button class="text-sm font-bold text-brand-600 hover:text-brand-800">View All</button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-white border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-500">
+                                    <th class="p-4 font-bold">Order ID</th>
+                                    <th class="p-4 font-bold">Customer</th>
+                                    <th class="p-4 font-bold">Items</th>
+                                    <th class="p-4 font-bold">Total</th>
+                                    <th class="p-4 font-bold">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
+                                <tr>
+                                    <td colspan="5" class="p-10 text-center text-neutral-400">
+                                        <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
+                                        database...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
+
+
+            <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
+                <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
+                    <div>
+                        <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
+                        <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
+                            submissions.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-brand-50 border-b border-brand-100 text-neutral-700 text-xs font-bold uppercase tracking-wider">
+                                    <th class="p-4">Customer Details</th>
+                                    <th class="p-4">Dream Item Description</th>
+                                    <th class="p-4 text-center">Reference Image</th>
+                                    <th class="p-4">Received On</th>
+                                    <th class="p-4 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-custom-requests-table-body"
+                                class="divide-y divide-neutral-100 text-sm text-neutral-600">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="mt-8 bg-gradient-to-r from-brand-800 to-brand-600 rounded-2xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl backdrop-blur-sm">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-lg mb-1">New Custom Request!</h4>
+                        <p class="text-brand-100 text-sm">Meera asked for a custom King-size blanket.</p>
+                    </div>
+                </div>
+                <button onclick="switchAdminTab('custom-requests-tab'); return false;"
+                    class="px-6 py-2.5 bg-white text-brand-800 font-bold rounded-full hover:bg-brand-50 transition-colors whitespace-nowrap shadow-sm">
+                    Review Request
+                </button>
+            </div>
+
+        </div>
     </main>
 
-    <!-- UI Logic & Supabase Integration -->
     <script>
         let isShopOpen = true;
         let orders = [];
@@ -355,7 +266,7 @@
                     { event: 'UPDATE', schema: 'public', table: 'orders' },
                     payload => {
                         console.log('Order updated in real-time!', payload);
-                        loadOrders(); // Re-fetch and re-render everything
+                        loadOrders();
                     }
                 )
                 .subscribe();
@@ -400,7 +311,6 @@
             updateStats();
         }
 
-        // --- RENDER TABLE WITH DROPDOWN AND POLICY STATUS ---
         // --- RENDER TABLE WITH HIGHLIGHTED CUSTOM ORDERS ---
         function renderOrdersTable() {
             const tbody = document.getElementById('orders-tbody');
@@ -418,19 +328,14 @@
 
             const statuses = ['confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
 
-            // ====== PASTE THE UPDATED LOGIC DIRECTLY INSIDE THIS LOOP ======
             orders.forEach(order => {
                 const isCancelled = order.order_status === 'cancelled';
-
-                // Checks if the product name or description contains the word "custom"
                 const isCustomOrder = (order.product_name || '').toLowerCase().includes('custom');
 
-                // DYNAMIC HIGHLIGHT SELECTION LAYER
                 let highlightRowStyle = 'hover:bg-neutral-50/50';
                 if (isCancelled) {
                     highlightRowStyle = 'bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500 font-medium';
                 } else if (isCustomOrder) {
-                    // Highlights your bespoke creations with an elegant amber glow tint
                     highlightRowStyle = 'bg-amber-50/70 border-l-4 border-l-amber-500 font-medium hover:bg-amber-100/50';
                 }
 
@@ -442,70 +347,65 @@
                 row.className = `${highlightRowStyle} transition-colors border-b border-neutral-100`;
 
                 row.innerHTML = `
-            <td class="p-4">
-                <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
-                    #${order.id.toString().slice(0, 8)}
-                </p>
-                ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Permanently Cancelled</span>' : ''}
-            </td>
-            <td class="p-4">
-                <p class="font-bold text-neutral-800">${order.customer_name}</p>
-                <p class="text-neutral-500 text-xs">${order.phone}</p>
-            </td>
-            <td class="p-4 text-neutral-600">
-                <div class="flex items-center gap-1 max-w-[180px] truncate">
-                    <span>${order.product_name}</span>
-                    ${customHighlightBadge}
-                </div>
-            </td>
-            <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
-            <td class="p-4">
-                <select onchange="updateOrderStatus('${order.id}', this.value)" 
-                    ${isCancelled ? 'disabled' : ''} 
-                    class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none capitalize 
-                    ${isCancelled ? 'bg-red-100 text-red-700 border-red-300 cursor-not-allowed opacity-80' :
+                    <td class="p-4">
+                        <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
+                            #${order.id.toString().slice(0, 15)}
+                        </p>
+                        ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Permanently Cancelled</span>' : ''}
+                    </td>
+                    <td class="p-4">
+                        <p class="font-bold text-neutral-800">${order.customer_name}</p>
+                        <p class="text-neutral-500 text-xs">${order.phone}</p>
+                    </td>
+                    <td class="p-4 text-neutral-600">
+                        <div class="flex items-center gap-1 max-w-[180px] truncate">
+                            <span>${order.product_name}</span>
+                            ${customHighlightBadge}
+                        </div>
+                    </td>
+                    <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
+                    <td class="p-4">
+                        <select onchange="updateOrderStatus('${order.id}', this.value)" 
+                            ${isCancelled ? 'disabled' : ''} 
+                            class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none capitalize 
+                            ${isCancelled ? 'bg-red-100 text-red-700 border-red-300 cursor-not-allowed opacity-80' :
                         order.order_status === 'delivered' ? 'bg-green-100 text-green-700 cursor-pointer' : 'bg-neutral-100 cursor-pointer'}">
-                    
-                    ${statuses.map(s => `
-                        <option value="${s}" ${order.order_status === s ? 'selected' : ''}>
-                            ${s}
-                        </option>
-                    `).join('')}
-                </select>
-            </td>
-        `;
+                            
+                            ${statuses.map(s => `
+                                <option value="${s}" ${order.order_status === s ? 'selected' : ''}>
+                                    ${s}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </td>
+                `;
                 tbody.appendChild(row);
             });
-            // =============================================================
         }
 
+        // --- UPDATE DASHBOARD STATISTICS ---
         function updateStats() {
             if (!orders || orders.length === 0) return;
 
-            // 1. Calculate Total Revenue (Sum of all core orders table values)
             const totalRevenue = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
 
-            // 2. Calculate Orders "To Craft" (Restored to check standard catalog confirmed/processing fields only)
             const toCraftCount = orders.filter(order =>
                 order.order_status === 'confirmed' || order.order_status === 'processing'
             ).length;
 
-            // 3. Calculate Completed/Shipped Orders (Shipped or Delivered statuses only)
             const completedCount = orders.filter(order =>
                 order.order_status === 'shipped' || order.order_status === 'delivered'
             ).length;
 
-            // Update the original overview screen metric display cards with clean variables
             document.getElementById('stat-revenue').textContent = `₹${totalRevenue.toLocaleString('en-IN')}`;
             document.getElementById('stat-to-craft').textContent = `${toCraftCount} Orders`;
             document.getElementById('stat-completed').textContent = `${completedCount} Orders`;
         }
+
         // --- STATUS UPDATE (Triggered by dropdown) ---
         async function updateOrderStatus(id, newStatus) {
-            // 1. Find the current order in your local array
             const currentOrder = orders.find(o => o.id == id);
 
-            // 2. Extra safety: Stop the function if the current status is already cancelled
             if (currentOrder && currentOrder.order_status === 'cancelled') {
                 alert("Cancelled orders cannot be modified.");
                 return;
@@ -519,53 +419,48 @@
                 alert("Error updating status: " + error.message);
             } else {
                 console.log("Status updated to:", newStatus);
-                // Refresh local data and table
                 await loadOrders();
             }
         }
-        // ====== ADMIN SIDE JAVASCRIPT INTERACTIVE HANDLERS ======
 
-        // Extend your routing controller tab switcher function to clear/highlight states safely
-        // ====== REPLACE YOUR EXISTING switchAdminTab FUNCTION WITH THIS ======
+        // --- ADMINISTRATIVE TAB NAVIGATION SWAP ENGINE ---
         function switchAdminTab(targetTabId) {
-            console.log("Routing tab display target context to panel window:", targetTabId);
+            console.log("Routing active panel viewport tab to:", targetTabId);
 
-            // 1. Force the 'hidden' safety visibility utility across ALL content divs
+            // Hide all views globally
             const contentPanels = document.querySelectorAll('.admin-tab-content');
             contentPanels.forEach(panel => {
                 panel.classList.add('hidden');
-                panel.style.display = 'none'; // Double-layer insurance crash prevention
+                panel.style.display = 'none';
             });
 
-            // 2. Strip active styling flags and colors off ALL menu elements in the sidebar list
+            // Reset menu styling indicators
             const navigationItems = document.querySelectorAll('.admin-nav-item');
             navigationItems.forEach(item => {
                 item.classList.remove('bg-brand-800', 'text-white');
                 item.classList.add('text-brand-200', 'hover:bg-brand-800/50');
             });
 
-            // 3. Target and cleanly reveal the focused panel layout screen container view
+            // Target and uncover active container pane
             const selectedPanel = document.getElementById(targetTabId);
             if (selectedPanel) {
                 selectedPanel.classList.remove('hidden');
-                selectedPanel.style.display = 'block'; // Clean clear override injection statement
-            } else {
-                console.error("Layout Target Container Element ID match failed on node lookup wrapper:", targetTabId);
+                selectedPanel.style.display = 'block';
             }
 
-            // 4. Update visual indicators for active selection rows inside your dashboard side panel
+            // Assign active visual focus flags
             const activeSidebarButton = document.getElementById('nav-' + targetTabId);
             if (activeSidebarButton) {
                 activeSidebarButton.classList.remove('text-brand-200', 'hover:bg-brand-800/50');
                 activeSidebarButton.classList.add('bg-brand-800', 'text-white');
             }
 
-            // 5. Fire specific database table build queries if custom portal is selected
             if (targetTabId === 'custom-requests-tab') {
                 loadAdminCustomRequests();
             }
         }
 
+        // --- FETCH AND GENERATE CUSTOM REQUEST ENTRIES ---
         async function loadAdminCustomRequests() {
             const tableBody = document.getElementById('admin-custom-requests-table-body');
             if (!tableBody) return;
@@ -589,7 +484,6 @@
             }
 
             tableBody.innerHTML = requests.map(req => {
-                // FIXED fallback: If created_at is null or missing, gracefully drop to today's date
                 const dateTarget = req.created_at ? new Date(req.created_at) : new Date();
                 const dateParsed = isNaN(dateTarget.getTime())
                     ? 'Recent'
@@ -600,55 +494,34 @@
                     : `<span class="text-neutral-400 italic text-xs">None Provided</span>`;
 
                 return `
-            <tr class="hover:bg-brand-50/30 transition-colors">
-                <td class="p-4 font-medium text-neutral-800">
-                    <p class="font-bold text-neutral-900">${req.customer_name || 'Anonymous'}</p>
-                    <p class="text-xs text-neutral-500">${req.phone || 'N/A'}</p>
-                    <p class="text-xs text-brand-600 underline font-semibold">${req.email || ''}</p>
-                </td>
-                <td class="p-4 max-w-xs">
-                    <p class="text-neutral-700 leading-relaxed text-xs font-normal break-words">${req.description || 'No description provided.'}</p>
-                </td>
-                <td class="p-4 text-center">
-                    ${imageColumnContent}
-                </td>
-                <td class="p-4 text-neutral-500 font-medium text-xs">
-                    ${dateParsed}
-                </td>
-                <td class="p-4 text-right">
-                    <a href="mailto:${req.email || ''}?subject=HandKnot Haven - Your Custom Request" 
-                       class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold rounded-xl hover:from-amber-600 hover:to-amber-700 shadow transition-all inline-flex items-center gap-1.5">
-                        <i class="fa-solid fa-reply"></i> Contact Client
-                    </a>
-                </td>
-            </tr>
-        `;
+                    <tr class="hover:bg-brand-50/30 transition-colors">
+                        <td class="p-4 font-medium text-neutral-800">
+                            <p class="font-bold text-neutral-900">${req.customer_name || 'Anonymous'}</p>
+                            <p class="text-xs text-neutral-500">${req.phone || 'N/A'}</p>
+                            <p class="text-xs text-brand-600 underline font-semibold">${req.email || ''}</p>
+                        </td>
+                        <td class="p-4 max-w-xs">
+                            <p class="text-neutral-700 leading-relaxed text-xs font-normal break-words">${req.description || 'No description provided.'}</p>
+                        </td>
+                        <td class="p-4 text-center">
+                            ${imageColumnContent}
+                        </td>
+                        <td class="p-4 text-neutral-500 font-medium text-xs">
+                            ${dateParsed}
+                        </td>
+                        <td class="p-4 text-right">
+                            <a href="mailto:${req.email || ''}?subject=HandKnot Haven - Your Custom Request" 
+                               class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold rounded-xl hover:from-amber-600 hover:to-amber-700 shadow transition-all inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-reply"></i> Contact Client
+                            </a>
+                        </td>
+                    </tr>
+                `;
             }).join('');
         }
 
         // Run on load
         init();
-    </script>
-    <script>
-
-        async function loadOrders() {
-
-            const { data, error } = await supabaseClient
-                .from('orders')
-                .select('*')
-                .order('created_at', { ascending: false })
-
-            if (error) {
-                console.error(error)
-                return
-            }
-
-            console.log(data)
-
-        }
-
-        loadOrders()
-
     </script>
 </body>
 
