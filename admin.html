@@ -484,6 +484,8 @@
 
         async function loadAdminCustomRequests() {
             const tableBody = document.getElementById('admin-custom-requests-table-body');
+            if (!tableBody) return;
+
             tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-neutral-400 font-serif italic"><i class="fa-solid fa-spinner animate-spin mr-2 text-brand-500"></i>Unrolling custom submissions...</td></tr>`;
 
             const { data: requests, error } = await supabaseClient
@@ -491,13 +493,23 @@
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (error || !requests || requests.length === 0) {
+            if (error) {
+                console.error("Supabase Custom Orders Fetch Error:", error);
+                tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500 font-medium"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Error loading rows. Check console.</td></tr>`;
+                return;
+            }
+
+            if (!requests || requests.length === 0) {
                 tableBody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-neutral-400 font-medium">No custom requests submitted yet.</td></tr>`;
                 return;
             }
 
             tableBody.innerHTML = requests.map(req => {
-                const dateParsed = new Date(req.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                // FIXED fallback: If created_at is null or missing, gracefully drop to today's date
+                const dateTarget = req.created_at ? new Date(req.created_at) : new Date();
+                const dateParsed = isNaN(dateTarget.getTime())
+                    ? 'Recent'
+                    : dateTarget.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
                 const imageColumnContent = req.reference_image
                     ? `<a href="${req.reference_image}" target="_blank" class="px-3 py-1.5 bg-brand-50 border border-brand-200 text-brand-700 font-bold rounded-xl text-xs inline-flex items-center gap-1 hover:bg-brand-600 hover:text-white transition-colors shadow-sm"><i class="fa-solid fa-image"></i> View Pic</a>`
@@ -506,12 +518,12 @@
                 return `
             <tr class="hover:bg-brand-50/30 transition-colors">
                 <td class="p-4 font-medium text-neutral-800">
-                    <p class="font-bold text-neutral-900">${req.customer_name}</p>
-                    <p class="text-xs text-neutral-500">${req.phone}</p>
-                    <p class="text-xs text-brand-600 underline font-semibold">${req.email}</p>
+                    <p class="font-bold text-neutral-900">${req.customer_name || 'Anonymous'}</p>
+                    <p class="text-xs text-neutral-500">${req.phone || 'N/A'}</p>
+                    <p class="text-xs text-brand-600 underline font-semibold">${req.email || ''}</p>
                 </td>
                 <td class="p-4 max-w-xs">
-                    <p class="text-neutral-700 leading-relaxed text-xs font-normal break-words">${req.description}</p>
+                    <p class="text-neutral-700 leading-relaxed text-xs font-normal break-words">${req.description || 'No description provided.'}</p>
                 </td>
                 <td class="p-4 text-center">
                     ${imageColumnContent}
@@ -520,7 +532,7 @@
                     ${dateParsed}
                 </td>
                 <td class="p-4 text-right">
-                    <a href="mailto:${req.email}?subject=HandKnot Haven - Your Custom Request" 
+                    <a href="mailto:${req.email || ''}?subject=HandKnot Haven - Your Custom Request" 
                        class="px-4 py-2 bg-gradient-to-r from-amber-500 to-amber-600 text-white text-xs font-bold rounded-xl hover:from-amber-600 hover:to-amber-700 shadow transition-all inline-flex items-center gap-1.5">
                         <i class="fa-solid fa-reply"></i> Contact Client
                     </a>
