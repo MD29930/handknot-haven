@@ -67,7 +67,7 @@
 
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             <a href="#" id="nav-overview-tab" onclick="switchAdminTab('overview-tab'); return false;"
-                class="flex items-center gap-3 px-4 py-3 bg-brand-800 text-white rounded-xl font-bold transition-colors">
+                class="admin-nav-item flex items-center gap-3 px-4 py-3 bg-brand-800 text-white rounded-xl font-bold transition-colors">
                 <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
             </a>
 
@@ -77,12 +77,21 @@
                 <span class="ml-auto bg-brand-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
             </a>
 
-            <a href="#" onclick="switchAdminTab('custom-requests-tab'); return false;" id="nav-custom-requests-tab"
-                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-all duration-200">
+            <a href="#" id="nav-custom-requests-tab" onclick="switchAdminTab('custom-requests-tab'); return false;"
+                class="admin-nav-item flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-all duration-200">
                 <i class="fa-solid fa-wand-magic-sparkles w-5 text-brand-400"></i>
                 <span>Custom Requests</span>
             </a>
 
+            <a href="#"
+                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
+                <i class="fa-solid fa-tags w-5"></i> Products
+            </a>
+
+            <a href="#"
+                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
+                <i class="fa-solid fa-users w-5"></i> Customers
+            </a>
         </nav>
 
         <div class="p-4 border-t border-brand-800">
@@ -489,35 +498,44 @@
         // Extend your routing controller tab switcher function to clear/highlight states safely
         // ====== REPLACE YOUR EXISTING switchAdminTab FUNCTION WITH THIS ======
         function switchAdminTab(targetTabId) {
-            // 1. Hide all main content block tab panels completely
-            document.querySelectorAll('.admin-tab-content').forEach(el => {
-                el.classList.add('hidden');
+            console.log("Routing tab display target context to panel window:", targetTabId);
+
+            // 1. Force the 'hidden' safety visibility utility across ALL content divs
+            const contentPanels = document.querySelectorAll('.admin-tab-content');
+            contentPanels.forEach(panel => {
+                panel.classList.add('hidden');
+                panel.style.display = 'none'; // Double-layer insurance crash prevention
             });
 
-            // 2. Remove premium active background color highlights from ALL sidebar nav links
-            document.querySelectorAll('aside nav a').forEach(el => {
-                el.classList.remove('bg-brand-800', 'text-white');
-                el.classList.add('text-brand-200', 'hover:bg-brand-800/50');
+            // 2. Strip active styling flags and colors off ALL menu elements in the sidebar list
+            const navigationItems = document.querySelectorAll('.admin-nav-item');
+            navigationItems.forEach(item => {
+                item.classList.remove('bg-brand-800', 'text-white');
+                item.classList.add('text-brand-200', 'hover:bg-brand-800/50');
             });
 
-            // 3. Reveal the specific targeted panel screen cleanly
-            const targetPanel = document.getElementById(targetTabId);
-            if (targetPanel) {
-                targetPanel.classList.remove('hidden');
+            // 3. Target and cleanly reveal the focused panel layout screen container view
+            const selectedPanel = document.getElementById(targetTabId);
+            if (selectedPanel) {
+                selectedPanel.classList.remove('hidden');
+                selectedPanel.style.display = 'block'; // Clean clear override injection statement
+            } else {
+                console.error("Layout Target Container Element ID match failed on node lookup wrapper:", targetTabId);
             }
 
-            // 4. Assign the active styling state onto the clicked tab link element
-            const activeNav = document.getElementById('nav-' + targetTabId);
-            if (activeNav) {
-                activeNav.classList.remove('text-brand-200', 'hover:bg-brand-800/50');
-                activeNav.classList.add('bg-brand-800', 'text-white');
+            // 4. Update visual indicators for active selection rows inside your dashboard side panel
+            const activeSidebarButton = document.getElementById('nav-' + targetTabId);
+            if (activeSidebarButton) {
+                activeSidebarButton.classList.remove('text-brand-200', 'hover:bg-brand-800/50');
+                activeSidebarButton.classList.add('bg-brand-800', 'text-white');
             }
 
-            // 5. If navigating to custom requests, fire the database table builder
+            // 5. Fire specific database table build queries if custom portal is selected
             if (targetTabId === 'custom-requests-tab') {
                 loadAdminCustomRequests();
             }
         }
+        
         async function loadAdminCustomRequests() {
             const tableBody = document.getElementById('admin-custom-requests-table-body');
             if (!tableBody) return;
