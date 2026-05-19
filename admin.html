@@ -62,8 +62,8 @@
                 <i class="fa-solid fa-chart-pie w-5"></i> Dashboard
             </a>
 
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
+            <a href="#" id="nav-orders-tab" onclick="switchAdminTab('orders-tab'); return false;"
+                class="admin-nav-item flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
                 <i class="fa-solid fa-box-open w-5"></i> Orders
                 <span class="ml-auto bg-brand-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
             </a>
@@ -170,8 +170,13 @@
 
                 <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-neutral-200 flex justify-between items-center bg-neutral-50/50">
-                        <h3 class="text-lg font-bold text-neutral-800">Recent Orders</h3>
-                        <button class="text-sm font-bold text-brand-600 hover:text-brand-800">View All</button>
+                        <div>
+                            <h3 class="text-lg font-bold text-neutral-800">Active Work Orders Queue</h3>
+                            <p class="text-xs text-neutral-500">Showing all standard catalog purchases currently
+                                awaiting crafting, shipping, or processing.</p>
+                        </div>
+                        <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full"><i
+                                class="fa-solid fa-clock-rotate-left mr-1"></i> Not Delivered Yet</span>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -187,12 +192,6 @@
                                 </tr>
                             </thead>
                             <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
-                                <tr>
-                                    <td colspan="5" class="p-10 text-center text-neutral-400">
-                                        <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
-                                        database...
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -200,35 +199,68 @@
             </div>
 
 
-            <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
+            <div id="orders-tab" class="admin-tab-content hidden space-y-6">
                 <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                     <div>
-                        <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
-                        <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
-                            submissions.</p>
+                        <h2 class="text-3xl font-serif font-bold text-neutral-800">Master Orders Ledger</h2>
+                        <p class="text-sm text-neutral-500">Comprehensive transaction registry mapping recent sales,
+                            custom items, and historical tracking analytics.</p>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
+                <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr
-                                    class="bg-brand-50 border-b border-brand-100 text-neutral-700 text-xs font-bold uppercase tracking-wider">
+                                    class="bg-neutral-50 border-b border-neutral-200 text-xs uppercase tracking-wider text-neutral-600 font-bold">
+                                    <th class="p-4">Order ID</th>
                                     <th class="p-4">Customer Details</th>
-                                    <th class="p-4">Dream Item Description</th>
-                                    <th class="p-4 text-center">Reference Image</th>
-                                    <th class="p-4">Received On</th>
-                                    <th class="p-4 text-right">Action</th>
+                                    <th class="p-4">Items Summary</th>
+                                    <th class="p-4">Total Price</th>
+                                    <th class="p-4">Operational Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin-custom-requests-table-body"
+                            <tbody id="master-history-ledger-tbody"
                                 class="divide-y divide-neutral-100 text-sm text-neutral-600">
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
+        </div>
+
+
+        <div id="custom-requests-tab" class="admin-tab-content hidden space-y-6">
+            <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
+                <div>
+                    <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
+                    <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
+                        submissions.</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-brand-50 border-b border-brand-100 text-neutral-700 text-xs font-bold uppercase tracking-wider">
+                                <th class="p-4">Customer Details</th>
+                                <th class="p-4">Dream Item Description</th>
+                                <th class="p-4 text-center">Reference Image</th>
+                                <th class="p-4">Received On</th>
+                                <th class="p-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-custom-requests-table-body"
+                            class="divide-y divide-neutral-100 text-sm text-neutral-600">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         </div>
     </main>
@@ -294,26 +326,35 @@
         }
 
         // --- RENDER TABLE WITH HIGHLIGHTED CUSTOM ORDERS ---
-        function renderOrdersTable() {
-            const tbody = document.getElementById('orders-tbody');
-            if (!tbody) {
-                console.error("Table body 'orders-tbody' not found in HTML!");
-                return;
-            }
+        // ====== REPLACE YOUR OLD renderOrdersTable WITH THESE DETACHED UTILITIES ======
 
-            tbody.innerHTML = '';
+        function renderOrdersTable() {
+            // 1. Target the two separate table body endpoints
+            const dashboardActiveTbody = document.getElementById('orders-tbody');
+            const masterLedgerTbody = document.getElementById('master-history-ledger-tbody');
+
+            if (!dashboardActiveTbody) return;
+
+            // Reset view arrays cleanly
+            dashboardActiveTbody.innerHTML = '';
+            if (masterLedgerTbody) masterLedgerTbody.innerHTML = '';
 
             if (orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="p-10 text-center text-neutral-400 font-bold">No orders found in database.</td></tr>';
+                const structuralEmptyRow = '<tr><td colspan="5" class="p-10 text-center text-neutral-400 font-bold">No records found inside your database profile mapping indices.</td></tr>';
+                dashboardActiveTbody.innerHTML = structuralEmptyRow;
+                if (masterLedgerTbody) masterLedgerTbody.innerHTML = structuralEmptyRow;
                 return;
             }
 
             const statuses = ['confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
 
+            // 2. Loop through all database records to separate and populate screens
             orders.forEach(order => {
-                const isCancelled = order.order_status === 'cancelled';
+                const orderStatusValue = (order.order_status || '').toLowerCase();
+                const isCancelled = orderStatusValue === 'cancelled';
                 const isCustomOrder = (order.product_name || '').toLowerCase().includes('custom');
 
+                // Style helper setup definitions
                 let highlightRowStyle = 'hover:bg-neutral-50/50';
                 if (isCancelled) {
                     highlightRowStyle = 'bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500 font-medium';
@@ -325,43 +366,56 @@
                     ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ml-1 border border-amber-200 shadow-sm"><i class="fa-solid fa-wand-magic-sparkles"></i> Custom Bespoke</span>`
                     : '';
 
-                const row = document.createElement('tr');
-                row.className = `${highlightRowStyle} transition-colors border-b border-neutral-100`;
+                // Build the structural row component string snippet
+                const rowHTMLContent = `
+            <td class="p-4">
+                <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
+                    #${order.id.toString().slice(0, 15)}
+                </p>
+                ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Permanently Cancelled</span>' : ''}
+            </td>
+            <td class="p-4">
+                <p class="font-bold text-neutral-800">${order.customer_name || 'Anonymous'}</p>
+                <p class="text-neutral-500 text-xs">${order.phone || 'N/A'}</p>
+            </td>
+            <td class="p-4 text-neutral-600">
+                <div class="flex items-center gap-1 max-w-[180px] truncate">
+                    <span>${order.product_name}</span>
+                    ${customHighlightBadge}
+                </div>
+            </td>
+            <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
+            <td class="p-4">
+                <select onchange="updateOrderStatus('${order.id}', this.value)" 
+                    ${isCancelled ? 'disabled' : ''} 
+                    class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none capitalize 
+                    ${isCancelled ? 'bg-red-100 text-red-700 border-red-300 cursor-not-allowed opacity-80' :
+                        orderStatusValue === 'delivered' ? 'bg-green-100 text-green-700 cursor-pointer' : 'bg-neutral-100 cursor-pointer'}">
+                    
+                    ${statuses.map(s => `<option value="${s}" ${orderStatusValue === s ? 'selected' : ''}>${s}</option>`).join('')}
+                </select>
+            </td>
+        `;
 
-                row.innerHTML = `
-                    <td class="p-4">
-                        <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
-                            #${order.id.toString().slice(0, 15)}
-                        </p>
-                        ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Permanently Cancelled</span>' : ''}
-                    </td>
-                    <td class="p-4">
-                        <p class="font-bold text-neutral-800">${order.customer_name}</p>
-                        <p class="text-neutral-500 text-xs">${order.phone}</p>
-                    </td>
-                    <td class="p-4 text-neutral-600">
-                        <div class="flex items-center gap-1 max-w-[180px] truncate">
-                            <span>${order.product_name}</span>
-                            ${customHighlightBadge}
-                        </div>
-                    </td>
-                    <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
-                    <td class="p-4">
-                        <select onchange="updateOrderStatus('${order.id}', this.value)" 
-                            ${isCancelled ? 'disabled' : ''} 
-                            class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none capitalize 
-                            ${isCancelled ? 'bg-red-100 text-red-700 border-red-300 cursor-not-allowed opacity-80' :
-                        order.order_status === 'delivered' ? 'bg-green-100 text-green-700 cursor-pointer' : 'bg-neutral-100 cursor-pointer'}">
-                            
-                            ${statuses.map(s => `
-                                <option value="${s}" ${order.order_status === s ? 'selected' : ''}>
-                                    ${s}
-                                </option>
-                            `).join('')}
-                        </select>
-                    </td>
-                `;
-                tbody.appendChild(row);
+                // ------------------------------------------------------------
+                // ROUTING RULE A: Output to Master Ledger tab (EVERY single item lands here)
+                // ------------------------------------------------------------
+                if (masterLedgerTbody) {
+                    const masterRowNode = document.createElement('tr');
+                    masterRowNode.className = `${highlightRowStyle} transition-colors border-b border-neutral-100`;
+                    masterRowNode.innerHTML = rowHTMLContent;
+                    masterLedgerTbody.appendChild(masterRowNode);
+                }
+
+                // ------------------------------------------------------------
+                // ROUTING RULE B: Output to Overview Dashboard tab (Only if NOT delivered!)
+                // ------------------------------------------------------------
+                if (orderStatusValue !== 'delivered') {
+                    const dashboardActiveRowNode = document.createElement('tr');
+                    dashboardActiveRowNode.className = `${highlightRowStyle} transition-colors border-b border-neutral-100`;
+                    dashboardActiveRowNode.innerHTML = rowHTMLContent;
+                    dashboardActiveTbody.appendChild(dashboardActiveRowNode);
+                }
             });
         }
 
