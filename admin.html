@@ -65,7 +65,8 @@
             <a href="#" id="nav-orders-tab" onclick="switchAdminTab('orders-tab'); return false;"
                 class="admin-nav-item flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
                 <i class="fa-solid fa-box-open w-5"></i> Orders
-                <span class="ml-auto bg-brand-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+                <span id="sidebar-orders-badge"
+                    class="ml-auto bg-red-500 text-white text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full hidden"></span>
             </a>
 
             <a href="#" id="nav-custom-requests-tab" onclick="switchAdminTab('custom-requests-tab'); return false;"
@@ -184,13 +185,16 @@
                                     <th class="p-4 font-bold">Customer</th>
                                     <th class="p-4 font-bold">Items</th>
                                     <th class="p-4 font-bold">Total</th>
+                                    <th class="p-4 font-bold">Date & Time</th>
                                     <th class="p-4 font-bold">Status</th>
                                 </tr>
                             </thead>
                             <tbody id="orders-tbody" class="divide-y divide-neutral-100 text-sm">
                                 <tr>
-                                    <td colspan="5" class="p-10 text-center text-neutral-400"><i
-                                            class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders...</td>
+                                    <td colspan="6" class="p-10 text-center text-neutral-400">
+                                        <i class="fa-solid fa-spinner animate-spin mr-2"></i> Loading orders from
+                                        database...
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -217,6 +221,7 @@
                                     <th class="p-4">Customer Details</th>
                                     <th class="p-4">Items Summary</th>
                                     <th class="p-4">Total Price</th>
+                                    <th class="p-4">Date & Time</th>
                                     <th class="p-4">Operational Status</th>
                                 </tr>
                             </thead>
@@ -324,33 +329,50 @@
         // --- RENDER TABLE WITH HIGHLIGHTED CUSTOM ORDERS ---
         // ====== REPLACE YOUR OLD renderOrdersTable WITH THESE DETACHED UTILITIES ======
 
+        // ====== REPLACE YOUR ENTIRE renderOrdersTable() WITH THIS ======
         function renderOrdersTable() {
-            // 1. Target the two separate table body endpoints
             const dashboardActiveTbody = document.getElementById('orders-tbody');
             const masterLedgerTbody = document.getElementById('master-history-ledger-tbody');
 
             if (!dashboardActiveTbody) return;
 
-            // Reset view arrays cleanly
             dashboardActiveTbody.innerHTML = '';
             if (masterLedgerTbody) masterLedgerTbody.innerHTML = '';
 
             if (orders.length === 0) {
-                const structuralEmptyRow = '<tr><td colspan="5" class="p-10 text-center text-neutral-400 font-bold">No records found inside your database profile mapping indices.</td></tr>';
+                const structuralEmptyRow = '<tr><td colspan="6" class="p-10 text-center text-neutral-400 font-bold">No records found inside your database profile mapping indices.</td></tr>';
                 dashboardActiveTbody.innerHTML = structuralEmptyRow;
                 if (masterLedgerTbody) masterLedgerTbody.innerHTML = structuralEmptyRow;
+
+                // Hide sidebar badge if no orders
+                const badge = document.getElementById('sidebar-orders-badge');
+                if (badge) badge.classList.add('hidden');
                 return;
             }
 
             const statuses = ['confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
+            const now = new Date();
+            let newOrdersCount = 0;
 
-            // 2. Loop through all database records to separate and populate screens
             orders.forEach(order => {
                 const orderStatusValue = (order.order_status || '').toLowerCase();
                 const isCancelled = orderStatusValue === 'cancelled';
                 const isCustomOrder = (order.product_name || '').toLowerCase().includes('custom');
 
-                // Style helper setup definitions
+                // --- NEW: Time & Date Logic ---
+                const orderDate = order.created_at ? new Date(order.created_at) : new Date();
+                const dateFormatted = orderDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+                const timeFormatted = orderDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+
+                // Calculate if order is less than 24 hours old
+                const hoursOld = Math.abs(now - orderDate) / 36e5;
+                const isNewOrder = hoursOld <= 24;
+
+                if (isNewOrder && !isCancelled) {
+                    newOrdersCount++;
+                }
+                // ------------------------------
+
                 let highlightRowStyle = 'hover:bg-neutral-50/50';
                 if (isCancelled) {
                     highlightRowStyle = 'bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500 font-medium';
@@ -362,13 +384,20 @@
                     ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ml-1 border border-amber-200 shadow-sm"><i class="fa-solid fa-wand-magic-sparkles"></i> Custom Bespoke</span>`
                     : '';
 
-                // Build the structural row component string snippet
+                // Add a visual "NEW" pulsing pill next to the Order ID if it arrived recently
+                const newArrivalPill = isNewOrder && !isCancelled
+                    ? `<span class="bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider ml-2 animate-pulse shadow-sm">New</span>`
+                    : '';
+
                 const rowHTMLContent = `
             <td class="p-4">
-                <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
-                    #${order.id.toString().slice(0, 15)}
-                </p>
-                ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase">Permanently Cancelled</span>' : ''}
+                <div class="flex items-center">
+                    <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
+                        #${order.id.toString().slice(0, 15)}
+                    </p>
+                    ${newArrivalPill}
+                </div>
+                ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase mt-1 inline-block">Permanently Cancelled</span>' : ''}
             </td>
             <td class="p-4">
                 <p class="font-bold text-neutral-800">${order.customer_name || 'Anonymous'}</p>
@@ -381,6 +410,12 @@
                 </div>
             </td>
             <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
+            
+            <td class="p-4 whitespace-nowrap">
+                <p class="text-xs font-bold text-neutral-700">${dateFormatted}</p>
+                <p class="text-[10px] text-neutral-400 font-medium">${timeFormatted}</p>
+            </td>
+
             <td class="p-4">
                 <select onchange="updateOrderStatus('${order.id}', this.value)" 
                     ${isCancelled ? 'disabled' : ''} 
@@ -393,9 +428,6 @@
             </td>
         `;
 
-                // ------------------------------------------------------------
-                // ROUTING RULE A: Output to Master Ledger tab (EVERY single item lands here)
-                // ------------------------------------------------------------
                 if (masterLedgerTbody) {
                     const masterRowNode = document.createElement('tr');
                     masterRowNode.className = `${highlightRowStyle} transition-colors border-b border-neutral-100`;
@@ -403,9 +435,6 @@
                     masterLedgerTbody.appendChild(masterRowNode);
                 }
 
-                // ------------------------------------------------------------
-                // ROUTING RULE B: Output to Overview Dashboard tab (Only if NOT delivered!)
-                // ------------------------------------------------------------
                 if (orderStatusValue !== 'delivered') {
                     const dashboardActiveRowNode = document.createElement('tr');
                     dashboardActiveRowNode.className = `${highlightRowStyle} transition-colors border-b border-neutral-100`;
@@ -413,6 +442,19 @@
                     dashboardActiveTbody.appendChild(dashboardActiveRowNode);
                 }
             });
+
+            // --- NEW: Update the Sidebar Notification Badge ---
+            const badge = document.getElementById('sidebar-orders-badge');
+            if (badge) {
+                if (newOrdersCount > 0) {
+                    badge.textContent = `${newOrdersCount} New`;
+                    badge.classList.remove('hidden');
+                    badge.classList.add('animate-pulse');
+                } else {
+                    badge.classList.add('hidden');
+                    badge.classList.remove('animate-pulse');
+                }
+            }
         }
 
         // --- UPDATE DASHBOARD STATISTICS ---
