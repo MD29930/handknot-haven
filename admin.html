@@ -75,8 +75,8 @@
                 <span>Custom Requests</span>
             </a>
 
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
+            <a href="#" id="nav-products-tab" onclick="switchAdminTab('products-tab'); return false;"
+                class="admin-nav-item flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
                 <i class="fa-solid fa-tags w-5"></i> Products
             </a>
 
@@ -263,6 +263,114 @@
                 </div>
             </div>
 
+        </div>
+        <div id="products-tab" class="admin-tab-content hidden space-y-6">
+            <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
+                <div>
+                    <h2 class="text-3xl font-serif font-bold text-neutral-800">Product Catalog Manager</h2>
+                    <p class="text-sm text-neutral-500">Add new crochet designs, update pricing, manage stock
+                        configurations, and change discount tiers.</p>
+                </div>
+                <button onclick="openProductFormModal()"
+                    class="px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2 text-sm">
+                    <i class="fa-solid fa-plus"></i> Add New Product
+                </button>
+            </div>
+
+            <div id="admin-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            </div>
+        </div>
+
+        <div id="product-form-modal"
+            class="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+            <div
+                class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+                <div class="p-6 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
+                    <h3 id="product-modal-title" class="text-xl font-serif font-bold text-brand-900">Add New Crochet
+                        Product</h3>
+                    <button onclick="closeProductFormModal()"
+                        class="text-neutral-400 hover:text-brand-600 text-2xl transition-colors focus:outline-none">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <form id="admin-product-form" onsubmit="handleProductSubmit(event)"
+                    class="p-6 overflow-y-auto space-y-4 flex-1 text-sm text-left">
+                    <input type="hidden" id="form-product-id">
+
+                    <div>
+                        <label class="block font-bold text-neutral-700 mb-1">Product Name *</label>
+                        <input type="text" id="form-product-name" required
+                            class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-medium">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-neutral-700 mb-1">Price (₹) *</label>
+                            <input type="number" id="form-product-price" step="0.01" required
+                                class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-medium">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-neutral-700 mb-1">Discount Percent (%)</label>
+                            <input type="number" id="form-product-discount" min="0" max="100" default="0"
+                                class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-medium">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-neutral-700 mb-1">Category *</label>
+                            <select id="form-product-category" required
+                                class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-bold bg-white text-neutral-700">
+                                <option value="Clothing">Clothing</option>
+                                <option value="Decor & Flowers">Decor & Flowers</option>
+                                <option value="Accessories">Accessories</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-neutral-700 mb-1">Badge (Pill Overlay)</label>
+                            <select id="form-product-badge"
+                                class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-bold bg-white text-neutral-700">
+                                <option value="">None</option>
+                                <option value="Bestseller">Bestseller</option>
+                                <option value="New">New</option>
+                                <option value="Sale">Sale</option>
+                                <option value="Customisation Available">Customisation Available</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-bold text-neutral-700 mb-1">Crafting Time (e.g. 3-5 days) *</label>
+                            <input type="text" id="form-product-crafting" required placeholder="3-5 days"
+                                class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-medium">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-neutral-700 mb-1">Material Used</label>
+                            <input type="text" id="form-product-material" placeholder="Organic Cotton"
+                                class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-medium">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-neutral-700 mb-1">Image URL *</label>
+                        <input type="url" id="form-product-image" required placeholder="https://images.unsplash.com/..."
+                            class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 font-mono text-xs">
+                    </div>
+
+                    <div>
+                        <label class="block font-bold text-neutral-700 mb-1">Description *</label>
+                        <textarea id="form-product-desc" required rows="3"
+                            class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 resize-none leading-relaxed"></textarea>
+                    </div>
+
+                    <button type="submit" id="form-product-submit-btn"
+                        class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold text-base shadow-lg transition-all flex items-center justify-center gap-2 mt-2">
+                        Save Product Configuration <i class="fa-solid fa-cloud-arrow-up"></i>
+                    </button>
+                </form>
+            </div>
         </div>
     </main>
 
@@ -533,7 +641,205 @@
                 await loadOrders();
             }
         }
+        // =========================================================================
+        // 🌟 CATALOG ARCHITECTURE WORKSPACE ENGINE (SUPABASE PRODUCTS CRUD)
+        // =========================================================================
 
+        let globalProducts = [];
+
+        // 1. Fetch products from database and route into rendering layouts
+        async function loadAdminProducts() {
+            const grid = document.getElementById('admin-products-grid');
+            if (!grid) return;
+
+            grid.innerHTML = `<div class="col-span-full text-center py-12 text-neutral-400 font-serif italic"><i class="fa-solid fa-spinner animate-spin mr-2 text-brand-500"></i>Unraveling your product catalog lines...</div>`;
+
+            const { data, error } = await supabaseClient
+                .from('products')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (error) {
+                console.error("Supabase Catalog Pull Error:", error);
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-red-500 font-bold"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Failed to fetch store inventory records.</div>`;
+                return;
+            }
+
+            globalProducts = data;
+
+            if (globalProducts.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-12 text-neutral-400 font-medium">Your store has no products loaded yet. Click 'Add New Product' to start.</div>`;
+                return;
+            }
+
+            grid.innerHTML = globalProducts.map(p => {
+                const rawPrice = Number(p.price || 0);
+                const discountPct = Number(p.discount || 0);
+
+                // Compute active price values based on discount configurations
+                let finalPriceText = `₹${rawPrice.toFixed(2)}`;
+                let discountBadge = '';
+
+                if (discountPct > 0) {
+                    const calculatedSalePrice = rawPrice - (rawPrice * (discountPct / 100));
+                    finalPriceText = `
+                <div class="flex flex-col">
+                    <span class="text-xs text-neutral-400 line-through">₹${rawPrice.toFixed(2)}</span>
+                    <span class="text-base font-black text-brand-600">₹${calculatedSalePrice.toFixed(2)}</span>
+                </div>`;
+                    discountBadge = `<span class="bg-green-100 text-green-800 text-[10px] font-black px-2 py-0.5 rounded border border-green-200 uppercase">${discountPct}% OFF</span>`;
+                }
+
+                return `
+            <div class="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col group transition-all hover:shadow-md">
+                <div class="h-44 overflow-hidden relative bg-neutral-50 border-b">
+                    <img src="${p.image_url || 'https://images.unsplash.com/photo-1584992236310-6edddc08acff'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                    ${p.badge ? `<span class="absolute top-2 left-2 bg-brand-900 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">${p.badge}</span>` : ''}
+                </div>
+                <div class="p-4 flex flex-col flex-1">
+                    <div class="flex justify-between items-center gap-2 mb-1">
+                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">${p.category || 'Uncategorized'}</span>
+                        ${discountBadge}
+                    </div>
+                    <h4 class="font-bold text-neutral-800 text-sm mb-1 truncate">${p.name || 'Untitled Craft'}</h4>
+                    <p class="text-xs text-neutral-500 line-clamp-2 leading-relaxed flex-1 mb-3">${p.description || 'No descriptive information loaded.'}</p>
+                    
+                    <div class="bg-neutral-50 p-2.5 rounded-xl border border-neutral-100 flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Price Configuration</p>
+                            <div class="font-bold text-neutral-800">${finalPriceText}</div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Craft Time</p>
+                            <div class="text-xs font-bold text-amber-700"><i class="fa-regular fa-clock text-[10px]"></i> ${p.crafting_time || '3-5 days'}</div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 mt-auto border-t pt-3 border-neutral-100">
+                        <button onclick="populateProductEditForm(${p.id})" class="py-2 px-3 bg-neutral-100 hover:bg-brand-100 text-neutral-700 hover:text-brand-900 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
+                            <i class="fa-regular fa-pen-to-square"></i> Edit
+                        </button>
+                        <button onclick="deleteProductFromCatalog(${p.id})" class="py-2 px-3 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
+                            <i class="fa-regular fa-trash-can"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+            }).join('');
+        }
+
+        // 2. Open Modal in Add Mode
+        function openProductFormModal() {
+            document.getElementById('admin-product-form').reset();
+            document.getElementById('form-product-id').value = '';
+            document.getElementById('product-modal-title').textContent = 'Add New Crochet Product';
+
+            const modal = document.getElementById('product-form-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // 3. Close Modal safely
+        function closeProductFormModal() {
+            const modal = document.getElementById('product-form-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // 4. Open Modal in Edit Mode and populate fields
+        function populateProductEditForm(productId) {
+            const product = globalProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            document.getElementById('form-product-id').value = product.id;
+            document.getElementById('form-product-name').value = product.name || '';
+            document.getElementById('form-product-price').value = product.price || 0;
+            document.getElementById('form-product-discount').value = product.discount || 0;
+            document.getElementById('form-product-category').value = product.category || 'Clothing';
+            document.getElementById('form-product-badge').value = product.badge || '';
+            document.getElementById('form-product-crafting').value = product.crafting_time || '';
+            document.getElementById('form-product-material').value = product.description_material_name || '';
+            document.getElementById('form-product-image').value = p.image_url || '';
+            document.getElementById('form-product-desc').value = product.description || '';
+
+            document.getElementById('product-modal-title').textContent = 'Modify Product Specifications';
+
+            const modal = document.getElementById('product-form-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        // 5. Unified Submission Router (Create vs Update)
+        async function handleProductSubmit(event) {
+            event.preventDefault();
+            const submitBtn = document.getElementById('form-product-submit-btn');
+            const originalContent = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin mr-2"></i> Syncing Database Row...`;
+            submitBtn.disabled = true;
+
+            const productId = document.getElementById('form-product-id').value;
+
+            // Map individual layout data inputs into schema properties
+            const productPayload = {
+                name: document.getElementById('form-product-name').value,
+                price: parseFloat(document.getElementById('form-product-price').value),
+                discount: parseInt(document.getElementById('form-product-discount').value) || 0,
+                category: document.getElementById('form-product-category').value,
+                badge: document.getElementById('form-product-badge').value || null,
+                crafting_time: document.getElementById('form-product-crafting').value,
+                image_url: document.getElementById('form-product-image').value,
+                description: document.getElementById('form-product-desc').value
+            };
+
+            let resultError = null;
+
+            if (productId) {
+                // Mode A: Update Existing Row Configuration
+                const { error } = await supabaseClient
+                    .from('products')
+                    .update(productPayload)
+                    .eq('id', productId);
+                resultError = error;
+            } else {
+                // Mode B: Insert Fresh Item Card Element
+                const { error } = await supabaseClient
+                    .from('products')
+                    .insert([productPayload]);
+                resultError = error;
+            }
+
+            submitBtn.innerHTML = originalContent;
+            submitBtn.disabled = false;
+
+            if (resultError) {
+                console.error("Database Transaction Failure:", resultError);
+                alert(`Error sync failed: ${resultError.message}`);
+            } else {
+                closeProductFormModal();
+                loadAdminProducts(); // Live refresh the grid container view
+            }
+        }
+
+        // 6. Delete Target Record Execution Layer
+        async function deleteProductFromCatalog(productId) {
+            if (confirm("Are you sure you want to permanently delete this product from your store inventory catalog? This action will immediately remove it from your customer-facing storefront website index.")) {
+                const { error } = await supabaseClient
+                    .from('products')
+                    .delete()
+                    .eq('id', productId);
+
+                if (error) {
+                    console.error("Catalog Removal Failure:", error);
+                    alert("Could not complete delete task pipeline parameters.");
+                } else {
+                    loadAdminProducts(); // Instantly update view grid rows
+                }
+            }
+        }
+
+        // 7. Ensure your switchAdminTab pipeline executes the loader when this tab is targeted
+        // Locate your existing switchAdminTab function and make sure it calls loadAdminProducts() when the view is matched.
         // --- ADMINISTRATIVE TAB NAVIGATION SWAP ENGINE ---
         function switchAdminTab(targetTabId) {
             console.log("Routing active panel viewport tab to:", targetTabId);
@@ -568,6 +874,10 @@
 
             if (targetTabId === 'custom-requests-tab') {
                 loadAdminCustomRequests();
+            }
+
+            if (targetTabId === 'products-tab') {
+                loadAdminProducts();
             }
         }
 
