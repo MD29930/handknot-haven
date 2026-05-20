@@ -2184,6 +2184,60 @@
             return true;
         }
 
+        // ====== ADD THIS TO YOUR MAIN WEBSITE JAVASCRIPT ======
+
+        async function monitorShopStatus() {
+            // Matches your existing HTML ID
+            const banner = document.getElementById('shop-status-banner');
+            if (!banner) return;
+
+            // 1. Helper function to show/hide the banner and update buttons
+            function applyStatus(isOpen) {
+                SHOP_CONFIG.takingOrders = isOpen; // Sync with your global shop setting
+
+                if (isOpen) {
+                    banner.classList.add('hidden'); // Hide banner when Open
+                    banner.style.display = 'none';
+                } else {
+                    // Inject the pause message into your banner and show it
+                    banner.innerHTML = `<i class="fa-solid fa-ban text-brand-600 text-xl"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`;
+                    banner.classList.remove('hidden');
+                    banner.style.display = 'flex';
+                }
+
+                // Call your existing function to automatically lock/unlock the Custom and Checkout buttons
+                applyShopStatus();
+            }
+
+            // 2. Fetch current status on initial page load
+            const { data, error } = await supabaseClient
+                .from('store_settings')
+                .select('is_open')
+                .eq('id', 1)
+                .single();
+
+            if (data) {
+                applyStatus(data.is_open);
+            }
+
+            // 3. Listen for REAL-TIME changes from the Admin Dashboard!
+            supabaseClient
+                .channel('store-settings-live')
+                .on('postgres_changes',
+                    { event: 'UPDATE', schema: 'public', table: 'store_settings' },
+                    payload => {
+                        console.log("Store status changed live:", payload.new.is_open);
+                        applyStatus(payload.new.is_open);
+                    }
+                )
+                .subscribe();
+        }
+
+        // Run the monitor when the website loads
+        document.addEventListener('DOMContentLoaded', () => {
+            monitorShopStatus();
+        });
+
         // Initialize application runtime context
         init();
     </script>

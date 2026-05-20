@@ -287,9 +287,46 @@
                 .subscribe();
         }
 
-        // --- SHOP STATUS LOGIC ---
-        function toggleShopStatus() {
+        // ====== REPLACE YOUR SHOP STATUS LOGIC IN THE ADMIN SCRIPT WITH THIS ======
+
+        // 1. Fetch the true status when the Admin Dashboard loads
+        async function fetchInitialShopStatus() {
+            const { data, error } = await supabaseClient
+                .from('store_settings')
+                .select('is_open')
+                .eq('id', 1)
+                .single();
+
+            if (data) {
+                isShopOpen = data.is_open;
+                updateToggleUI();
+            }
+        }
+        fetchInitialShopStatus(); // Run immediately on load
+
+        // 2. Triggered when you click the toggle button
+        async function toggleShopStatus() {
+            // Flip the visual state immediately (Optimistic UI)
             isShopOpen = !isShopOpen;
+            updateToggleUI();
+
+            // Push the new state to Supabase
+            const { error } = await supabaseClient
+                .from('store_settings')
+                .update({ is_open: isShopOpen })
+                .eq('id', 1);
+
+            if (error) {
+                console.error("Failed to sync shop status:", error);
+                alert("Network error: Could not change store status.");
+                // Revert switch if database failed
+                isShopOpen = !isShopOpen;
+                updateToggleUI();
+            }
+        }
+
+        // 3. Handles changing the colors and text of the switch
+        function updateToggleUI() {
             const knob = document.getElementById('shop-status-knob');
             const toggle = document.getElementById('shop-status-toggle');
             const label = document.getElementById('shop-status-label');
