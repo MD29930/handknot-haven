@@ -94,7 +94,7 @@
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+    <main class="flex-1 flex flex-col h-full overflow-y-auto relative">
 
         <header
             class="bg-white shadow-sm border-b border-neutral-200 h-20 flex items-center justify-between px-6 lg:px-10 z-10">
@@ -750,11 +750,13 @@
             modal.classList.remove('flex');
         }
 
-        // 4. Open Modal in Edit Mode and populate fields
+        // ====== REPLACE THIS SPECIFIC FUNCTION IN YOUR SCRIPT AREA ======
+
         function populateProductEditForm(productId) {
             const product = globalProducts.find(p => p.id === productId);
             if (!product) return;
 
+            // Populating individual schema properties into form field items
             document.getElementById('form-product-id').value = product.id;
             document.getElementById('form-product-name').value = product.name || '';
             document.getElementById('form-product-price').value = product.price || 0;
@@ -763,11 +765,15 @@
             document.getElementById('form-product-badge').value = product.badge || '';
             document.getElementById('form-product-crafting').value = product.crafting_time || '';
             document.getElementById('form-product-material').value = product.description_material_name || '';
-            document.getElementById('form-product-image').value = p.image_url || '';
+
+            // FIXED: Changed p.image_url to product.image_url so the object compiles correctly
+            document.getElementById('form-product-image').value = product.image_url || '';
             document.getElementById('form-product-desc').value = product.description || '';
 
+            // Switch heading text parameter values to show Edit mode
             document.getElementById('product-modal-title').textContent = 'Modify Product Specifications';
 
+            // Uncover the form card modal container cleanly
             const modal = document.getElementById('product-form-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
