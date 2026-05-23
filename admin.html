@@ -400,6 +400,7 @@
         // --- INITIALIZATION ---
         async function init() {
             await loadOrders();
+            await loadAdminProducts();
 
             // LISTEN FOR LIVE CHANGES
             supabaseClient
