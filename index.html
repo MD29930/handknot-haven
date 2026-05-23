@@ -1673,17 +1673,85 @@
         function openPaymentModal() { paymentModal.classList.remove('hidden'); paymentModal.classList.add('flex'); setTimeout(() => paymentModalContent.classList.replace('opacity-0', 'opacity-100'), 10); }
         function closePaymentModal() { paymentModalContent.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { paymentModal.classList.add('hidden'); paymentModal.classList.remove('flex'); }, 300); }
 
-        // --- CHECKOUT TRIGGERS ---
+        // ====== REPLACE THIS FUNCTION IN YOUR MAIN STOREFRONT SITE SCRIPT ======
+
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = `<div class="loader mx-auto"></div>`;
-            btn.disabled = true;
-            setTimeout(() => {
-                finalizeOrderProcess();
+
+            // 1. Gather operational checkout totals from your client basket memory
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            if (totalAmount <= 0) {
+                alert("Your basket is empty.");
+                return;
+            }
+
+            // Razorpay processes all amounts in integer subunits (Paise). 
+            // Example: ₹150.00 must be sent to the API as 15000 paise.
+            const amountInPaise = Math.round(totalAmount * 100);
+
+            // 2. Fetch customer details typed into your checkout modal fields
+            const customerName = document.getElementById('cust-name').value || "Valued Customer";
+            const customerEmail = document.getElementById('cust-email').value || "";
+            const customerPhone = document.getElementById('cust-phone').value || "";
+            const customerAddress = document.getElementById('cust-address').value || "";
+
+            // 3. Configure the standard Checkout initialization parameters
+            var options = {
+                "key": "rzp_test_SsoFERyvFbyjkb", // ⚠️ PASTE YOUR rzp_test_... KEY ID HERE
+                "amount": amountInPaise,
+                "currency": "INR",
+                "name": "HandKnot Haven",
+                "description": "Handcrafted Crochet Purchase",
+                "image": "https://cdn.jsdelivr.net/npm/lucide-static@0.344.0/icons/wand-magic-sparkles.svg", // Logo placeholder
+
+                // This handler function triggers automatically when the payment is SUCCESSFUL
+                "handler": function (response) {
+                    btn.innerHTML = `<div class="loader mx-auto"></div> Saving Order...`;
+                    console.log("Razorpay Payment Successful. ID Ref:", response.razorpay_payment_id);
+
+                    // Proceed to finalize the order process and save to Supabase
+                    finalizeOrderProcess();
+                },
+
+                // Pre-fill user data fields inside the Razorpay modal for smoother UX
+                "prefill": {
+                    "name": customerName,
+                    "email": customerEmail,
+                    "contact": customerPhone
+                },
+                "notes": {
+                    "shipping_address": customerAddress,
+                    "items_purchased": cart.map(item => `${item.quantity}x ${item.name}`).join(", ")
+                },
+                "theme": {
+                    "color": "#d57252" // Perfectly coordinates with your signature brand clay-orange hex!
+                }
+            };
+
+            // 4. Instantiate the SDK client constructor and swing open the transaction UI portal
+            try {
+                var rzp1 = new Razorpay(options);
+
+                // Handle failed payment events gracefully
+                rzp1.on('payment.failed', function (response) {
+                    alert(`Payment Failed: ${response.error.description}`);
+                    btn.innerHTML = originalContent;
+                    btn.disabled = false;
+                });
+
+                btn.innerHTML = `<div class="loader mx-auto"></div> Connecting Gateway...`;
+                btn.disabled = true;
+
+                // Open the secure Razorpay panel view
+                rzp1.open();
+            } catch (err) {
+                console.error("Failed to compile checkout instance launch parameters:", err);
+                alert("Payment gateway down. Please fallback to Manual UPI payment.");
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
-            }, 1500);
+            }
         }
 
         function confirmManualUPIPayment() {
