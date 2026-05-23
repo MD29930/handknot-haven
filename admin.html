@@ -772,7 +772,10 @@
 
         function populateProductEditForm(productId) {
             const product = globalProducts.find(p => p.id === productId);
-            if (!product) return;
+            if (!product) {
+                console.error("Product not found in global cache array!");
+                return;
+            }
 
             document.getElementById('form-product-id').value = product.id;
             document.getElementById('form-product-name').value = product.name || '';
@@ -780,15 +783,16 @@
             document.getElementById('form-product-discount').value = product.discount || 0;
             document.getElementById('form-product-category').value = product.category || 'Clothing';
             document.getElementById('form-product-badge').value = product.badge || '';
-            document.getElementById('form-product-crafting').value = p.crafting_time || p.crafting_time === '' ? p.crafting_time : '';
+            document.getElementById('form-product-crafting').value = product.crafting_time || '';
             document.getElementById('form-product-material').value = product.description_material_name || '';
             document.getElementById('form-product-image').value = product.image_url || '';
             document.getElementById('form-product-desc').value = product.description || '';
 
-            // NEW: Map incoming database column values into form fields
+            // Map incoming descriptive data parameters cleanly
             document.getElementById('form-product-perfect').value = product.perfect_for || '';
             document.getElementById('form-product-care').value = product.care_instructions || '';
 
+            // Clean, updated headline title string configuration
             document.getElementById('product-modal-title').textContent = 'Modify Product Specifications';
 
             const modal = document.getElementById('product-form-modal');
@@ -847,7 +851,7 @@
                 loadAdminProducts();
             }
         }
-        
+
         // 6. Delete Target Record Execution Layer
         async function deleteProductFromCatalog(productId) {
             if (confirm("Are you sure you want to permanently delete this product from your store inventory catalog? This action will immediately remove it from your customer-facing storefront website index.")) {
