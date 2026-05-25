@@ -1939,21 +1939,6 @@
                 ${renderTimelineStep('Shipped', 'Handed over to Shiprocket.', statusLevel >= 3, 'fa-truck-fast')}
                 ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
             </div>
-
-            <div class="mt-10 pt-6 border-t border-brand-100 space-y-4 block">
-    ${isCancellable ? `
-        <button onclick="requestCancellation('${order.id}')" 
-            class="w-full py-3.5 bg-white border-2 border-red-200 text-red-600 font-bold rounded-2xl hover:bg-red-50/70 hover:border-red-400 active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2 shadow-sm hover:shadow">
-            <i class="fa-solid fa-rectangle-xmark text-sm animate-pulse"></i> Cancel Order (24h Window)
-        </button>
-    ` : ((order.order_status || '').toLowerCase() === 'confirmed' ? `
-        <div class="bg-neutral-50 border border-neutral-100 p-3 rounded-2xl text-center">
-            <p class="text-[11px] text-neutral-400 italic font-medium flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-lock text-[10px]"></i> Cancellation window closed. Crafting in progress!
-            </p>
-        </div>
-    ` : '')}
-
     ${isReportable ? `
         <button onclick="reportDamage('${order.id}')" 
             class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-bold rounded-2xl hover:from-amber-600 hover:to-amber-700 active:scale-[0.99] transition-all duration-300 flex items-center justify-center gap-2 shadow-md shadow-amber-500/10 hover:shadow-lg hover:shadow-amber-500/20">
@@ -2006,33 +1991,6 @@
 
     </div>
 `;
-        }
-        // =========================================================================
-        // HIGHLIGHTED CHANGE: ACTIVE CLICK HANDLERS FOR CANCEL & DAMAGE OPERATIONS
-        // =========================================================================
-
-        async function requestCancellation(orderId) {
-            if (confirm(`Are you sure you want to cancel order #${orderId}? This action cannot be undone.`)) {
-                try {
-                    // Update status live inside your Supabase database table
-                    const { error } = await supabaseClient
-                        .from('orders')
-                        .update({ order_status: 'cancelled' })
-                        .eq('id', orderId);
-
-                    if (error) throw error;
-
-                    showToast("Order cancelled successfully.");
-
-                    // Refresh the historical rows state and return to list view cleanly
-                    await renderOrdersList();
-                    backToOrderList();
-
-                } catch (error) {
-                    console.error("Cancellation Transaction Error:", error);
-                    alert("Could not process cancellation request. Please try again.");
-                }
-            }
         }
 
         function reportDamage(orderId) {
@@ -2206,16 +2164,7 @@
             if (x === 'processing') return 2;
             return 1;
         }
-
-        // FIXED: Properly calculates the 24-hour window from the database timestamp
-        function checkCancelWindow(createdAt) {
-            if (!createdAt) return false;
-            const orderDate = new Date(createdAt);
-            const now = new Date();
-            const hoursDiff = (now - orderDate) / (1000 * 60 * 60);
-            return hoursDiff <= 24;
-        }
-
+        
         // FIXED: Restricts visibility STRICTLY to 'delivered' status and checks the 48-hour policy timeline
         function checkDamageWindow(status, updatedAt, createdAt) {
             const currentStatus = (status || '').toLowerCase();
