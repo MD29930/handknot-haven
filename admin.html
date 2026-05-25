@@ -495,6 +495,8 @@
         // ====== REPLACE YOUR OLD renderOrdersTable WITH THESE DETACHED UTILITIES ======
 
         // ====== REPLACE YOUR ENTIRE renderOrdersTable() WITH THIS ======
+        // ====== REPLACE YOUR ENTIRE renderOrdersTable() IN ADMIN.HTML WITH THIS ======
+
         function renderOrdersTable() {
             const dashboardActiveTbody = document.getElementById('orders-tbody');
             const masterLedgerTbody = document.getElementById('master-history-ledger-tbody');
@@ -509,60 +511,53 @@
                 dashboardActiveTbody.innerHTML = structuralEmptyRow;
                 if (masterLedgerTbody) masterLedgerTbody.innerHTML = structuralEmptyRow;
 
-                // Hide sidebar badge if no orders
                 const badge = document.getElementById('sidebar-orders-badge');
                 if (badge) badge.classList.add('hidden');
                 return;
             }
 
-            const statuses = ['confirmed', 'processing', 'shipped', 'delivered', 'cancelled'];
+            // 🌟 REMOVED: 'cancelled' is completely gone from the status workflow pipeline
+            const statuses = ['confirmed', 'processing', 'shipped', 'delivered'];
             const now = new Date();
             let newOrdersCount = 0;
 
             orders.forEach(order => {
                 const orderStatusValue = (order.order_status || '').toLowerCase();
-                const isCancelled = orderStatusValue === 'cancelled';
                 const isCustomOrder = (order.product_name || '').toLowerCase().includes('custom');
 
-                // --- NEW: Time & Date Logic ---
                 const orderDate = order.created_at ? new Date(order.created_at) : new Date();
                 const dateFormatted = orderDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
                 const timeFormatted = orderDate.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
 
-                // Calculate if order is less than 24 hours old
                 const hoursOld = Math.abs(now - orderDate) / 36e5;
                 const isNewOrder = hoursOld <= 24;
 
-                if (isNewOrder && !isCancelled) {
+                if (isNewOrder) {
                     newOrdersCount++;
                 }
-                // ------------------------------
 
+                // 🌟 CLEANED: Removed all red-colored 'cancelled' conditional checks
                 let highlightRowStyle = 'hover:bg-neutral-50/50';
-                if (isCancelled) {
-                    highlightRowStyle = 'bg-red-50 hover:bg-red-100 border-l-4 border-l-red-500 font-medium';
-                } else if (isCustomOrder) {
+                if (isCustomOrder) {
                     highlightRowStyle = 'bg-amber-50/70 border-l-4 border-l-amber-500 font-medium hover:bg-amber-100/50';
                 }
 
-                const customHighlightBadge = isCustomOrder && !isCancelled
+                const customHighlightBadge = isCustomOrder
                     ? `<span class="bg-amber-100 text-amber-800 text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider ml-1 border border-amber-200 shadow-sm"><i class="fa-solid fa-wand-magic-sparkles"></i> Custom Bespoke</span>`
                     : '';
 
-                // Add a visual "NEW" pulsing pill next to the Order ID if it arrived recently
-                const newArrivalPill = isNewOrder && !isCancelled
+                const newArrivalPill = isNewOrder
                     ? `<span class="bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider ml-2 animate-pulse shadow-sm">New</span>`
                     : '';
 
                 const rowHTMLContent = `
             <td class="p-4">
                 <div class="flex items-center">
-                    <p class="font-bold ${isCancelled ? 'text-red-700' : isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
+                    <p class="font-bold ${isCustomOrder ? 'text-amber-700' : 'text-brand-700'}">
                         #${order.id.toString().slice(0, 15)}
                     </p>
                     ${newArrivalPill}
                 </div>
-                ${isCancelled ? '<span class="text-[10px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold uppercase mt-1 inline-block">Permanently Cancelled</span>' : ''}
             </td>
             <td class="p-4">
                 <p class="font-bold text-neutral-800">${order.customer_name || 'Anonymous'}</p>
@@ -583,10 +578,8 @@
 
             <td class="p-4">
                 <select onchange="updateOrderStatus('${order.id}', this.value)" 
-                    ${isCancelled ? 'disabled' : ''} 
                     class="text-xs font-bold px-3 py-1.5 rounded-lg border focus:outline-none capitalize 
-                    ${isCancelled ? 'bg-red-100 text-red-700 border-red-300 cursor-not-allowed opacity-80' :
-                        orderStatusValue === 'delivered' ? 'bg-green-100 text-green-700 cursor-pointer' : 'bg-neutral-100 cursor-pointer'}">
+                    ${orderStatusValue === 'delivered' ? 'bg-green-100 text-green-700 cursor-pointer' : 'bg-neutral-100 cursor-pointer'}">
                     
                     ${statuses.map(s => `<option value="${s}" ${orderStatusValue === s ? 'selected' : ''}>${s}</option>`).join('')}
                 </select>
@@ -608,7 +601,6 @@
                 }
             });
 
-            // --- NEW: Update the Sidebar Notification Badge ---
             const badge = document.getElementById('sidebar-orders-badge');
             if (badge) {
                 if (newOrdersCount > 0) {
@@ -643,12 +635,6 @@
 
         // --- STATUS UPDATE (Triggered by dropdown) ---
         async function updateOrderStatus(id, newStatus) {
-            const currentOrder = orders.find(o => o.id == id);
-
-            if (currentOrder && currentOrder.order_status === 'cancelled') {
-                alert("Cancelled orders cannot be modified.");
-                return;
-            }
             const { error } = await supabaseClient
                 .from('orders')
                 .update({ order_status: newStatus })

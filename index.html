@@ -640,19 +640,21 @@
                         everything to us.</p>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- No Returns -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+
                     <div
                         class="bg-brand-50 p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-md transition-all group">
                         <div
                             class="w-16 h-16 mx-auto bg-white text-brand-500 rounded-full flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-hand-holding-heart"></i>
+                            <i class="fa-solid fa-scissors"></i>
                         </div>
-                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">No Returns</h3>
-                        <p class="text-neutral-600 leading-relaxed text-sm">Because every single piece is meticulously
-                            handcrafted to order specifically for you, we are unable to accept returns or exchanges.</p>
+                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">Returns for Size Issues</h3>
+                        <p class="text-neutral-600 leading-relaxed text-sm">
+                            We want your handmade items to fit you perfectly! If you experience any sizing issues with
+                            your product, please reach out to us via WhatsApp within 48 hours of delivery, and we will
+                            happily arrange a return or exchange for the correct size.
+                        </p>
                     </div>
-
                     <!-- Replacements -->
                     <div
                         class="bg-brand-50 p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-md transition-all group">
@@ -664,18 +666,6 @@
                         <p class="text-neutral-600 leading-relaxed text-sm">If your handmade item arrives damaged,
                             please reach out to us within 48 hours of delivery with photos, and we will happily provide
                             a replacement.</p>
-                    </div>
-
-                    <!-- Cancellations -->
-                    <div
-                        class="bg-brand-50 p-8 rounded-3xl shadow-sm border border-brand-100 text-center hover:shadow-md transition-all group">
-                        <div
-                            class="w-16 h-16 mx-auto bg-white text-brand-500 rounded-full flex items-center justify-center mb-6 text-2xl shadow-sm group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                        </div>
-                        <h3 class="text-xl font-serif font-bold text-brand-800 mb-3">24-Hour Cancellations</h3>
-                        <p class="text-neutral-600 leading-relaxed text-sm">Changed your mind? You can cancel or modify
-                            your order within 24 hours of placement. After this window, the crafting process begins!</p>
                     </div>
                 </div>
             </div>
@@ -2062,10 +2052,10 @@
         function closeAiModal() { aiModal.classList.add('hidden'); }
         function showToast(m) { toast.querySelector('span').textContent = m; toast.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 300); }
 
-        
 
 
-        
+
+
         // ====== FRONT-END JAVASCRIPT HANDLERS FOR CUSTOM ORDERS ======
 
         function openCustomOrderModal() {
@@ -2246,7 +2236,7 @@
         }
 
 
-        
+
         async function loadProducts() {
             const { data, error } = await supabaseClient.from('products').select('*');
             if (!error && data) {
