@@ -780,6 +780,32 @@
                     </div>
                 </div>
 
+                <!--Custom add ons-->
+                <div id="storefront-customization-engine" class="hidden border-t border-brand-100 pt-5 text-left">
+                    <h4 class="font-bold text-neutral-800 mb-1 text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i> Custom Accessory Addons
+                    </h4>
+                    <p class="text-neutral-500 text-xs mb-3 font-medium">Personalize your craft with predefined boutique
+                        extras:</p>
+
+                    <div id="storefront-addons-list"
+                        class="space-y-2.5 bg-brand-50/50 p-4 rounded-2xl border border-brand-100 shadow-sm">
+                    </div>
+
+                    <div
+                        class="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-200 flex gap-2.5 items-start text-xs text-amber-800 font-medium">
+                        <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 text-sm"></i>
+                        <div>
+                            If you choose to customize this product with accessory addons, please note that it will take
+                            extra time to craft and final pricing reflects additions.
+                            For complete color changes or custom sizes, please visit our
+                            <a href="#custom" onclick="closeProductModal();"
+                                class="text-brand-700 font-bold underline hover:text-brand-900 ml-1">Complete Custom
+                                Order Section</a>.
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Product Info Box (Redesigned) -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                     <div
@@ -1553,11 +1579,15 @@
             });
         }
 
-        // --- MODAL CONTROLS ---
+        // ====== REPLACE YOUR openProductModal BLOCK IN INDEX.HTML SCRIPT TAG ======
+
+        let activeProductAddons = []; // Track active item options array
+
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId);
             currentModalProductId = productId;
 
+            // Standard field populations
             document.getElementById('modal-img').src = product.image;
             document.getElementById('modal-category').textContent = product.category;
             document.getElementById('modal-title').textContent = product.name;
@@ -1569,6 +1599,7 @@
             document.getElementById('modal-perfect').textContent = product.perfectFor || '';
             document.getElementById('modal-care').textContent = product.careInstructions || '';
 
+            // Handle Clothing Sizing sections
             const sizeSection = document.getElementById('modal-size-section');
             if (product.category === 'Clothing') {
                 sizeSection.classList.remove('hidden');
@@ -1576,9 +1607,47 @@
                 sizeSection.classList.add('hidden');
             }
 
+            // 🌟 HANDLING SELECTIVE CUSTOMIZATION WORKSPACE
+            const addonContainer = document.getElementById('storefront-customization-engine');
+            const addonListEl = document.getElementById('storefront-addons-list');
+            addonListEl.innerHTML = '';
+            activeProductAddons = product.accessoryAddons || [];
+
+            if (product.allowAddons && activeProductAddons.length > 0) {
+                addonContainer.classList.remove('hidden');
+
+                // Print interactive checkbox line wrappers
+                addonListEl.innerHTML = activeProductAddons.map((item, index) => `
+            <label class="flex items-center justify-between p-2.5 bg-white rounded-xl border border-neutral-100 hover:border-brand-300 transition-all cursor-pointer shadow-sm">
+                <div class="flex items-center gap-3 font-semibold text-neutral-700 text-sm">
+                    <input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice(${product.price})" class="w-4 h-4 accent-brand-600 rounded cursor-pointer">
+                    <span>${item.name}</span>
+                </div>
+                <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-100">+ ₹${Number(item.price).toFixed(2)}</span>
+            </label>
+        `).join('');
+            } else {
+                addonContainer.classList.add('hidden');
+            }
+
+            recalculateModalPrice(product.price);
+
             productModal.classList.remove('hidden');
             productModal.classList.add('flex');
             setTimeout(() => productModalContent.classList.replace('opacity-0', 'opacity-100'), 10);
+        }
+
+        // Recalculates button prices immediately as options get selected
+        function recalculateModalPrice(basePrice) {
+            let totalPrice = basePrice;
+            const selectedCheckboxes = document.querySelectorAll('input[name="product-addon-choice"]:checked');
+
+            selectedCheckboxes.forEach(cb => {
+                const index = parseInt(cb.value);
+                totalPrice += Number(activeProductAddons[index].price || 0);
+            });
+
+            document.getElementById('modal-btn-price').textContent = `₹${totalPrice.toFixed(2)}`;
         }
 
         function closeProductModal() {
@@ -1592,7 +1661,34 @@
             if (product.category === 'Clothing') {
                 sizeText = `Bust: ${document.getElementById('measure-bust').value}`;
             }
-            addToCart(currentModalProductId, sizeText, document.getElementById('modal-custom').value);
+
+            // Capture selected accessory option names to append to the name string
+            const selectedCheckboxes = document.querySelectorAll('input[name="product-addon-choice"]:checked');
+            let dynamicAddonNameSuffix = [];
+            let extraPrice = 0;
+
+            selectedCheckboxes.forEach(cb => {
+                const item = activeProductAddons[parseInt(cb.value)];
+                dynamicAddonNameSuffix.push(item.name);
+                extraPrice += Number(item.price);
+            });
+
+            const itemFinalName = dynamicAddonNameSuffix.length > 0
+                ? `${product.name} (With ${dynamicAddonNameSuffix.join(", ")})`
+                : product.name;
+
+            // Create custom item profile array payload package
+            const finalProductPayload = {
+                ...product,
+                name: itemFinalName,
+                price: product.price + extraPrice
+            };
+
+            if (!SHOP_CONFIG.takingOrders) return;
+            cart.push({ ...finalProductPayload, cartItemId: Date.now() + Math.random(), quantity: 1, size: sizeText });
+
+            updateCartUI();
+            showToast(`Added items to basket!`);
             closeProductModal();
         }
 
@@ -2185,6 +2281,7 @@
 
 
 
+        // ====== MAKE SURE YOUR loadProducts ARRAY MAPPER HAS THESE TWO PROPERTIES ======
         async function loadProducts() {
             const { data, error } = await supabaseClient.from('products').select('*');
             if (!error && data) {
@@ -2192,14 +2289,18 @@
                     id: p.id,
                     name: p.name,
                     price: Number(p.price),
-                    discount: Number(p.discount || 0), // 👈 CRITICAL: Make sure this mapper line exists!
+                    discount: Number(p.discount || 0),
                     category: p.category,
                     image: p.image_url,
                     badge: p.badge,
                     description: p.description,
                     craftingTime: p.crafting_time,
                     perfectFor: p.perfect_for,
-                    careInstructions: p.care_instructions
+                    careInstructions: p.care_instructions,
+
+                    // 🌟 ADD THESE TWO MAPPER PARAMETERS HERE
+                    allowAddons: p.allow_addons,
+                    accessoryAddons: p.accessory_addons
                 }));
                 renderProducts();
             }
