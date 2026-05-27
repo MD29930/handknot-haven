@@ -811,27 +811,26 @@
         // ====== OVERWRITE YOUR POPULATE FUNCTION TO MATCH THIS ENGINE EXCLUSIVELY ======
 
         function populateProductEditForm(productId) {
-            // 1. Pull the item record details out of your master runtime data state cache array
+            // 1. Pull the item record details out of your master data state cache
             const product = globalProducts.find(p => p.id === productId);
             if (!product) {
                 alert("Could not load targeted product record settings parameters.");
                 return;
             }
 
-            // 2. FIXED: Target the true HTML element ID 'product-modal-title'
+            // 2. Adjust Modal Title text
             const formTitle = document.getElementById('product-modal-title');
             if (formTitle) formTitle.textContent = "Edit Product Configuration";
 
-            // 3. Store the active item ID inside your hidden form field input node
+            // 3. Assign the active ID to your hidden form input field
             document.getElementById('form-product-id').value = product.id;
 
-            // 4. Map your standard textual values to form fields
+            // 4. Map text values to form fields cleanly (using 'product' safely everywhere)
             document.getElementById('form-product-name').value = product.name || '';
             document.getElementById('form-product-price').value = product.price || 0;
             document.getElementById('form-product-discount').value = product.discount || 0;
             document.getElementById('form-product-category').value = product.category || 'Clothing';
-            document.getElementById('form-product-badge').value = p.badge || ''; // Fixed shorthand reference safety fallback
-            if (product.badge) document.getElementById('form-product-badge').value = product.badge;
+            document.getElementById('form-product-badge').value = product.badge || '';
             document.getElementById('form-product-crafting').value = product.crafting_time || '';
             document.getElementById('form-product-material').value = product.material || 'Organic Cotton';
             document.getElementById('form-product-image').value = product.image_url || '';
@@ -839,7 +838,7 @@
             document.getElementById('form-product-perfect').value = product.perfect_for || '';
             document.getElementById('form-product-care').value = product.care_instructions || '';
 
-            // 5. Build your accessory checkbox layout profiles
+            // 5. Build your accessory checkbox list mapping
             const allowAddons = product.allow_addons || false;
             document.getElementById('form-product-allow-addons').checked = allowAddons;
 
