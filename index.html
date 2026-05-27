@@ -1674,17 +1674,26 @@
             }
         }
 
-        // Recalculates button prices immediately as options get selected
-        function recalculateModalPrice(basePrice) {
-            let totalPrice = basePrice;
+        function recalculateModalPrice() {
+            let totalPrice = currentModalCalculatedBasePrice;
             const selectedCheckboxes = document.querySelectorAll('input[name="product-addon-choice"]:checked');
 
             selectedCheckboxes.forEach(cb => {
                 const index = parseInt(cb.value);
-                totalPrice += Number(activeProductAddons[index].price || 0);
+
+                // 🌟 FIXED: Added a safety check to make sure the addon exists before reading its price
+                if (activeProductAddons && activeProductAddons[index]) {
+                    totalPrice += Number(activeProductAddons[index].price || 0);
+                } else {
+                    console.warn("Warning: Addon at index " + index + " was missing from activeProductAddons cache.");
+                }
             });
 
-            document.getElementById('modal-btn-price').textContent = `₹${totalPrice.toFixed(2)}`;
+            // Safety check to ensure modal price element exists before running toFixed
+            const priceBtnSpan = document.getElementById('modal-btn-price');
+            if (priceBtnSpan) {
+                priceBtnSpan.textContent = '₹' + totalPrice.toFixed(2);
+            }
         }
 
         function closeProductModal() {
