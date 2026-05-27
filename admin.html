@@ -743,9 +743,10 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-2 mt-auto border-t pt-3 border-neutral-100">
-                        <button onclick="populateProductEditForm(${p.id})" class="py-2 px-3 bg-neutral-100 hover:bg-brand-100 text-neutral-700 hover:text-brand-900 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
-                            <i class="fa-regular fa-pen-to-square"></i> Edit
-                        </button>
+                        // ====== CHOOSE THE BUTTON MARKUP IN YOUR RENDER TABLE ELEMENT AND FIX THE ONCLICK ======
+<button onclick="populateProductEditForm(${product.id})" class="px-3 py-1.5 bg-brand-100 hover:bg-brand-200 text-brand-700 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 cursor-pointer">
+    <i class="fa-regular fa-pen-to-square"></i> Edit
+</button>
                         <button onclick="deleteProductFromCatalog(${p.id})" class="py-2 px-3 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
                             <i class="fa-regular fa-trash-can"></i> Delete
                         </button>
@@ -809,19 +810,41 @@
             return addons;
         }
 
-        // ====== IN EXTENSION TO PREVIOUS WORK WORKFLOWS: UPDATE FORM POPULATION ======
+        // ====== OVERWRITE YOUR POPULATE FUNCTION TO MATCH THIS ENGINE EXCLUSIVELY ======
+
         function populateProductEditForm(productId) {
+            // 1. Pull the item record details out of your master runtime data state cache array
             const product = globalProducts.find(p => p.id === productId);
-            if (!product) return;
+            if (!product) {
+                alert("Could not load targeted product record settings parameters.");
+                return;
+            }
 
-            // ... (Keep your regular input bindings completely untouched here) ...
+            // 2. IMPORTANT: Change your Modal Title so it reads "Edit Product" instead of "Add Product"
+            const formTitle = document.getElementById('product-form-modal-title');
+            if (formTitle) formTitle.textContent = "Edit Product Configuration";
 
-            // Set toggle switch status
+            // 3. CRITICAL: Store the active item ID inside your hidden form field input node
+            document.getElementById('form-product-id').value = product.id;
+
+            // 4. Map your standard textual values to form fields
+            document.getElementById('form-product-name').value = product.name || '';
+            document.getElementById('form-product-price').value = product.price || 0;
+            document.getElementById('form-product-discount').value = product.discount || 0;
+            document.getElementById('form-product-category').value = product.category || 'Clothing';
+            document.getElementById('form-product-badge').value = product.badge || '';
+            document.getElementById('form-product-crafting').value = product.crafting_time || '';
+            document.getElementById('form-product-image').value = product.image_url || '';
+            document.getElementById('form-product-desc').value = product.description || '';
+            document.getElementById('form-product-perfect').value = product.perfect_for || '';
+            document.getElementById('form-product-care').value = product.care_instructions || '';
+
+            // 5. Build your accessory checkbox layout profiles
             const allowAddons = product.allow_addons || false;
             document.getElementById('form-product-allow-addons').checked = allowAddons;
 
             const listContainer = document.getElementById('admin-addons-list');
-            listContainer.innerHTML = ''; // Reset views
+            listContainer.innerHTML = '';
 
             if (product.accessory_addons && Array.isArray(product.accessory_addons)) {
                 product.accessory_addons.forEach(item => addAccessoryRow(item.name, item.price));
@@ -829,11 +852,11 @@
 
             document.getElementById('admin-addons-workspace').classList.toggle('hidden', !allowAddons);
 
-            // Open Modal
+            // 6. Slide open the modal frame viewport safely
             const modal = document.getElementById('product-form-modal');
-            modal.classList.remove('hidden'); modal.classList.add('flex');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
-
         // ====== UPDATE YOUR PRODUCT SUBMISSION SAVER PAYLOAD ROW ======
         async function handleProductSubmit(event) {
             event.preventDefault();
