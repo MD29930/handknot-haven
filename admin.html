@@ -818,11 +818,11 @@
                 return;
             }
 
-            // 2. IMPORTANT: Change your Modal Title so it reads "Edit Product" instead of "Add Product"
-            const formTitle = document.getElementById('product-form-modal-title');
+            // 2. FIXED: Target the true HTML element ID 'product-modal-title'
+            const formTitle = document.getElementById('product-modal-title');
             if (formTitle) formTitle.textContent = "Edit Product Configuration";
 
-            // 3. CRITICAL: Store the active item ID inside your hidden form field input node
+            // 3. Store the active item ID inside your hidden form field input node
             document.getElementById('form-product-id').value = product.id;
 
             // 4. Map your standard textual values to form fields
@@ -830,8 +830,10 @@
             document.getElementById('form-product-price').value = product.price || 0;
             document.getElementById('form-product-discount').value = product.discount || 0;
             document.getElementById('form-product-category').value = product.category || 'Clothing';
-            document.getElementById('form-product-badge').value = product.badge || '';
+            document.getElementById('form-product-badge').value = p.badge || ''; // Fixed shorthand reference safety fallback
+            if (product.badge) document.getElementById('form-product-badge').value = product.badge;
             document.getElementById('form-product-crafting').value = product.crafting_time || '';
+            document.getElementById('form-product-material').value = product.material || 'Organic Cotton';
             document.getElementById('form-product-image').value = product.image_url || '';
             document.getElementById('form-product-desc').value = product.description || '';
             document.getElementById('form-product-perfect').value = product.perfect_for || '';
@@ -855,10 +857,12 @@
             modal.classList.remove('hidden');
             modal.classList.add('flex');
         }
-        // ====== UPDATE YOUR PRODUCT SUBMISSION SAVER PAYLOAD ROW ======
         async function handleProductSubmit(event) {
             event.preventDefault();
-            // ... (Keep your loading buttons mechanics here) ...
+
+            // 1. FIXED: Safely target and define the submit button variables locally
+            const submitBtn = document.getElementById('form-product-submit-btn');
+            const originalContent = submitBtn.innerHTML;
 
             const productId = document.getElementById('form-product-id').value;
 
@@ -873,27 +877,32 @@
                 description: document.getElementById('form-product-desc').value,
                 perfect_for: document.getElementById('form-product-perfect').value,
                 care_instructions: document.getElementById('form-product-care').value,
-
-                // 🌟 NEW: Send customization parameters to Supabase
                 allow_addons: document.getElementById('form-product-allow-addons').checked,
                 accessory_addons: gatherAdminAddonsPayload()
             };
 
             let resultError = null;
 
+            // Turn on loader visual indicators
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-2"></i> Syncing Database...`;
+            submitBtn.disabled = true;
+
             if (productId) {
+                // If a productId exists, we are editing an existing item row
                 const { error } = await supabaseClient
                     .from('products')
                     .update(productPayload)
                     .eq('id', productId);
                 resultError = error;
             } else {
+                // If no productId exists, we are inserting a completely fresh item row
                 const { error } = await supabaseClient
                     .from('products')
                     .insert([productPayload]);
                 resultError = error;
             }
 
+            // Reset submit button context states
             submitBtn.innerHTML = originalContent;
             submitBtn.disabled = false;
 
@@ -902,7 +911,7 @@
                 alert(`Error sync failed: ${resultError.message}`);
             } else {
                 closeProductFormModal();
-                loadAdminProducts();
+                loadAdminProducts(); // Instantly update dashboard views
             }
         }
 
