@@ -673,7 +673,6 @@
         // =========================================================================
 
         let globalProducts = [];
-
         // 1. Fetch products from database and route into rendering layouts
         async function loadAdminProducts() {
             const grid = document.getElementById('admin-products-grid');
@@ -710,49 +709,48 @@
                 if (discountPct > 0) {
                     const calculatedSalePrice = rawPrice - (rawPrice * (discountPct / 100));
                     finalPriceText = `
-                <div class="flex flex-col">
-                    <span class="text-xs text-neutral-400 line-through">₹${rawPrice.toFixed(2)}</span>
-                    <span class="text-base font-black text-brand-600">₹${calculatedSalePrice.toFixed(2)}</span>
-                </div>`;
+                        <div class="flex flex-col">
+                            <span class="text-xs text-neutral-400 line-through">₹${rawPrice.toFixed(2)}</span>
+                            <span class="text-base font-black text-brand-600">₹${calculatedSalePrice.toFixed(2)}</span>
+                        </div>`;
                     discountBadge = `<span class="bg-green-100 text-green-800 text-[10px] font-black px-2 py-0.5 rounded border border-green-200 uppercase">${discountPct}% OFF</span>`;
                 }
 
                 return `
-            <div class="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col group transition-all hover:shadow-md">
-                <div class="h-44 overflow-hidden relative bg-neutral-50 border-b">
-                    <img src="${p.image_url || 'https://images.unsplash.com/photo-1584992236310-6edddc08acff'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                    ${p.badge ? `<span class="absolute top-2 left-2 bg-brand-900 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">${p.badge}</span>` : ''}
-                </div>
-                <div class="p-4 flex flex-col flex-1">
-                    <div class="flex justify-between items-center gap-2 mb-1">
-                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">${p.category || 'Uncategorized'}</span>
-                        ${discountBadge}
-                    </div>
-                    <h4 class="font-bold text-neutral-800 text-sm mb-1 truncate">${p.name || 'Untitled Craft'}</h4>
-                    <p class="text-xs text-neutral-500 line-clamp-2 leading-relaxed flex-1 mb-3">${p.description || 'No descriptive information loaded.'}</p>
-                    
-                    <div class="bg-neutral-50 p-2.5 rounded-xl border border-neutral-100 flex items-center justify-between mb-4">
-                        <div>
-                            <p class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Price Configuration</p>
-                            <div class="font-bold text-neutral-800">${finalPriceText}</div>
+                    <div class="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col group transition-all hover:shadow-md">
+                        <div class="h-44 overflow-hidden relative bg-neutral-50 border-b">
+                            <img src="${p.image_url || 'https://images.unsplash.com/photo-1584992236310-6edddc08acff'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                            ${p.badge ? `<span class="absolute top-2 left-2 bg-brand-900 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">${p.badge}</span>` : ''}
                         </div>
-                        <div class="text-right">
-                            <p class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Craft Time</p>
-                            <div class="text-xs font-bold text-amber-700"><i class="fa-regular fa-clock text-[10px]"></i> ${p.crafting_time || '3-5 days'}</div>
-                        </div>
-                    </div>
+                        <div class="p-4 flex flex-col flex-1">
+                            <div class="flex justify-between items-center gap-2 mb-1">
+                                <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">${p.category || 'Uncategorized'}</span>
+                                ${discountBadge}
+                            </div>
+                            <h4 class="font-bold text-neutral-800 text-sm mb-1 truncate">${p.name || 'Untitled Craft'}</h4>
+                            <p class="text-xs text-neutral-500 line-clamp-2 leading-relaxed flex-1 mb-3">${p.description || 'No descriptive information loaded.'}</p>
+                            
+                            <div class="bg-neutral-50 p-2.5 rounded-xl border border-neutral-100 flex items-center justify-between mb-4">
+                                <div>
+                                    <p class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Price Configuration</p>
+                                    <div class="font-bold text-neutral-800">${finalPriceText}</div>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-[9px] text-neutral-400 font-bold uppercase tracking-wider">Craft Time</p>
+                                    <div class="text-xs font-bold text-amber-700"><i class="fa-regular fa-clock text-[10px]"></i> ${p.crafting_time || '3-5 days'}</div>
+                                </div>
+                            </div>
 
-                    <div class="grid grid-cols-2 gap-2 mt-auto border-t pt-3 border-neutral-100">
-                        // ====== CHOOSE THE BUTTON MARKUP IN YOUR RENDER TABLE ELEMENT AND FIX THE ONCLICK ======
-<button onclick="populateProductEditForm(${product.id})" class="px-3 py-1.5 bg-brand-100 hover:bg-brand-200 text-brand-700 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5 cursor-pointer">
-    <i class="fa-regular fa-pen-to-square"></i> Edit
-</button>
-                        <button onclick="deleteProductFromCatalog(${p.id})" class="py-2 px-3 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
-                            <i class="fa-regular fa-trash-can"></i> Delete
-                        </button>
-                    </div>
-                </div>
-            </div>`;
+                            <div class="grid grid-cols-2 gap-2 mt-auto border-t pt-3 border-neutral-100">
+                                <button onclick="populateProductEditForm(${p.id})" class="px-3 py-1.5 bg-brand-100 hover:bg-brand-200 text-brand-700 font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                    <i class="fa-regular fa-pen-to-square"></i> Edit
+                                </button>
+                                <button onclick="deleteProductFromCatalog(${p.id})" class="py-2 px-3 bg-red-50 hover:bg-red-600 text-red-600 hover:text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
+                                    <i class="fa-regular fa-trash-can"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
             }).join('');
         }
 
