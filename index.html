@@ -1584,81 +1584,91 @@
         // ====== UPDATE THE TOP HIGHLIGHTED AREA OF OPENPRODUCTMODAL IN INDEX.HTML ======
 
         let activeProductAddons = [];
-        let currentModalCalculatedBasePrice = 0; // 🌟 NEW: Track active base price with discount applied
+        let currentModalCalculatedBasePrice = 0; // Tracks active base price with discount applied
 
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId);
+            if (!product) {
+                console.error("Target catalog item could not be retrieved from active cache registries.");
+                return;
+            }
+
             currentModalProductId = productId;
 
-            // -----------------------------------------------------------------
-            // 🌟 FIXED REGION: DYNAMIC SALE PRICE CALCULATION FOR THE MODAL VIEW
-            // -----------------------------------------------------------------
+            // 1. DYNAMIC SALE PRICE CALCULATION FOR THE MODAL VIEW
             const rawPrice = Number(product.price || 0);
             const discountPct = Number(product.discount || 0);
 
-            // Compute your true promotional base cost value
             if (discountPct > 0) {
                 currentModalCalculatedBasePrice = rawPrice - (rawPrice * (discountPct / 100));
-                document.getElementById('modal-price').innerHTML = `
-            <div class="flex items-baseline gap-2.5">
-                <span class="text-3xl font-black text-brand-700">₹${currentModalCalculatedBasePrice.toFixed(2)}</span>
-                <span class="text-sm font-bold text-neutral-400 line-through">₹${rawPrice.toFixed(2)}</span>
-                <span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded border border-green-200 uppercase tracking-wide">${discountPct}% OFF</span>
-            </div>
-        `;
+                document.getElementById('modal-price').innerHTML =
+                    '<div class="flex items-baseline gap-2.5">' +
+                    '<span class="text-3xl font-black text-brand-700">₹' + currentModalCalculatedBasePrice.toFixed(2) + '</span>' +
+                    '<span class="text-sm font-bold text-neutral-400 line-through">₹' + rawPrice.toFixed(2) + '</span>' +
+                    '<span class="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded border border-green-200 uppercase tracking-wide">' + discountPct + '% OFF</span>' +
+                    '</div>';
             } else {
                 currentModalCalculatedBasePrice = rawPrice;
-                document.getElementById('modal-price').textContent = `₹${rawPrice.toFixed(2)}`;
+                document.getElementById('modal-price').textContent = '₹' + rawPrice.toFixed(2);
             }
-            // -----------------------------------------------------------------
 
-            // Standard field populations
-            document.getElementById('modal-img').src = product.image;
-            document.getElementById('modal-category').textContent = p.category || product.category; // Fixed safety reference mapping
-            document.getElementById('modal-title').textContent = product.name;
-            document.getElementById('modal-desc').textContent = product.description;
-            document.getElementById('modal-material-name').textContent = `Crafted with ${product.materialName || 'Premium Yarn'}`;
+            // 2. STANDARD POPULATIONS (Safely handling fallback text variables)
+            document.getElementById('modal-img').src = product.image || '';
+            document.getElementById('modal-category').textContent = product.category || 'Uncategorized';
+            document.getElementById('modal-title').textContent = product.name || 'Handmade Craft';
+            document.getElementById('modal-desc').textContent = product.description || '';
+            document.getElementById('modal-material-name').textContent = 'Crafted with ' + (product.materialName || 'Premium Yarn');
             document.getElementById('modal-material-benefit').textContent = product.materialBenefit || '';
-            document.getElementById('modal-crafting-time').textContent = product.craftingTime;
+            document.getElementById('modal-crafting-time').textContent = product.craftingTime || '3-5 days';
             document.getElementById('modal-perfect').textContent = product.perfectFor || '';
             document.getElementById('modal-care').textContent = product.careInstructions || '';
 
-            // Handle Clothing Sizing sections
+            // 3. CLOTHING SIZING INTERFACE VISIBILITY
             const sizeSection = document.getElementById('modal-size-section');
-            if (product.category === 'Clothing') {
-                sizeSection.classList.remove('hidden');
-            } else {
-                sizeSection.classList.add('hidden');
+            if (sizeSection) {
+                if (product.category === 'Clothing') {
+                    sizeSection.classList.remove('hidden');
+                } else {
+                    sizeSection.classList.add('hidden');
+                }
             }
 
-            // HANDLING SELECTIVE CUSTOMIZATION WORKSPACE
+            // 4. HANDLING SELECTIVE ACCESSORY CUSTOMIZATION WORKSPACE
             const addonContainer = document.getElementById('storefront-customization-engine');
             const addonListEl = document.getElementById('storefront-addons-list');
-            addonListEl.innerHTML = '';
-            activeProductAddons = product.accessoryAddons || [];
 
-            if (product.allowAddons && activeProductAddons.length > 0) {
-                addonContainer.classList.remove('hidden');
+            if (addonContainer && addonListEl) {
+                addonListEl.innerHTML = '';
+                activeProductAddons = product.accessoryAddons || [];
 
-                addonListEl.innerHTML = activeProductAddons.map((item, index) => `
-            <label class="flex items-center justify-between p-2.5 bg-white rounded-xl border border-neutral-100 hover:border-brand-300 transition-all cursor-pointer shadow-sm">
-                <div class="flex items-center gap-3 font-semibold text-neutral-700 text-sm">
-                    <input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="w-4 h-4 accent-brand-600 rounded cursor-pointer">
-                    <span>${item.name}</span>
-                </div>
-                <span class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-100">+ ₹${Number(item.price).toFixed(2)}</span>
-            </label>
-        `).join('');
-            } else {
-                addonContainer.classList.add('hidden');
+                if (product.allowAddons && activeProductAddons.length > 0) {
+                    addonContainer.classList.remove('hidden');
+
+                    addonListEl.innerHTML = activeProductAddons.map((item, index) =>
+                        '<label class="flex items-center justify-between p-2.5 bg-white rounded-xl border border-neutral-100 hover:border-brand-300 transition-all cursor-pointer shadow-sm">' +
+                        '<div class="flex items-center gap-3 font-semibold text-neutral-700 text-sm">' +
+                        '<input type="checkbox" name="product-addon-choice" value="' + index + '" onchange="recalculateModalPrice()" class="w-4 h-4 accent-brand-600 rounded cursor-pointer">' +
+                        '<span>' + item.name + '</span>' +
+                        '</div>' +
+                        '<span class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded border border-brand-100">+ ₹' + Number(item.price).toFixed(2) + '</span>' +
+                        '</label>'
+                    ).join('');
+                } else {
+                    addonContainer.classList.add('hidden');
+                }
             }
 
-            // 🌟 Change: Pass your calculated base price to function variables
+            // 5. UPDATE INTERACTIVE ADD TO BASKET BUTTON PRICE VALUES
             recalculateModalPrice();
 
-            productModal.classList.remove('hidden');
-            productModal.classList.add('flex');
-            setTimeout(() => productModalContent.classList.replace('opacity-0', 'opacity-100'), 10);
+            // 6. SWING THE MODAL VISIBLE
+            const productModal = document.getElementById('product-modal');
+            const productModalContent = document.getElementById('product-modal-content');
+            if (productModal && productModalContent) {
+                productModal.classList.remove('hidden');
+                productModal.classList.add('flex');
+                setTimeout(() => productModalContent.classList.replace('opacity-0', 'opacity-100'), 10);
+            }
         }
 
         // Recalculates button prices immediately as options get selected
