@@ -1582,7 +1582,6 @@
         // ====== REPLACE YOUR openProductModal BLOCK IN INDEX.HTML SCRIPT TAG ======
 
         // ====== UPDATE THE TOP HIGHLIGHTED AREA OF OPENPRODUCTMODAL IN INDEX.HTML ======
-
         let activeProductAddons = [];
         let currentModalCalculatedBasePrice = 0; // Tracks active base price with discount applied
 
@@ -1661,13 +1660,17 @@
             // 5. UPDATE INTERACTIVE ADD TO BASKET BUTTON PRICE VALUES
             recalculateModalPrice();
 
-            // 6. SWING THE MODAL VISIBLE
+            // 6. FORCE ACCURATE INLINE TAILWIND CLASS MANAGEMENT VISIBILITY
             const productModal = document.getElementById('product-modal');
             const productModalContent = document.getElementById('product-modal-content');
+
             if (productModal && productModalContent) {
+                // Remove layout barriers
                 productModal.classList.remove('hidden');
                 productModal.classList.add('flex');
-                setTimeout(() => productModalContent.classList.replace('opacity-0', 'opacity-100'), 10);
+
+                // Instant visual visibility forcing step (bypasses sticky opacity transitions)
+                productModalContent.className = "relative bg-white w-full max-w-4xl mx-4 rounded-3xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all scale-100 opacity-100";
             }
         }
 
@@ -1685,8 +1688,17 @@
         }
 
         function closeProductModal() {
-            productModalContent.classList.replace('opacity-100', 'opacity-0');
-            setTimeout(() => { productModal.classList.add('hidden'); productModal.classList.remove('flex'); }, 300);
+            const productModal = document.getElementById('product-modal');
+            const productModalContent = document.getElementById('product-modal-content');
+
+            if (productModal && productModalContent) {
+                // Apply visual hidden states instantly
+                productModalContent.className = "relative bg-white w-full max-w-4xl mx-4 rounded-3xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0";
+                setTimeout(() => {
+                    productModal.classList.add('hidden');
+                    productModal.classList.remove('flex');
+                }, 150);
+            }
         }
 
         function addToCartFromModal() {
