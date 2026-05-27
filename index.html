@@ -1712,35 +1712,47 @@
 
         function addToCartFromModal() {
             const product = products.find(p => p.id === currentModalProductId);
+            if (!product) return;
+
             let sizeText = null;
             if (product.category === 'Clothing') {
-                sizeText = `Bust: ${document.getElementById('measure-bust').value}`;
+                const bustVal = document.getElementById('measure-bust') ? document.getElementById('measure-bust').value : '';
+                if (bustVal) sizeText = `Bust: ${bustVal}`;
             }
 
-            // Capture selected accessory option names to append to the name string
+            // Capture selected accessory options
             const selectedCheckboxes = document.querySelectorAll('input[name="product-addon-choice"]:checked');
             let dynamicAddonNameSuffix = [];
             let extraPrice = 0;
 
             selectedCheckboxes.forEach(cb => {
                 const item = activeProductAddons[parseInt(cb.value)];
-                dynamicAddonNameSuffix.push(item.name);
-                extraPrice += Number(item.price);
+                if (item) {
+                    dynamicAddonNameSuffix.push(item.name);
+                    extraPrice += Number(item.price);
+                }
             });
 
             const itemFinalName = dynamicAddonNameSuffix.length > 0
                 ? `${product.name} (With ${dynamicAddonNameSuffix.join(", ")})`
                 : product.name;
 
-            // Create custom item profile array payload package
+            // 🌟 FIXED: Base price is now currentModalCalculatedBasePrice (which has the discount)
             const finalProductPayload = {
                 ...product,
                 name: itemFinalName,
-                price: product.price + extraPrice
+                price: currentModalCalculatedBasePrice + extraPrice
             };
 
             if (!SHOP_CONFIG.takingOrders) return;
-            cart.push({ ...finalProductPayload, cartItemId: Date.now() + Math.random(), quantity: 1, size: sizeText });
+
+            cart.push({
+                ...finalProductPayload,
+                cartItemId: Date.now() + Math.random(),
+                quantity: 1,
+                size: sizeText,
+                customText: document.getElementById('modal-custom') ? document.getElementById('modal-custom').value : ''
+            });
 
             updateCartUI();
             showToast(`Added items to basket!`);
@@ -1752,13 +1764,33 @@
 
         function addToCart(productId, size = null, customText = '') {
             if (!SHOP_CONFIG.takingOrders) return;
+
             const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            // 🌟 FIXED: Calculate true sale price right here so the cart receives the discount
+            const rawPrice = Number(product.price || 0);
+            const discountPct = Number(product.discount || 0);
+            let activePrice = rawPrice;
+
+            if (discountPct > 0) {
+                activePrice = rawPrice - (rawPrice * (discountPct / 100));
+            }
+
             const existingItemIndex = cart.findIndex(item => item.id === productId && item.size === size && item.customText === customText);
 
             if (existingItemIndex > -1) {
                 cart[existingItemIndex].quantity += 1;
             } else {
-                cart.push({ ...product, cartItemId: Date.now() + Math.random(), quantity: 1, size: size, customText: customText });
+                // Push the activePrice instead of product.price
+                cart.push({
+                    ...product,
+                    price: activePrice,
+                    cartItemId: Date.now() + Math.random(),
+                    quantity: 1,
+                    size: size,
+                    customText: customText
+                });
             }
             updateCartUI();
             showToast(`Added ${product.name} to basket!`);
