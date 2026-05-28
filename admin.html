@@ -580,10 +580,28 @@
                     ${newArrivalPill}
                 </div>
             </td>
-            <td class="p-4">
-                <p class="font-bold text-neutral-800">${order.customer_name || 'Anonymous'}</p>
-                <p class="text-neutral-500 text-xs">${order.phone || 'N/A'}</p>
-            </td>
+            // ====== LOCATE AND REPLACE JUST THE SECOND <td> BLOCK INSIDE rowHTMLContent ======
+                    <td class="p-4 text-left">
+                        <p class="font-bold text-neutral-900">${order.customer_name || 'Anonymous'}</p>
+                        <p class="text-neutral-500 text-xs font-semibold mb-1">${order.phone || 'N/A'}</p>
+                        
+                        <div class="mt-1">
+                            <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-[11px] text-brand-600 hover:text-brand-800 font-bold underline flex items-center gap-1 focus:outline-none cursor-pointer">
+                                <i class="fa-solid fa-circle-user text-[10px]"></i> View Delivery Profile
+                            </button>
+                            
+                            <div class="hidden mt-2 p-2.5 bg-brand-50/70 border border-brand-100 rounded-xl max-w-[240px] text-xs space-y-1.5 shadow-sm animate-fade-in">
+                                <div class="break-words">
+                                    <span class="font-bold text-neutral-500 block text-[9px] uppercase tracking-wider">Email ID</span>
+                                    <a href="mailto:${order.email || ''}" class="text-brand-700 underline font-semibold break-all hover:text-brand-900">${order.email || 'None Provided'}</a>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-neutral-500 block text-[9px] uppercase tracking-wider">Shipping Address</span>
+                                    <p class="text-neutral-600 font-medium leading-relaxed break-words whitespace-normal bg-white p-1.5 rounded-lg border border-neutral-100 mt-0.5">${order.address || 'No destination loaded.'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
             <td class="p-4 text-neutral-600">
 
                         <div class="flex items-center gap-1 max-w-xs font-bold text-neutral-800 break-words whitespace-normal text-left">
