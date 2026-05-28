@@ -585,11 +585,16 @@
                 <p class="text-neutral-500 text-xs">${order.phone || 'N/A'}</p>
             </td>
             <td class="p-4 text-neutral-600">
-                <div class="flex items-center gap-1 max-w-[180px] truncate">
-                    <span>${order.product_name}</span>
-                    ${customHighlightBadge}
-                </div>
-            </td>
+
+                        <div class="flex items-center gap-1 max-w-xs font-bold text-neutral-800 break-words whitespace-normal text-left">
+
+                            <span>${order.product_name}</span>
+
+                            ${customHighlightBadge}
+
+                        </div>
+
+                    </td>
             <td class="p-4 font-bold text-neutral-800">₹${Number(order.total).toFixed(2)}</td>
             
             <td class="p-4 whitespace-nowrap">
