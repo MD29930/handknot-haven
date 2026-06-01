@@ -8,7 +8,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -21,42 +21,42 @@
             theme: {
                 extend: {
                     colors: {
-                        // Rich, Warm Dark Theme Palette
+                        // Premium Midnight Navy & Champagne Gold Palette
                         surface: {
-                            900: '#0A0807', // Deepest background
-                            800: '#120E0C', // Main background
-                            700: '#1C1613', // Card background
-                            600: '#2A221E', // Lighter panels
+                            900: '#05080F', // Deepest navy
+                            800: '#0A0E17', // Main background
+                            700: '#121824', // Card background
+                            600: '#1C2536', // Lighter panels
                         },
                         brand: {
-                            50: '#FFF5F0',
-                            100: '#FDECE4',
-                            400: '#F4A282',
-                            500: '#E58D67', // Primary glowing copper
-                            600: '#D66F43',
-                            900: '#3D150B',
+                            50: '#FDFCF7',
+                            100: '#F8F3E6',
+                            300: '#EADDAB', 
+                            400: '#E5C76B', // Soft champagne
+                            500: '#D4AF37', // Premium Champagne Gold (Primary)
+                            600: '#B5952F', // Deep gold
+                            900: '#4A3C0B',
                         },
                         text: {
-                            main: '#FDFBF9',
-                            muted: '#AFA39C',
+                            main: '#F4F6F9',
+                            muted: '#8E9BB0',
                         }
                     },
                     fontFamily: {
-                        sans: ['Outfit', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    letterSpacing: {
+                        'lux': '0.15em',
+                        'lux-wide': '0.25em',
                     },
                     animation: {
-                        'ambient-glow': 'ambient-glow 8s ease-in-out infinite alternate',
-                        'float': 'float 6s cubic-bezier(0.25, 1, 0.5, 1) infinite',
+                        'fade-in': 'fadeIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
-                        'ambient-glow': {
-                            '0%': { transform: 'scale(1) translate(0, 0)', opacity: 0.4 },
-                            '100%': { transform: 'scale(1.2) translate(20px, -20px)', opacity: 0.7 },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-12px)' },
+                        fadeIn: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
                         }
                     }
                 }
@@ -70,79 +70,73 @@
         })();
     </script>
     <style>
-        /* Smooth Dark Theme Base */
+        /* Premium Base Styling */
         body {
-            background-color: #120E0C;
-            color: #FDFBF9;
+            background-color: #0A0E17;
+            color: #F4F6F9;
             overflow-x: hidden;
+            /* Subtle noise texture for a high-end matte finish */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
         }
 
-        /* Glassmorphism Navigation */
+        /* Frosted Glass Nav */
         .glass-nav {
-            background: rgba(18, 14, 12, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(10, 14, 23, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
         }
 
-        /* Buttery Smooth Cards */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 1.5rem;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        /* Tailored, Sharp Cards */
+        .premium-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 2px; /* Sharp, fashion-editorial corners */
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .glass-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(229, 141, 103, 0.4);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(229, 141, 103, 0.1);
+        .premium-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(212, 175, 55, 0.3); /* Gold border reveal */
         }
 
-        /* Ambient Orbs */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        /* Dark Mode Form Elements */
+        /* Luxury Inputs */
         input, textarea {
-            background: rgba(0, 0, 0, 0.2) !important;
+            background: transparent !important;
             border: 1px solid rgba(255, 255, 255, 0.1) !important;
             color: white !important;
-            transition: all 0.3s ease;
+            border-radius: 2px !important;
+            transition: all 0.4s ease;
         }
 
         input:focus, textarea:focus {
-            border-color: #E58D67 !important;
-            box-shadow: 0 0 0 4px rgba(229, 141, 103, 0.1) !important;
+            border-color: #D4AF37 !important;
+            box-shadow: none !important;
             outline: none;
+            background: rgba(255, 255, 255, 0.02) !important;
         }
 
         input::placeholder, textarea::placeholder {
-            color: #AFA39C !important;
+            color: #8E9BB0 !important;
+            font-weight: 300;
         }
 
-        /* Loaders & Scrollbars */
+        /* Minimalist Loader */
         .loader {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #E58D67;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid #D4AF37;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             animation: spin 1s linear infinite;
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0A0807; }
-        ::-webkit-scrollbar-thumb { background: #2A221E; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #E58D67; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #05080F; }
+        ::-webkit-scrollbar-thumb { background: #1C2536; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
@@ -154,219 +148,206 @@
 
 <body class="font-sans antialiased flex flex-col min-h-screen">
 
-    <div class="orb bg-brand-600/20 w-[600px] h-[600px] top-[-200px] left-[-200px] animate-ambient-glow"></div>
-    <div class="orb bg-orange-600/10 w-[500px] h-[500px] top-[30%] right-[-100px] animate-ambient-glow" style="animation-delay: 2s;"></div>
-    <div class="orb bg-brand-500/15 w-[800px] h-[800px] bottom-[-200px] left-[10%] animate-ambient-glow" style="animation-delay: 4s;"></div>
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[80vw] h-[500px] bg-gradient-to-b from-brand-500/10 to-transparent pointer-events-none z-0"></div>
 
-    <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2.5 text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(229,141,103,0.3)] z-50 relative">
-        <span id="promo-text">Opening Sale: Up to 30% Off</span>
+    <div id="promo-banner" class="hidden bg-surface-800 text-brand-400 border-b border-white/5 text-center py-3 text-xs tracking-lux uppercase z-50 relative">
+        <span id="promo-text">Exclusive: Up to 30% Off Selected Pieces</span>
     </div>
 
     <nav class="glass-nav fixed w-full z-40 transition-all duration-500" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-[80px] items-center">
+            <div class="flex justify-between h-[85px] items-center">
                 
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="font-serif text-2xl font-medium text-text-main flex items-center gap-3 group">
-                        <i class="fa-solid fa-fan text-brand-500 transform group-hover:rotate-180 transition-transform duration-700"></i>
-                        HandKnot Haven
+                    <a href="#" class="font-serif text-2xl font-light text-text-main flex items-center gap-4 group tracking-wider">
+                        <span class="w-8 h-8 flex items-center justify-center border border-brand-500/50 rounded-sm text-brand-500 group-hover:bg-brand-500 group-hover:text-surface-900 transition-all duration-500">
+                            <i class="fa-solid fa-fan text-sm"></i>
+                        </span>
+                        HANDKNOT HAVEN
                     </a>
                 </div>
 
-                <div class="hidden lg:flex items-center space-x-8">
-                    <a href="#shop" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Shop</a>
-                    <a href="#about" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Story</a>
-                    <a href="#custom" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Custom</a>
+                <div class="hidden lg:flex items-center space-x-10">
+                    <a href="#shop" class="text-xs tracking-lux font-light text-text-muted hover:text-brand-400 transition-colors uppercase">Shop</a>
+                    <a href="#about" class="text-xs tracking-lux font-light text-text-muted hover:text-brand-400 transition-colors uppercase">Studio</a>
+                    <a href="#custom" class="text-xs tracking-lux font-light text-text-muted hover:text-brand-400 transition-colors uppercase">Bespoke</a>
                     
-                    <div class="flex items-center gap-6 pl-8 border-l border-white/10">
-                        <a href="#contact" class="text-sm font-medium text-text-main hover:text-brand-500 transition-colors">Contact</a>
-                        <button onclick="openOrdersModal()" class="flex items-center gap-2 text-sm font-medium bg-white/5 border border-white/10 text-text-main px-5 py-2.5 rounded-full hover:bg-brand-500 hover:text-surface-900 hover:border-brand-500 transition-all duration-300">
-                            <i class="fa-solid fa-location-crosshairs"></i> Track Order
+                    <div class="flex items-center gap-8 pl-10 border-l border-white/10">
+                        <a href="#contact" class="text-xs tracking-lux font-light text-text-main hover:text-brand-400 transition-colors uppercase">Contact</a>
+                        <button onclick="openOrdersModal()" class="flex items-center gap-2 text-xs tracking-lux font-medium text-brand-500 hover:text-brand-400 transition-colors uppercase">
+                            Track Order
                         </button>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleCart()" class="relative p-2.5 text-text-main hover:text-brand-500 transition-colors flex items-center justify-center group">
-                        <i class="fa-solid fa-basket-shopping text-xl transform group-hover:scale-110 transition-transform"></i>
-                        <span id="cart-badge" class="absolute top-0 right-0 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-surface-900 bg-brand-500 rounded-full hidden shadow-[0_0_10px_rgba(229,141,103,0.5)]">0</span>
+                <div class="flex items-center gap-6">
+                    <button onclick="toggleCart()" class="relative text-text-main hover:text-brand-500 transition-colors flex items-center justify-center group">
+                        <span class="text-xs tracking-lux uppercase hidden sm:block mr-2 font-light">Cart</span>
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-3 flex items-center justify-center w-4 h-4 text-[9px] font-medium text-surface-900 bg-brand-500 rounded-sm hidden">0</span>
                     </button>
                     
-                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-text-main p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-text-main">
+                        <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <div id="mobile-menu" class="hidden lg:hidden bg-surface-800/95 backdrop-blur-xl border-b border-white/10 absolute w-full left-0 top-full">
-            <div class="px-6 py-6 space-y-2">
-                <a href="#shop" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Shop Collection</a>
-                <a href="#custom" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Custom Orders</a>
-                <a href="#about" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Our Story</a>
-                <a href="#contact" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Contact Us</a>
-                <button onclick="toggleMobileMenu(); openOrdersModal();" class="w-full mt-4 py-4 text-base font-bold text-surface-900 bg-brand-500 rounded-xl flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-location-crosshairs"></i> Track My Order
+        <div id="mobile-menu" class="hidden lg:hidden bg-surface-900/98 backdrop-blur-3xl border-b border-white/5 absolute w-full left-0 top-full">
+            <div class="px-8 py-8 space-y-4">
+                <a href="#shop" onclick="toggleMobileMenu()" class="block py-2 text-sm tracking-lux uppercase font-light text-text-muted hover:text-brand-400">Shop Collection</a>
+                <a href="#custom" onclick="toggleMobileMenu()" class="block py-2 text-sm tracking-lux uppercase font-light text-text-muted hover:text-brand-400">Bespoke Commissions</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="block py-2 text-sm tracking-lux uppercase font-light text-text-muted hover:text-brand-400">The Studio</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block py-2 text-sm tracking-lux uppercase font-light text-text-main hover:text-brand-400 border-t border-white/5 pt-4">Contact</a>
+                <button onclick="toggleMobileMenu(); openOrdersModal();" class="w-full mt-6 py-4 text-xs tracking-lux uppercase font-medium text-surface-900 bg-brand-500 flex items-center justify-center gap-2 rounded-sm">
+                    Track Order
                 </button>
             </div>
         </div>
     </nav>
 
-    <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-surface-700/80 backdrop-blur-md text-text-main px-6 py-3 rounded-full text-sm font-medium shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center gap-3 border border-white/10"></div>
+    <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-surface-800/90 backdrop-blur-md text-brand-400 px-8 py-3 text-xs tracking-lux uppercase border border-brand-500/20 shadow-2xl flex items-center gap-3"></div>
 
-    <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
 
-    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-surface-800 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) border-l border-white/10">
-        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-surface-900/50">
-            <h2 class="text-xl font-serif font-medium text-text-main">Your Basket</h2>
-            <button onclick="toggleCart()" class="text-text-muted hover:text-brand-500 transition-colors p-2 bg-white/5 rounded-full">
-                <i class="fa-solid fa-xmark"></i>
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-surface-900 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] border-l border-white/5">
+        <div class="flex items-center justify-between p-8 border-b border-white/5">
+            <h2 class="text-sm tracking-lux uppercase font-light text-text-main">Shopping Bag</h2>
+            <button onclick="toggleCart()" class="text-text-muted hover:text-brand-500 transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-6" id="cart-items-container">
-            <div class="text-center text-text-muted mt-20 flex flex-col items-center" id="empty-cart-msg">
-                <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/5">
-                    <i class="fa-solid fa-ghost text-3xl text-white/20"></i>
-                </div>
-                <p class="font-medium">Your basket is floating empty.</p>
-                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-6 text-sm text-brand-500 hover:text-brand-400 transition-colors border-b border-brand-500 pb-1">Discover pieces</button>
+        <div class="flex-1 overflow-y-auto p-8" id="cart-items-container">
+            <div class="text-center text-text-muted mt-32 flex flex-col items-center" id="empty-cart-msg">
+                <i class="fa-solid fa-bag-shopping text-4xl mb-6 opacity-20"></i>
+                <p class="font-light text-sm tracking-wide">Your bag is currently empty.</p>
+                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-8 text-xs tracking-lux uppercase text-brand-500 hover:text-brand-400 transition-colors border-b border-brand-500 pb-1">Discover Pieces</button>
             </div>
         </div>
 
-        <div class="border-t border-white/5 p-6 bg-surface-900/80">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-text-muted font-medium text-sm uppercase tracking-widest">Subtotal</span>
-                <span id="cart-total" class="text-2xl font-serif font-medium text-text-main">₹0.00</span>
+        <div class="border-t border-white/5 p-8 bg-surface-800/50">
+            <div class="flex justify-between items-center mb-8">
+                <span class="text-text-muted text-xs tracking-lux uppercase">Subtotal</span>
+                <span id="cart-total" class="text-xl font-serif text-text-main">₹0.00</span>
             </div>
-            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.2)] flex justify-center items-center gap-2">
-                Checkout Securely <i class="fa-solid fa-arrow-right"></i>
+            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-500 text-surface-900 py-4 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-all rounded-sm flex justify-center items-center">
+                Secure Checkout
             </button>
         </div>
     </div>
 
-    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-surface-700/90 backdrop-blur-md text-text-main px-6 py-3.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.5)] z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-3 border border-brand-500/30 transition-all duration-400">
-        <i class="fa-solid fa-circle-check text-brand-500"></i>
-        <span id="toast-message" class="text-sm font-medium">Added to basket</span>
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-surface-800 text-text-main px-8 py-4 shadow-2xl z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-4 border border-brand-500/20 transition-all duration-500 rounded-sm">
+        <div class="w-1 h-1 bg-brand-500 rounded-full"></div>
+        <span id="toast-message" class="text-xs tracking-wide font-light uppercase">Added to bag</span>
     </div>
 
     <main class="flex-grow relative z-10">
 
         <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center min-h-[90vh]">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
                     
-                    <div class="lg:w-1/2 text-center lg:text-left z-10">
-                        <div class="inline-flex items-center gap-2 py-1.5 px-4 bg-white/5 border border-white/10 rounded-full text-brand-400 text-xs font-semibold tracking-widest uppercase mb-8 backdrop-blur-sm">
-                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Handcrafted Magic
-                        </div>
-                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif text-text-main leading-[1.1] mb-6 drop-shadow-2xl">
-                            Weave <span class="italic text-brand-500">warmth</span> <br>into your world.
+                    <div class="lg:w-1/2 text-center lg:text-left z-10 animate-fade-in">
+                        <p class="text-brand-500 text-xs tracking-lux-wide uppercase mb-6 font-medium">Bespoke Artisan Studio</p>
+                        <h1 class="text-5xl md:text-6xl lg:text-[5rem] font-serif text-text-main leading-[1.05] mb-8 font-light">
+                            Woven luxury.<br>
+                            <span class="text-brand-400 italic">Meticulous detail.</span>
                         </h1>
-                        <p class="text-lg text-text-muted mb-10 font-light leading-relaxed max-w-lg mx-auto lg:mx-0">
-                            Discover deeply aesthetic, meticulously hand-hooked crochet. Designed for those who appreciate slow fashion and beautiful spaces.
+                        <p class="text-base text-text-muted mb-12 font-light leading-relaxed max-w-md mx-auto lg:mx-0">
+                            Exclusively designed, handcrafted crochet pieces tailored for the modern aesthetic. Zero fast-fashion, pure intention.
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
-                            <a href="#shop" class="inline-flex justify-center items-center px-8 py-4 bg-brand-500 text-surface-900 rounded-full font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.3)] hover:shadow-[0_0_30px_rgba(229,141,103,0.5)]">
-                                Shop Collection
+                        <div class="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                            <a href="#shop" class="inline-flex justify-center items-center px-10 py-4 bg-brand-500 text-surface-900 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors rounded-sm">
+                                View Collection
                             </a>
-                            <a href="#custom" class="inline-flex justify-center items-center px-8 py-4 bg-white/5 text-text-main border border-white/10 rounded-full font-medium hover:bg-white/10 hover:border-brand-500/50 transition-all backdrop-blur-sm">
-                                Bespoke Orders
+                            <a href="#custom" class="inline-flex justify-center items-center px-10 py-4 border border-white/20 text-text-main text-xs tracking-lux uppercase font-light hover:border-brand-500 transition-colors rounded-sm">
+                                Commission
                             </a>
                         </div>
                     </div>
                     
-                    <div class="lg:w-1/2 w-full hidden md:block relative h-[500px]">
-                        <div class="absolute right-0 top-0 w-3/4 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-10 animate-float">
-                            <div class="absolute inset-0 bg-surface-900/20 z-10 mix-blend-overlay"></div>
-                            <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Crochet">
+                    <div class="lg:w-1/2 w-full hidden md:block relative h-[600px] animate-fade-in" style="animation-delay: 0.2s;">
+                        <div class="absolute right-0 top-0 w-[80%] aspect-[3/4] overflow-hidden border border-white/5 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[20%] hover:grayscale-0 transition-all duration-1000" alt="Crochet Craft">
                         </div>
-                        <div class="absolute left-0 bottom-10 w-1/2 aspect-square rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-20 animate-float" style="animation-delay: -3s;">
-                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%]" alt="Detail">
+                        <div class="absolute left-0 bottom-12 w-[45%] aspect-square overflow-hidden border-4 border-surface-900 rounded-sm shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Detail">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="shop" class="py-24 relative border-t border-white/5 bg-surface-800/50 backdrop-blur-xl">
+        <section id="shop" class="py-32 relative border-t border-white/5 bg-surface-900">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-                    <div>
-                        <h2 class="text-4xl font-serif text-text-main mb-3">The Collection</h2>
-                        <p class="text-text-muted font-light">Freshly crafted dark aesthetics.</p>
-                    </div>
+                <div class="flex flex-col items-center mb-20 text-center">
+                    <h2 class="text-3xl md:text-4xl font-serif text-text-main mb-6 font-light">The Archive</h2>
                     
-                    <div class="flex flex-wrap gap-3" id="category-filters">
-                        <button class="filter-btn bg-brand-500 text-surface-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(229,141,103,0.3)] transition-all" data-filter="all">All</button>
-                        <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Clothing">Wearables</button>
-                        <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Decor & Flowers">Decor</button>
-                        <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Accessories">Accessories</button>
+                    <div class="flex flex-wrap justify-center gap-6" id="category-filters">
+                        <button class="filter-btn text-brand-500 text-xs tracking-lux uppercase font-medium transition-all" data-filter="all">All Pieces</button>
+                        <button class="filter-btn text-text-muted hover:text-text-main text-xs tracking-lux uppercase font-light transition-all" data-filter="Clothing">Wearables</button>
+                        <button class="filter-btn text-text-muted hover:text-text-main text-xs tracking-lux uppercase font-light transition-all" data-filter="Decor & Flowers">Decor</button>
+                        <button class="filter-btn text-text-muted hover:text-text-main text-xs tracking-lux uppercase font-light transition-all" data-filter="Accessories">Objects</button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 gap-y-16" id="product-grid">
                     </div>
             </div>
         </section>
 
-        <section id="about" class="py-24 relative overflow-hidden">
+        <section id="about" class="py-32 relative border-t border-white/5 bg-surface-800">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="glass-card p-10 md:p-16 relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-600/10 rounded-full blur-[80px] pointer-events-none"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
-                        <div class="lg:col-span-7">
-                            <span class="text-brand-500 font-semibold text-xs tracking-widest uppercase mb-4 block">The Maker</span>
-                            <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-6">Hi, I'm Vaishali. <br>Welcome to my sanctuary.</h2>
-                            <div class="space-y-6 text-text-muted font-light text-lg leading-relaxed">
-                                <p>
-                                    Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet. 
-                                </p>
-                                <p>
-                                    Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.
-                                </p>
-                            </div>
-                            
-                            <div class="mt-10 pt-8 border-t border-white/10 grid grid-cols-2 gap-8">
-                                <div>
-                                    <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-4 text-xl"><i class="fa-solid fa-leaf"></i></div>
-                                    <h4 class="font-medium text-text-main mb-1">Organic Yarns</h4>
-                                    <p class="text-sm text-text-muted">Premium merino & cottons.</p>
-                                </div>
-                                <div>
-                                    <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-4 text-xl"><i class="fa-solid fa-hourglass-half"></i></div>
-                                    <h4 class="font-medium text-text-main mb-1">Slow Crafted</h4>
-                                    <p class="text-sm text-text-muted">Made to order in Pune.</p>
-                                </div>
-                            </div>
+                    <div class="lg:col-span-5 hidden lg:block">
+                        <div class="aspect-[3/4] overflow-hidden border border-white/5 rounded-sm">
+                            <img src="https://images.unsplash.com/photo-1584288417180-2c35848ba335?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[50%]" alt="Studio">
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 lg:pl-10">
+                        <p class="text-brand-500 text-xs tracking-lux-wide uppercase mb-6 font-medium">The Artisan</p>
+                        <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-8 font-light leading-tight">Design grounded in <br>meticulous structure.</h2>
+                        <div class="space-y-6 text-text-muted font-light text-base leading-loose max-w-xl">
+                            <p>
+                                I am Vaishali. Operating from my studio in Tathawade, Pune, I merge a naturally structural, problem-solving mindset with the fluid art of crochet. 
+                            </p>
+                            <p>
+                                HandKnot Haven is an exercise in intentional design. Every piece is developed slowly, utilizing sustainable, premium yarns to ensure each object not only serves a purpose but endures as a functional heirloom.
+                            </p>
                         </div>
                         
-                        <div class="lg:col-span-5 relative hidden lg:block">
-                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
-                                <div class="absolute inset-0 bg-brand-900/30 mix-blend-overlay z-10"></div>
-                                <img src="https://images.unsplash.com/photo-1584288417180-2c35848ba335?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Yarn texture">
+                        <div class="mt-12 pt-10 border-t border-white/5 grid grid-cols-2 gap-10">
+                            <div>
+                                <span class="text-brand-500 text-xs tracking-lux uppercase mb-2 block">Materials</span>
+                                <p class="text-sm text-text-main font-light">Ethically sourced organic cotton & fine merino.</p>
+                            </div>
+                            <div>
+                                <span class="text-brand-500 text-xs tracking-lux uppercase mb-2 block">Execution</span>
+                                <p class="text-sm text-text-main font-light">100% hand-hooked. Zero-waste production.</p>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <section id="custom" class="py-24 relative border-t border-white/5">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-500/10 text-brand-500 mb-6 text-2xl border border-brand-500/20 shadow-[0_0_30px_rgba(229,141,103,0.1)]">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                </div>
-                <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-6">Bespoke Commissions</h2>
-                <p class="text-lg text-text-muted font-light mb-12 max-w-2xl mx-auto leading-relaxed">
-                    Have a specific vision? Whether it’s a custom color palette, precise sizing, or a completely new concept, let’s craft something uniquely yours.
+        <section id="custom" class="py-32 relative border-y border-white/5 bg-surface-900 text-center">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <i class="fa-solid fa-pen-nib text-brand-500 text-2xl mb-8 opacity-50"></i>
+                <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-6 font-light">Bespoke Commissions</h2>
+                <p class="text-base text-text-muted font-light mb-12 leading-relaxed">
+                    Reserve a spot in the studio ledger for a customized piece. Tailored sizing, specific palettes, or entirely original concepts.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                    <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-500 text-surface-900 px-8 py-4 rounded-full font-bold text-base hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.3)] active:scale-95">
-                        Submit a Request
+                <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                    <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-500 text-surface-900 px-10 py-4 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors rounded-sm">
+                        Initiate Request
                     </button>
-                    <button onclick="openAiModal()" class="bg-white/5 border border-white/10 text-text-main px-8 py-4 rounded-full font-medium text-base hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-sm">
+                    <button onclick="openAiModal()" class="border border-white/20 text-text-main px-10 py-4 text-xs tracking-lux uppercase font-light hover:border-brand-500 transition-colors rounded-sm">
                         AI Gift Concierge
                     </button>
                 </div>
@@ -375,107 +356,108 @@
 
     </main>
 
-    <footer id="contact" class="bg-surface-900 pt-24 pb-10 border-t border-white/5 relative z-30">
+    <footer id="contact" class="bg-surface-800 pt-24 pb-12 relative z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-4xl font-serif text-text-main mb-4">Connect with the Studio</h2>
-                <p class="text-text-muted font-light text-lg">No floating widgets. Just direct, easy communication.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-white/5 pb-20 text-center md:text-left">
                 
-                <a href="https://wa.me/919925617845" target="_blank" class="glass-card p-8 flex flex-col items-center text-center group">
-                    <div class="w-16 h-16 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 rounded-full flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
-                        <i class="fa-brands fa-whatsapp"></i>
-                    </div>
-                    <h3 class="text-text-main font-medium text-lg mb-1">WhatsApp</h3>
-                    <p class="text-text-muted text-sm">+91 99256 17845</p>
-                </a>
+                <div class="md:col-span-1">
+                    <h3 class="font-serif text-2xl text-text-main font-light mb-4">HandKnot Haven</h3>
+                    <p class="text-text-muted text-sm font-light leading-relaxed">
+                        Tathawade, Pune.<br>Shipping nationwide across India.
+                    </p>
+                </div>
 
-                <a href="mailto:handknothaven@gmail.com" class="glass-card p-8 flex flex-col items-center text-center group">
-                    <div class="w-16 h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
-                        <i class="fa-regular fa-envelope"></i>
-                    </div>
-                    <h3 class="text-text-main font-medium text-lg mb-1">Email</h3>
-                    <p class="text-text-muted text-sm break-all">handknothaven@gmail.com</p>
-                </a>
+                <div class="md:col-span-1">
+                    <h4 class="text-brand-500 text-xs tracking-lux uppercase mb-6 font-medium">Enquiries</h4>
+                    <ul class="space-y-4 font-light text-sm">
+                        <li>
+                            <a href="https://wa.me/919925617845" target="_blank" class="text-text-main hover:text-brand-400 transition-colors flex items-center justify-center md:justify-start gap-3">
+                                <i class="fa-brands fa-whatsapp text-brand-500"></i> +91 99256 17845
+                            </a>
+                        </li>
+                        <li>
+                            <a href="mailto:handknothaven@gmail.com" class="text-text-main hover:text-brand-400 transition-colors flex items-center justify-center md:justify-start gap-3">
+                                <i class="fa-regular fa-envelope text-brand-500"></i> handknothaven@gmail.com
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 
-                <button onclick="openOrdersModal()" class="glass-card p-8 flex flex-col items-center text-center group">
-                    <div class="w-16 h-16 bg-white/5 text-white/70 border border-white/10 rounded-full flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-location-crosshairs"></i>
-                    </div>
-                    <h3 class="text-text-main font-medium text-lg mb-1">Track Order</h3>
-                    <p class="text-text-muted text-sm">Live shipping updates</p>
-                </button>
+                <div class="md:col-span-1">
+                    <h4 class="text-brand-500 text-xs tracking-lux uppercase mb-6 font-medium">Services</h4>
+                    <ul class="space-y-4 font-light text-sm">
+                        <li>
+                            <button onclick="openOrdersModal()" class="text-text-main hover:text-brand-400 transition-colors flex items-center justify-center md:justify-start gap-3">
+                                <i class="fa-solid fa-box-open text-brand-500"></i> Track Existing Order
+                            </button>
+                        </li>
+                    </ul>
+                </div>
 
             </div>
 
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left border-t border-white/5 pt-8">
-                <a href="#" class="font-serif text-xl text-text-main flex items-center gap-2">
-                    <i class="fa-solid fa-fan text-brand-500"></i> HandKnot Haven
-                </a>
-                <p class="text-text-muted text-xs font-light tracking-widest uppercase">
-                    &copy; 2026 Crafted by Vaishali • Tathawade, Pune
+            <div class="pt-8 text-center">
+                <p class="text-text-muted text-[10px] tracking-lux-wide uppercase font-light">
+                    &copy; 2026 HandKnot Haven. Crafted by Vaishali. All rights reserved.
                 </p>
             </div>
         </div>
     </footer>
 
     <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md transition-opacity" onclick="closeProductModal()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-5xl mx-4 rounded-2xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0" id="product-modal-content">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onclick="closeProductModal()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-6xl mx-4 rounded-sm shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] scale-95 opacity-0" id="product-modal-content">
             
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-text-muted hover:text-white z-20 bg-black/40 backdrop-blur w-10 h-10 rounded-full flex items-center justify-center transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+            <button onclick="closeProductModal()" class="absolute top-6 right-6 text-text-muted hover:text-white z-20 transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
-            <div class="md:w-1/2 h-72 md:h-auto bg-surface-900 relative">
-                <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 pointer-events-none"></div>
-                <img id="modal-img" src="" class="w-full h-full object-cover">
+            <div class="md:w-1/2 h-80 md:h-auto bg-surface-900 border-r border-white/5 relative">
+                <img id="modal-img" src="" class="w-full h-full object-cover opacity-90">
             </div>
 
-            <div class="md:w-1/2 p-8 md:p-12 overflow-y-auto flex flex-col">
-                <div class="text-[10px] text-brand-400 font-bold tracking-widest uppercase mb-3 border border-brand-500/30 bg-brand-500/10 w-max px-3 py-1 rounded" id="modal-category"></div>
-                <h3 class="text-3xl font-serif text-text-main mb-4" id="modal-title"></h3>
-                <div class="mb-6" id="modal-price"></div>
-                <p class="text-text-muted font-light mb-8 leading-relaxed text-sm" id="modal-desc"></p>
+            <div class="md:w-1/2 p-10 md:p-16 overflow-y-auto flex flex-col">
+                <div class="text-[10px] text-brand-500 font-medium tracking-lux uppercase mb-6" id="modal-category"></div>
+                <h3 class="text-4xl font-serif text-text-main mb-6 font-light" id="modal-title"></h3>
+                <div class="mb-10" id="modal-price"></div>
+                <p class="text-text-muted font-light mb-12 leading-relaxed text-sm" id="modal-desc"></p>
 
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-                        <h4 class="font-medium text-text-main text-xs uppercase tracking-wider mb-1" id="modal-material-name">Material</h4>
+                <div class="grid grid-cols-2 gap-8 mb-12 border-t border-white/5 pt-8">
+                    <div>
+                        <h4 class="font-medium text-text-main text-[10px] uppercase tracking-lux mb-2" id="modal-material-name">Material</h4>
                         <p class="text-brand-400 text-xs font-light" id="modal-material-benefit">Benefit</p>
                     </div>
-                    <div class="bg-white/5 rounded-xl p-4 border border-white/5">
-                        <h4 class="font-medium text-text-main text-xs uppercase tracking-wider mb-1">Craft Time</h4>
+                    <div>
+                        <h4 class="font-medium text-text-main text-[10px] uppercase tracking-lux mb-2">Craft Time</h4>
                         <p class="text-brand-400 text-xs font-light" id="modal-crafting-time"></p>
                     </div>
                 </div>
 
-                <div class="space-y-6 mb-8 flex-grow">
+                <div class="space-y-8 mb-10 flex-grow">
                     <div id="modal-size-section" class="hidden">
-                        <h4 class="font-medium text-text-main mb-3 text-sm">Measurements (Optional)</h4>
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="measure-bust" placeholder="Bust" class="w-full p-3 rounded-lg text-sm">
-                            <input type="text" id="measure-waist" placeholder="Waist" class="w-full p-3 rounded-lg text-sm">
-                            <input type="text" id="measure-hips" placeholder="Hips" class="w-full p-3 rounded-lg text-sm">
-                            <input type="text" id="measure-length" placeholder="Length" class="w-full p-3 rounded-lg text-sm">
+                        <h4 class="font-medium text-text-main mb-4 text-xs tracking-lux uppercase">Measurements</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="measure-bust" placeholder="Bust" class="w-full p-3 text-sm">
+                            <input type="text" id="measure-waist" placeholder="Waist" class="w-full p-3 text-sm">
+                            <input type="text" id="measure-hips" placeholder="Hips" class="w-full p-3 text-sm">
+                            <input type="text" id="measure-length" placeholder="Length" class="w-full p-3 text-sm">
                         </div>
                     </div>
-
                     <div>
-                        <h4 class="font-medium text-text-main mb-3 text-sm">Design Notes</h4>
-                        <textarea id="modal-custom" rows="2" class="w-full p-3 rounded-lg text-sm resize-none" placeholder="Preferred color changes..."></textarea>
+                        <h4 class="font-medium text-text-main mb-4 text-xs tracking-lux uppercase">Design Notes</h4>
+                        <textarea id="modal-custom" rows="2" class="w-full p-4 text-sm resize-none" placeholder="Color palette requests..."></textarea>
                     </div>
                 </div>
 
-                <div id="storefront-customization-engine" class="hidden border-t border-white/10 pt-6 mb-6">
-                    <h4 class="font-medium text-text-main mb-3 text-sm">Optional Additions</h4>
-                    <div id="storefront-addons-list" class="space-y-2"></div>
+                <div id="storefront-customization-engine" class="hidden border-t border-white/5 pt-8 mb-10">
+                    <h4 class="font-medium text-text-main mb-4 text-xs tracking-lux uppercase">Curated Additions</h4>
+                    <div id="storefront-addons-list" class="space-y-3"></div>
                 </div>
 
                 <div class="mt-auto">
-                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.3)] active:scale-95 flex justify-center items-center gap-2">
-                        Add to Basket — <span id="modal-btn-price"></span>
+                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-500 text-surface-900 py-4 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-all rounded-sm flex justify-center items-center gap-3">
+                        Add to Bag <span class="mx-2 opacity-30">|</span> <span id="modal-btn-price"></span>
                     </button>
                 </div>
             </div>
@@ -483,30 +465,30 @@
     </div>
 
     <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeCheckoutForm()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-lg mx-4 rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-xl font-serif text-text-main">Delivery Details</h3>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeCheckoutForm()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-lg mx-4 rounded-sm shadow-2xl overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-8 border-b border-white/5 flex justify-between items-center bg-surface-900">
+                <h3 class="text-xl font-serif text-text-main font-light">Delivery Details</h3>
                 <button onclick="closeCheckoutForm()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-5">
+            <form onsubmit="handleCheckoutForm(event)" class="p-10 space-y-6">
                 <div>
-                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Full Name</label>
-                    <input type="text" id="cust-name" required class="w-full p-3 rounded-lg text-sm" />
+                    <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Full Name</label>
+                    <input type="text" id="cust-name" required class="w-full p-3.5 text-sm" />
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Phone Number</label>
-                    <input type="tel" id="cust-phone" required class="w-full p-3 rounded-lg text-sm" />
+                    <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Phone</label>
+                    <input type="tel" id="cust-phone" required class="w-full p-3.5 text-sm" />
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Email</label>
-                    <input type="email" id="cust-email" required class="w-full p-3 rounded-lg text-sm" />
+                    <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Email</label>
+                    <input type="email" id="cust-email" required class="w-full p-3.5 text-sm" />
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Full Address</label>
-                    <textarea id="cust-address" required rows="3" class="w-full p-3 rounded-lg text-sm resize-none"></textarea>
+                    <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Address</label>
+                    <textarea id="cust-address" required rows="3" class="w-full p-3.5 text-sm resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.3)] mt-2">
+                <button type="submit" class="w-full bg-brand-500 text-surface-900 py-4 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-all rounded-sm mt-4">
                     Continue to Payment
                 </button>
             </form>
@@ -514,31 +496,33 @@
     </div>
 
     <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closePaymentModal()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-md mx-4 rounded-2xl shadow-2xl flex flex-col transform transition-all duration-500 scale-95 opacity-0">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-xl font-serif text-text-main flex items-center gap-2"><i class="fa-solid fa-lock text-brand-500"></i> Secure Checkout</h3>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closePaymentModal()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-md mx-4 rounded-sm shadow-2xl flex flex-col transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-8 border-b border-white/5 flex justify-between items-center bg-surface-900">
+                <h3 class="text-xl font-serif text-text-main font-light">Secure Checkout</h3>
                 <button onclick="closePaymentModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-8">
-                <div class="text-center mb-8">
-                    <p class="text-xs font-medium text-text-muted uppercase tracking-widest mb-2">Amount to Pay</p>
-                    <h2 class="text-4xl font-serif text-text-main" id="payment-total-amount">₹0.00</h2>
+            <div class="p-10">
+                <div class="text-center mb-10">
+                    <p class="text-[10px] font-medium text-brand-500 uppercase tracking-lux mb-3">Total Amount</p>
+                    <h2 class="text-4xl font-serif text-text-main font-light" id="payment-total-amount">₹0.00</h2>
                 </div>
-                <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-white text-black py-4 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 mb-6">
-                    <i class="fa-solid fa-building-columns"></i> Pay via Razorpay
+                
+                <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-white text-black py-4 rounded-sm text-xs tracking-lux uppercase font-bold hover:bg-gray-200 transition-colors flex justify-center items-center gap-3 mb-8">
+                    Pay via Razorpay
                 </button>
                 
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="flex-1 h-px bg-white/10"></div>
-                    <span class="text-xs text-text-muted font-medium uppercase tracking-widest">Or</span>
-                    <div class="flex-1 h-px bg-white/10"></div>
+                <div class="flex items-center gap-4 mb-8 opacity-50">
+                    <div class="flex-1 h-px bg-white/20"></div>
+                    <span class="text-[10px] text-text-main font-medium uppercase tracking-lux">Or</span>
+                    <div class="flex-1 h-px bg-white/20"></div>
                 </div>
 
-                <div class="bg-white/5 border border-white/10 rounded-xl p-6 text-center">
-                    <p class="text-sm text-text-main mb-4">UPI: <span class="font-bold text-brand-400 tracking-wide">handknothaven@upi</span></p>
-                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-transparent border border-brand-500 text-brand-400 py-3 rounded-lg text-sm font-medium hover:bg-brand-500/10 transition-colors">
-                        Confirm Manual Payment
+                <div class="border border-white/10 rounded-sm p-6 text-center bg-surface-900/50">
+                    <p class="text-xs text-text-muted uppercase tracking-wide mb-4">Manual Transfer via UPI</p>
+                    <p class="text-sm text-brand-400 font-light tracking-wider mb-6">handknothaven@upi</p>
+                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-transparent border border-brand-500 text-brand-500 py-3 rounded-sm text-xs tracking-lux uppercase font-medium hover:bg-brand-500/10 transition-colors">
+                        Confirm Transfer
                     </button>
                 </div>
             </div>
@@ -546,81 +530,81 @@
     </div>
 
     <div id="order-confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeOrderConfirmation()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-sm mx-4 rounded-2xl shadow-2xl flex flex-col overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
-            <div class="p-8 text-center relative border-b border-white/5 bg-surface-900/50">
-                <button onclick="closeOrderConfirmation()" class="absolute top-4 right-4 text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
-                <div class="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-green-500/30 shadow-[0_0_15px_rgba(74,222,128,0.2)]"><i class="fa-solid fa-check"></i></div>
-                <h2 class="text-2xl font-serif text-text-main mb-1">Order Confirmed</h2>
-                <p class="text-text-muted text-xs">Reference: <span id="confirm-order-id" class="text-brand-400 font-medium"></span></p>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeOrderConfirmation()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-sm mx-4 rounded-sm shadow-2xl flex flex-col overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-10 text-center relative border-b border-white/5 bg-surface-900">
+                <button onclick="closeOrderConfirmation()" class="absolute top-6 right-6 text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <div class="mb-6 text-brand-500 text-4xl opacity-80"><i class="fa-solid fa-check"></i></div>
+                <h2 class="text-2xl font-serif text-text-main mb-2 font-light">Commission Secured</h2>
+                <p class="text-text-muted text-xs tracking-wide">Ref: <span id="confirm-order-id" class="text-brand-400"></span></p>
             </div>
-            <div class="p-6 text-center">
-                <p class="text-xs text-text-muted uppercase tracking-widest font-medium mb-1">Expected Dispatch</p>
-                <p class="text-brand-400 font-medium mb-6" id="confirm-dispatch-date"></p>
+            <div class="p-8 text-center">
+                <p class="text-[10px] text-text-muted uppercase tracking-lux mb-2">Estimated Dispatch</p>
+                <p class="text-brand-400 font-light text-lg mb-8" id="confirm-dispatch-date"></p>
                 
-                <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-white/5 border border-white/10 text-text-main py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors mb-3">Track Order</button>
-                <button onclick="closeOrderConfirmation()" class="w-full bg-brand-500 text-surface-900 py-3 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors">Continue Shopping</button>
+                <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-transparent border border-white/20 text-text-main py-3.5 rounded-sm text-xs tracking-lux uppercase font-medium hover:border-brand-500 transition-colors mb-4">Track Progress</button>
+                <button onclick="closeOrderConfirmation()" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-sm text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors">Return to Archive</button>
             </div>
         </div>
     </div>
 
     <div id="orders-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeOrdersModal()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-2xl mx-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-xl font-serif text-text-main" id="orders-modal-title">Track Order</h3>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeOrdersModal()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-2xl mx-4 rounded-sm shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-8 border-b border-white/5 flex justify-between items-center bg-surface-900">
+                <h3 class="text-xl font-serif text-text-main font-light">Track Order</h3>
                 <button onclick="closeOrdersModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div id="tracking-search-bar" class="p-6 border-b border-white/5">
-                <div class="flex gap-3">
-                    <input type="text" id="track-order-input" placeholder="Enter Order ID..." class="flex-1 p-3 rounded-lg text-sm">
-                    <button onclick="trackOrderSubmit()" class="px-6 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors">Find</button>
+            <div id="tracking-search-bar" class="p-8 border-b border-white/5">
+                <div class="flex gap-4">
+                    <input type="text" id="track-order-input" placeholder="Enter Reference ID" class="flex-1 p-3.5 rounded-sm text-sm">
+                    <button onclick="trackOrderSubmit()" class="px-8 py-3.5 bg-brand-500 text-surface-900 rounded-sm text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors">Search</button>
                 </div>
             </div>
 
-            <div id="orders-list-view" class="p-6 overflow-y-auto flex-1"></div>
-            <div id="order-detail-view" class="p-6 overflow-y-auto flex-1 hidden"></div>
+            <div id="orders-list-view" class="p-8 overflow-y-auto flex-1"></div>
+            <div id="order-detail-view" class="p-8 overflow-y-auto flex-1 hidden"></div>
         </div>
     </div>
 
     <div id="custom-order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeCustomOrderModal()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-xl mx-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-xl font-serif text-text-main">Commission Request</h3>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeCustomOrderModal()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-xl mx-4 rounded-sm shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-8 border-b border-white/5 flex justify-between items-center bg-surface-900">
+                <h3 class="text-xl font-serif text-text-main font-light">Bespoke Commission</h3>
                 <button onclick="closeCustomOrderModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="p-8 overflow-y-auto flex-1">
-                <form id="custom-order-form" onsubmit="submitCustomOrder(event)" class="space-y-4">
+            <div class="p-10 overflow-y-auto flex-1">
+                <form id="custom-order-form" onsubmit="submitCustomOrder(event)" class="space-y-6">
                     <div>
-                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Your Name</label>
-                        <input type="text" id="custom-req-name" required class="w-full p-3 rounded-lg text-sm" />
+                        <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Name</label>
+                        <input type="text" id="custom-req-name" required class="w-full p-3.5 rounded-sm text-sm" />
                     </div>
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Phone</label>
-                            <input type="tel" id="custom-req-phone" required class="w-full p-3 rounded-lg text-sm" />
+                            <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Phone</label>
+                            <input type="tel" id="custom-req-phone" required class="w-full p-3.5 rounded-sm text-sm" />
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Email</label>
-                            <input type="email" id="custom-req-email" required class="w-full p-3 rounded-lg text-sm" />
+                            <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Email</label>
+                            <input type="email" id="custom-req-email" required class="w-full p-3.5 rounded-sm text-sm" />
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Delivery Address</label>
-                        <textarea id="custom-req-address" required rows="2" class="w-full p-3 rounded-lg text-sm resize-none"></textarea>
+                        <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Address</label>
+                        <textarea id="custom-req-address" required rows="2" class="w-full p-3.5 rounded-sm text-sm resize-none"></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Description</label>
-                        <textarea id="custom-req-desc" required rows="3" class="w-full p-3 rounded-lg text-sm resize-none" placeholder="Visions, colors..."></textarea>
+                        <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Commission Details</label>
+                        <textarea id="custom-req-desc" required rows="3" class="w-full p-3.5 rounded-sm text-sm resize-none" placeholder="Vision, dimensions, palette..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Reference Image (Optional)</label>
-                        <input type="file" id="custom-req-image" accept="image/*" class="w-full text-xs text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-medium file:bg-white/10 file:text-white cursor-pointer border border-white/10 rounded-lg p-2 bg-black/20" />
+                        <label class="block text-[10px] font-medium text-text-muted uppercase tracking-lux mb-2">Reference Image</label>
+                        <input type="file" id="custom-req-image" accept="image/*" class="w-full text-xs text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-[10px] file:uppercase file:tracking-wider file:font-medium file:bg-white/10 file:text-white cursor-pointer border border-white/10 rounded-sm p-2 bg-transparent" />
                     </div>
-                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors mt-4 shadow-[0_0_15px_rgba(229,141,103,0.2)]">
+                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-500 text-surface-900 py-4 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors mt-4 rounded-sm">
                         Submit Request
                     </button>
                 </form>
@@ -629,38 +613,33 @@
     </div>
 
     <div id="ai-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeAiModal()"></div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-xl mx-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-xl font-serif text-text-main flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-brand-400"></i> AI Concept Generator</h3>
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeAiModal()"></div>
+        <div class="relative bg-surface-800 border border-white/5 w-full max-w-xl mx-4 rounded-sm shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-8 border-b border-white/5 flex justify-between items-center bg-surface-900">
+                <h3 class="text-xl font-serif text-text-main font-light">AI Concierge</h3>
                 <button onclick="closeAiModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="p-8 overflow-y-auto flex-1">
+            <div class="p-10 overflow-y-auto flex-1">
                 <div id="ai-input-view">
-                    <label class="block text-text-main font-medium mb-3 text-sm">Describe the recipient or occasion.</label>
-                    <textarea id="ai-prompt" rows="4" class="w-full p-4 rounded-lg text-sm resize-none mb-4" placeholder="e.g., A housewarming gift for a moody apartment..."></textarea>
-                    <button onclick="generateIdea()" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.2)]">
-                        Generate Concept
+                    <label class="block text-text-main font-light mb-4 text-sm">Describe the recipient or setting to receive a curated concept.</label>
+                    <textarea id="ai-prompt" rows="4" class="w-full p-4 rounded-sm text-sm resize-none mb-6" placeholder="e.g., A minimalist apartment..."></textarea>
+                    <button onclick="generateIdea()" class="w-full bg-brand-500 text-surface-900 py-4 text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors rounded-sm">
+                        Curate Concept
                     </button>
                 </div>
                 
-                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-12 text-center text-brand-400">
-                    <div class="loader mb-4 border-white/10 border-t-brand-500"></div>
-                    <p class="text-sm font-medium">Curating ideas...</p>
+                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-16 text-center text-brand-500">
+                    <div class="loader mb-6 border-white/10 border-t-brand-500 w-8 h-8"></div>
+                    <p class="text-xs tracking-lux uppercase font-medium text-text-muted">Drafting design...</p>
                 </div>
                 
                 <div id="ai-result-view" class="hidden flex-col">
-                    <div id="ai-result-content" class="text-text-main text-sm font-light leading-relaxed mb-6 bg-black/20 p-6 rounded-lg border border-white/5"></div>
+                    <div id="ai-result-content" class="text-text-main text-sm font-light leading-relaxed mb-8 bg-surface-900 p-6 border border-white/5 rounded-sm"></div>
                     <div class="flex gap-4">
-                        <button onclick="resetAiModal()" class="flex-1 py-3 border border-white/10 rounded-lg text-sm font-medium text-text-muted hover:bg-white/5 transition-colors">Retry</button>
-                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(229,141,103,0.2)]">Request Concept</button>
+                        <button onclick="resetAiModal()" class="flex-1 py-3.5 border border-white/20 rounded-sm text-xs tracking-lux uppercase font-medium text-text-muted hover:text-text-main transition-colors">Reset</button>
+                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3.5 bg-brand-500 text-surface-900 rounded-sm text-xs tracking-lux uppercase font-medium hover:bg-brand-400 transition-colors">Request Design</button>
                     </div>
-                </div>
-                
-                <div id="ai-error-view" class="hidden flex-col items-center justify-center py-12 text-center text-brand-500">
-                    <p class="text-sm font-medium mb-4">Connection issue. Please try again.</p>
-                    <button onclick="resetAiModal()" class="px-6 py-2.5 border border-white/10 rounded-lg text-sm hover:bg-white/5 text-text-main">Back</button>
                 </div>
             </div>
         </div>
@@ -670,32 +649,32 @@
     <script>
         const SHOP_CONFIG = {
             takingOrders: true,
-            pausedMessage: "Commissions are currently paused.",
+            pausedMessage: "The studio ledger is currently full.",
             showSaleBanner: true,
-            saleMessage: "Opening Sale: Up to 30% Off Selected Creations"
+            saleMessage: "Exclusive: Up to 30% Off Selected Pieces"
         };
 
         let products = [
             {
-                id: 1, name: "Midnight Bloom Dress", price: 1500.00, category: "Clothing",
+                id: 1, name: "Midnight Bloom Archive", price: 1500.00, category: "Clothing",
                 image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=1972&auto=format&fit=crop",
-                badge: "Bespoke", description: "An elegant piece featuring a rich ruby-red body with delicate accents.",
-                perfectFor: "Special occasions.", careInstructions: "Hand wash cold, lay flat.", materialName: "Organic Cotton",
-                materialBenefit: "Highly breathable.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{name:"Matching Trim", price: 200}]
+                badge: "Bespoke", description: "An elegant piece featuring a rich ruby-red structure with delicate accents.",
+                perfectFor: "Evening wear.", careInstructions: "Hand wash cold, lay flat.", materialName: "Organic Cotton",
+                materialBenefit: "Highly breathable structure.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{name:"Silk Trim Detail", price: 200}]
             },
             {
-                id: 2, name: "Azure Lace Crop", price: 2200, category: "Clothing",
+                id: 2, name: "Azure Structure Crop", price: 2200, category: "Clothing",
                 image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=80&w=2000&auto=format&fit=crop",
-                badge: "Custom Color", description: "Handcrafted crop top designed for sophisticated layering.",
-                perfectFor: "Resort wear.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
-                materialBenefit: "Soft structure.", craftingTime: "4-5 days"
+                badge: "Custom Color", description: "Handcrafted top designed for sophisticated, architectural layering.",
+                perfectFor: "Resort curation.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
+                materialBenefit: "Soft architectural hold.", craftingTime: "4-5 days"
             },
             {
-                id: 3, name: "Sunny Bloom Pot", price: 300.00, category: "Decor & Flowers",
+                id: 3, name: "Botanical Object", price: 300.00, category: "Decor & Flowers",
                 image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=2070&auto=format&fit=crop",
-                badge: "Classic", description: "Bring warmth indoors with this structured crochet decor piece.",
-                perfectFor: "Desk accent.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
-                materialBenefit: "Firm structure.", craftingTime: "2-3 days"
+                badge: "Archive", description: "Bring warmth indoors with this structured, botanical decor object.",
+                perfectFor: "Studio accent.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
+                materialBenefit: "Firm lasting structure.", craftingTime: "2-3 days"
             }
         ];
 
@@ -730,8 +709,8 @@
                 const nav = document.getElementById('navbar');
                 const promoBanner = document.getElementById('promo-banner');
                 const bannerHeight = promoBanner && !promoBanner.classList.contains('hidden') ? promoBanner.offsetHeight : 0;
-                if (window.scrollY > 10) { nav.style.top = '0px'; nav.classList.add('shadow-xl', 'glass-nav'); nav.classList.remove('bg-transparent'); } 
-                else { nav.style.top = bannerHeight + 'px'; nav.classList.remove('shadow-xl', 'glass-nav'); nav.classList.add('bg-transparent'); }
+                if (window.scrollY > 10) { nav.style.top = '0px'; nav.classList.add('glass-nav'); nav.classList.remove('bg-transparent'); } 
+                else { nav.style.top = bannerHeight + 'px'; nav.classList.remove('glass-nav'); nav.classList.add('bg-transparent'); }
             });
         }
 
@@ -743,9 +722,9 @@
             else { promoBanner.classList.add('hidden'); document.getElementById('navbar').style.top = '0px'; }
 
             if (!SHOP_CONFIG.takingOrders) {
-                banner.innerHTML = `<i class="fa-solid fa-circle-info text-brand-500"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden');
-                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-500', 'bg-surface-600'); customBtn.classList.replace('text-surface-900', 'text-text-muted'); customBtn.innerHTML = 'Orders Paused'; customBtn.classList.remove('shadow-[0_0_20px_rgba(229,141,103,0.3)]'); }
-                if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-500', 'bg-surface-600'); checkoutBtn.classList.replace('text-surface-900', 'text-text-muted'); checkoutBtn.innerHTML = 'Checkout Paused'; checkoutBtn.classList.remove('shadow-[0_0_20px_rgba(229,141,103,0.2)]'); }
+                banner.innerHTML = `<span class="opacity-50 tracking-widest uppercase text-xs">${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden');
+                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-500', 'bg-surface-700'); customBtn.classList.replace('text-surface-900', 'text-text-muted'); customBtn.innerHTML = 'Ledger Full'; }
+                if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-500', 'bg-surface-700'); checkoutBtn.classList.replace('text-surface-900', 'text-text-muted'); checkoutBtn.innerHTML = 'Checkout Paused'; }
             }
         }
 
@@ -755,27 +734,27 @@
 
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
-                card.className = 'product-card glass-card overflow-hidden flex flex-col group cursor-pointer';
+                card.className = 'premium-card overflow-hidden flex flex-col group cursor-pointer';
                 card.onclick = () => openProductModal(product.id);
 
                 const rawPrice = Number(product.price || 0); const discountPct = Number(product.discount || 0);
-                let priceDisplay = `<span class="text-base font-semibold text-text-main">₹${rawPrice.toFixed(2)}</span>`;
+                let priceDisplay = `<span class="text-sm font-light text-text-main">₹${rawPrice.toFixed(2)}</span>`;
 
                 if (discountPct > 0) {
                     const calculatedSalePrice = rawPrice - (rawPrice * (discountPct / 100));
-                    priceDisplay = `<div class="flex items-baseline gap-2"><span class="text-base font-semibold text-text-main">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-xs font-normal text-text-muted line-through">₹${rawPrice.toFixed(2)}</span></div>`;
+                    priceDisplay = `<div class="flex items-center gap-3"><span class="text-sm font-medium text-brand-400">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-xs font-light text-text-muted line-through">₹${rawPrice.toFixed(2)}</span></div>`;
                 }
 
                 card.innerHTML = `
-                <div class="relative aspect-[4/3] overflow-hidden bg-surface-900 border-b border-white/5">
-                    ${product.badge ? `<span class="absolute top-3 left-3 bg-brand-500/20 backdrop-blur-sm text-brand-400 border border-brand-500/30 text-[10px] font-medium tracking-wide px-2.5 py-1 rounded-md z-10">${product.badge}</span>` : ''}
-                    <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 transition-opacity opacity-0 group-hover:opacity-100 duration-500"></div>
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                <div class="relative aspect-[3/4] overflow-hidden bg-surface-900 border-b border-white/5">
+                    ${product.badge ? `<span class="absolute top-4 left-4 bg-surface-900/80 backdrop-blur text-text-main border border-white/10 text-[9px] font-medium tracking-lux uppercase px-3 py-1.5 rounded-sm z-10">${product.badge}</span>` : ''}
+                    <div class="absolute inset-0 bg-surface-900/30 transition-opacity opacity-0 group-hover:opacity-100 duration-700 z-10 mix-blend-overlay"></div>
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105 group-hover:grayscale-[20%]">
                 </div>
-                <div class="p-5 flex flex-col flex-grow relative z-20">
-                    <p class="text-[10px] text-brand-500 font-medium uppercase tracking-widest mb-1.5">${product.category}</p>
-                    <h3 class="text-lg font-serif text-text-main mb-2 truncate">${product.name}</h3>
-                    <div class="mt-auto pt-4 flex justify-between items-center">
+                <div class="p-6 flex flex-col flex-grow relative z-20">
+                    <p class="text-[9px] text-text-muted font-medium uppercase tracking-lux mb-2">${product.category}</p>
+                    <h3 class="text-lg font-serif text-text-main mb-4 truncate font-light">${product.name}</h3>
+                    <div class="mt-auto flex justify-between items-center">
                         ${priceDisplay}
                     </div>
                 </div>`;
@@ -786,15 +765,15 @@
         function setupFilters() {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    filterBtns.forEach(b => { b.classList.remove('bg-brand-500', 'text-surface-900', 'shadow-[0_0_15px_rgba(229,141,103,0.3)]'); b.classList.add('bg-white/5', 'text-text-muted', 'border-white/10'); b.classList.remove('border-transparent'); });
-                    e.target.classList.add('bg-brand-500', 'text-surface-900', 'border-transparent', 'shadow-[0_0_15px_rgba(229,141,103,0.3)]'); e.target.classList.remove('bg-white/5', 'text-text-muted', 'border-white/10');
+                    filterBtns.forEach(b => { b.classList.remove('text-brand-500', 'font-medium'); b.classList.add('text-text-muted', 'font-light'); });
+                    e.target.classList.add('text-brand-500', 'font-medium'); e.target.classList.remove('text-text-muted', 'font-light');
                     currentFilter = e.target.dataset.filter; renderProducts();
                 });
             });
         }
 
         function openModal(modalObj) { modalObj.modal.classList.remove('hidden'); modalObj.modal.classList.add('flex'); setTimeout(() => modalObj.content.classList.replace('opacity-0', 'opacity-100'), 10); }
-        function closeModal(modalObj) { modalObj.content.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { modalObj.modal.classList.add('hidden'); modalObj.modal.classList.remove('flex'); }, 400); }
+        function closeModal(modalObj) { modalObj.content.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { modalObj.modal.classList.add('hidden'); modalObj.modal.classList.remove('flex'); }, 700); }
 
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId); if (!product) return;
@@ -803,7 +782,7 @@
 
             if (discountPct > 0) {
                 currentModalCalculatedBasePrice = rawPrice - (rawPrice * (discountPct / 100));
-                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-3"><span class="text-2xl font-serif text-brand-400">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-sm font-medium text-text-muted line-through">₹${rawPrice.toFixed(2)}</span><span class="bg-brand-500/20 border border-brand-500/30 text-brand-400 text-[10px] font-medium px-2 py-1 rounded">Save ${discountPct}%</span></div>`;
+                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-4"><span class="text-2xl font-serif text-brand-400">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-sm font-light text-text-muted line-through">₹${rawPrice.toFixed(2)}</span></div>`;
             } else {
                 currentModalCalculatedBasePrice = rawPrice;
                 document.getElementById('modal-price').innerHTML = `<span class="text-2xl font-serif text-brand-400">₹${rawPrice.toFixed(2)}</span>`;
@@ -819,7 +798,7 @@
             addonListEl.innerHTML = ''; activeProductAddons = product.accessoryAddons || [];
             if (product.allowAddons && activeProductAddons.length > 0) {
                 addonContainer.classList.remove('hidden');
-                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-3 bg-black/20 rounded-lg cursor-pointer border border-white/5 hover:border-brand-500/30 transition-colors"><div class="flex items-center gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="accent-brand-500"><span class="text-sm text-text-main">${item.name}</span></div><span class="text-xs font-medium text-brand-400">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
+                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-4 bg-transparent border border-white/10 rounded-sm cursor-pointer hover:border-brand-500/50 transition-colors"><div class="flex items-center gap-4"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="accent-brand-500"><span class="text-sm text-text-main font-light">${item.name}</span></div><span class="text-xs font-light text-brand-400">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
             } else { addonContainer.classList.add('hidden'); }
 
             recalculateModalPrice(); openModal({modal: modals.product, content: modals.productContent});
@@ -855,18 +834,18 @@
             if (cart.length === 0) { emptyCartMsg.style.display = 'flex'; } else {
                 emptyCartMsg.style.display = 'none';
                 cart.forEach(item => {
-                    const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-4 py-4 border-b border-white/5 last:border-0';
-                    row.innerHTML = `<img src="${item.image}" class="w-16 h-16 object-cover rounded-lg border border-white/10">
+                    const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-5 py-6 border-b border-white/5 last:border-0';
+                    row.innerHTML = `<img src="${item.image}" class="w-16 h-20 object-cover rounded-sm border border-white/5">
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-text-main text-sm truncate mb-1">${item.name}</h4>
-                        <div class="text-brand-400 font-medium text-sm mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
-                        <div class="flex items-center gap-3">
-                            <div class="flex items-center bg-black/30 border border-white/10 rounded px-1">
-                                <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-6 h-6 text-text-muted hover:text-brand-400 transition-colors">-</button>
-                                <span class="text-xs font-medium w-4 text-center text-text-main">${item.quantity}</span>
-                                <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-6 h-6 text-text-muted hover:text-brand-400 transition-colors">+</button>
+                        <h4 class="font-light text-text-main text-sm truncate mb-2">${item.name}</h4>
+                        <div class="text-brand-400 font-light text-sm mb-3">₹${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center border border-white/10 rounded-sm px-2 py-0.5">
+                                <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-5 h-5 text-text-muted hover:text-white transition-colors">-</button>
+                                <span class="text-xs font-light w-5 text-center text-text-main">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-5 h-5 text-text-muted hover:text-white transition-colors">+</button>
                             </div>
-                            <button onclick="removeFromCart(${item.cartItemId})" class="text-text-muted hover:text-brand-500 transition-colors text-[10px] uppercase tracking-wide ml-auto">Remove</button>
+                            <button onclick="removeFromCart(${item.cartItemId})" class="text-text-muted hover:text-brand-500 transition-colors text-[9px] uppercase tracking-widest ml-auto">Remove</button>
                         </div>
                     </div>`; cartItemsContainer.appendChild(row);
                 });
@@ -880,25 +859,25 @@
         
         function handleCheckoutForm(e) {
             e.preventDefault(); document.getElementById('payment-total-amount').textContent = '₹' + cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
-            closeCheckoutForm(); setTimeout(() => openModal({modal: modals.payment, content: modals.paymentContent}), 400);
+            closeCheckoutForm(); setTimeout(() => openModal({modal: modals.payment, content: modals.paymentContent}), 500);
         }
         function closePaymentModal() { closeModal({modal: modals.payment, content: modals.paymentContent}); }
 
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (total <= 0) return;
-            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#120E0C" } };
-            try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function(res){ alert("Failed"); btn.innerHTML=orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down. Use UPI."); btn.innerHTML=orig; }
+            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#0A0A0A" } };
+            try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function(res){ alert("Failed"); btn.innerHTML=orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down."); btn.innerHTML=orig; }
         }
 
-        function confirmManualUPIPayment() { const btn = document.getElementById('manual-upi-btn'); const orig = btn.innerHTML; btn.innerHTML = `<div class="loader mx-auto"></div>`; setTimeout(() => { finalizeOrderProcess(); btn.innerHTML=orig; }, 1500); }
+        function confirmManualUPIPayment() { const btn = document.getElementById('manual-upi-btn'); const orig = btn.innerHTML; btn.innerHTML = `<div class="loader mx-auto border-t-brand-500"></div>`; setTimeout(() => { finalizeOrderProcess(); btn.innerHTML=orig; }, 1500); }
 
         async function finalizeOrderProcess() {
             const orderId = 'HKH' + Date.now().toString().slice(-3) + Math.floor(100 + Math.random() * 900); const d = new Date(); d.setDate(d.getDate() + 7); const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             await saveOrder(orderId, totalPaid);
             emailjs.send("service_yt6ze52", "template_xyc0kaq", { order_id: orderId, customer_email: document.getElementById('cust-email').value, customer_name: document.getElementById('cust-name').value, product_name: cart.map(i => i.name).join(", "), total_amount: totalPaid }).catch(e=>e);
             userOrders.push({ id: orderId, created_at: new Date().toISOString(), total: totalPaid, order_status: 'confirmed' });
-            cart = []; updateCartUI(); closePaymentModal(); document.getElementById('confirm-order-id').textContent = orderId; document.getElementById('confirm-dispatch-date').textContent = d.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}); setTimeout(() => openModal({modal: modals.orderConf, content: modals.orderConfContent}), 400);
+            cart = []; updateCartUI(); closePaymentModal(); document.getElementById('confirm-order-id').textContent = orderId; document.getElementById('confirm-dispatch-date').textContent = d.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}); setTimeout(() => openModal({modal: modals.orderConf, content: modals.orderConfContent}), 500);
         }
         function closeOrderConfirmation() { closeModal({modal: modals.orderConf, content: modals.orderConfContent}); }
 
@@ -908,16 +887,16 @@
         async function fetchUserOrders() { const q = document.getElementById('track-order-input').value.trim(); let query = supabaseClient.from('orders').select('*').order('created_at', { ascending: false }); if (q) query = query.or(`id.eq.${q},phone.eq.${q}`); const { data } = await query; return data || []; }
 
         async function renderOrdersList() {
-            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-10"><div class="loader mx-auto mb-3"></div><span class="text-sm text-text-muted">Loading...</span></div>`;
+            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-10"><div class="loader mx-auto mb-4"></div><span class="text-xs tracking-lux uppercase text-text-muted">Accessing Ledger...</span></div>`;
             userOrders = await fetchUserOrders();
-            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-10 text-text-muted text-sm font-medium">No orders found.</div>`; return; }
-            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-black/20 border border-white/5 rounded-xl p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-500/50 transition-colors"><div><h4 class="font-medium text-text-main text-sm mb-1">Order #${o.id}</h4><span class="text-[10px] text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2 py-1 rounded uppercase tracking-wide font-medium">${o.order_status || 'confirmed'}</span></div><div class="text-right font-medium text-brand-400 text-sm">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
+            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-10 text-text-muted text-xs tracking-lux uppercase">No orders found.</div>`; return; }
+            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-transparent border border-white/10 rounded-sm p-6 mb-4 flex justify-between items-center cursor-pointer hover:border-brand-500/50 transition-colors"><div><h4 class="font-light text-text-main text-sm mb-2">Order #${o.id}</h4><span class="text-[9px] text-brand-400 uppercase tracking-widest font-medium">${o.order_status || 'confirmed'}</span></div><div class="text-right font-light text-brand-400 text-sm">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
         }
 
         function viewOrderDetails(orderId) {
             const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId); if (!order) return;
             document.getElementById('tracking-search-bar').classList.add('hidden'); document.getElementById('orders-list-view').classList.add('hidden'); const detailView = document.getElementById('order-detail-view'); detailView.classList.remove('hidden');
-            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-text-muted hover:text-brand-500 text-sm mb-6 flex items-center gap-2 transition-colors"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-black/20 rounded-xl p-6 border border-white/5 mb-6"><h3 class="font-serif text-text-main mb-4 text-lg">Tracking Status</h3><p class="text-sm text-brand-400 capitalize mb-6 font-medium bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-4 pl-2"><div class="flex items-center gap-4"><div class="w-3 h-3 rounded-full bg-brand-500 shadow-[0_0_10px_rgba(229,141,103,0.8)]"></div><span class="text-sm text-text-main">Order Placed</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Processing</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Shipped</span></div></div></div><div class="bg-black/20 rounded-xl p-6 border border-white/5"><h3 class="font-serif text-text-main mb-4 text-lg">Summary</h3><div class="text-sm text-text-muted space-y-2 mb-6"><p><strong class="font-medium text-text-main">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-text-main">Address:</strong> ${order.address}</p><p><strong class="font-medium text-text-main">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-medium text-text-main border-t border-white/10 pt-4"><span>Total Paid</span><span class="text-brand-400">₹${Number(order.total).toFixed(2)}</span></div></div>`;
+            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-text-muted hover:text-white text-xs tracking-lux uppercase mb-8 flex items-center gap-3 transition-colors"><i class="fa-solid fa-arrow-left"></i> Return</button><div class="bg-transparent border border-white/10 rounded-sm p-8 mb-6"><h3 class="font-serif text-text-main mb-6 text-xl font-light">Status</h3><p class="text-xs text-brand-400 uppercase tracking-widest mb-8 font-medium">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-6"><div class="flex items-center gap-4"><div class="w-2 h-2 rounded-full bg-brand-500"></div><span class="text-sm font-light text-text-main">Order Placed</span></div><div class="flex items-center gap-4 opacity-40"><div class="w-2 h-2 rounded-full bg-white/30"></div><span class="text-sm font-light text-text-main">Processing</span></div><div class="flex items-center gap-4 opacity-40"><div class="w-2 h-2 rounded-full bg-white/30"></div><span class="text-sm font-light text-text-main">Shipped</span></div></div></div><div class="bg-transparent border border-white/10 rounded-sm p-8"><h3 class="font-serif text-text-main mb-6 text-xl font-light">Details</h3><div class="text-sm text-text-muted space-y-3 mb-8 font-light"><p><strong class="font-medium text-text-main">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-text-main">Address:</strong> ${order.address}</p><p><strong class="font-medium text-text-main">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-light text-text-main border-t border-white/10 pt-6"><span class="text-xs uppercase tracking-lux">Total</span><span class="text-brand-400">₹${Number(order.total).toFixed(2)}</span></div></div>`;
         }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); }
         function openAiModal() { openModal({modal: modals.ai, content: modals.aiContent}); }
@@ -930,8 +909,8 @@
             e.preventDefault(); const btn = document.getElementById('custom-order-submit-btn'); const orig = btn.innerHTML;
             btn.innerHTML = `<div class="loader mx-auto"></div>`; btn.disabled = true;
             const customOrderId = 'HKH-CUST-' + Date.now().toString().slice(-4);
-            await supabaseClient.from('orders').insert([{ id: customOrderId, customer_name: document.getElementById('custom-req-name').value, phone: document.getElementById('custom-req-phone').value, email: document.getElementById('custom-req-email').value, address: document.getElementById('custom-req-address').value, product_name: "Bespoke Custom Request", quantity: 1, total: 0, payment_status: "pending", order_status: "confirmed" }]);
-            btn.innerHTML = "Request Sent"; setTimeout(() => { closeCustomOrderModal(); btn.innerHTML=orig; btn.disabled=false; }, 1500);
+            await supabaseClient.from('orders').insert([{ id: customOrderId, customer_name: document.getElementById('custom-req-name').value, phone: document.getElementById('custom-req-phone').value, email: document.getElementById('custom-req-email').value, address: document.getElementById('custom-req-address').value, product_name: "Bespoke Request", quantity: 1, total: 0, payment_status: "pending", order_status: "confirmed" }]);
+            btn.innerHTML = "Request Logged"; setTimeout(() => { closeCustomOrderModal(); btn.innerHTML=orig; btn.disabled=false; }, 1500);
         }
         function trackOrderSubmit() { viewOrderDetails(document.getElementById('track-order-input').value.trim()); }
 
