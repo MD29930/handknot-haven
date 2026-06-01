@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HandKnot Haven | Cozy Handmade Crochet</title>
+    <title>HandKnot Haven | Vibrant & Cozy Crochet</title>
 
-    <!-- Cozy & Inviting Fonts: Lora (Soft Serif) & Nunito (Rounded Sans) -->
+    <!-- Eye-catching, Warm Fonts: DM Serif Display (Elegant & Bold) & Quicksand (Rounded, Friendly Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -24,42 +24,33 @@
             theme: {
                 extend: {
                     colors: {
-                        // Warm, Cottagecore / Cozy Palette
+                        // Vibrant, Cozy, Eye-catching Palette
                         brand: {
-                            50: '#FDFBF7',  // Warm cream
-                            100: '#F4EBE1', // Oatmeal
-                            200: '#E6D5C3', // Latte
-                            300: '#D5A58A', // Soft clay
-                            400: '#C77D5E', // Warm terracotta
-                            500: '#B85E3B', // Primary rust/orange
-                            600: '#9A4A2D',
-                            700: '#7A3820', // Espresso
-                            800: '#522718', // Dark cocoa
-                            900: '#3A1B10',
+                            50: '#FFF9F6',  // Warm cream background
+                            100: '#FDECE4', // Soft peach
+                            200: '#FAD5C4', // Peach cream
+                            300: '#F4A282', // Soft coral
+                            400: '#E76F51', // Vibrant Terracotta (Primary)
+                            500: '#D65A3C', // Deep Terracotta
+                            600: '#BD462B', 
+                            700: '#8A321E', // Warm Espresso
+                            800: '#5C2214', 
+                            900: '#3D150B', // Darkest chocolate for text
                         },
-                        sage: {
-                            100: '#E8EDE5',
-                            500: '#8A9A5B', // Cozy moss green
-                            900: '#3D4A26',
+                        accent: {
+                            400: '#F4A261', // Warm Orange
+                            500: '#E9C46A', // Mustard Yellow
+                            600: '#2A9D8F', // Soft Teal
                         }
                     },
                     fontFamily: {
-                        sans: ['Nunito', 'sans-serif'],
-                        serif: ['Lora', 'serif'],
+                        sans: ['Quicksand', 'sans-serif'],
+                        serif: ['DM Serif Display', 'serif'],
                     },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'wiggle': 'wiggle 3s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        wiggle: {
-                            '0%, 100%': { transform: 'rotate(-3deg)' },
-                            '50%': { transform: 'rotate(3deg)' },
-                        }
+                    boxShadow: {
+                        'cozy': '0 10px 40px -10px rgba(231, 111, 81, 0.2)',
+                        'cozy-hover': '0 20px 50px -15px rgba(231, 111, 81, 0.35)',
+                        'inner-cozy': 'inset 0 2px 10px rgba(231, 111, 81, 0.05)',
                     }
                 }
             }
@@ -72,40 +63,52 @@
         })();
     </script>
     <style>
-        /* Cozy Custom Utilities */
         body {
-            background-color: #FDFBF7;
-            color: #522718;
-            /* Subtle warm noise texture for coziness */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            background-color: #FFF9F6;
+            color: #3D150B;
+            background-image: radial-gradient(#FAD5C4 1px, transparent 1px);
+            background-size: 32px 32px;
         }
 
         .glass-nav {
-            background: rgba(253, 251, 247, 0.92);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(220, 205, 190, 0.3);
+            background: rgba(255, 249, 246, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 2px solid rgba(250, 213, 196, 0.5);
         }
 
         .cozy-card {
             background: #FFFFFF;
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 40px -10px rgba(122, 56, 32, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(244, 235, 225, 0.8);
+            border-radius: 2rem;
+            border: 3px solid #FDECE4;
+            box-shadow: 0 8px 24px -8px rgba(138, 50, 30, 0.08);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Bouncy transition */
         }
 
         .cozy-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 40px -10px rgba(122, 56, 32, 0.12);
-            border-color: #D5A58A;
+            transform: translateY(-8px) scale(1.02);
+            border-color: #F4A282;
+            box-shadow: 0 20px 40px -12px rgba(231, 111, 81, 0.25);
+        }
+
+        .blob-bg {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 0;
+            opacity: 0.6;
+            animation: float-blob 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes float-blob {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(30px, -30px) scale(1.1); }
         }
 
         .loader {
-            border: 3px solid #F4EBE1;
-            border-top: 3px solid #B85E3B;
+            border: 4px solid #FDECE4;
+            border-top: 4px solid #E76F51;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             animation: spin 1s linear infinite;
         }
 
@@ -114,22 +117,25 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Soft form inputs */
-        input, textarea {
-            transition: all 0.3s ease;
-        }
         input:focus, textarea:focus {
-            box-shadow: 0 0 0 4px rgba(184, 94, 59, 0.15);
+            box-shadow: 0 0 0 4px rgba(231, 111, 81, 0.2);
+            border-color: #E76F51 !important;
+            outline: none;
         }
         
-        .blob-shape {
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            animation: morph 8s ease-in-out infinite alternate;
+        /* Custom scrollbar for a polished look */
+        ::-webkit-scrollbar {
+            width: 10px;
         }
-        
-        @keyframes morph {
-            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
-            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        ::-webkit-scrollbar-track {
+            background: #FFF9F6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #F4A282;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E76F51;
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -140,169 +146,169 @@
     </script>
 </head>
 
-<body class="font-sans antialiased flex flex-col min-h-screen">
+<body class="font-sans antialiased flex flex-col min-h-screen relative overflow-x-hidden">
 
-    <!-- Warm Promo Banner -->
-    <div id="promo-banner" class="hidden bg-brand-500 text-white text-center py-2.5 text-sm font-semibold tracking-wide shadow-sm z-50 relative">
-        <span class="animate-pulse inline-block mr-2">🧶</span>
-        <span id="promo-text">Opening Sale: Up to 30% Off Selected Cozy Items</span>
-        <span class="animate-pulse inline-block ml-2">🧶</span>
+    <!-- Global Background Blobs for Eye-Catching Color -->
+    <div class="blob-bg bg-accent-400 w-[500px] h-[500px] rounded-full top-[-100px] left-[-100px]"></div>
+    <div class="blob-bg bg-brand-400 w-[600px] h-[600px] rounded-full top-[20%] right-[-200px]" style="animation-delay: -5s;"></div>
+
+    <!-- Vibrant Promo Banner -->
+    <div id="promo-banner" class="hidden bg-brand-600 text-white text-center py-3 text-sm font-bold tracking-wide shadow-md relative z-50 overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20"></div>
+        <span class="relative z-10 flex items-center justify-center gap-3">
+            <i class="fa-solid fa-star text-accent-500 animate-spin" style="animation-duration: 4s;"></i>
+            <span id="promo-text">Opening Sale: Up to 30% Off Selected Items!</span>
+            <i class="fa-solid fa-star text-accent-500 animate-spin" style="animation-duration: 4s;"></i>
+        </span>
     </div>
 
-    <!-- Navigation (Highly visible Track & Contact, No floating widgets) -->
+    <!-- Highly Visible Navigation -->
     <nav class="glass-nav fixed w-full z-40 transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
+            <div class="flex justify-between h-[88px] items-center">
                 
                 <!-- Logo -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="font-serif text-2xl font-bold text-brand-700 flex items-center gap-2 hover:text-brand-500 transition-colors">
-                        <i class="fa-solid fa-leaf text-sage-500"></i> HandKnot Haven
+                <div class="flex-shrink-0 flex items-center relative z-20">
+                    <a href="#" class="font-serif text-3xl text-brand-700 flex items-center gap-3 hover:text-brand-400 transition-colors">
+                        <div class="w-10 h-10 bg-brand-400 text-white rounded-xl flex items-center justify-center shadow-md transform -rotate-6 hover:rotate-0 transition-transform">
+                            <i class="fa-solid fa-yarn"></i>
+                        </div>
+                        HandKnot Haven
                     </a>
                 </div>
 
                 <!-- Desktop Menu -->
-                <div class="hidden lg:flex space-x-8 items-center bg-white/60 px-6 py-2 rounded-full shadow-sm border border-brand-100">
-                    <a href="#shop" class="text-base font-bold text-brand-800 hover:text-brand-500 transition-colors">Shop</a>
-                    <a href="#about" class="text-base font-bold text-brand-800 hover:text-brand-500 transition-colors">Our Story</a>
-                    <a href="#custom" class="text-base font-bold text-brand-800 hover:text-brand-500 transition-colors">Custom</a>
-                    <a href="#contact" class="text-base font-bold text-brand-800 hover:text-brand-500 transition-colors">Contact</a>
+                <div class="hidden lg:flex space-x-8 items-center font-bold text-brand-800">
+                    <a href="#shop" class="hover:text-brand-400 transition-colors py-2 border-b-2 border-transparent hover:border-brand-400">Shop</a>
+                    <a href="#about" class="hover:text-brand-400 transition-colors py-2 border-b-2 border-transparent hover:border-brand-400">Our Story</a>
+                    <a href="#custom" class="hover:text-brand-400 transition-colors py-2 border-b-2 border-transparent hover:border-brand-400">Custom Orders</a>
+                    <a href="#contact" class="hover:text-brand-400 transition-colors py-2 border-b-2 border-transparent hover:border-brand-400 text-brand-600">Contact Us</a>
                 </div>
 
-                <!-- Utilities (Track Order prominent on all sizes) -->
-                <div class="flex items-center gap-3">
-                    <button onclick="openOrdersModal()" class="hidden sm:flex items-center gap-2 text-sm font-bold bg-brand-100 text-brand-700 px-4 py-2 rounded-full hover:bg-brand-200 transition-colors shadow-sm">
-                        <i class="fa-solid fa-box-open"></i> Track Order
+                <!-- Utilities (Track Order prominently visible as requested) -->
+                <div class="flex items-center gap-3 relative z-20">
+                    <button onclick="openOrdersModal()" class="hidden sm:flex items-center gap-2 text-sm font-bold bg-white border-2 border-brand-200 text-brand-700 px-5 py-2.5 rounded-2xl hover:border-brand-400 hover:text-brand-600 transition-all shadow-sm">
+                        <i class="fa-solid fa-box-open text-brand-400"></i> Track Order
                     </button>
                     
-                    <button onclick="toggleCart()" class="relative p-2.5 text-brand-700 bg-white hover:bg-brand-50 rounded-full shadow-sm border border-brand-100 transition-transform active:scale-95 flex items-center justify-center w-11 h-11">
-                        <i class="fa-solid fa-basket-shopping text-lg"></i>
-                        <span id="cart-badge" class="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold text-white bg-brand-500 rounded-full hidden border-2 border-white shadow-sm">0</span>
+                    <button onclick="toggleCart()" class="relative p-3 text-white bg-brand-600 hover:bg-brand-500 rounded-2xl shadow-cozy transition-transform active:scale-95">
+                        <i class="fa-solid fa-basket-shopping text-xl"></i>
+                        <span id="cart-badge" class="absolute -top-2 -right-2 inline-flex items-center justify-center min-w-[24px] h-6 px-1.5 text-xs font-bold text-brand-800 bg-accent-500 rounded-full hidden border-2 border-white shadow-sm">0</span>
                     </button>
                     
                     <!-- Mobile Menu Toggle -->
-                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-brand-700 hover:text-brand-500 p-2 ml-1 bg-white rounded-full shadow-sm border border-brand-100 w-11 h-11 flex items-center justify-center">
-                        <i class="fa-solid fa-bars text-lg"></i>
+                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-brand-700 hover:text-brand-400 p-3 ml-1 bg-white border-2 border-brand-100 rounded-2xl shadow-sm flex items-center justify-center">
+                        <i class="fa-solid fa-bars text-xl"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-brand-50/95 backdrop-blur-xl border-b border-brand-200 shadow-2xl absolute w-full left-0 top-full rounded-b-3xl overflow-hidden">
-            <div class="px-6 py-6 space-y-2">
-                <a href="#shop" onclick="toggleMobileMenu()" class="block py-3 px-4 text-lg font-bold text-brand-800 hover:bg-brand-100 rounded-xl transition-colors">Shop Collection</a>
-                <a href="#custom" onclick="toggleMobileMenu()" class="block py-3 px-4 text-lg font-bold text-brand-800 hover:bg-brand-100 rounded-xl transition-colors">Custom Orders</a>
-                <a href="#about" onclick="toggleMobileMenu()" class="block py-3 px-4 text-lg font-bold text-brand-800 hover:bg-brand-100 rounded-xl transition-colors">Our Story</a>
-                <a href="#contact" onclick="toggleMobileMenu()" class="block py-3 px-4 text-lg font-bold text-brand-800 hover:bg-brand-100 rounded-xl transition-colors">Contact Us</a>
-                <button onclick="toggleMobileMenu(); openOrdersModal();" class="w-full mt-4 py-3 text-lg font-bold text-brand-50 bg-brand-600 rounded-xl flex items-center justify-center gap-2 shadow-md">
-                    <i class="fa-solid fa-box-open"></i> Track My Order
+        <!-- Mobile Menu (Clear, accessible, includes tracking/contact) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-50 border-b-4 border-brand-200 shadow-2xl absolute w-full left-0 top-full rounded-b-3xl overflow-hidden z-50">
+            <div class="p-6 space-y-3">
+                <a href="#shop" onclick="toggleMobileMenu()" class="block py-4 px-6 text-xl font-bold text-brand-800 bg-white rounded-2xl border-2 border-brand-100 hover:border-brand-400">Shop Collection</a>
+                <a href="#custom" onclick="toggleMobileMenu()" class="block py-4 px-6 text-xl font-bold text-brand-800 bg-white rounded-2xl border-2 border-brand-100 hover:border-brand-400">Custom Orders</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="block py-4 px-6 text-xl font-bold text-brand-800 bg-white rounded-2xl border-2 border-brand-100 hover:border-brand-400">Our Story</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block py-4 px-6 text-xl font-bold text-white bg-brand-600 rounded-2xl shadow-md">Contact Us</a>
+                <button onclick="toggleMobileMenu(); openOrdersModal();" class="w-full mt-2 py-4 px-6 text-xl font-bold text-brand-700 bg-accent-500/20 border-2 border-accent-500 rounded-2xl flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-truck-fast"></i> Track My Order
                 </button>
             </div>
         </div>
     </nav>
 
     <!-- Shop Status Banner -->
-    <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-brand-800 text-brand-50 px-6 py-3.5 rounded-full text-sm font-bold shadow-xl flex justify-center items-center gap-3 w-max border border-brand-600">
+    <div id="shop-status-banner" class="hidden fixed top-[110px] left-1/2 transform -translate-x-1/2 z-30 bg-brand-800 text-white px-8 py-4 rounded-2xl text-base font-bold shadow-cozy flex justify-center items-center gap-3 w-max border-4 border-brand-900/10">
     </div>
 
     <!-- Cart Sidebar Overlay -->
-    <div id="cart-overlay" class="fixed inset-0 bg-brand-900/20 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
+    <div id="cart-overlay" class="fixed inset-0 bg-brand-900/40 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
 
     <!-- Cart Sidebar -->
-    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-brand-50 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-400 ease-in-out rounded-l-[2rem]">
-        <div class="flex items-center justify-between p-6 border-b border-brand-200 bg-white rounded-tl-[2rem]">
-            <h2 class="text-2xl font-serif font-bold text-brand-800 flex items-center gap-2">
-                <i class="fa-solid fa-basket-shopping text-brand-400"></i> Your Basket
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-brand-50 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-300 rounded-l-[2rem] border-l-4 border-brand-200">
+        <div class="flex items-center justify-between p-6 bg-white border-b-2 border-brand-100 rounded-tl-[2rem]">
+            <h2 class="text-3xl font-serif text-brand-700 flex items-center gap-3">
+                Your Basket
             </h2>
-            <button onclick="toggleCart()" class="text-brand-400 hover:text-brand-700 bg-brand-100 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
-                <i class="fa-solid fa-xmark"></i>
+            <button onclick="toggleCart()" class="text-brand-400 hover:text-brand-600 bg-brand-50 w-10 h-10 rounded-xl flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark text-xl"></i>
             </button>
         </div>
 
         <div class="flex-1 overflow-y-auto p-6" id="cart-items-container">
             <div class="text-center text-brand-300 mt-20 flex flex-col items-center" id="empty-cart-msg">
-                <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-sm mb-6">
-                    <i class="fa-solid fa-wind text-4xl text-brand-200 animate-wiggle"></i>
+                <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-sm border-4 border-brand-100 mb-6">
+                    <img src="https://cdn-icons-png.flaticon.com/512/7517/7517721.png" class="w-16 h-16 opacity-50" alt="Yarn">
                 </div>
-                <p class="font-bold text-lg text-brand-600">Your basket is feeling empty.</p>
-                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-6 px-6 py-3 bg-white text-brand-600 border border-brand-200 rounded-full font-bold shadow-sm hover:bg-brand-100 transition-colors">Fill it with coziness</button>
+                <p class="font-bold text-xl text-brand-700">Your basket is feeling light!</p>
+                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-6 px-8 py-3.5 bg-brand-600 text-white rounded-2xl font-bold shadow-cozy hover:bg-brand-500 transition-colors">Find some cozy items</button>
             </div>
         </div>
 
-        <div class="border-t border-brand-200 p-6 bg-white">
-            <div class="flex justify-between items-end mb-6">
-                <span class="text-brand-500 font-bold uppercase tracking-widest text-sm">Subtotal</span>
-                <span id="cart-total" class="text-3xl font-serif font-bold text-brand-800">₹0.00</span>
+        <div class="border-t-4 border-brand-100 p-6 bg-white">
+            <div class="flex justify-between items-end mb-6 bg-brand-50 p-4 rounded-xl border border-brand-200">
+                <span class="text-brand-600 font-bold uppercase tracking-widest text-sm">Subtotal</span>
+                <span id="cart-total" class="text-3xl font-serif text-brand-800">₹0.00</span>
             </div>
-            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-500 transition-all shadow-lg shadow-brand-600/30 flex justify-center items-center gap-2 active:scale-95">
-                Checkout Securely <i class="fa-solid fa-lock text-sm"></i>
+            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-600 text-white py-4.5 h-16 rounded-2xl font-bold text-xl hover:bg-brand-500 transition-all shadow-cozy flex justify-center items-center gap-3 active:scale-95">
+                Checkout Securely <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
-    <!-- Cozy Toast -->
-    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white text-brand-800 px-6 py-4 rounded-full shadow-2xl z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-3 font-bold border border-brand-100 transition-all duration-300">
-        <div class="w-8 h-8 bg-sage-100 text-sage-500 rounded-full flex items-center justify-center">
+    <!-- Vibrant Toast -->
+    <div id="toast" class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-brand-700 text-white px-8 py-4 rounded-2xl shadow-cozy-hover z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-4 font-bold border-4 border-brand-600 transition-all duration-300">
+        <div class="w-8 h-8 bg-accent-500 text-brand-800 rounded-full flex items-center justify-center text-lg">
             <i class="fa-solid fa-check"></i>
         </div>
-        <span id="toast-message">Added to basket</span>
+        <span id="toast-message" class="text-lg">Added to basket!</span>
     </div>
 
     <!-- Main Content -->
     <main class="flex-grow">
 
-        <!-- Eye-Catching Cozy Hero -->
-        <section id="home" class="relative pt-32 pb-24 lg:pt-40 lg:pb-32 overflow-hidden flex items-center">
-            <!-- Warm Background Blobs -->
-            <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-                <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-[#F2D1C1] rounded-full mix-blend-multiply filter blur-[80px] opacity-70 blob-shape"></div>
-                <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-[#E1E8D5] rounded-full mix-blend-multiply filter blur-[100px] opacity-70 blob-shape" style="animation-delay: 2s;"></div>
-            </div>
-
+        <!-- Eye-Catching Vibrant Hero -->
+        <section id="home" class="relative pt-36 pb-24 lg:pt-48 lg:pb-32 overflow-hidden flex items-center min-h-[90vh]">
             <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-                    <div class="lg:w-1/2 text-center lg:text-left">
-                        <span class="inline-flex items-center gap-2 py-1.5 px-4 bg-white border border-brand-200 rounded-full text-brand-600 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm">
-                            <i class="fa-solid fa-heart text-brand-400"></i> Made with love
-                        </span>
-                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-brand-800 leading-tight mb-6">
-                            Handcrafted coziness <br>
-                            <span class="text-brand-500 italic font-medium">for your home.</span>
+                <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-12">
+                    
+                    <div class="lg:w-1/2 text-center lg:text-left z-20">
+                        <div class="inline-flex items-center gap-2 py-2 px-5 bg-white border-2 border-brand-200 rounded-2xl text-brand-600 text-sm font-bold tracking-widest uppercase mb-8 shadow-sm transform -rotate-2">
+                            <i class="fa-solid fa-hands-holding-circle text-brand-400 text-lg"></i> 100% Handcrafted
+                        </div>
+                        <h1 class="text-6xl md:text-7xl lg:text-[5.5rem] font-serif text-brand-900 leading-[1.1] mb-6 drop-shadow-sm">
+                            Add a touch of <br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 to-accent-400">warm magic</span><br>
+                            to your life.
                         </h1>
-                        <p class="text-lg text-brand-700 mb-10 font-medium leading-relaxed max-w-lg mx-auto lg:mx-0">
-                            Wrap yourself in the warmth of slow fashion. From aesthetic decor to cozy wearables, every stitch tells a story of care and comfort.
+                        <p class="text-xl text-brand-700 mb-10 font-medium leading-relaxed max-w-xl mx-auto lg:mx-0">
+                            Discover uniquely vibrant, handcrafted crochet items. Made with joy, designed to bring irresistible coziness to your home and wardrobe.
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <a href="#shop" class="inline-flex justify-center items-center px-8 py-4 bg-brand-600 text-white rounded-full font-bold text-lg hover:bg-brand-500 transition-colors shadow-lg shadow-brand-600/30">
-                                Shop the Collection
+                        <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                            <a href="#shop" class="inline-flex justify-center items-center px-10 py-5 bg-brand-600 text-white rounded-2xl font-bold text-xl hover:bg-brand-500 transition-colors shadow-cozy hover:shadow-cozy-hover transform hover:-translate-y-1">
+                                Shop Collection
                             </a>
-                            <a href="#about" class="inline-flex justify-center items-center px-8 py-4 bg-white text-brand-700 border-2 border-brand-200 rounded-full font-bold text-lg hover:border-brand-400 hover:bg-brand-50 transition-colors shadow-sm">
-                                Our Story
+                            <a href="#custom" class="inline-flex justify-center items-center px-10 py-5 bg-white text-brand-600 border-2 border-brand-200 rounded-2xl font-bold text-xl hover:border-brand-400 transition-colors shadow-sm">
+                                Custom Orders
                             </a>
                         </div>
                     </div>
                     
-                    <!-- Aesthetic Imagery -->
-                    <div class="lg:w-1/2 relative">
-                        <div class="relative w-full max-w-md mx-auto aspect-[4/5] rounded-[3rem] overflow-hidden shadow-2xl border-[10px] border-white animate-float">
-                            <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" alt="Cozy crochet texture" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 bg-gradient-to-t from-brand-900/40 to-transparent"></div>
+                    <!-- Playful Overlapping Polaroids Image Layout -->
+                    <div class="lg:w-1/2 relative w-full h-[500px] hidden md:block">
+                        <!-- Image 1 -->
+                        <div class="absolute top-0 right-10 w-72 h-80 bg-white p-4 pb-12 rounded-2xl shadow-2xl border border-brand-100 transform rotate-6 z-20 transition-transform hover:rotate-2 hover:scale-105">
+                            <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover rounded-xl" alt="Crochet work">
                         </div>
-                        <!-- Cozy Floating Tags -->
-                        <div class="absolute top-10 -left-8 bg-white/90 backdrop-blur px-5 py-3 rounded-2xl shadow-xl border border-brand-100 flex items-center gap-3 animate-wiggle">
-                            <span class="text-2xl">🌿</span>
-                            <div>
-                                <p class="text-[10px] uppercase font-bold tracking-widest text-brand-400">Materials</p>
-                                <p class="font-bold text-brand-800 text-sm">Organic Cotton</p>
-                            </div>
+                        <!-- Image 2 -->
+                        <div class="absolute top-32 left-10 w-72 h-80 bg-white p-4 pb-12 rounded-2xl shadow-xl border border-brand-100 transform -rotate-12 z-10 transition-transform hover:-rotate-6 hover:scale-105">
+                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover rounded-xl grayscale-[20%]" alt="Maker">
                         </div>
-                        <div class="absolute bottom-16 -right-6 bg-white/90 backdrop-blur px-5 py-3 rounded-2xl shadow-xl border border-brand-100 flex items-center gap-3 animate-wiggle" style="animation-delay: 1.5s;">
-                            <span class="text-2xl">🧶</span>
-                            <div>
-                                <p class="text-[10px] uppercase font-bold tracking-widest text-brand-400">Process</p>
-                                <p class="font-bold text-brand-800 text-sm">100% Hand Hooked</p>
-                            </div>
+                        
+                        <!-- Floating badges -->
+                        <div class="absolute bottom-20 right-0 bg-accent-500 text-brand-900 px-6 py-3 rounded-full shadow-lg font-bold text-lg transform rotate-[-5deg] z-30 flex items-center gap-2">
+                            <i class="fa-solid fa-star"></i> Premium Quality
                         </div>
                     </div>
                 </div>
@@ -310,19 +316,19 @@
         </section>
 
         <!-- Shop Section -->
-        <section id="shop" class="py-24 bg-white relative z-20 rounded-t-[3rem] shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.05)]">
+        <section id="shop" class="py-24 bg-white relative z-20 border-y-[6px] border-brand-50">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="text-center mb-12">
-                    <h2 class="text-4xl font-serif font-bold text-brand-800 mb-4">Latest Additions</h2>
-                    <p class="text-brand-600 font-medium max-w-2xl mx-auto">Freshly crafted pieces ready to find their forever homes.</p>
+                <div class="text-center mb-16">
+                    <h2 class="text-5xl font-serif text-brand-900 mb-4">Fresh & Cozy Drops</h2>
+                    <p class="text-brand-600 font-medium text-lg max-w-2xl mx-auto">Explore our vibrant selection. Everything is lovingly made to order!</p>
                 </div>
                 
-                <!-- Pill Filters -->
-                <div class="flex flex-wrap justify-center gap-3 mb-12" id="category-filters">
-                    <button class="filter-btn bg-brand-600 text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-md transition-all border-2 border-transparent" data-filter="all">All Items</button>
-                    <button class="filter-btn bg-white text-brand-700 px-6 py-2.5 rounded-full font-bold text-sm shadow-sm border-2 border-brand-100 hover:border-brand-300 transition-all" data-filter="Clothing">Clothing</button>
-                    <button class="filter-btn bg-white text-brand-700 px-6 py-2.5 rounded-full font-bold text-sm shadow-sm border-2 border-brand-100 hover:border-brand-300 transition-all" data-filter="Decor & Flowers">Decor</button>
-                    <button class="filter-btn bg-white text-brand-700 px-6 py-2.5 rounded-full font-bold text-sm shadow-sm border-2 border-brand-100 hover:border-brand-300 transition-all" data-filter="Accessories">Accessories</button>
+                <!-- Eye-catching Filters -->
+                <div class="flex flex-wrap justify-center gap-4 mb-16" id="category-filters">
+                    <button class="filter-btn bg-brand-600 text-white px-8 py-3 rounded-2xl font-bold text-base shadow-cozy transition-all transform active:scale-95 border-2 border-transparent" data-filter="all">All Goodies</button>
+                    <button class="filter-btn bg-brand-50 text-brand-700 px-8 py-3 rounded-2xl font-bold text-base shadow-sm border-2 border-brand-100 hover:border-brand-400 transition-all" data-filter="Clothing">Wearables</button>
+                    <button class="filter-btn bg-brand-50 text-brand-700 px-8 py-3 rounded-2xl font-bold text-base shadow-sm border-2 border-brand-100 hover:border-brand-400 transition-all" data-filter="Decor & Flowers">Home Decor</button>
+                    <button class="filter-btn bg-brand-50 text-brand-700 px-8 py-3 rounded-2xl font-bold text-base shadow-sm border-2 border-brand-100 hover:border-brand-400 transition-all" data-filter="Accessories">Accessories</button>
                 </div>
 
                 <!-- Product Grid -->
@@ -332,73 +338,66 @@
             </div>
         </section>
 
-        <!-- Seamlessly Integrated Our Story Section -->
-        <section id="about" class="py-24 bg-[#F9F5F0]">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-white rounded-[3rem] p-8 md:p-16 shadow-xl border border-brand-50 relative overflow-hidden">
-                    <!-- Decorative element -->
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-sage-100 rounded-full mix-blend-multiply filter blur-3xl opacity-60"></div>
+        <!-- Our Story (Warm & Engaging) -->
+        <section id="about" class="py-24 bg-brand-100 relative overflow-hidden">
+            <!-- Background pattern -->
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/diagonal-striped-brick.png')]"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="bg-white rounded-[3rem] p-10 md:p-16 shadow-2xl border-4 border-white flex flex-col lg:flex-row items-center gap-16">
                     
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-                        <!-- Imagery -->
-                        <div class="lg:col-span-5 relative">
-                            <div class="aspect-[4/5] rounded-[2rem] overflow-hidden shadow-lg border-[6px] border-white">
-                                <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1974&auto=format&fit=crop" alt="Crocheting hands" class="w-full h-full object-cover">
-                            </div>
+                    <div class="lg:w-1/2">
+                        <div class="inline-block bg-accent-400 text-brand-900 font-bold px-4 py-1.5 rounded-full text-sm uppercase tracking-widest mb-6 transform -rotate-2">
+                            The Maker
                         </div>
-                        
-                        <!-- Bio text with embedded User Facts -->
-                        <div class="lg:col-span-7">
-                            <span class="text-brand-500 font-bold uppercase tracking-widest text-xs mb-3 block">Behind the Stitches</span>
-                            <h2 class="text-4xl md:text-5xl font-serif font-bold text-brand-800 mb-6 leading-tight">Hi, I'm Vaishali. <br>Welcome to my studio.</h2>
-                            <div class="space-y-5 text-brand-700 font-medium text-lg leading-relaxed">
-                                <p>
-                                    What started as a relaxing hobby in my home in Tathawade, Pune, has blossomed into HandKnot Haven. I have a problem-solving mind that loves the strategic challenge of turning a single, continuous string of yarn into functional, beautiful art.
-                                </p>
-                                <p>
-                                    Every single piece in this shop is meticulously hand-hooked by me. I focus on slow fashion, sustainable materials like organic cotton and merino wool, and creating heirloom pieces that carry warmth.
-                                </p>
-                            </div>
-                            
-                            <div class="mt-10 pt-8 border-t border-brand-100 grid grid-cols-2 gap-6">
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 bg-sage-100 text-sage-500 rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-leaf"></i></div>
-                                    <div>
-                                        <h4 class="font-bold text-brand-800">Organic Yarns</h4>
-                                        <p class="text-sm text-brand-600 mt-1">Sustainably sourced.</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-start gap-4">
-                                    <div class="w-12 h-12 bg-brand-100 text-brand-500 rounded-full flex items-center justify-center flex-shrink-0 text-xl"><i class="fa-solid fa-hands-holding-circle"></i></div>
-                                    <div>
-                                        <h4 class="font-bold text-brand-800">Slow Crafted</h4>
-                                        <p class="text-sm text-brand-600 mt-1">Made in Tathawade, Pune.</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <h2 class="text-4xl md:text-5xl font-serif text-brand-900 mb-6 leading-tight">Hi, I'm Vaishali. <br>Welcome to my vibrant little studio.</h2>
+                        <div class="space-y-6 text-brand-700 font-medium text-lg leading-relaxed">
+                            <p>
+                                What started as a hobby to make a flower for my own home decor has blossomed into a full-time passion. I have a problem-solving mind that loves the strategic challenge of turning a single continuous string of yarn into something beautiful, functional, and comforting.
+                            </p>
+                            <p>
+                                Every item in this shop is made entirely by me in my studio. I focus on slow fashion, sustainable materials, and creating pieces that bring an undeniable pop of joy to your life.
+                            </p>
                         </div>
                     </div>
+
+                    <div class="lg:w-1/2 grid grid-cols-2 gap-6 w-full">
+                        <!-- Fun feature cards -->
+                        <div class="bg-brand-50 p-8 rounded-3xl border-2 border-brand-200 text-center transform transition-transform hover:-translate-y-2 hover:rotate-2 shadow-sm">
+                            <i class="fa-solid fa-leaf text-5xl text-accent-600 mb-4"></i>
+                            <h4 class="font-bold text-xl text-brand-900 mb-2">100% Organic</h4>
+                            <p class="text-brand-600 text-sm">Premium cottons & wools sourced mindfully.</p>
+                        </div>
+                        <div class="bg-brand-50 p-8 rounded-3xl border-2 border-brand-200 text-center transform transition-transform hover:-translate-y-2 hover:-rotate-2 shadow-sm mt-8">
+                            <i class="fa-solid fa-heart text-5xl text-brand-400 mb-4"></i>
+                            <h4 class="font-bold text-xl text-brand-900 mb-2">Slow Fashion</h4>
+                            <p class="text-brand-600 text-sm">Made to order. Absolutely zero fast-fashion waste.</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Inviting Custom Orders Section -->
+        <!-- Eye Catching Custom Orders Section -->
         <section id="custom" class="py-24 bg-white relative">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="bg-gradient-to-br from-brand-50 to-[#F2EAE4] rounded-[3rem] p-10 lg:p-16 border border-brand-100 shadow-lg text-center relative overflow-hidden">
-                    <div class="absolute top-4 left-4 text-6xl opacity-10 text-brand-500"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                    <div class="absolute bottom-4 right-4 text-6xl opacity-10 text-brand-500"><i class="fa-solid fa-gift"></i></div>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-brand-900 rounded-[3rem] p-10 lg:p-20 shadow-2xl text-center relative overflow-hidden">
+                    <!-- Deco blobs -->
+                    <div class="absolute top-0 left-0 w-64 h-64 bg-brand-600 rounded-full mix-blend-screen filter blur-[50px] opacity-80"></div>
+                    <div class="absolute bottom-0 right-0 w-64 h-64 bg-accent-400 rounded-full mix-blend-screen filter blur-[50px] opacity-30"></div>
                     
-                    <h2 class="text-4xl md:text-5xl font-serif font-bold text-brand-800 mb-6 relative z-10">Bespoke Creations</h2>
-                    <p class="text-lg text-brand-700 font-medium mb-10 max-w-2xl mx-auto leading-relaxed relative z-10">
-                        Have a specific color palette in mind? Looking for a custom plushie or a perfectly fitted sweater? Let's collaborate and bring your cozy vision to life.
+                    <h2 class="text-5xl md:text-6xl font-serif text-white mb-6 relative z-10">Got a dream design?</h2>
+                    <p class="text-xl text-brand-100 font-medium mb-12 max-w-2xl mx-auto leading-relaxed relative z-10">
+                        Whether it's a perfectly sized skirt, a customized sunflower bouquet, or a unique color scheme for a blanket—let's create something purely magic together.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-5 justify-center relative z-10">
-                        <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-500 transition-colors shadow-lg shadow-brand-600/20">
-                            Request Custom Order
+                    
+                    <div class="flex flex-col md:flex-row gap-6 justify-center relative z-10">
+                        <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-400 text-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-brand-500 transition-transform active:scale-95 shadow-lg border-2 border-brand-400">
+                            Start Custom Order
                         </button>
-                        <button onclick="openAiModal()" class="bg-white text-brand-700 border-2 border-brand-200 px-8 py-4 rounded-full font-bold text-lg hover:border-brand-400 hover:bg-brand-50 transition-colors shadow-sm flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-lightbulb text-brand-400"></i> AI Idea Generator
+                        <button onclick="openAiModal()" class="bg-transparent text-white border-2 border-white px-10 py-5 rounded-2xl font-bold text-xl hover:bg-white hover:text-brand-900 transition-colors flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-wand-magic-sparkles text-accent-500"></i> AI Gift Finder
                         </button>
                     </div>
                 </div>
@@ -407,52 +406,56 @@
 
     </main>
 
-    <!-- Consolidated Footer / Contact (Adhering to Ledger rules) -->
-    <footer id="contact" class="bg-brand-900 text-brand-50 pt-20 pb-10 border-t-8 border-brand-600 rounded-t-[3rem] -mt-10 relative z-30">
+    <!-- Consolidated Footer (Strictly adhered to Correction Ledger: No floating buttons) -->
+    <footer id="contact" class="bg-brand-50 pt-24 pb-12 border-t-[8px] border-brand-200 mt-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
-                <h2 class="text-4xl font-serif font-bold text-white mb-4">Let's Keep in Touch</h2>
-                <p class="text-brand-300 font-medium text-lg">We'd love to hear from you or help with your order.</p>
+                <h2 class="text-5xl font-serif text-brand-900 mb-4">Get in Touch</h2>
+                <p class="text-brand-600 font-medium text-xl">We’re here to help with your orders and bespoke ideas.</p>
             </div>
 
-            <!-- Consolidated Contact Cards -->
+            <!-- Highly visible, consolidated contact cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-16">
-                <!-- WhatsApp -->
-                <a href="https://wa.me/919925617845" target="_blank" class="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center text-center transition-all hover:bg-white/10 hover:-translate-y-1 group">
-                    <div class="w-16 h-16 bg-[#25D366]/20 text-[#25D366] rounded-full flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
+                
+                <!-- WhatsApp Card -->
+                <a href="https://wa.me/919925617845" target="_blank" class="bg-white border-2 border-brand-200 rounded-3xl p-8 flex flex-col items-center text-center transition-all hover:border-brand-400 hover:-translate-y-2 shadow-sm hover:shadow-cozy group">
+                    <div class="w-20 h-20 bg-[#25D366]/10 text-[#25D366] rounded-2xl flex items-center justify-center text-4xl mb-5 group-hover:scale-110 transition-transform transform rotate-3">
                         <i class="fa-brands fa-whatsapp"></i>
                     </div>
-                    <h3 class="text-white font-bold text-xl mb-2">WhatsApp Us</h3>
-                    <p class="text-brand-200 font-medium">+91 99256 17845</p>
+                    <h3 class="text-brand-900 font-bold text-2xl mb-2">WhatsApp Us</h3>
+                    <p class="text-brand-600 font-bold text-lg">+91 99256 17845</p>
                 </a>
 
-                <!-- Email -->
-                <a href="mailto:handknothaven@gmail.com" class="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center text-center transition-all hover:bg-white/10 hover:-translate-y-1 group">
-                    <div class="w-16 h-16 bg-brand-400/20 text-brand-300 rounded-full flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
+                <!-- Email Card -->
+                <a href="mailto:handknothaven@gmail.com" class="bg-white border-2 border-brand-200 rounded-3xl p-8 flex flex-col items-center text-center transition-all hover:border-brand-400 hover:-translate-y-2 shadow-sm hover:shadow-cozy group">
+                    <div class="w-20 h-20 bg-brand-100 text-brand-600 rounded-2xl flex items-center justify-center text-4xl mb-5 group-hover:scale-110 transition-transform transform -rotate-3">
                         <i class="fa-regular fa-envelope"></i>
                     </div>
-                    <h3 class="text-white font-bold text-xl mb-2">Email Studio</h3>
-                    <p class="text-brand-200 font-medium break-all">handknothaven@gmail.com</p>
+                    <h3 class="text-brand-900 font-bold text-2xl mb-2">Email Studio</h3>
+                    <p class="text-brand-600 font-bold text-lg break-all">handknothaven@gmail.com</p>
                 </a>
 
-                <!-- Location / Info -->
-                <div class="bg-white/5 border border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center text-center">
-                    <div class="w-16 h-16 bg-sage-500/20 text-sage-400 rounded-full flex items-center justify-center text-3xl mb-5">
-                        <i class="fa-solid fa-location-dot"></i>
+                <!-- Track Order Convenience Card -->
+                <button onclick="openOrdersModal()" class="bg-white border-2 border-brand-200 rounded-3xl p-8 flex flex-col items-center text-center transition-all hover:border-brand-400 hover:-translate-y-2 shadow-sm hover:shadow-cozy group">
+                    <div class="w-20 h-20 bg-accent-500/10 text-accent-600 rounded-2xl flex items-center justify-center text-4xl mb-5 group-hover:scale-110 transition-transform transform rotate-3">
+                        <i class="fa-solid fa-box-open"></i>
                     </div>
-                    <h3 class="text-white font-bold text-xl mb-2">Studio Location</h3>
-                    <p class="text-brand-200 font-medium">Tathawade, Pune<br>Shipping Across India</p>
-                </div>
+                    <h3 class="text-brand-900 font-bold text-2xl mb-2">Track Order</h3>
+                    <p class="text-brand-600 font-bold text-lg">Check your live status</p>
+                </button>
             </div>
 
             <!-- Divider -->
-            <div class="w-full h-px bg-brand-800 mb-8"></div>
+            <div class="w-full h-1 bg-brand-200 rounded-full mb-10"></div>
 
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                <a href="#" class="font-serif text-2xl font-bold text-white flex items-center gap-2">
-                    <i class="fa-solid fa-leaf text-sage-500"></i> HandKnot Haven
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+                <a href="#" class="font-serif text-3xl text-brand-800 flex items-center gap-3">
+                    <div class="w-8 h-8 bg-brand-400 text-white rounded-lg flex items-center justify-center text-sm">
+                        <i class="fa-solid fa-yarn"></i>
+                    </div>
+                    HandKnot Haven
                 </a>
-                <p class="text-brand-400 text-sm font-bold tracking-widest uppercase">
+                <p class="text-brand-500 font-bold tracking-widest uppercase text-sm">
                     &copy; 2026 Crafted by Vaishali
                 </p>
             </div>
@@ -460,74 +463,75 @@
     </footer>
 
     <!-- ========================================== -->
-    <!-- MODALS SECTION (Cozy styling applied) -->
+    <!-- MODALS SECTION (Vibrant & Cozy Styling) -->
     <!-- ========================================== -->
 
     <!-- Product Details Modal -->
     <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm transition-opacity" onclick="closeProductModal()"></div>
-        <div class="relative bg-white w-full max-w-4xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border border-brand-100" id="product-modal-content">
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm transition-opacity" onclick="closeProductModal()"></div>
+        <div class="relative bg-white w-full max-w-5xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col md:flex-row max-h-[95vh] overflow-hidden transform transition-all scale-95 opacity-0 border-4 border-brand-100" id="product-modal-content">
             
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-brand-700 z-20 bg-white/90 backdrop-blur w-10 h-10 rounded-full flex items-center justify-center shadow-sm">
-                <i class="fa-solid fa-xmark"></i>
+            <button onclick="closeProductModal()" class="absolute top-5 right-5 text-brand-900 hover:text-white hover:bg-brand-600 z-20 bg-white border-2 border-brand-100 w-12 h-12 rounded-full flex items-center justify-center shadow-md transition-all active:scale-90">
+                <i class="fa-solid fa-xmark text-xl"></i>
             </button>
 
             <!-- Image Section -->
-            <div class="md:w-1/2 h-72 md:h-auto bg-brand-50 p-4">
-                <div class="w-full h-full rounded-[2rem] overflow-hidden shadow-inner border border-brand-100/50">
+            <div class="md:w-1/2 h-80 md:h-auto bg-brand-50 p-6 flex items-center justify-center relative">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                <div class="w-full h-full rounded-[2rem] overflow-hidden border-4 border-white shadow-xl relative z-10 transform rotate-1">
                     <img id="modal-img" src="" class="w-full h-full object-cover">
                 </div>
             </div>
 
             <!-- Details Section -->
-            <div class="md:w-1/2 p-8 md:p-10 overflow-y-auto flex flex-col bg-white">
-                <div class="text-xs text-brand-500 font-bold tracking-widest uppercase mb-3 bg-brand-50 w-max px-3 py-1 rounded-full border border-brand-100" id="modal-category"></div>
-                <h3 class="text-3xl font-serif font-bold text-brand-800 mb-3" id="modal-title"></h3>
+            <div class="md:w-1/2 p-8 md:p-12 overflow-y-auto flex flex-col bg-white">
+                <div class="text-xs text-brand-600 font-bold tracking-widest uppercase mb-4 bg-brand-100 w-max px-4 py-1.5 rounded-xl border border-brand-200" id="modal-category"></div>
+                <h3 class="text-4xl font-serif text-brand-900 mb-4 leading-tight" id="modal-title"></h3>
                 <div class="mb-6" id="modal-price"></div>
                 <p class="text-brand-700 font-medium mb-8 leading-relaxed text-lg" id="modal-desc"></p>
 
                 <!-- Spec Grid -->
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-brand-50 rounded-2xl p-4 border border-brand-100">
-                        <i class="fa-solid fa-leaf text-brand-400 mb-2 text-xl"></i>
-                        <h4 class="font-bold text-brand-900 text-sm mb-1" id="modal-material-name">Material</h4>
-                        <p class="text-brand-700 text-xs font-medium leading-relaxed" id="modal-material-benefit">Benefit</p>
+                <div class="grid grid-cols-2 gap-5 mb-8">
+                    <div class="bg-brand-50 rounded-2xl p-5 border-2 border-brand-100">
+                        <i class="fa-solid fa-leaf text-accent-600 mb-3 text-2xl"></i>
+                        <h4 class="font-bold text-brand-900 text-base mb-1" id="modal-material-name">Material</h4>
+                        <p class="text-brand-600 text-sm font-medium leading-relaxed" id="modal-material-benefit">Benefit</p>
                     </div>
-                    <div class="bg-sage-100/50 rounded-2xl p-4 border border-sage-100">
-                        <i class="fa-solid fa-clock text-sage-500 mb-2 text-xl"></i>
-                        <h4 class="font-bold text-brand-900 text-sm mb-1">Craft Time</h4>
-                        <p class="text-brand-700 text-xs font-medium leading-relaxed" id="modal-crafting-time"></p>
+                    <div class="bg-brand-50 rounded-2xl p-5 border-2 border-brand-100">
+                        <i class="fa-solid fa-clock text-brand-400 mb-3 text-2xl"></i>
+                        <h4 class="font-bold text-brand-900 text-base mb-1">Craft Time</h4>
+                        <p class="text-brand-600 text-sm font-medium leading-relaxed" id="modal-crafting-time"></p>
                     </div>
                 </div>
 
                 <!-- Customization Form -->
-                <div class="space-y-5 mb-8 flex-grow">
+                <div class="space-y-6 mb-8 flex-grow">
                     <!-- Size Selection -->
                     <div id="modal-size-section" class="hidden">
-                        <h4 class="font-bold text-brand-800 mb-3 text-sm"><i class="fa-solid fa-ruler-combined text-brand-400 mr-2"></i>Measurements</h4>
-                        <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="measure-bust" placeholder="Bust" class="w-full p-3 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-800">
-                            <input type="text" id="measure-waist" placeholder="Waist" class="w-full p-3 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-800">
-                            <input type="text" id="measure-hips" placeholder="Hips" class="w-full p-3 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-800">
-                            <input type="text" id="measure-length" placeholder="Length" class="w-full p-3 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-800">
+                        <h4 class="font-bold text-brand-800 mb-3 text-lg flex items-center gap-2"><i class="fa-solid fa-ruler-combined text-brand-400"></i> Measurements</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <input type="text" id="measure-bust" placeholder="Bust" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 outline-none font-bold text-brand-800 focus:bg-white">
+                            <input type="text" id="measure-waist" placeholder="Waist" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 outline-none font-bold text-brand-800 focus:bg-white">
+                            <input type="text" id="measure-hips" placeholder="Hips" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 outline-none font-bold text-brand-800 focus:bg-white">
+                            <input type="text" id="measure-length" placeholder="Length" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 outline-none font-bold text-brand-800 focus:bg-white">
                         </div>
                     </div>
 
                     <!-- Custom Additions -->
                     <div>
-                        <h4 class="font-bold text-brand-800 mb-3 text-sm"><i class="fa-solid fa-palette text-brand-400 mr-2"></i>Design Notes</h4>
-                        <textarea id="modal-custom" rows="2" class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-800 resize-none" placeholder="Preferred color changes or specifics..."></textarea>
+                        <h4 class="font-bold text-brand-800 mb-3 text-lg flex items-center gap-2"><i class="fa-solid fa-palette text-brand-400"></i> Design Notes</h4>
+                        <textarea id="modal-custom" rows="2" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 outline-none font-bold text-brand-800 resize-none focus:bg-white" placeholder="Preferred color changes or specifics..."></textarea>
                     </div>
                 </div>
 
                 <!-- Addons -->
-                <div id="storefront-customization-engine" class="hidden border-t border-brand-100 pt-6 mb-6">
-                    <h4 class="font-bold text-brand-800 mb-3 text-sm">Optional Additions</h4>
-                    <div id="storefront-addons-list" class="space-y-2"></div>
+                <div id="storefront-customization-engine" class="hidden border-t-2 border-brand-100 pt-8 mb-8">
+                    <h4 class="font-bold text-brand-800 mb-4 text-lg">Optional Additions</h4>
+                    <div id="storefront-addons-list" class="space-y-3"></div>
                 </div>
 
                 <div class="mt-auto">
-                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-brand-500 transition-colors flex justify-center items-center gap-2 shadow-lg shadow-brand-600/20 active:scale-95">
+                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-600 text-white py-5 rounded-2xl font-bold text-xl hover:bg-brand-500 transition-all shadow-cozy flex justify-center items-center gap-3 active:scale-95">
                         <i class="fa-solid fa-basket-shopping"></i> Add to Basket — <span id="modal-btn-price"></span>
                     </button>
                 </div>
@@ -537,51 +541,53 @@
 
     <!-- Order Confirmation Modal -->
     <div id="order-confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm" onclick="closeOrderConfirmation()"></div>
-        <div class="relative bg-white w-full max-w-md mx-4 rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden transform transition-all scale-95 opacity-0 border border-brand-100">
-            <div class="p-10 text-center relative border-b border-brand-100 bg-brand-50">
-                <button onclick="closeOrderConfirmation()" class="absolute top-5 right-5 text-brand-400 hover:text-brand-700 bg-white w-8 h-8 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
-                <div class="w-20 h-20 bg-white text-sage-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-5 shadow-sm border border-brand-100 animate-bounce"><i class="fa-solid fa-check"></i></div>
-                <h2 class="text-3xl font-serif font-bold text-brand-800 mb-2">Order Confirmed!</h2>
-                <p class="text-brand-600 font-bold text-sm">Reference: <span id="confirm-order-id"></span></p>
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeOrderConfirmation()"></div>
+        <div class="relative bg-white w-full max-w-md mx-4 rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden transform transition-all scale-95 opacity-0 border-4 border-brand-100">
+            <div class="p-10 text-center relative border-b-2 border-brand-100 bg-brand-50">
+                <button onclick="closeOrderConfirmation()" class="absolute top-5 right-5 text-brand-400 hover:text-brand-900 bg-white w-10 h-10 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+                <div class="w-24 h-24 bg-white text-accent-500 rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-md border-4 border-brand-100 animate-bounce"><i class="fa-solid fa-check"></i></div>
+                <h2 class="text-4xl font-serif text-brand-900 mb-2">Yay! Order Confirmed!</h2>
+                <p class="text-brand-600 font-bold text-lg">Reference: <span id="confirm-order-id" class="bg-white px-2 py-1 rounded-lg border border-brand-200"></span></p>
             </div>
             <div class="p-8 bg-white text-center">
-                <div class="bg-brand-50 rounded-2xl p-4 border border-brand-100 mb-6">
-                    <p class="text-xs text-brand-500 uppercase tracking-widest font-bold mb-1">Expected Dispatch</p>
-                    <p class="text-brand-900 font-bold text-lg" id="confirm-dispatch-date"></p>
+                <div class="bg-brand-50 rounded-2xl p-5 border-2 border-brand-100 mb-8">
+                    <p class="text-sm text-brand-500 uppercase tracking-widest font-bold mb-2">Expected Dispatch</p>
+                    <p class="text-brand-900 font-bold text-2xl" id="confirm-dispatch-date"></p>
                 </div>
-                <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-white border-2 border-brand-200 text-brand-800 py-3.5 rounded-xl font-bold hover:bg-brand-50 transition-colors mb-3">Track Order</button>
-                <button onclick="closeOrderConfirmation()" class="w-full bg-brand-600 text-white py-3.5 rounded-xl font-bold hover:bg-brand-500 transition-colors shadow-md">Continue Shopping</button>
+                <div class="space-y-4">
+                    <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-white border-2 border-brand-300 text-brand-800 py-4 rounded-2xl font-bold text-lg hover:bg-brand-50 transition-colors shadow-sm">Track Order</button>
+                    <button onclick="closeOrderConfirmation()" class="w-full bg-brand-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-brand-500 transition-colors shadow-cozy">Continue Shopping</button>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Checkout Modal -->
     <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
-        <div class="relative bg-white w-full max-w-lg mx-4 rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0 border border-brand-100">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-2xl font-serif font-bold text-brand-800">Delivery Details</h3>
-                <button onclick="closeCheckoutForm()" class="text-brand-400 hover:text-brand-700 bg-white w-8 h-8 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
+        <div class="relative bg-white w-full max-w-lg mx-4 rounded-[2.5rem] shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0 border-4 border-brand-100">
+            <div class="p-8 border-b-2 border-brand-100 flex justify-between items-center bg-brand-50">
+                <h3 class="text-3xl font-serif text-brand-900">Delivery Details</h3>
+                <button onclick="closeCheckoutForm()" class="text-brand-400 hover:text-brand-900 bg-white w-10 h-10 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-5 bg-white">
+            <form onsubmit="handleCheckoutForm(event)" class="p-10 space-y-6 bg-white">
                 <div>
-                    <label class="block text-sm font-bold text-brand-800 mb-1.5">Full Name</label>
-                    <input type="text" id="cust-name" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-900" />
+                    <label class="block text-base font-bold text-brand-800 mb-2">Full Name</label>
+                    <input type="text" id="cust-name" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-brand-800 mb-1.5">Phone Number</label>
-                    <input type="tel" id="cust-phone" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-900" />
+                    <label class="block text-base font-bold text-brand-800 mb-2">Phone Number</label>
+                    <input type="tel" id="cust-phone" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-brand-800 mb-1.5">Email</label>
-                    <input type="email" id="cust-email" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-900" />
+                    <label class="block text-base font-bold text-brand-800 mb-2">Email</label>
+                    <input type="email" id="cust-email" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
                 </div>
                 <div>
-                    <label class="block text-sm font-bold text-brand-800 mb-1.5">Full Address</label>
-                    <textarea id="cust-address" required rows="3" class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 outline-none font-bold text-brand-900 resize-none"></textarea>
+                    <label class="block text-base font-bold text-brand-800 mb-2">Full Address</label>
+                    <textarea id="cust-address" required rows="3" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900 resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-brand-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-500 transition-colors mt-2 shadow-lg shadow-brand-600/20 active:scale-95">
+                <button type="submit" class="w-full bg-brand-600 text-white py-4.5 rounded-2xl font-bold text-xl hover:bg-brand-500 transition-transform mt-4 shadow-cozy active:scale-95 h-16">
                     Continue to Payment
                 </button>
             </form>
@@ -590,32 +596,32 @@
 
     <!-- Payment Modal -->
     <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm" onclick="closePaymentModal()"></div>
-        <div class="relative bg-white w-full max-w-md mx-4 rounded-[2.5rem] shadow-2xl flex flex-col transform transition-all scale-95 opacity-0 border border-brand-100">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-xl font-serif font-bold text-brand-800 flex items-center gap-2"><i class="fa-solid fa-lock text-brand-400"></i> Secure Checkout</h3>
-                <button onclick="closePaymentModal()" class="text-brand-400 hover:text-brand-700 bg-white w-8 h-8 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closePaymentModal()"></div>
+        <div class="relative bg-white w-full max-w-md mx-4 rounded-[2.5rem] shadow-2xl flex flex-col transform transition-all scale-95 opacity-0 border-4 border-brand-100">
+            <div class="p-8 border-b-2 border-brand-100 flex justify-between items-center bg-brand-50">
+                <h3 class="text-2xl font-serif text-brand-900 flex items-center gap-3"><i class="fa-solid fa-lock text-brand-400"></i> Secure Checkout</h3>
+                <button onclick="closePaymentModal()" class="text-brand-400 hover:text-brand-900 bg-white w-10 h-10 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-8 bg-white">
-                <div class="text-center mb-8">
-                    <p class="text-xs font-bold text-brand-500 uppercase tracking-widest mb-2">Amount to Pay</p>
-                    <h2 class="text-5xl font-serif font-bold text-brand-900" id="payment-total-amount">₹0.00</h2>
+            <div class="p-10 bg-white">
+                <div class="text-center mb-10">
+                    <p class="text-sm font-bold text-brand-500 uppercase tracking-widest mb-2">Total Amount</p>
+                    <h2 class="text-5xl font-serif text-brand-900" id="payment-total-amount">₹0.00</h2>
                 </div>
-                <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-[#02042B] text-white py-4 rounded-2xl font-bold text-lg hover:bg-[#0A0D3A] shadow-xl shadow-[#02042B]/20 transition-transform active:scale-95 flex flex-col items-center justify-center mb-6">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-building-columns"></i> Pay via Razorpay</span>
+                <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-[#02042B] text-white py-4.5 h-16 rounded-2xl font-bold text-xl hover:bg-[#0A0D3A] shadow-xl shadow-[#02042B]/20 transition-transform active:scale-95 flex flex-col items-center justify-center mb-8">
+                    <span class="flex items-center gap-3"><i class="fa-solid fa-building-columns"></i> Pay via Razorpay</span>
                 </button>
                 
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="flex-1 h-px bg-brand-100"></div>
-                    <span class="text-xs text-brand-400 font-bold uppercase tracking-widest">Or Manual Transfer</span>
-                    <div class="flex-1 h-px bg-brand-100"></div>
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="flex-1 h-1 bg-brand-100 rounded-full"></div>
+                    <span class="text-sm text-brand-400 font-bold uppercase tracking-widest">Or Manual Transfer</span>
+                    <div class="flex-1 h-1 bg-brand-100 rounded-full"></div>
                 </div>
 
-                <div class="bg-brand-50 border-2 border-dashed border-brand-200 rounded-2xl p-6 text-center">
-                    <p class="text-sm font-medium text-brand-800 mb-3">Scan or use UPI ID: <span class="font-bold bg-white px-2 py-1 rounded border border-brand-100 ml-1">handknothaven@upi</span></p>
-                    <div class="w-24 h-24 mx-auto bg-white rounded-xl shadow-sm border border-brand-100 flex items-center justify-center mb-4"><i class="fa-solid fa-qrcode text-4xl text-brand-300"></i></div>
-                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-white border-2 border-brand-500 text-brand-600 py-3 rounded-xl font-bold hover:bg-brand-50 transition-colors shadow-sm">
-                        I have paid via UPI <i class="fa-solid fa-check ml-1"></i>
+                <div class="bg-brand-50 border-2 border-dashed border-brand-300 rounded-3xl p-8 text-center">
+                    <p class="text-base font-bold text-brand-800 mb-4">UPI ID: <span class="font-bold bg-white px-3 py-1.5 rounded-xl border border-brand-200 ml-1 text-brand-900 shadow-sm">handknothaven@upi</span></p>
+                    <div class="w-28 h-28 mx-auto bg-white rounded-2xl shadow-sm border-2 border-brand-200 flex items-center justify-center mb-6"><i class="fa-solid fa-qrcode text-5xl text-brand-300"></i></div>
+                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-white border-2 border-brand-400 text-brand-700 py-3.5 rounded-xl font-bold text-lg hover:bg-brand-100 transition-colors shadow-sm">
+                        I have paid via UPI <i class="fa-solid fa-check ml-2"></i>
                     </button>
                 </div>
             </div>
@@ -624,60 +630,60 @@
 
     <!-- Order Tracking Modal -->
     <div id="orders-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm" onclick="closeOrdersModal()"></div>
-        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border border-brand-100">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-2xl font-serif font-bold text-brand-800" id="orders-modal-title">Track Order</h3>
-                <button onclick="closeOrdersModal()" class="text-brand-400 hover:text-brand-700 bg-white w-8 h-8 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeOrdersModal()"></div>
+        <div class="relative bg-white w-full max-w-3xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border-4 border-brand-100">
+            <div class="p-8 border-b-2 border-brand-100 flex justify-between items-center bg-brand-50">
+                <h3 class="text-3xl font-serif text-brand-900 flex items-center gap-3"><i class="fa-solid fa-box-open text-brand-400"></i> Track Order</h3>
+                <button onclick="closeOrdersModal()" class="text-brand-400 hover:text-brand-900 bg-white w-10 h-10 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div id="tracking-search-bar" class="p-6 md:px-8 border-b border-brand-100 bg-white">
-                <div class="flex gap-3">
-                    <input type="text" id="track-order-input" placeholder="Enter Order ID" class="flex-1 p-3.5 border-2 border-brand-100 rounded-xl text-sm font-bold text-brand-900 focus:border-brand-400 outline-none bg-brand-50">
-                    <button onclick="trackOrderSubmit()" class="px-8 py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-500 transition-colors shadow-sm">Find</button>
+            <div id="tracking-search-bar" class="p-8 border-b-2 border-brand-100 bg-white">
+                <div class="flex gap-4">
+                    <input type="text" id="track-order-input" placeholder="Enter your Order ID..." class="flex-1 p-4 border-2 border-brand-200 rounded-2xl text-lg font-bold text-brand-900 focus:border-brand-500 outline-none bg-brand-50 focus:bg-white shadow-inner">
+                    <button onclick="trackOrderSubmit()" class="px-10 py-4 bg-brand-600 text-white rounded-2xl text-lg font-bold hover:bg-brand-500 transition-colors shadow-cozy active:scale-95">Find</button>
                 </div>
             </div>
 
-            <div id="orders-list-view" class="p-6 md:p-8 overflow-y-auto flex-1 bg-[#FDFBF7]"></div>
-            <div id="order-detail-view" class="p-6 md:p-8 overflow-y-auto flex-1 hidden bg-[#FDFBF7]"></div>
+            <div id="orders-list-view" class="p-8 overflow-y-auto flex-1 bg-[#FFF9F6]"></div>
+            <div id="order-detail-view" class="p-8 overflow-y-auto flex-1 hidden bg-[#FFF9F6]"></div>
         </div>
     </div>
 
     <!-- AI Gift Finder Modal -->
     <div id="ai-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm" onclick="closeAiModal()"></div>
-        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border border-brand-100">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-2xl font-serif font-bold text-brand-800 flex items-center gap-2">✨ Magic Idea Generator</h3>
-                <button onclick="closeAiModal()" class="text-brand-400 hover:text-brand-700 bg-white w-8 h-8 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeAiModal()"></div>
+        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border-4 border-brand-100">
+            <div class="p-8 border-b-2 border-brand-100 flex justify-between items-center bg-brand-50">
+                <h3 class="text-3xl font-serif text-brand-900 flex items-center gap-3"><i class="fa-solid fa-wand-magic-sparkles text-accent-500"></i> AI Gift Generator</h3>
+                <button onclick="closeAiModal()" class="text-brand-400 hover:text-brand-900 bg-white w-10 h-10 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="p-8 overflow-y-auto flex-1 bg-white">
+            <div class="p-10 overflow-y-auto flex-1 bg-white">
                 <div id="ai-input-view">
-                    <label class="block text-brand-900 font-bold mb-3 text-lg">Who is this for? Describe the vibe.</label>
-                    <textarea id="ai-prompt" rows="4" class="w-full p-4 border-2 border-brand-100 bg-brand-50 rounded-2xl focus:border-brand-400 outline-none font-medium text-brand-800 resize-none" placeholder="e.g., A housewarming gift for my friend who loves boho decor..."></textarea>
-                    <button onclick="generateIdea()" class="mt-5 w-full bg-brand-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-500 transition-colors shadow-lg shadow-brand-600/20 active:scale-95">
-                        Generate Concept
+                    <label class="block text-brand-900 font-bold mb-4 text-xl">Describe the vibe or recipient!</label>
+                    <textarea id="ai-prompt" rows="4" class="w-full p-5 border-2 border-brand-200 bg-brand-50 rounded-2xl focus:border-brand-400 outline-none font-bold text-brand-900 resize-none text-lg shadow-inner" placeholder="e.g., A cozy housewarming gift for my bestie who loves autumnal colors..."></textarea>
+                    <button onclick="generateIdea()" class="mt-6 w-full bg-brand-600 text-white py-4.5 rounded-2xl font-bold text-xl hover:bg-brand-500 transition-colors shadow-cozy active:scale-95 h-16">
+                        Generate Magic
                     </button>
                 </div>
                 
-                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-16 text-center text-brand-600">
-                    <div class="loader mb-6"></div>
-                    <h4 class="text-2xl font-serif font-bold text-brand-800 mb-2">Consulting the yarn stash...</h4>
+                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-20 text-center text-brand-600">
+                    <div class="loader border-[5px] w-12 h-12 mb-8"></div>
+                    <h4 class="text-3xl font-serif text-brand-900 mb-2">Consulting the yarn stash...</h4>
                 </div>
                 
                 <div id="ai-result-view" class="hidden flex-col">
-                    <div id="ai-result-content" class="text-brand-800 font-medium text-lg leading-relaxed mb-6 bg-brand-50 p-6 rounded-2xl border border-brand-100"></div>
-                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
-                        <button onclick="resetAiModal()" class="px-6 py-3.5 border-2 border-brand-200 rounded-xl font-bold text-brand-700 hover:bg-brand-50 transition-colors">Try Again</button>
-                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-500 transition-colors shadow-md">Request This Concept</button>
+                    <div id="ai-result-content" class="text-brand-800 font-bold text-lg leading-relaxed mb-8 bg-brand-50 p-8 rounded-3xl border-2 border-brand-100 shadow-inner"></div>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-2">
+                        <button onclick="resetAiModal()" class="px-8 py-4 border-2 border-brand-200 rounded-2xl font-bold text-lg text-brand-700 hover:bg-brand-50 transition-colors">Try Again</button>
+                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-4 bg-brand-600 text-white rounded-2xl font-bold text-lg hover:bg-brand-500 transition-colors shadow-cozy">Request This Concept</button>
                     </div>
                 </div>
                 
-                <div id="ai-error-view" class="hidden flex-col items-center justify-center py-16 text-center text-brand-600">
-                    <i class="fa-solid fa-circle-exclamation text-4xl mb-4 text-brand-400"></i>
-                    <p class="font-bold text-lg mb-6 text-brand-800">Oops! Our magic yarn tangled. Try again.</p>
-                    <button onclick="resetAiModal()" class="px-8 py-3 bg-brand-100 text-brand-700 rounded-full font-bold hover:bg-brand-200 transition-colors">Go Back</button>
+                <div id="ai-error-view" class="hidden flex-col items-center justify-center py-20 text-center text-brand-600">
+                    <i class="fa-solid fa-circle-exclamation text-6xl mb-6 text-brand-400"></i>
+                    <p class="font-bold text-2xl mb-8 text-brand-800">Oops! Our magic yarn tangled.</p>
+                    <button onclick="resetAiModal()" class="px-10 py-4 bg-brand-100 border-2 border-brand-200 text-brand-800 rounded-full font-bold text-lg hover:bg-brand-200 transition-colors shadow-sm">Go Back</button>
                 </div>
             </div>
         </div>
@@ -685,42 +691,42 @@
 
     <!-- Custom Order Modal -->
     <div id="custom-order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/30 backdrop-blur-sm" onclick="closeCustomOrderModal()"></div>
-        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border border-brand-100">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-2xl font-serif font-bold text-brand-800">Commission Request</h3>
-                <button onclick="closeCustomOrderModal()" class="text-brand-400 hover:text-brand-700 bg-white w-8 h-8 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeCustomOrderModal()"></div>
+        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-[2.5rem] shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0 border-4 border-brand-100">
+            <div class="p-8 border-b-2 border-brand-100 flex justify-between items-center bg-brand-50">
+                <h3 class="text-3xl font-serif text-brand-900">Custom Commission</h3>
+                <button onclick="closeCustomOrderModal()" class="text-brand-400 hover:text-brand-700 bg-white w-10 h-10 rounded-full shadow-sm"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div class="p-8 overflow-y-auto flex-1 bg-white">
-                <form id="custom-order-form" onsubmit="submitCustomOrder(event)" class="space-y-5">
+            <div class="p-10 overflow-y-auto flex-1 bg-white">
+                <form id="custom-order-form" onsubmit="submitCustomOrder(event)" class="space-y-6">
                     <div>
-                        <label class="block text-sm font-bold text-brand-800 mb-1.5">Your Name</label>
-                        <input type="text" id="custom-req-name" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
+                        <label class="block text-sm font-bold text-brand-800 mb-2">Your Name</label>
+                        <input type="text" id="custom-req-name" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                         <div>
-                            <label class="block text-sm font-bold text-brand-800 mb-1.5">Phone Number</label>
-                            <input type="tel" id="custom-req-phone" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
+                            <label class="block text-sm font-bold text-brand-800 mb-2">Phone Number</label>
+                            <input type="tel" id="custom-req-phone" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-brand-800 mb-1.5">Email Address</label>
-                            <input type="email" id="custom-req-email" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
+                            <label class="block text-sm font-bold text-brand-800 mb-2">Email Address</label>
+                            <input type="email" id="custom-req-email" required class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900" />
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-brand-800 mb-1.5">Delivery Address</label>
-                        <textarea id="custom-req-address" required rows="2" class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 focus:bg-white outline-none font-bold text-brand-900 resize-none"></textarea>
+                        <label class="block text-sm font-bold text-brand-800 mb-2">Delivery Address</label>
+                        <textarea id="custom-req-address" required rows="2" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900 resize-none"></textarea>
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-brand-800 mb-1.5">Describe Your Dream Item</label>
-                        <textarea id="custom-req-desc" required rows="3" class="w-full p-4 border-2 border-brand-100 rounded-xl text-sm bg-brand-50 focus:bg-white outline-none font-bold text-brand-900 resize-none" placeholder="Colors, specifics, measurements..."></textarea>
+                        <label class="block text-sm font-bold text-brand-800 mb-2">Describe Your Dream Item</label>
+                        <textarea id="custom-req-desc" required rows="4" class="w-full p-4 border-2 border-brand-100 rounded-xl text-base bg-brand-50 focus:bg-white outline-none font-bold text-brand-900 resize-none" placeholder="Colors, specifics, measurements..."></textarea>
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold text-brand-800 mb-1.5">Inspo Image (Optional)</label>
-                        <input type="file" id="custom-req-image" accept="image/*" class="w-full text-sm text-brand-600 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-200 file:text-brand-800 hover:file:bg-brand-300 cursor-pointer border-2 border-dashed border-brand-200 rounded-xl p-2 bg-brand-50" />
+                    <div class="bg-brand-50 p-4 rounded-xl border-2 border-brand-100 border-dashed">
+                        <label class="block text-sm font-bold text-brand-800 mb-2"><i class="fa-solid fa-camera text-brand-400 mr-2"></i>Inspo Image (Optional)</label>
+                        <input type="file" id="custom-req-image" accept="image/*" class="w-full text-sm text-brand-700 file:mr-4 file:py-2.5 file:px-5 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-white file:text-brand-900 hover:file:bg-brand-100 cursor-pointer shadow-sm" />
                     </div>
-                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-500 transition-colors mt-4 shadow-lg shadow-brand-600/20 active:scale-95 flex justify-center items-center gap-2">
+                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-600 text-white py-4.5 rounded-2xl font-bold text-xl hover:bg-brand-500 transition-colors mt-6 shadow-cozy active:scale-95 h-16 flex justify-center items-center gap-2">
                         Submit Request <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
@@ -822,7 +828,7 @@
 
             if (!SHOP_CONFIG.takingOrders) {
                 banner.innerHTML = `<i class="fa-solid fa-heart"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden');
-                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-600', 'bg-neutral-300'); customBtn.innerHTML = 'Orders Paused'; }
+                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-400', 'bg-neutral-300'); customBtn.innerHTML = 'Orders Paused'; }
                 if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-600', 'bg-neutral-300'); checkoutBtn.innerHTML = 'Checkout Paused'; }
             }
         }
@@ -833,28 +839,28 @@
 
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
-                card.className = 'product-card cozy-card overflow-hidden flex flex-col group cursor-pointer p-3';
+                card.className = 'product-card cozy-card overflow-hidden flex flex-col group cursor-pointer p-4';
                 card.onclick = () => openProductModal(product.id);
 
                 const rawPrice = Number(product.price || 0); const discountPct = Number(product.discount || 0);
-                let priceDisplay = `<span class="text-xl font-bold text-brand-800">₹${rawPrice.toFixed(2)}</span>`;
+                let priceDisplay = `<span class="text-2xl font-bold text-brand-800">₹${rawPrice.toFixed(2)}</span>`;
 
                 if (discountPct > 0) {
                     const calculatedSalePrice = rawPrice - (rawPrice * (discountPct / 100));
-                    priceDisplay = `<div class="flex items-baseline gap-2"><span class="text-xl font-bold text-brand-800">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-sm font-bold text-brand-300 line-through">₹${rawPrice.toFixed(2)}</span></div>`;
+                    priceDisplay = `<div class="flex items-baseline gap-2"><span class="text-2xl font-bold text-brand-800">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-sm font-bold text-brand-300 line-through">₹${rawPrice.toFixed(2)}</span></div>`;
                 }
 
                 card.innerHTML = `
-                <div class="relative h-64 overflow-hidden rounded-[1.2rem] bg-brand-50 mb-4">
-                    ${product.badge ? `<span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-brand-600 text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full z-10 shadow-sm border border-brand-100">${product.badge}</span>` : ''}
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <div class="relative h-64 overflow-hidden rounded-[1.5rem] bg-brand-50 mb-5 border-2 border-brand-100">
+                    ${product.badge ? `<span class="absolute top-4 left-4 bg-white/90 backdrop-blur text-brand-600 text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full z-10 shadow-sm border border-brand-100">${product.badge}</span>` : ''}
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 </div>
                 <div class="px-2 flex flex-col flex-grow">
-                    <p class="text-[10px] text-brand-400 font-bold uppercase tracking-widest mb-1.5">${product.category}</p>
-                    <h3 class="text-xl font-serif font-bold text-brand-900 mb-2 leading-tight">${product.name}</h3>
-                    <div class="mt-auto pt-4 flex justify-between items-center border-t border-brand-50">
+                    <p class="text-[10px] text-accent-500 font-bold uppercase tracking-widest mb-2">${product.category}</p>
+                    <h3 class="text-2xl font-serif font-bold text-brand-900 mb-2 leading-tight">${product.name}</h3>
+                    <div class="mt-auto pt-4 flex justify-between items-center">
                         ${priceDisplay}
-                        <div class="w-10 h-10 rounded-full bg-brand-50 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-plus"></i></div>
+                        <div class="w-12 h-12 rounded-2xl bg-brand-50 text-brand-600 group-hover:bg-brand-600 group-hover:text-white transition-colors flex items-center justify-center font-bold text-xl shadow-sm"><i class="fa-solid fa-plus"></i></div>
                     </div>
                 </div>`;
                 productGrid.appendChild(card);
@@ -864,8 +870,8 @@
         function setupFilters() {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    filterBtns.forEach(b => { b.classList.remove('bg-brand-600', 'text-white', 'border-transparent'); b.classList.add('bg-white', 'text-brand-700', 'border-brand-100'); });
-                    e.target.classList.add('bg-brand-600', 'text-white', 'border-transparent'); e.target.classList.remove('bg-white', 'text-brand-700', 'border-brand-100');
+                    filterBtns.forEach(b => { b.classList.remove('bg-brand-600', 'text-white', 'border-transparent'); b.classList.add('bg-brand-50', 'text-brand-700', 'border-brand-100'); });
+                    e.target.classList.add('bg-brand-600', 'text-white', 'border-transparent'); e.target.classList.remove('bg-brand-50', 'text-brand-700', 'border-brand-100');
                     currentFilter = e.target.dataset.filter; renderProducts();
                 });
             });
@@ -881,10 +887,10 @@
 
             if (discountPct > 0) {
                 currentModalCalculatedBasePrice = rawPrice - (rawPrice * (discountPct / 100));
-                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-3"><span class="text-3xl font-bold text-brand-800">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-lg font-bold text-brand-300 line-through">₹${rawPrice.toFixed(2)}</span><span class="bg-brand-100 text-brand-600 text-[10px] font-bold px-2 py-1 rounded-md uppercase tracking-widest">${discountPct}% OFF</span></div>`;
+                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-3"><span class="text-4xl font-bold text-brand-800">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-xl font-bold text-brand-300 line-through">₹${rawPrice.toFixed(2)}</span><span class="bg-accent-500 text-brand-900 text-xs font-bold px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-sm">${discountPct}% OFF</span></div>`;
             } else {
                 currentModalCalculatedBasePrice = rawPrice;
-                document.getElementById('modal-price').innerHTML = `<span class="text-3xl font-bold text-brand-800">₹${rawPrice.toFixed(2)}</span>`;
+                document.getElementById('modal-price').innerHTML = `<span class="text-4xl font-bold text-brand-800">₹${rawPrice.toFixed(2)}</span>`;
             }
 
             document.getElementById('modal-img').src = product.image || ''; document.getElementById('modal-category').textContent = product.category || '';
@@ -897,7 +903,7 @@
             addonListEl.innerHTML = ''; activeProductAddons = product.accessoryAddons || [];
             if (product.allowAddons && activeProductAddons.length > 0) {
                 addonContainer.classList.remove('hidden');
-                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-4 bg-brand-50 rounded-2xl cursor-pointer border-2 border-transparent hover:border-brand-200 transition-colors"><div class="flex items-center gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="w-5 h-5 accent-brand-600 rounded border-brand-200"><span class="text-sm font-bold text-brand-800">${item.name}</span></div><span class="text-xs font-bold text-brand-600 bg-white px-3 py-1 rounded-full shadow-sm">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
+                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-4 bg-white rounded-2xl cursor-pointer border-2 border-brand-100 hover:border-brand-400 transition-colors shadow-sm"><div class="flex items-center gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="w-5 h-5 accent-brand-600 rounded border-brand-200"><span class="text-base font-bold text-brand-800">${item.name}</span></div><span class="text-sm font-bold text-white bg-brand-400 px-3 py-1 rounded-lg shadow-sm">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
             } else { addonContainer.classList.add('hidden'); }
 
             recalculateModalPrice(); openModal({modal: modals.product, content: modals.productContent});
@@ -933,16 +939,18 @@
             if (cart.length === 0) { emptyCartMsg.style.display = 'flex'; } else {
                 emptyCartMsg.style.display = 'none';
                 cart.forEach(item => {
-                    const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-4 py-4 border-b border-brand-100 last:border-0';
-                    row.innerHTML = `<img src="${item.image}" class="w-20 h-20 object-cover rounded-xl shadow-sm border border-brand-100">
+                    const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-5 py-5 border-b border-brand-200 last:border-0';
+                    row.innerHTML = `<img src="${item.image}" class="w-24 h-24 object-cover rounded-2xl shadow-sm border-2 border-brand-100">
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-bold text-brand-900 text-sm truncate">${item.name}</h4>
-                        <div class="text-brand-600 font-bold mt-1 text-sm">₹${(item.price * item.quantity).toFixed(2)}</div>
-                        <div class="flex items-center gap-4 mt-3">
-                            <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-7 h-7 bg-brand-50 rounded-full font-bold text-brand-700 hover:bg-brand-100">-</button>
-                            <span class="text-xs font-bold">${item.quantity}</span>
-                            <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-7 h-7 bg-brand-50 rounded-full font-bold text-brand-700 hover:bg-brand-100">+</button>
-                            <button onclick="removeFromCart(${item.cartItemId})" class="text-brand-400 text-[10px] ml-auto font-bold uppercase tracking-widest hover:text-brand-600">Remove</button>
+                        <h4 class="font-bold text-brand-900 text-base truncate mb-1">${item.name}</h4>
+                        <div class="text-brand-600 font-bold text-lg mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center bg-white border border-brand-200 rounded-xl overflow-hidden shadow-sm">
+                                <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-8 h-8 font-bold text-brand-700 hover:bg-brand-50">-</button>
+                                <span class="text-sm font-bold w-6 text-center">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-8 h-8 font-bold text-brand-700 hover:bg-brand-50">+</button>
+                            </div>
+                            <button onclick="removeFromCart(${item.cartItemId})" class="text-brand-400 text-xs font-bold uppercase tracking-widest hover:text-brand-700 ml-auto"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>`; cartItemsContainer.appendChild(row);
                 });
@@ -963,7 +971,7 @@
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (total <= 0) return;
-            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#B85E3B" } };
+            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#E76F51" } };
             try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function(res){ alert("Failed"); btn.innerHTML=orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down. Use UPI."); btn.innerHTML=orig; }
         }
 
@@ -984,16 +992,16 @@
         async function fetchUserOrders() { const q = document.getElementById('track-order-input').value.trim(); let query = supabaseClient.from('orders').select('*').order('created_at', { ascending: false }); if (q) query = query.or(`id.eq.${q},phone.eq.${q}`); const { data } = await query; return data || []; }
 
         async function renderOrdersList() {
-            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-12"><div class="loader mx-auto border-brand-200 border-t-brand-600"></div></div>`;
+            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-16"><div class="loader mx-auto border-brand-200 border-t-brand-600 mb-4"></div><p class="font-bold text-brand-800">Fetching history...</p></div>`;
             userOrders = await fetchUserOrders();
-            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-12 text-brand-600 font-bold">No orders found.</div>`; return; }
-            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-white border border-brand-100 rounded-2xl p-5 mb-4 flex justify-between items-center cursor-pointer hover:border-brand-300 hover:shadow-md transition-all group"><div><h4 class="font-bold text-brand-900 text-lg mb-1">Order #${o.id}</h4><span class="text-[10px] text-sage-500 bg-sage-100 px-3 py-1 rounded-full uppercase tracking-widest font-bold">${o.order_status || 'confirmed'}</span></div><div class="text-right font-bold text-brand-900 text-lg">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
+            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-16 text-brand-600 font-bold text-lg">No orders found.</div>`; return; }
+            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-white border-2 border-brand-100 rounded-3xl p-6 mb-4 flex justify-between items-center cursor-pointer hover:border-brand-400 hover:shadow-cozy transition-all group"><div><h4 class="font-bold text-brand-900 text-xl mb-2">Order #${o.id}</h4><span class="text-[10px] text-white bg-brand-400 px-3 py-1.5 rounded-lg uppercase tracking-widest font-bold">${o.order_status || 'confirmed'}</span></div><div class="text-right font-bold text-brand-900 text-2xl">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
         }
 
         function viewOrderDetails(orderId) {
             const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId); if (!order) return;
             document.getElementById('tracking-search-bar').classList.add('hidden'); document.getElementById('orders-list-view').classList.add('hidden'); const detailView = document.getElementById('order-detail-view'); detailView.classList.remove('hidden');
-            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-800 font-bold text-sm mb-6 flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-white rounded-[2rem] p-8 border border-brand-100 shadow-sm mb-6"><h3 class="font-serif font-bold text-brand-900 mb-6 flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-brand-400"></i> Tracking Status</h3><p class="text-sm text-brand-700 capitalize mb-6 bg-brand-50 p-4 rounded-xl border border-brand-100 font-bold">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-6 pl-2"><div class="flex items-center gap-4"><div class="w-4 h-4 rounded-full bg-sage-500 ring-4 ring-sage-100"></div><span class="font-bold text-brand-900">Order Placed</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-4 h-4 rounded-full bg-brand-200 ring-4 ring-white"></div><span class="font-bold text-brand-900">Processing</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-4 h-4 rounded-full bg-brand-200 ring-4 ring-white"></div><span class="font-bold text-brand-900">Shipped</span></div></div></div><div class="bg-brand-50 rounded-[2rem] p-8 border border-brand-100"><h3 class="font-serif font-bold text-brand-900 mb-6 flex items-center gap-2"><i class="fa-solid fa-receipt text-brand-400"></i> Summary</h3><div class="text-sm text-brand-800 space-y-3 mb-6 font-medium bg-white p-5 rounded-xl border border-brand-100"><p><strong>To:</strong> ${order.customer_name}</p><p><strong>Address:</strong> ${order.address}</p><p><strong>Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-bold text-brand-900 text-xl items-center"><span>Total Paid</span><span class="bg-white px-4 py-2 rounded-lg border border-brand-100 shadow-sm">₹${Number(order.total).toFixed(2)}</span></div></div>`;
+            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-800 font-bold text-base mb-6 flex items-center gap-2 bg-white px-4 py-2 rounded-xl shadow-sm w-max border border-brand-100"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-white rounded-[2.5rem] p-8 border-2 border-brand-100 shadow-sm mb-6"><h3 class="font-serif font-bold text-brand-900 mb-6 text-2xl">Tracking Status</h3><p class="text-lg text-brand-800 capitalize mb-8 bg-brand-50 p-5 rounded-2xl border border-brand-200 font-bold flex items-center justify-between">Current Status: <span class="bg-white px-3 py-1 rounded-lg shadow-sm border border-brand-100">${order.order_status || 'Confirmed'}</span></p><div class="space-y-6 pl-4"><div class="flex items-center gap-5"><div class="w-5 h-5 rounded-full bg-accent-500 ring-4 ring-accent-100"></div><span class="font-bold text-brand-900 text-lg">Order Placed</span></div><div class="flex items-center gap-5 opacity-40"><div class="w-5 h-5 rounded-full bg-brand-300 ring-4 ring-brand-50"></div><span class="font-bold text-brand-900 text-lg">Processing</span></div><div class="flex items-center gap-5 opacity-40"><div class="w-5 h-5 rounded-full bg-brand-300 ring-4 ring-brand-50"></div><span class="font-bold text-brand-900 text-lg">Shipped</span></div></div></div><div class="bg-brand-50 rounded-[2.5rem] p-8 border-2 border-brand-100"><h3 class="font-serif font-bold text-brand-900 mb-6 text-2xl">Summary</h3><div class="text-base text-brand-800 space-y-4 mb-8 font-medium bg-white p-6 rounded-2xl border border-brand-100"><p><strong class="text-brand-900">To:</strong> ${order.customer_name}</p><p><strong class="text-brand-900">Address:</strong> ${order.address}</p><p><strong class="text-brand-900">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-bold text-brand-900 text-2xl items-center"><span>Total Paid</span><span class="bg-white px-5 py-3 rounded-xl border border-brand-200 shadow-sm text-brand-600">₹${Number(order.total).toFixed(2)}</span></div></div>`;
         }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); }
         function openAiModal() { openModal({modal: modals.ai, content: modals.aiContent}); }
