@@ -4,47 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HandKnot Haven | Cozy Handmade Crochet</title>
+    <title>HandKnot Haven | Premium Crochet</title>
 
-    <!-- Elegant & Readable Fonts: Merriweather (Serif) & Inter (Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Razorpay SDK -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        // Sophisticated, Cozy Cottagecore Palette
+                        // Rich, Warm Dark Theme Palette
+                        surface: {
+                            900: '#0A0807', // Deepest background
+                            800: '#120E0C', // Main background
+                            700: '#1C1613', // Card background
+                            600: '#2A221E', // Lighter panels
+                        },
                         brand: {
-                            50: '#FAF8F5',  // Soft cream background
-                            100: '#F2EBE5', // Muted oatmeal
-                            200: '#E5D6C9', // Latte border
-                            300: '#D4B8A6', // Warm sand
-                            400: '#C18F76', // Muted terracotta (buttons/accents)
-                            500: '#B07559', // Primary terracotta
-                            600: '#965E44', // Darker terracotta
-                            700: '#6B4A3A', // Warm espresso (secondary text)
-                            800: '#4A3B32', // Deep brown (primary text)
-                            900: '#2D231E', // Darkest brown (headings)
+                            50: '#FFF5F0',
+                            100: '#FDECE4',
+                            400: '#F4A282',
+                            500: '#E58D67', // Primary glowing copper
+                            600: '#D66F43',
+                            900: '#3D150B',
+                        },
+                        text: {
+                            main: '#FDFBF9',
+                            muted: '#AFA39C',
                         }
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Merriweather', 'serif'],
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
                     },
-                    boxShadow: {
-                        'soft': '0 4px 20px -2px rgba(74, 59, 50, 0.05)',
-                        'soft-hover': '0 10px 30px -4px rgba(74, 59, 50, 0.1)',
+                    animation: {
+                        'ambient-glow': 'ambient-glow 8s ease-in-out infinite alternate',
+                        'float': 'float 6s cubic-bezier(0.25, 1, 0.5, 1) infinite',
+                    },
+                    keyframes: {
+                        'ambient-glow': {
+                            '0%': { transform: 'scale(1) translate(0, 0)', opacity: 0.4 },
+                            '100%': { transform: 'scale(1.2) translate(20px, -20px)', opacity: 0.7 },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
                     }
                 }
             }
@@ -57,65 +70,79 @@
         })();
     </script>
     <style>
+        /* Smooth Dark Theme Base */
         body {
-            background-color: #FAF8F5;
-            color: #4A3B32;
+            background-color: #120E0C;
+            color: #FDFBF9;
+            overflow-x: hidden;
         }
 
+        /* Glassmorphism Navigation */
         .glass-nav {
-            background: rgba(250, 248, 245, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid #E5D6C9;
+            background: rgba(18, 14, 12, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .cozy-card {
-            background: #FFFFFF;
-            border-radius: 1rem;
-            border: 1px solid #F2EBE5;
-            box-shadow: 0 4px 20px -2px rgba(74, 59, 50, 0.03);
+        /* Buttery Smooth Cards */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 1.5rem;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(229, 141, 103, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(229, 141, 103, 0.1);
+        }
+
+        /* Ambient Orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Dark Mode Form Elements */
+        input, textarea {
+            background: rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
             transition: all 0.3s ease;
         }
 
-        .cozy-card:hover {
-            transform: translateY(-4px);
-            border-color: #D4B8A6;
-            box-shadow: 0 10px 30px -4px rgba(74, 59, 50, 0.08);
+        input:focus, textarea:focus {
+            border-color: #E58D67 !important;
+            box-shadow: 0 0 0 4px rgba(229, 141, 103, 0.1) !important;
+            outline: none;
         }
 
+        input::placeholder, textarea::placeholder {
+            color: #AFA39C !important;
+        }
+
+        /* Loaders & Scrollbars */
         .loader {
-            border: 3px solid #F2EBE5;
-            border-top: 3px solid #B07559;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #E58D67;
             border-radius: 50%;
             width: 20px;
             height: 20px;
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        input:focus, textarea:focus {
-            outline: none;
-            border-color: #B07559 !important;
-            box-shadow: 0 0 0 3px rgba(176, 117, 89, 0.1);
-        }
-
-        /* Subtle custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #FAF8F5;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #D4B8A6;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #C18F76;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0A0807; }
+        ::-webkit-scrollbar-thumb { background: #2A221E; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #E58D67; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
@@ -125,232 +152,222 @@
     </script>
 </head>
 
-<body class="font-sans antialiased flex flex-col min-h-screen selection:bg-brand-200 selection:text-brand-900">
+<body class="font-sans antialiased flex flex-col min-h-screen">
 
-    <!-- Delicate Promo Banner -->
-    <div id="promo-banner" class="hidden bg-brand-800 text-brand-50 text-center py-2 text-sm font-medium tracking-wide">
-        <span id="promo-text">Enjoy Up to 30% Off Selected Creations</span>
+    <div class="orb bg-brand-600/20 w-[600px] h-[600px] top-[-200px] left-[-200px] animate-ambient-glow"></div>
+    <div class="orb bg-orange-600/10 w-[500px] h-[500px] top-[30%] right-[-100px] animate-ambient-glow" style="animation-delay: 2s;"></div>
+    <div class="orb bg-brand-500/15 w-[800px] h-[800px] bottom-[-200px] left-[10%] animate-ambient-glow" style="animation-delay: 4s;"></div>
+
+    <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2.5 text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(229,141,103,0.3)] z-50 relative">
+        <span id="promo-text">Opening Sale: Up to 30% Off</span>
     </div>
 
-    <!-- Elegant Navigation -->
-    <nav class="glass-nav fixed w-full z-40 transition-all duration-300" id="navbar">
+    <nav class="glass-nav fixed w-full z-40 transition-all duration-500" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
+            <div class="flex justify-between h-[80px] items-center">
                 
-                <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="#" class="font-serif text-xl md:text-2xl font-bold text-brand-900 flex items-center gap-2 hover:text-brand-600 transition-colors">
-                        <i class="fa-solid fa-fan text-brand-500 text-lg"></i> HandKnot Haven
+                    <a href="#" class="font-serif text-2xl font-medium text-text-main flex items-center gap-3 group">
+                        <i class="fa-solid fa-fan text-brand-500 transform group-hover:rotate-180 transition-transform duration-700"></i>
+                        HandKnot Haven
                     </a>
                 </div>
 
-                <!-- Desktop Menu -->
                 <div class="hidden lg:flex items-center space-x-8">
-                    <a href="#shop" class="text-sm font-medium text-brand-700 hover:text-brand-500 transition-colors">Shop</a>
-                    <a href="#about" class="text-sm font-medium text-brand-700 hover:text-brand-500 transition-colors">Our Story</a>
-                    <a href="#custom" class="text-sm font-medium text-brand-700 hover:text-brand-500 transition-colors">Custom Orders</a>
+                    <a href="#shop" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Shop</a>
+                    <a href="#about" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Story</a>
+                    <a href="#custom" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Custom</a>
                     
-                    <!-- Essential Contact & Tracking -->
-                    <div class="flex items-center gap-4 pl-8 border-l border-brand-200">
-                        <a href="#contact" class="text-sm font-medium text-brand-700 hover:text-brand-500 transition-colors">Contact</a>
-                        <button onclick="openOrdersModal()" class="flex items-center gap-2 text-sm font-medium text-brand-700 hover:text-brand-500 transition-colors">
-                            <i class="fa-solid fa-box-open"></i> Track Order
+                    <div class="flex items-center gap-6 pl-8 border-l border-white/10">
+                        <a href="#contact" class="text-sm font-medium text-text-main hover:text-brand-500 transition-colors">Contact</a>
+                        <button onclick="openOrdersModal()" class="flex items-center gap-2 text-sm font-medium bg-white/5 border border-white/10 text-text-main px-5 py-2.5 rounded-full hover:bg-brand-500 hover:text-surface-900 hover:border-brand-500 transition-all duration-300">
+                            <i class="fa-solid fa-location-crosshairs"></i> Track Order
                         </button>
                     </div>
                 </div>
 
-                <!-- Cart & Mobile Toggle -->
-                <div class="flex items-center gap-3">
-                    <button onclick="toggleCart()" class="relative p-2 text-brand-800 hover:text-brand-500 transition-colors flex items-center justify-center">
-                        <i class="fa-solid fa-basket-shopping text-xl"></i>
-                        <span id="cart-badge" class="absolute top-0 right-0 inline-flex items-center justify-center w-4 h-4 text-[10px] font-bold text-white bg-brand-500 rounded-full hidden">0</span>
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleCart()" class="relative p-2.5 text-text-main hover:text-brand-500 transition-colors flex items-center justify-center group">
+                        <i class="fa-solid fa-basket-shopping text-xl transform group-hover:scale-110 transition-transform"></i>
+                        <span id="cart-badge" class="absolute top-0 right-0 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-surface-900 bg-brand-500 rounded-full hidden shadow-[0_0_10px_rgba(229,141,103,0.5)]">0</span>
                     </button>
                     
-                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-brand-800 hover:text-brand-500 p-2 ml-1">
-                        <i class="fa-solid fa-bars text-xl"></i>
+                    <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-text-main p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-brand-200 shadow-soft absolute w-full left-0 top-full">
-            <div class="px-6 py-4 space-y-1">
-                <a href="#shop" onclick="toggleMobileMenu()" class="block py-3 text-sm font-medium text-brand-800 border-b border-brand-50">Shop Collection</a>
-                <a href="#custom" onclick="toggleMobileMenu()" class="block py-3 text-sm font-medium text-brand-800 border-b border-brand-50">Custom Orders</a>
-                <a href="#about" onclick="toggleMobileMenu()" class="block py-3 text-sm font-medium text-brand-800 border-b border-brand-50">Our Story</a>
-                <a href="#contact" onclick="toggleMobileMenu()" class="block py-3 text-sm font-medium text-brand-800 border-b border-brand-50">Contact Us</a>
-                <button onclick="toggleMobileMenu(); openOrdersModal();" class="w-full text-left py-3 text-sm font-medium text-brand-600 flex items-center gap-2 mt-2">
-                    <i class="fa-solid fa-box-open"></i> Track My Order
+        <div id="mobile-menu" class="hidden lg:hidden bg-surface-800/95 backdrop-blur-xl border-b border-white/10 absolute w-full left-0 top-full">
+            <div class="px-6 py-6 space-y-2">
+                <a href="#shop" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Shop Collection</a>
+                <a href="#custom" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Custom Orders</a>
+                <a href="#about" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Our Story</a>
+                <a href="#contact" onclick="toggleMobileMenu()" class="block py-3 text-base font-medium text-text-main border-b border-white/5">Contact Us</a>
+                <button onclick="toggleMobileMenu(); openOrdersModal();" class="w-full mt-4 py-4 text-base font-bold text-surface-900 bg-brand-500 rounded-xl flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-location-crosshairs"></i> Track My Order
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Shop Status Banner -->
-    <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-brand-800 text-brand-50 px-6 py-3 rounded-full text-sm font-medium shadow-soft flex items-center gap-2 w-max border border-brand-900"></div>
+    <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-surface-700/80 backdrop-blur-md text-text-main px-6 py-3 rounded-full text-sm font-medium shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center gap-3 border border-white/10"></div>
 
-    <!-- Cart Sidebar Overlay -->
-    <div id="cart-overlay" class="fixed inset-0 bg-brand-900/20 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
+    <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
 
-    <!-- Cart Sidebar -->
-    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-300 border-l border-brand-100">
-        <div class="flex items-center justify-between p-6 border-b border-brand-100 bg-brand-50/50">
-            <h2 class="text-lg font-serif font-semibold text-brand-900">Your Basket</h2>
-            <button onclick="toggleCart()" class="text-brand-400 hover:text-brand-700 transition-colors p-2">
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-surface-800 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-500 cubic-bezier(0.16, 1, 0.3, 1) border-l border-white/10">
+        <div class="flex items-center justify-between p-6 border-b border-white/5 bg-surface-900/50">
+            <h2 class="text-xl font-serif font-medium text-text-main">Your Basket</h2>
+            <button onclick="toggleCart()" class="text-text-muted hover:text-brand-500 transition-colors p-2 bg-white/5 rounded-full">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
         <div class="flex-1 overflow-y-auto p-6" id="cart-items-container">
-            <div class="text-center text-brand-400 mt-16 flex flex-col items-center" id="empty-cart-msg">
-                <i class="fa-solid fa-basket-shopping text-3xl mb-4 text-brand-200"></i>
-                <p class="text-sm text-brand-600 font-medium">Your basket is currently empty.</p>
-                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-4 text-sm text-brand-500 hover:text-brand-700 underline underline-offset-4 transition-colors">Continue browsing</button>
+            <div class="text-center text-text-muted mt-20 flex flex-col items-center" id="empty-cart-msg">
+                <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/5">
+                    <i class="fa-solid fa-ghost text-3xl text-white/20"></i>
+                </div>
+                <p class="font-medium">Your basket is floating empty.</p>
+                <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-6 text-sm text-brand-500 hover:text-brand-400 transition-colors border-b border-brand-500 pb-1">Discover pieces</button>
             </div>
         </div>
 
-        <div class="border-t border-brand-100 p-6 bg-brand-50/50">
+        <div class="border-t border-white/5 p-6 bg-surface-900/80">
             <div class="flex justify-between items-center mb-6">
-                <span class="text-brand-700 font-medium text-sm">Subtotal</span>
-                <span id="cart-total" class="text-xl font-serif font-semibold text-brand-900">₹0.00</span>
+                <span class="text-text-muted font-medium text-sm uppercase tracking-widest">Subtotal</span>
+                <span id="cart-total" class="text-2xl font-serif font-medium text-text-main">₹0.00</span>
             </div>
-            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-800 text-white py-3.5 rounded-lg font-medium text-sm hover:bg-brand-700 transition-colors flex justify-center items-center">
-                Secure Checkout
+            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.2)] flex justify-center items-center gap-2">
+                Checkout Securely <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
     </div>
 
-    <!-- Soft Toast -->
-    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-white text-brand-800 px-6 py-3 rounded-full shadow-soft-hover z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-3 border border-brand-200 transition-all duration-300">
-        <i class="fa-solid fa-check text-brand-500"></i>
+    <div id="toast" class="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-surface-700/90 backdrop-blur-md text-text-main px-6 py-3.5 rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.5)] z-50 opacity-0 pointer-events-none translate-y-4 flex items-center gap-3 border border-brand-500/30 transition-all duration-400">
+        <i class="fa-solid fa-circle-check text-brand-500"></i>
         <span id="toast-message" class="text-sm font-medium">Added to basket</span>
     </div>
 
-    <!-- Main Content -->
-    <main class="flex-grow">
+    <main class="flex-grow relative z-10">
 
-        <!-- Inviting & Elegant Hero -->
-        <section id="home" class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 flex items-center min-h-[85vh] overflow-hidden">
-            <!-- Subtle gradient orb -->
-            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-200/40 rounded-full filter blur-[100px] -z-10 translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
-
-            <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        <section id="home" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center min-h-[90vh]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="flex flex-col lg:flex-row items-center gap-16">
                     
-                    <div class="lg:w-1/2 text-center lg:text-left">
-                        <span class="inline-block py-1.5 px-4 bg-brand-100 text-brand-600 rounded-full text-xs font-medium tracking-widest uppercase mb-6 border border-brand-200">
-                            Slow Fashion • Handmade
-                        </span>
-                        <h1 class="text-4xl md:text-5xl font-serif text-brand-900 leading-tight mb-6">
-                            Handcrafted warmth <br>
-                            <span class="text-brand-500 italic">for your everyday life.</span>
+                    <div class="lg:w-1/2 text-center lg:text-left z-10">
+                        <div class="inline-flex items-center gap-2 py-1.5 px-4 bg-white/5 border border-white/10 rounded-full text-brand-400 text-xs font-semibold tracking-widest uppercase mb-8 backdrop-blur-sm">
+                            <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Handcrafted Magic
+                        </div>
+                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif text-text-main leading-[1.1] mb-6 drop-shadow-2xl">
+                            Weave <span class="italic text-brand-500">warmth</span> <br>into your world.
                         </h1>
-                        <p class="text-base text-brand-700 mb-8 font-light leading-relaxed max-w-lg mx-auto lg:mx-0">
-                            Discover unique, meticulously crocheted items. From snug decor to aesthetic wearables, every stitch is crafted with care and intention.
+                        <p class="text-lg text-text-muted mb-10 font-light leading-relaxed max-w-lg mx-auto lg:mx-0">
+                            Discover deeply aesthetic, meticulously hand-hooked crochet. Designed for those who appreciate slow fashion and beautiful spaces.
                         </p>
-                        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                            <a href="#shop" class="inline-flex justify-center items-center px-8 py-3.5 bg-brand-800 text-white rounded-lg font-medium text-sm hover:bg-brand-700 transition-colors shadow-sm">
-                                Explore Collection
+                        <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
+                            <a href="#shop" class="inline-flex justify-center items-center px-8 py-4 bg-brand-500 text-surface-900 rounded-full font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.3)] hover:shadow-[0_0_30px_rgba(229,141,103,0.5)]">
+                                Shop Collection
                             </a>
-                            <a href="#custom" class="inline-flex justify-center items-center px-8 py-3.5 bg-white text-brand-800 border border-brand-300 rounded-lg font-medium text-sm hover:bg-brand-50 hover:border-brand-400 transition-colors">
-                                Custom Orders
+                            <a href="#custom" class="inline-flex justify-center items-center px-8 py-4 bg-white/5 text-text-main border border-white/10 rounded-full font-medium hover:bg-white/10 hover:border-brand-500/50 transition-all backdrop-blur-sm">
+                                Bespoke Orders
                             </a>
                         </div>
                     </div>
                     
-                    <!-- Clean, tasteful imagery layout -->
-                    <div class="lg:w-1/2 w-full hidden md:flex justify-end relative">
-                        <div class="w-[85%] aspect-[4/5] rounded-2xl overflow-hidden shadow-soft relative z-10 border border-brand-100">
-                            <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Crochet aesthetics">
+                    <div class="lg:w-1/2 w-full hidden md:block relative h-[500px]">
+                        <div class="absolute right-0 top-0 w-3/4 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-10 animate-float">
+                            <div class="absolute inset-0 bg-surface-900/20 z-10 mix-blend-overlay"></div>
+                            <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Crochet">
                         </div>
-                        <div class="absolute bottom-10 -left-10 w-48 aspect-square rounded-2xl overflow-hidden shadow-soft-hover border-4 border-white z-20">
-                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover" alt="Detail">
+                        <div class="absolute left-0 bottom-10 w-1/2 aspect-square rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-20 animate-float" style="animation-delay: -3s;">
+                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%]" alt="Detail">
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Structured Shop Grid -->
-        <section id="shop" class="py-24 bg-white border-y border-brand-100">
+        <section id="shop" class="py-24 relative border-t border-white/5 bg-surface-800/50 backdrop-blur-xl">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
                     <div>
-                        <h2 class="text-3xl font-serif text-brand-900 mb-2">Curated Collection</h2>
-                        <p class="text-sm text-brand-600 font-light">Freshly crafted pieces, made to order.</p>
+                        <h2 class="text-4xl font-serif text-text-main mb-3">The Collection</h2>
+                        <p class="text-text-muted font-light">Freshly crafted dark aesthetics.</p>
                     </div>
                     
-                    <!-- Clean Filters -->
-                    <div class="flex flex-wrap gap-2" id="category-filters">
-                        <button class="filter-btn bg-brand-800 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors" data-filter="all">All</button>
-                        <button class="filter-btn bg-brand-50 text-brand-700 px-5 py-2 rounded-lg text-sm font-medium hover:bg-brand-100 transition-colors" data-filter="Clothing">Wearables</button>
-                        <button class="filter-btn bg-brand-50 text-brand-700 px-5 py-2 rounded-lg text-sm font-medium hover:bg-brand-100 transition-colors" data-filter="Decor & Flowers">Decor</button>
-                        <button class="filter-btn bg-brand-50 text-brand-700 px-5 py-2 rounded-lg text-sm font-medium hover:bg-brand-100 transition-colors" data-filter="Accessories">Accessories</button>
+                    <div class="flex flex-wrap gap-3" id="category-filters">
+                        <button class="filter-btn bg-brand-500 text-surface-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(229,141,103,0.3)] transition-all" data-filter="all">All</button>
+                        <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Clothing">Wearables</button>
+                        <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Decor & Flowers">Decor</button>
+                        <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Accessories">Accessories</button>
                     </div>
                 </div>
 
-                <!-- Product Grid -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10" id="product-grid">
-                    <!-- Products injected via JS -->
-                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid">
+                    </div>
             </div>
         </section>
 
-        <!-- Our Story (Personal & Clean) -->
-        <section id="about" class="py-24 bg-[#FCFBF9]">
+        <section id="about" class="py-24 relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="glass-card p-10 md:p-16 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-[400px] h-[400px] bg-brand-600/10 rounded-full blur-[80px] pointer-events-none"></div>
                     
-                    <div class="order-2 lg:order-1">
-                        <span class="text-brand-500 font-semibold text-xs tracking-widest uppercase mb-3 block">Behind the Stitches</span>
-                        <h2 class="text-3xl md:text-4xl font-serif text-brand-900 mb-6">Hi, I'm Vaishali. <br>Welcome to my studio.</h2>
-                        <div class="space-y-4 text-brand-800 font-light text-base leading-relaxed">
-                            <p>
-                                What started as a hobby to create floral decor for my home in Tathawade, Pune, has blossomed into HandKnot Haven. I naturally have a problem-solving mindset, and I fell in love with the strategic challenge of turning a single, continuous string of yarn into functional art.
-                            </p>
-                            <p>
-                                Every item in this shop is meticulously hand-hooked by me. I focus on slow fashion, sustainable materials like organic cotton and merino wool, and crafting heirloom pieces designed to carry warmth for years to come.
-                            </p>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center relative z-10">
+                        <div class="lg:col-span-7">
+                            <span class="text-brand-500 font-semibold text-xs tracking-widest uppercase mb-4 block">The Maker</span>
+                            <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-6">Hi, I'm Vaishali. <br>Welcome to my sanctuary.</h2>
+                            <div class="space-y-6 text-text-muted font-light text-lg leading-relaxed">
+                                <p>
+                                    Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet. 
+                                </p>
+                                <p>
+                                    Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.
+                                </p>
+                            </div>
+                            
+                            <div class="mt-10 pt-8 border-t border-white/10 grid grid-cols-2 gap-8">
+                                <div>
+                                    <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-4 text-xl"><i class="fa-solid fa-leaf"></i></div>
+                                    <h4 class="font-medium text-text-main mb-1">Organic Yarns</h4>
+                                    <p class="text-sm text-text-muted">Premium merino & cottons.</p>
+                                </div>
+                                <div>
+                                    <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-4 text-xl"><i class="fa-solid fa-hourglass-half"></i></div>
+                                    <h4 class="font-medium text-text-main mb-1">Slow Crafted</h4>
+                                    <p class="text-sm text-text-muted">Made to order in Pune.</p>
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="mt-8 pt-8 border-t border-brand-200 grid grid-cols-2 gap-6">
-                            <div>
-                                <i class="fa-solid fa-leaf text-brand-400 mb-3 text-xl"></i>
-                                <h4 class="font-medium text-brand-900 text-sm mb-1">Organic Materials</h4>
-                                <p class="text-xs text-brand-600 font-light leading-relaxed">Sustainably sourced premium yarns.</p>
-                            </div>
-                            <div>
-                                <i class="fa-solid fa-hands-holding-circle text-brand-400 mb-3 text-xl"></i>
-                                <h4 class="font-medium text-brand-900 text-sm mb-1">Slow Crafted</h4>
-                                <p class="text-xs text-brand-600 font-light leading-relaxed">Made carefully to eliminate waste.</p>
+                        <div class="lg:col-span-5 relative hidden lg:block">
+                            <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
+                                <div class="absolute inset-0 bg-brand-900/30 mix-blend-overlay z-10"></div>
+                                <img src="https://images.unsplash.com/photo-1584288417180-2c35848ba335?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Yarn texture">
                             </div>
                         </div>
                     </div>
-
-                    <div class="order-1 lg:order-2 relative">
-                        <div class="aspect-square max-w-md mx-auto rounded-full overflow-hidden bg-brand-100 p-2 border border-brand-200">
-                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1000&auto=format&fit=crop" alt="Crocheting process" class="w-full h-full object-cover rounded-full">
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </section>
 
-        <!-- Refined Custom Orders Section -->
-        <section id="custom" class="py-24 bg-white border-t border-brand-100">
+        <section id="custom" class="py-24 relative border-t border-white/5">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <h2 class="text-3xl md:text-4xl font-serif text-brand-900 mb-4">Bespoke Commissions</h2>
-                <p class="text-base text-brand-700 font-light mb-10 max-w-2xl mx-auto leading-relaxed">
-                    Looking for a customized measurement, a unique color palette, or a specialized design? Let’s collaborate to create something exclusively for you.
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-500/10 text-brand-500 mb-6 text-2xl border border-brand-500/20 shadow-[0_0_30px_rgba(229,141,103,0.1)]">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-6">Bespoke Commissions</h2>
+                <p class="text-lg text-text-muted font-light mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Have a specific vision? Whether it’s a custom color palette, precise sizing, or a completely new concept, let’s craft something uniquely yours.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-800 text-white px-8 py-3.5 rounded-lg font-medium text-sm hover:bg-brand-700 transition-colors shadow-sm">
-                        Request a Commission
+                <div class="flex flex-col sm:flex-row gap-5 justify-center">
+                    <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-500 text-surface-900 px-8 py-4 rounded-full font-bold text-base hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.3)] active:scale-95">
+                        Submit a Request
                     </button>
-                    <button onclick="openAiModal()" class="bg-brand-50 border border-brand-200 text-brand-800 px-8 py-3.5 rounded-lg font-medium text-sm hover:bg-brand-100 transition-colors flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles text-brand-500"></i> AI Idea Generator
+                    <button onclick="openAiModal()" class="bg-white/5 border border-white/10 text-text-main px-8 py-4 rounded-full font-medium text-base hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-sm">
+                        AI Gift Concierge
                     </button>
                 </div>
             </div>
@@ -358,121 +375,106 @@
 
     </main>
 
-    <!-- Consolidated Footer (No floating buttons) -->
-    <footer id="contact" class="bg-brand-900 text-brand-50 pt-20 pb-10 mt-auto">
+    <footer id="contact" class="bg-surface-900 pt-24 pb-10 border-t border-white/5 relative z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 border-b border-brand-800 pb-16">
-                
-                <!-- Brand Info -->
-                <div class="md:col-span-4">
-                    <a href="#" class="font-serif text-2xl text-white flex items-center gap-2 mb-4">
-                        <i class="fa-solid fa-fan text-brand-400 text-lg"></i> HandKnot Haven
-                    </a>
-                    <p class="text-brand-300 text-sm font-light leading-relaxed mb-6">
-                        Premium handcrafted crochet, designed to bring warmth and elegance to your everyday life.
-                    </p>
-                </div>
-
-                <!-- Structured "Get in Touch" -->
-                <div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-3 gap-6">
-                    
-                    <a href="https://wa.me/919925617845" target="_blank" class="bg-brand-800 border border-brand-700 rounded-xl p-6 transition-colors hover:bg-brand-700 group flex flex-col items-start">
-                        <i class="fa-brands fa-whatsapp text-brand-400 text-2xl mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h4 class="text-white font-medium text-sm mb-1">WhatsApp Studio</h4>
-                        <p class="text-brand-300 text-xs font-light">+91 99256 17845</p>
-                    </a>
-
-                    <a href="mailto:handknothaven@gmail.com" class="bg-brand-800 border border-brand-700 rounded-xl p-6 transition-colors hover:bg-brand-700 group flex flex-col items-start">
-                        <i class="fa-regular fa-envelope text-brand-400 text-2xl mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h4 class="text-white font-medium text-sm mb-1">Email Support</h4>
-                        <p class="text-brand-300 text-xs font-light break-all">handknothaven@gmail.com</p>
-                    </a>
-
-                    <button onclick="openOrdersModal()" class="bg-brand-800 border border-brand-700 rounded-xl p-6 transition-colors hover:bg-brand-700 group flex flex-col items-start text-left">
-                        <i class="fa-solid fa-box-open text-brand-400 text-2xl mb-4 group-hover:scale-110 transition-transform"></i>
-                        <h4 class="text-white font-medium text-sm mb-1">Track Order</h4>
-                        <p class="text-brand-300 text-xs font-light">Check delivery status</p>
-                    </button>
-
-                </div>
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-serif text-text-main mb-4">Connect with the Studio</h2>
+                <p class="text-text-muted font-light text-lg">No floating widgets. Just direct, easy communication.</p>
             </div>
 
-            <div class="pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-                <p class="text-brand-400 text-xs font-light tracking-wide">
-                    &copy; 2026 HandKnot Haven. Crafted by Vaishali.
-                </p>
-                <p class="text-brand-500 text-xs font-light">
-                    Based in Pune. Shipping across India.
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mb-20">
+                
+                <a href="https://wa.me/919925617845" target="_blank" class="glass-card p-8 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 rounded-full flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-whatsapp"></i>
+                    </div>
+                    <h3 class="text-text-main font-medium text-lg mb-1">WhatsApp</h3>
+                    <p class="text-text-muted text-sm">+91 99256 17845</p>
+                </a>
+
+                <a href="mailto:handknothaven@gmail.com" class="glass-card p-8 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <h3 class="text-text-main font-medium text-lg mb-1">Email</h3>
+                    <p class="text-text-muted text-sm break-all">handknothaven@gmail.com</p>
+                </a>
+
+                <button onclick="openOrdersModal()" class="glass-card p-8 flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 bg-white/5 text-white/70 border border-white/10 rounded-full flex items-center justify-center text-2xl mb-5 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </div>
+                    <h3 class="text-text-main font-medium text-lg mb-1">Track Order</h3>
+                    <p class="text-text-muted text-sm">Live shipping updates</p>
+                </button>
+
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left border-t border-white/5 pt-8">
+                <a href="#" class="font-serif text-xl text-text-main flex items-center gap-2">
+                    <i class="fa-solid fa-fan text-brand-500"></i> HandKnot Haven
+                </a>
+                <p class="text-text-muted text-xs font-light tracking-widest uppercase">
+                    &copy; 2026 Crafted by Vaishali • Tathawade, Pune
                 </p>
             </div>
         </div>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- MODALS SECTION (Clean & Elegant) -->
-    <!-- ========================================== -->
-
-    <!-- Product Details Modal -->
     <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm transition-opacity" onclick="closeProductModal()"></div>
-        <div class="relative bg-white w-full max-w-5xl mx-4 rounded-2xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0" id="product-modal-content">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md transition-opacity" onclick="closeProductModal()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-5xl mx-4 rounded-2xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0" id="product-modal-content">
             
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-neutral-400 hover:text-brand-900 z-20 bg-white/80 w-8 h-8 rounded-full flex items-center justify-center transition-colors">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-text-muted hover:text-white z-20 bg-black/40 backdrop-blur w-10 h-10 rounded-full flex items-center justify-center transition-colors">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <!-- Image Section -->
-            <div class="md:w-1/2 h-72 md:h-auto bg-brand-50">
+            <div class="md:w-1/2 h-72 md:h-auto bg-surface-900 relative">
+                <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 pointer-events-none"></div>
                 <img id="modal-img" src="" class="w-full h-full object-cover">
             </div>
 
-            <!-- Details Section -->
-            <div class="md:w-1/2 p-8 md:p-12 overflow-y-auto flex flex-col bg-white">
-                <div class="text-xs text-brand-500 font-semibold tracking-widest uppercase mb-3" id="modal-category"></div>
-                <h3 class="text-3xl font-serif text-brand-900 mb-4" id="modal-title"></h3>
+            <div class="md:w-1/2 p-8 md:p-12 overflow-y-auto flex flex-col">
+                <div class="text-[10px] text-brand-400 font-bold tracking-widest uppercase mb-3 border border-brand-500/30 bg-brand-500/10 w-max px-3 py-1 rounded" id="modal-category"></div>
+                <h3 class="text-3xl font-serif text-text-main mb-4" id="modal-title"></h3>
                 <div class="mb-6" id="modal-price"></div>
-                <p class="text-brand-700 font-light mb-8 leading-relaxed text-sm" id="modal-desc"></p>
+                <p class="text-text-muted font-light mb-8 leading-relaxed text-sm" id="modal-desc"></p>
 
-                <!-- Spec Grid -->
-                <div class="grid grid-cols-2 gap-6 mb-8 border-y border-brand-100 py-6">
-                    <div>
-                        <h4 class="font-semibold text-brand-900 text-xs uppercase tracking-wide mb-1" id="modal-material-name">Material</h4>
-                        <p class="text-brand-600 text-xs font-light" id="modal-material-benefit">Benefit</p>
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                        <h4 class="font-medium text-text-main text-xs uppercase tracking-wider mb-1" id="modal-material-name">Material</h4>
+                        <p class="text-brand-400 text-xs font-light" id="modal-material-benefit">Benefit</p>
                     </div>
-                    <div>
-                        <h4 class="font-semibold text-brand-900 text-xs uppercase tracking-wide mb-1">Craft Time</h4>
-                        <p class="text-brand-600 text-xs font-light" id="modal-crafting-time"></p>
+                    <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                        <h4 class="font-medium text-text-main text-xs uppercase tracking-wider mb-1">Craft Time</h4>
+                        <p class="text-brand-400 text-xs font-light" id="modal-crafting-time"></p>
                     </div>
                 </div>
 
-                <!-- Customization Form -->
                 <div class="space-y-6 mb-8 flex-grow">
-                    <!-- Size Selection -->
                     <div id="modal-size-section" class="hidden">
-                        <h4 class="font-medium text-brand-900 mb-3 text-sm">Measurements (Optional)</h4>
+                        <h4 class="font-medium text-text-main mb-3 text-sm">Measurements (Optional)</h4>
                         <div class="grid grid-cols-2 gap-3">
-                            <input type="text" id="measure-bust" placeholder="Bust (in)" class="w-full p-2.5 border border-brand-200 rounded-lg text-sm bg-brand-50">
-                            <input type="text" id="measure-waist" placeholder="Waist (in)" class="w-full p-2.5 border border-brand-200 rounded-lg text-sm bg-brand-50">
-                            <input type="text" id="measure-hips" placeholder="Hips (in)" class="w-full p-2.5 border border-brand-200 rounded-lg text-sm bg-brand-50">
-                            <input type="text" id="measure-length" placeholder="Length (in)" class="w-full p-2.5 border border-brand-200 rounded-lg text-sm bg-brand-50">
+                            <input type="text" id="measure-bust" placeholder="Bust" class="w-full p-3 rounded-lg text-sm">
+                            <input type="text" id="measure-waist" placeholder="Waist" class="w-full p-3 rounded-lg text-sm">
+                            <input type="text" id="measure-hips" placeholder="Hips" class="w-full p-3 rounded-lg text-sm">
+                            <input type="text" id="measure-length" placeholder="Length" class="w-full p-3 rounded-lg text-sm">
                         </div>
                     </div>
 
-                    <!-- Custom Additions -->
                     <div>
-                        <h4 class="font-medium text-brand-900 mb-3 text-sm">Design Notes</h4>
-                        <textarea id="modal-custom" rows="2" class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50 resize-none" placeholder="Preferred color changes or specifics..."></textarea>
+                        <h4 class="font-medium text-text-main mb-3 text-sm">Design Notes</h4>
+                        <textarea id="modal-custom" rows="2" class="w-full p-3 rounded-lg text-sm resize-none" placeholder="Preferred color changes..."></textarea>
                     </div>
                 </div>
 
-                <!-- Addons -->
-                <div id="storefront-customization-engine" class="hidden border-b border-brand-100 pb-6 mb-6">
-                    <h4 class="font-medium text-brand-900 mb-3 text-sm">Optional Additions</h4>
+                <div id="storefront-customization-engine" class="hidden border-t border-white/10 pt-6 mb-6">
+                    <h4 class="font-medium text-text-main mb-3 text-sm">Optional Additions</h4>
                     <div id="storefront-addons-list" class="space-y-2"></div>
                 </div>
 
                 <div class="mt-auto">
-                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-800 text-white py-3.5 rounded-lg font-medium text-sm hover:bg-brand-700 transition-colors flex justify-center items-center gap-2">
+                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.3)] active:scale-95 flex justify-center items-center gap-2">
                         Add to Basket — <span id="modal-btn-price"></span>
                     </button>
                 </div>
@@ -480,84 +482,62 @@
         </div>
     </div>
 
-    <!-- Order Confirmation Modal -->
-    <div id="order-confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeOrderConfirmation()"></div>
-        <div class="relative bg-white w-full max-w-sm mx-4 rounded-xl shadow-2xl flex flex-col overflow-hidden transform transition-all scale-95 opacity-0">
-            <div class="p-8 text-center relative border-b border-brand-100">
-                <button onclick="closeOrderConfirmation()" class="absolute top-4 right-4 text-neutral-400 hover:text-brand-900"><i class="fa-solid fa-xmark"></i></button>
-                <div class="w-16 h-16 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4"><i class="fa-solid fa-check"></i></div>
-                <h2 class="text-2xl font-serif text-brand-900 mb-1">Order Confirmed</h2>
-                <p class="text-brand-600 text-xs">Reference: <span id="confirm-order-id" class="font-medium"></span></p>
-            </div>
-            <div class="p-6 bg-brand-50 text-center">
-                <p class="text-xs text-brand-500 uppercase tracking-widest font-medium mb-1">Expected Dispatch</p>
-                <p class="text-brand-900 font-medium mb-6" id="confirm-dispatch-date"></p>
-                
-                <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-white border border-brand-200 text-brand-800 py-3 rounded-lg text-sm font-medium hover:bg-brand-100 transition-colors mb-3">Track Order</button>
-                <button onclick="closeOrderConfirmation()" class="w-full bg-brand-800 text-white py-3 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors">Continue Shopping</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Checkout Modal -->
     <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeCheckoutForm()"></div>
-        <div class="relative bg-white w-full max-w-md mx-4 rounded-xl shadow-2xl overflow-hidden transform transition-all scale-95 opacity-0">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-xl font-serif text-brand-900">Delivery Details</h3>
-                <button onclick="closeCheckoutForm()" class="text-brand-400 hover:text-brand-900"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeCheckoutForm()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-lg mx-4 rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
+                <h3 class="text-xl font-serif text-text-main">Delivery Details</h3>
+                <button onclick="closeCheckoutForm()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-4 bg-white">
+            <form onsubmit="handleCheckoutForm(event)" class="p-8 space-y-5">
                 <div>
-                    <label class="block text-xs font-semibold text-brand-800 mb-1">Full Name</label>
-                    <input type="text" id="cust-name" required class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50" />
+                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Full Name</label>
+                    <input type="text" id="cust-name" required class="w-full p-3 rounded-lg text-sm" />
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-brand-800 mb-1">Phone Number</label>
-                    <input type="tel" id="cust-phone" required class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50" />
+                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Phone Number</label>
+                    <input type="tel" id="cust-phone" required class="w-full p-3 rounded-lg text-sm" />
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-brand-800 mb-1">Email</label>
-                    <input type="email" id="cust-email" required class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50" />
+                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Email</label>
+                    <input type="email" id="cust-email" required class="w-full p-3 rounded-lg text-sm" />
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-brand-800 mb-1">Full Address</label>
-                    <textarea id="cust-address" required rows="3" class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50 resize-none"></textarea>
+                    <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Full Address</label>
+                    <textarea id="cust-address" required rows="3" class="w-full p-3 rounded-lg text-sm resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-brand-800 text-white py-3.5 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors mt-2">
+                <button type="submit" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.3)] mt-2">
                     Continue to Payment
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- Payment Modal -->
     <div id="payment-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closePaymentModal()"></div>
-        <div class="relative bg-white w-full max-w-md mx-4 rounded-xl shadow-2xl flex flex-col transform transition-all scale-95 opacity-0">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-xl font-serif text-brand-900 flex items-center gap-2"><i class="fa-solid fa-lock text-brand-400"></i> Secure Checkout</h3>
-                <button onclick="closePaymentModal()" class="text-brand-400 hover:text-brand-900"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closePaymentModal()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-md mx-4 rounded-2xl shadow-2xl flex flex-col transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
+                <h3 class="text-xl font-serif text-text-main flex items-center gap-2"><i class="fa-solid fa-lock text-brand-500"></i> Secure Checkout</h3>
+                <button onclick="closePaymentModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div class="p-8 bg-white">
+            <div class="p-8">
                 <div class="text-center mb-8">
-                    <p class="text-xs font-medium text-brand-500 uppercase tracking-widest mb-1">Total</p>
-                    <h2 class="text-3xl font-serif text-brand-900" id="payment-total-amount">₹0.00</h2>
+                    <p class="text-xs font-medium text-text-muted uppercase tracking-widest mb-2">Amount to Pay</p>
+                    <h2 class="text-4xl font-serif text-text-main" id="payment-total-amount">₹0.00</h2>
                 </div>
-                <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-brand-900 text-white py-3.5 rounded-lg font-medium text-sm hover:bg-brand-800 transition-colors flex justify-center items-center mb-6">
-                    Pay securely with Razorpay
+                <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-white text-black py-4 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 mb-6">
+                    <i class="fa-solid fa-building-columns"></i> Pay via Razorpay
                 </button>
                 
                 <div class="flex items-center gap-4 mb-6">
-                    <div class="flex-1 h-px bg-brand-100"></div>
-                    <span class="text-xs text-brand-400 font-medium uppercase tracking-widest">Or</span>
-                    <div class="flex-1 h-px bg-brand-100"></div>
+                    <div class="flex-1 h-px bg-white/10"></div>
+                    <span class="text-xs text-text-muted font-medium uppercase tracking-widest">Or</span>
+                    <div class="flex-1 h-px bg-white/10"></div>
                 </div>
 
-                <div class="bg-brand-50 border border-brand-200 rounded-lg p-6 text-center">
-                    <p class="text-sm font-medium text-brand-800 mb-4">Manual UPI: <span class="font-semibold bg-white px-2 py-1 rounded border border-brand-100">handknothaven@upi</span></p>
-                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-white border border-brand-300 text-brand-700 py-2.5 rounded-lg text-sm font-medium hover:bg-brand-100 transition-colors">
+                <div class="bg-white/5 border border-white/10 rounded-xl p-6 text-center">
+                    <p class="text-sm text-text-main mb-4">UPI: <span class="font-bold text-brand-400 tracking-wide">handknothaven@upi</span></p>
+                    <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-transparent border border-brand-500 text-brand-400 py-3 rounded-lg text-sm font-medium hover:bg-brand-500/10 transition-colors">
                         Confirm Manual Payment
                     </button>
                 </div>
@@ -565,104 +545,82 @@
         </div>
     </div>
 
-    <!-- Order Tracking Modal -->
+    <div id="order-confirmation-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeOrderConfirmation()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-sm mx-4 rounded-2xl shadow-2xl flex flex-col overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-8 text-center relative border-b border-white/5 bg-surface-900/50">
+                <button onclick="closeOrderConfirmation()" class="absolute top-4 right-4 text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+                <div class="w-16 h-16 bg-green-500/20 text-green-400 rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-green-500/30 shadow-[0_0_15px_rgba(74,222,128,0.2)]"><i class="fa-solid fa-check"></i></div>
+                <h2 class="text-2xl font-serif text-text-main mb-1">Order Confirmed</h2>
+                <p class="text-text-muted text-xs">Reference: <span id="confirm-order-id" class="text-brand-400 font-medium"></span></p>
+            </div>
+            <div class="p-6 text-center">
+                <p class="text-xs text-text-muted uppercase tracking-widest font-medium mb-1">Expected Dispatch</p>
+                <p class="text-brand-400 font-medium mb-6" id="confirm-dispatch-date"></p>
+                
+                <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-white/5 border border-white/10 text-text-main py-3 rounded-lg text-sm font-medium hover:bg-white/10 transition-colors mb-3">Track Order</button>
+                <button onclick="closeOrderConfirmation()" class="w-full bg-brand-500 text-surface-900 py-3 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors">Continue Shopping</button>
+            </div>
+        </div>
+    </div>
+
     <div id="orders-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeOrdersModal()"></div>
-        <div class="relative bg-white w-full max-w-2xl mx-4 rounded-xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-xl font-serif text-brand-900" id="orders-modal-title">Track Order</h3>
-                <button onclick="closeOrdersModal()" class="text-brand-400 hover:text-brand-900"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeOrdersModal()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-2xl mx-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
+                <h3 class="text-xl font-serif text-text-main" id="orders-modal-title">Track Order</h3>
+                <button onclick="closeOrdersModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div id="tracking-search-bar" class="p-6 border-b border-brand-100 bg-white">
+            <div id="tracking-search-bar" class="p-6 border-b border-white/5">
                 <div class="flex gap-3">
-                    <input type="text" id="track-order-input" placeholder="Enter Order ID" class="flex-1 p-3 border border-brand-200 rounded-lg text-sm focus:border-brand-500 outline-none bg-brand-50">
-                    <button onclick="trackOrderSubmit()" class="px-6 py-3 bg-brand-800 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors">Find</button>
+                    <input type="text" id="track-order-input" placeholder="Enter Order ID..." class="flex-1 p-3 rounded-lg text-sm">
+                    <button onclick="trackOrderSubmit()" class="px-6 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors">Find</button>
                 </div>
             </div>
 
-            <div id="orders-list-view" class="p-6 overflow-y-auto flex-1 bg-brand-50/50"></div>
-            <div id="order-detail-view" class="p-6 overflow-y-auto flex-1 hidden bg-white"></div>
+            <div id="orders-list-view" class="p-6 overflow-y-auto flex-1"></div>
+            <div id="order-detail-view" class="p-6 overflow-y-auto flex-1 hidden"></div>
         </div>
     </div>
 
-    <!-- AI Gift Finder Modal -->
-    <div id="ai-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeAiModal()"></div>
-        <div class="relative bg-white w-full max-w-xl mx-4 rounded-xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-xl font-serif text-brand-900">AI Concept Generator</h3>
-                <button onclick="closeAiModal()" class="text-brand-400 hover:text-brand-900"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-            
-            <div class="p-8 overflow-y-auto flex-1">
-                <div id="ai-input-view">
-                    <label class="block text-brand-800 font-medium mb-3 text-sm">Describe the recipient or occasion.</label>
-                    <textarea id="ai-prompt" rows="4" class="w-full p-4 border border-brand-200 bg-brand-50 rounded-lg focus:border-brand-400 outline-none text-sm resize-none mb-4" placeholder="e.g., A housewarming gift..."></textarea>
-                    <button onclick="generateIdea()" class="w-full bg-brand-800 text-white py-3.5 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors">
-                        Generate Concept
-                    </button>
-                </div>
-                
-                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-12 text-center text-brand-500">
-                    <div class="loader mb-4 border-brand-200 border-t-brand-500"></div>
-                    <p class="text-sm font-medium">Curating ideas...</p>
-                </div>
-                
-                <div id="ai-result-view" class="hidden flex-col">
-                    <div id="ai-result-content" class="text-brand-800 text-sm font-light leading-relaxed mb-6 bg-brand-50 p-6 rounded-lg border border-brand-100"></div>
-                    <div class="flex gap-4">
-                        <button onclick="resetAiModal()" class="flex-1 py-3 border border-brand-200 rounded-lg text-sm font-medium text-brand-700 hover:bg-brand-50 transition-colors">Retry</button>
-                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3 bg-brand-800 text-white rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors">Request Concept</button>
-                    </div>
-                </div>
-                
-                <div id="ai-error-view" class="hidden flex-col items-center justify-center py-12 text-center text-brand-600">
-                    <p class="text-sm font-medium mb-4">Connection issue. Please try again.</p>
-                    <button onclick="resetAiModal()" class="px-6 py-2.5 border border-brand-200 rounded-lg text-sm hover:bg-brand-50">Back</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Custom Order Modal -->
     <div id="custom-order-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
-        <div class="absolute inset-0 bg-brand-900/40 backdrop-blur-sm" onclick="closeCustomOrderModal()"></div>
-        <div class="relative bg-white w-full max-w-xl mx-4 rounded-xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all scale-95 opacity-0">
-            <div class="p-6 border-b border-brand-100 flex justify-between items-center bg-brand-50">
-                <h3 class="text-xl font-serif text-brand-900">Commission Request</h3>
-                <button onclick="closeCustomOrderModal()" class="text-brand-400 hover:text-brand-900"><i class="fa-solid fa-xmark"></i></button>
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeCustomOrderModal()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-xl mx-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
+                <h3 class="text-xl font-serif text-text-main">Commission Request</h3>
+                <button onclick="closeCustomOrderModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
             <div class="p-8 overflow-y-auto flex-1">
                 <form id="custom-order-form" onsubmit="submitCustomOrder(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-brand-800 mb-1">Your Name</label>
-                        <input type="text" id="custom-req-name" required class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50" />
+                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Your Name</label>
+                        <input type="text" id="custom-req-name" required class="w-full p-3 rounded-lg text-sm" />
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-brand-800 mb-1">Phone Number</label>
-                            <input type="tel" id="custom-req-phone" required class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50" />
+                            <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Phone</label>
+                            <input type="tel" id="custom-req-phone" required class="w-full p-3 rounded-lg text-sm" />
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-brand-800 mb-1">Email Address</label>
-                            <input type="email" id="custom-req-email" required class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50" />
+                            <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Email</label>
+                            <input type="email" id="custom-req-email" required class="w-full p-3 rounded-lg text-sm" />
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-brand-800 mb-1">Delivery Address</label>
-                        <textarea id="custom-req-address" required rows="2" class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50 resize-none"></textarea>
+                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Delivery Address</label>
+                        <textarea id="custom-req-address" required rows="2" class="w-full p-3 rounded-lg text-sm resize-none"></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-brand-800 mb-1">Description</label>
-                        <textarea id="custom-req-desc" required rows="3" class="w-full p-3 border border-brand-200 rounded-lg text-sm bg-brand-50 resize-none" placeholder="Colors, measurements..."></textarea>
+                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Description</label>
+                        <textarea id="custom-req-desc" required rows="3" class="w-full p-3 rounded-lg text-sm resize-none" placeholder="Visions, colors..."></textarea>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-brand-800 mb-1">Reference Image (Optional)</label>
-                        <input type="file" id="custom-req-image" accept="image/*" class="w-full text-xs text-brand-600 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-medium file:bg-brand-100 file:text-brand-800 cursor-pointer border border-brand-200 rounded-lg p-2 bg-brand-50" />
+                        <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Reference Image (Optional)</label>
+                        <input type="file" id="custom-req-image" accept="image/*" class="w-full text-xs text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-medium file:bg-white/10 file:text-white cursor-pointer border border-white/10 rounded-lg p-2 bg-black/20" />
                     </div>
-                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-800 text-white py-3.5 rounded-lg text-sm font-medium hover:bg-brand-700 transition-colors mt-2">
+                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors mt-4 shadow-[0_0_15px_rgba(229,141,103,0.2)]">
                         Submit Request
                     </button>
                 </form>
@@ -670,45 +628,78 @@
         </div>
     </div>
 
-    <!-- Application Logic (Retained functionality) -->
+    <div id="ai-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+        <div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="closeAiModal()"></div>
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-xl mx-4 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-500 scale-95 opacity-0">
+            <div class="p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
+                <h3 class="text-xl font-serif text-text-main flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-brand-400"></i> AI Concept Generator</h3>
+                <button onclick="closeAiModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="p-8 overflow-y-auto flex-1">
+                <div id="ai-input-view">
+                    <label class="block text-text-main font-medium mb-3 text-sm">Describe the recipient or occasion.</label>
+                    <textarea id="ai-prompt" rows="4" class="w-full p-4 rounded-lg text-sm resize-none mb-4" placeholder="e.g., A housewarming gift for a moody apartment..."></textarea>
+                    <button onclick="generateIdea()" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.2)]">
+                        Generate Concept
+                    </button>
+                </div>
+                
+                <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-12 text-center text-brand-400">
+                    <div class="loader mb-4 border-white/10 border-t-brand-500"></div>
+                    <p class="text-sm font-medium">Curating ideas...</p>
+                </div>
+                
+                <div id="ai-result-view" class="hidden flex-col">
+                    <div id="ai-result-content" class="text-text-main text-sm font-light leading-relaxed mb-6 bg-black/20 p-6 rounded-lg border border-white/5"></div>
+                    <div class="flex gap-4">
+                        <button onclick="resetAiModal()" class="flex-1 py-3 border border-white/10 rounded-lg text-sm font-medium text-text-muted hover:bg-white/5 transition-colors">Retry</button>
+                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(229,141,103,0.2)]">Request Concept</button>
+                    </div>
+                </div>
+                
+                <div id="ai-error-view" class="hidden flex-col items-center justify-center py-12 text-center text-brand-500">
+                    <p class="text-sm font-medium mb-4">Connection issue. Please try again.</p>
+                    <button onclick="resetAiModal()" class="px-6 py-2.5 border border-white/10 rounded-lg text-sm hover:bg-white/5 text-text-main">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         const SHOP_CONFIG = {
             takingOrders: true,
             pausedMessage: "Commissions are currently paused.",
             showSaleBanner: true,
-            saleMessage: "Enjoy Up to 30% Off Selected Creations"
+            saleMessage: "Opening Sale: Up to 30% Off Selected Creations"
         };
 
         let products = [
             {
-                id: 1, name: "Ruby Bloom Baby Dress", price: 1500.00, category: "Clothing",
+                id: 1, name: "Midnight Bloom Dress", price: 1500.00, category: "Clothing",
                 image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=1972&auto=format&fit=crop",
-                badge: "Bespoke", description: "A charming handmade dress featuring a ruby-red body with ivory accents.",
-                perfectFor: "Special occasions.", careInstructions: "Hand wash cold.", materialName: "Organic Cotton",
-                materialBenefit: "Highly breathable.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{name:"Matching Bow", price: 200}]
+                badge: "Bespoke", description: "An elegant piece featuring a rich ruby-red body with delicate accents.",
+                perfectFor: "Special occasions.", careInstructions: "Hand wash cold, lay flat.", materialName: "Organic Cotton",
+                materialBenefit: "Highly breathable.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{name:"Matching Trim", price: 200}]
             },
             {
-                id: 2, name: "Azure Lace Crop Top", price: 2200, category: "Clothing",
+                id: 2, name: "Azure Lace Crop", price: 2200, category: "Clothing",
                 image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=80&w=2000&auto=format&fit=crop",
-                badge: "Classic", description: "Beautifully handcrafted crop top designed for effortless style.",
-                perfectFor: "Casual wear.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
-                materialBenefit: "Soft and light.", craftingTime: "4-5 days"
+                badge: "Custom Color", description: "Handcrafted crop top designed for sophisticated layering.",
+                perfectFor: "Resort wear.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
+                materialBenefit: "Soft structure.", craftingTime: "4-5 days"
             },
             {
                 id: 3, name: "Sunny Bloom Pot", price: 300.00, category: "Decor & Flowers",
                 image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=2070&auto=format&fit=crop",
-                badge: "Popular", description: "Bring a little sunshine indoors with this beautiful crochet sunflower.",
-                perfectFor: "Home decor.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
+                badge: "Classic", description: "Bring warmth indoors with this structured crochet decor piece.",
+                perfectFor: "Desk accent.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
                 materialBenefit: "Firm structure.", craftingTime: "2-3 days"
             }
         ];
 
-        let cart = [];
-        let currentFilter = 'all';
-        let currentModalProductId = null;
-        let userOrders = [];
-        let activeProductAddons = [];
-        let currentModalCalculatedBasePrice = 0;
+        let cart = []; let currentFilter = 'all'; let currentModalProductId = null; let userOrders = []; let activeProductAddons = []; let currentModalCalculatedBasePrice = 0;
 
         const productGrid = document.getElementById('product-grid');
         const filterBtns = document.querySelectorAll('.filter-btn');
@@ -721,20 +712,13 @@
         const toast = document.getElementById('toast');
 
         const modals = {
-            product: document.getElementById('product-modal'),
-            productContent: document.getElementById('product-modal-content'),
-            orderConf: document.getElementById('order-confirmation-modal'),
-            orderConfContent: document.querySelector('#order-confirmation-modal > div:last-child'),
-            checkout: document.getElementById('checkout-form-modal'),
-            checkoutContent: document.querySelector('#checkout-form-modal > div:last-child'),
-            payment: document.getElementById('payment-modal'),
-            paymentContent: document.querySelector('#payment-modal > div:last-child'),
-            orders: document.getElementById('orders-modal'),
-            ordersContent: document.querySelector('#orders-modal > div:last-child'),
-            ai: document.getElementById('ai-modal'),
-            aiContent: document.querySelector('#ai-modal > div:last-child'),
-            custom: document.getElementById('custom-order-modal'),
-            customContent: document.querySelector('#custom-order-modal > div:last-child')
+            product: document.getElementById('product-modal'), productContent: document.getElementById('product-modal-content'),
+            orderConf: document.getElementById('order-confirmation-modal'), orderConfContent: document.querySelector('#order-confirmation-modal > div:last-child'),
+            checkout: document.getElementById('checkout-form-modal'), checkoutContent: document.querySelector('#checkout-form-modal > div:last-child'),
+            payment: document.getElementById('payment-modal'), paymentContent: document.querySelector('#payment-modal > div:last-child'),
+            orders: document.getElementById('orders-modal'), ordersContent: document.querySelector('#orders-modal > div:last-child'),
+            ai: document.getElementById('ai-modal'), aiContent: document.querySelector('#ai-modal > div:last-child'),
+            custom: document.getElementById('custom-order-modal'), customContent: document.querySelector('#custom-order-modal > div:last-child')
         };
 
         function init() {
@@ -746,26 +730,22 @@
                 const nav = document.getElementById('navbar');
                 const promoBanner = document.getElementById('promo-banner');
                 const bannerHeight = promoBanner && !promoBanner.classList.contains('hidden') ? promoBanner.offsetHeight : 0;
-                if (window.scrollY > 10) { nav.style.top = '0px'; nav.classList.add('shadow-soft', 'glass-nav'); nav.classList.remove('bg-transparent'); } 
-                else { nav.style.top = bannerHeight + 'px'; nav.classList.remove('shadow-soft', 'glass-nav'); nav.classList.add('bg-transparent'); }
+                if (window.scrollY > 10) { nav.style.top = '0px'; nav.classList.add('shadow-xl', 'glass-nav'); nav.classList.remove('bg-transparent'); } 
+                else { nav.style.top = bannerHeight + 'px'; nav.classList.remove('shadow-xl', 'glass-nav'); nav.classList.add('bg-transparent'); }
             });
         }
 
         function applyShopStatus() {
-            const banner = document.getElementById('shop-status-banner');
-            const customBtn = document.getElementById('trigger-custom-order-btn');
-            const checkoutBtn = document.getElementById('checkout-btn');
-            const promoBanner = document.getElementById('promo-banner');
+            const banner = document.getElementById('shop-status-banner'); const customBtn = document.getElementById('trigger-custom-order-btn');
+            const checkoutBtn = document.getElementById('checkout-btn'); const promoBanner = document.getElementById('promo-banner');
 
-            if (SHOP_CONFIG.showSaleBanner) {
-                promoBanner.classList.remove('hidden'); document.getElementById('promo-text').textContent = SHOP_CONFIG.saleMessage;
-                document.getElementById('navbar').style.top = promoBanner.offsetHeight + 'px';
-            } else { promoBanner.classList.add('hidden'); document.getElementById('navbar').style.top = '0px'; }
+            if (SHOP_CONFIG.showSaleBanner) { promoBanner.classList.remove('hidden'); document.getElementById('promo-text').textContent = SHOP_CONFIG.saleMessage; document.getElementById('navbar').style.top = promoBanner.offsetHeight + 'px'; } 
+            else { promoBanner.classList.add('hidden'); document.getElementById('navbar').style.top = '0px'; }
 
             if (!SHOP_CONFIG.takingOrders) {
-                banner.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden');
-                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-800', 'bg-neutral-300'); customBtn.innerHTML = 'Orders Paused'; }
-                if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-800', 'bg-neutral-300'); checkoutBtn.innerHTML = 'Checkout Paused'; }
+                banner.innerHTML = `<i class="fa-solid fa-circle-info text-brand-500"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden');
+                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-500', 'bg-surface-600'); customBtn.classList.replace('text-surface-900', 'text-text-muted'); customBtn.innerHTML = 'Orders Paused'; customBtn.classList.remove('shadow-[0_0_20px_rgba(229,141,103,0.3)]'); }
+                if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-500', 'bg-surface-600'); checkoutBtn.classList.replace('text-surface-900', 'text-text-muted'); checkoutBtn.innerHTML = 'Checkout Paused'; checkoutBtn.classList.remove('shadow-[0_0_20px_rgba(229,141,103,0.2)]'); }
             }
         }
 
@@ -775,26 +755,27 @@
 
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
-                card.className = 'product-card cozy-card overflow-hidden flex flex-col group cursor-pointer';
+                card.className = 'product-card glass-card overflow-hidden flex flex-col group cursor-pointer';
                 card.onclick = () => openProductModal(product.id);
 
                 const rawPrice = Number(product.price || 0); const discountPct = Number(product.discount || 0);
-                let priceDisplay = `<span class="text-base font-semibold text-brand-900">₹${rawPrice.toFixed(2)}</span>`;
+                let priceDisplay = `<span class="text-base font-semibold text-text-main">₹${rawPrice.toFixed(2)}</span>`;
 
                 if (discountPct > 0) {
                     const calculatedSalePrice = rawPrice - (rawPrice * (discountPct / 100));
-                    priceDisplay = `<div class="flex items-baseline gap-2"><span class="text-base font-semibold text-brand-900">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-xs font-normal text-brand-400 line-through">₹${rawPrice.toFixed(2)}</span></div>`;
+                    priceDisplay = `<div class="flex items-baseline gap-2"><span class="text-base font-semibold text-text-main">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-xs font-normal text-text-muted line-through">₹${rawPrice.toFixed(2)}</span></div>`;
                 }
 
                 card.innerHTML = `
-                <div class="relative aspect-[4/3] overflow-hidden bg-brand-50 border-b border-brand-100">
-                    ${product.badge ? `<span class="absolute top-3 left-3 bg-white text-brand-700 text-[10px] font-medium tracking-wide px-2.5 py-1 rounded-md z-10 border border-brand-100">${product.badge}</span>` : ''}
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <div class="relative aspect-[4/3] overflow-hidden bg-surface-900 border-b border-white/5">
+                    ${product.badge ? `<span class="absolute top-3 left-3 bg-brand-500/20 backdrop-blur-sm text-brand-400 border border-brand-500/30 text-[10px] font-medium tracking-wide px-2.5 py-1 rounded-md z-10">${product.badge}</span>` : ''}
+                    <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 transition-opacity opacity-0 group-hover:opacity-100 duration-500"></div>
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 </div>
-                <div class="p-4 flex flex-col flex-grow">
-                    <p class="text-[10px] text-brand-500 font-medium uppercase tracking-widest mb-1">${product.category}</p>
-                    <h3 class="text-sm font-serif font-medium text-brand-900 mb-2 truncate">${product.name}</h3>
-                    <div class="mt-auto pt-3 flex justify-between items-center">
+                <div class="p-5 flex flex-col flex-grow relative z-20">
+                    <p class="text-[10px] text-brand-500 font-medium uppercase tracking-widest mb-1.5">${product.category}</p>
+                    <h3 class="text-lg font-serif text-text-main mb-2 truncate">${product.name}</h3>
+                    <div class="mt-auto pt-4 flex justify-between items-center">
                         ${priceDisplay}
                     </div>
                 </div>`;
@@ -805,15 +786,15 @@
         function setupFilters() {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    filterBtns.forEach(b => { b.classList.remove('bg-brand-800', 'text-white'); b.classList.add('bg-brand-50', 'text-brand-700'); });
-                    e.target.classList.add('bg-brand-800', 'text-white'); e.target.classList.remove('bg-brand-50', 'text-brand-700');
+                    filterBtns.forEach(b => { b.classList.remove('bg-brand-500', 'text-surface-900', 'shadow-[0_0_15px_rgba(229,141,103,0.3)]'); b.classList.add('bg-white/5', 'text-text-muted', 'border-white/10'); b.classList.remove('border-transparent'); });
+                    e.target.classList.add('bg-brand-500', 'text-surface-900', 'border-transparent', 'shadow-[0_0_15px_rgba(229,141,103,0.3)]'); e.target.classList.remove('bg-white/5', 'text-text-muted', 'border-white/10');
                     currentFilter = e.target.dataset.filter; renderProducts();
                 });
             });
         }
 
         function openModal(modalObj) { modalObj.modal.classList.remove('hidden'); modalObj.modal.classList.add('flex'); setTimeout(() => modalObj.content.classList.replace('opacity-0', 'opacity-100'), 10); }
-        function closeModal(modalObj) { modalObj.content.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { modalObj.modal.classList.add('hidden'); modalObj.modal.classList.remove('flex'); }, 200); }
+        function closeModal(modalObj) { modalObj.content.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { modalObj.modal.classList.add('hidden'); modalObj.modal.classList.remove('flex'); }, 400); }
 
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId); if (!product) return;
@@ -822,10 +803,10 @@
 
             if (discountPct > 0) {
                 currentModalCalculatedBasePrice = rawPrice - (rawPrice * (discountPct / 100));
-                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-3"><span class="text-2xl font-serif text-brand-900">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-sm font-medium text-brand-400 line-through">₹${rawPrice.toFixed(2)}</span><span class="bg-brand-100 text-brand-700 text-[10px] font-medium px-2 py-1 rounded">Save ${discountPct}%</span></div>`;
+                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-3"><span class="text-2xl font-serif text-brand-400">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-sm font-medium text-text-muted line-through">₹${rawPrice.toFixed(2)}</span><span class="bg-brand-500/20 border border-brand-500/30 text-brand-400 text-[10px] font-medium px-2 py-1 rounded">Save ${discountPct}%</span></div>`;
             } else {
                 currentModalCalculatedBasePrice = rawPrice;
-                document.getElementById('modal-price').innerHTML = `<span class="text-2xl font-serif text-brand-900">₹${rawPrice.toFixed(2)}</span>`;
+                document.getElementById('modal-price').innerHTML = `<span class="text-2xl font-serif text-brand-400">₹${rawPrice.toFixed(2)}</span>`;
             }
 
             document.getElementById('modal-img').src = product.image || ''; document.getElementById('modal-category').textContent = product.category || '';
@@ -838,7 +819,7 @@
             addonListEl.innerHTML = ''; activeProductAddons = product.accessoryAddons || [];
             if (product.allowAddons && activeProductAddons.length > 0) {
                 addonContainer.classList.remove('hidden');
-                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-3 bg-brand-50 rounded-lg cursor-pointer border border-transparent hover:border-brand-200 transition-colors"><div class="flex items-center gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="accent-brand-600"><span class="text-sm text-brand-800">${item.name}</span></div><span class="text-xs font-medium text-brand-600">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
+                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-3 bg-black/20 rounded-lg cursor-pointer border border-white/5 hover:border-brand-500/30 transition-colors"><div class="flex items-center gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="accent-brand-500"><span class="text-sm text-text-main">${item.name}</span></div><span class="text-xs font-medium text-brand-400">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
             } else { addonContainer.classList.add('hidden'); }
 
             recalculateModalPrice(); openModal({modal: modals.product, content: modals.productContent});
@@ -874,18 +855,18 @@
             if (cart.length === 0) { emptyCartMsg.style.display = 'flex'; } else {
                 emptyCartMsg.style.display = 'none';
                 cart.forEach(item => {
-                    const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-4 py-4 border-b border-brand-100 last:border-0';
-                    row.innerHTML = `<img src="${item.image}" class="w-16 h-16 object-cover rounded-md border border-brand-100">
+                    const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-4 py-4 border-b border-white/5 last:border-0';
+                    row.innerHTML = `<img src="${item.image}" class="w-16 h-16 object-cover rounded-lg border border-white/10">
                     <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-brand-900 text-sm truncate mb-1">${item.name}</h4>
-                        <div class="text-brand-700 font-medium text-sm mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
+                        <h4 class="font-medium text-text-main text-sm truncate mb-1">${item.name}</h4>
+                        <div class="text-brand-400 font-medium text-sm mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
                         <div class="flex items-center gap-3">
-                            <div class="flex items-center bg-brand-50 border border-brand-200 rounded px-1">
-                                <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-6 h-6 text-brand-600 hover:text-brand-900">-</button>
-                                <span class="text-xs font-medium w-4 text-center">${item.quantity}</span>
-                                <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-6 h-6 text-brand-600 hover:text-brand-900">+</button>
+                            <div class="flex items-center bg-black/30 border border-white/10 rounded px-1">
+                                <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-6 h-6 text-text-muted hover:text-brand-400 transition-colors">-</button>
+                                <span class="text-xs font-medium w-4 text-center text-text-main">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-6 h-6 text-text-muted hover:text-brand-400 transition-colors">+</button>
                             </div>
-                            <button onclick="removeFromCart(${item.cartItemId})" class="text-brand-400 text-[10px] uppercase tracking-wide hover:text-brand-700 ml-auto">Remove</button>
+                            <button onclick="removeFromCart(${item.cartItemId})" class="text-text-muted hover:text-brand-500 transition-colors text-[10px] uppercase tracking-wide ml-auto">Remove</button>
                         </div>
                     </div>`; cartItemsContainer.appendChild(row);
                 });
@@ -899,25 +880,25 @@
         
         function handleCheckoutForm(e) {
             e.preventDefault(); document.getElementById('payment-total-amount').textContent = '₹' + cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
-            closeCheckoutForm(); setTimeout(() => openModal({modal: modals.payment, content: modals.paymentContent}), 250);
+            closeCheckoutForm(); setTimeout(() => openModal({modal: modals.payment, content: modals.paymentContent}), 400);
         }
         function closePaymentModal() { closeModal({modal: modals.payment, content: modals.paymentContent}); }
 
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (total <= 0) return;
-            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#4A3B32" } };
+            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#120E0C" } };
             try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function(res){ alert("Failed"); btn.innerHTML=orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down. Use UPI."); btn.innerHTML=orig; }
         }
 
-        function confirmManualUPIPayment() { const btn = document.getElementById('manual-upi-btn'); const orig = btn.innerHTML; btn.innerHTML = `<div class="loader border-brand-500 border-t-transparent mx-auto"></div>`; setTimeout(() => { finalizeOrderProcess(); btn.innerHTML=orig; }, 1500); }
+        function confirmManualUPIPayment() { const btn = document.getElementById('manual-upi-btn'); const orig = btn.innerHTML; btn.innerHTML = `<div class="loader mx-auto"></div>`; setTimeout(() => { finalizeOrderProcess(); btn.innerHTML=orig; }, 1500); }
 
         async function finalizeOrderProcess() {
             const orderId = 'HKH' + Date.now().toString().slice(-3) + Math.floor(100 + Math.random() * 900); const d = new Date(); d.setDate(d.getDate() + 7); const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             await saveOrder(orderId, totalPaid);
             emailjs.send("service_yt6ze52", "template_xyc0kaq", { order_id: orderId, customer_email: document.getElementById('cust-email').value, customer_name: document.getElementById('cust-name').value, product_name: cart.map(i => i.name).join(", "), total_amount: totalPaid }).catch(e=>e);
             userOrders.push({ id: orderId, created_at: new Date().toISOString(), total: totalPaid, order_status: 'confirmed' });
-            cart = []; updateCartUI(); closePaymentModal(); document.getElementById('confirm-order-id').textContent = orderId; document.getElementById('confirm-dispatch-date').textContent = d.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}); setTimeout(() => openModal({modal: modals.orderConf, content: modals.orderConfContent}), 250);
+            cart = []; updateCartUI(); closePaymentModal(); document.getElementById('confirm-order-id').textContent = orderId; document.getElementById('confirm-dispatch-date').textContent = d.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}); setTimeout(() => openModal({modal: modals.orderConf, content: modals.orderConfContent}), 400);
         }
         function closeOrderConfirmation() { closeModal({modal: modals.orderConf, content: modals.orderConfContent}); }
 
@@ -927,16 +908,16 @@
         async function fetchUserOrders() { const q = document.getElementById('track-order-input').value.trim(); let query = supabaseClient.from('orders').select('*').order('created_at', { ascending: false }); if (q) query = query.or(`id.eq.${q},phone.eq.${q}`); const { data } = await query; return data || []; }
 
         async function renderOrdersList() {
-            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-10"><div class="loader mx-auto border-brand-200 border-t-brand-600 mb-2"></div><span class="text-sm text-brand-600">Loading...</span></div>`;
+            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-10"><div class="loader mx-auto mb-3"></div><span class="text-sm text-text-muted">Loading...</span></div>`;
             userOrders = await fetchUserOrders();
-            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-10 text-brand-600 text-sm font-medium">No orders found.</div>`; return; }
-            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-white border border-brand-100 rounded-lg p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-300 transition-colors"><div><h4 class="font-medium text-brand-900 text-sm mb-1">Order #${o.id}</h4><span class="text-[10px] text-brand-600 bg-brand-50 px-2 py-1 rounded uppercase tracking-wide font-medium">${o.order_status || 'confirmed'}</span></div><div class="text-right font-medium text-brand-900 text-sm">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
+            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-10 text-text-muted text-sm font-medium">No orders found.</div>`; return; }
+            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-black/20 border border-white/5 rounded-xl p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-500/50 transition-colors"><div><h4 class="font-medium text-text-main text-sm mb-1">Order #${o.id}</h4><span class="text-[10px] text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2 py-1 rounded uppercase tracking-wide font-medium">${o.order_status || 'confirmed'}</span></div><div class="text-right font-medium text-brand-400 text-sm">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
         }
 
         function viewOrderDetails(orderId) {
             const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId); if (!order) return;
             document.getElementById('tracking-search-bar').classList.add('hidden'); document.getElementById('orders-list-view').classList.add('hidden'); const detailView = document.getElementById('order-detail-view'); detailView.classList.remove('hidden');
-            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-800 text-sm mb-6 flex items-center gap-2"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-brand-50 rounded-lg p-6 border border-brand-100 mb-6"><h3 class="font-serif text-brand-900 mb-4 text-lg">Tracking Status</h3><p class="text-sm text-brand-800 capitalize mb-6 font-medium">Current: <span class="bg-white px-2 py-1 rounded border border-brand-200 ml-1">${order.order_status || 'Confirmed'}</span></p><div class="space-y-4 pl-2"><div class="flex items-center gap-4"><div class="w-3 h-3 rounded-full bg-brand-800 ring-4 ring-brand-200"></div><span class="text-sm text-brand-900">Order Placed</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-brand-300"></div><span class="text-sm text-brand-900">Processing</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-brand-300"></div><span class="text-sm text-brand-900">Shipped</span></div></div></div><div class="bg-white rounded-lg p-6 border border-brand-100"><h3 class="font-serif text-brand-900 mb-4 text-lg">Summary</h3><div class="text-sm text-brand-800 space-y-2 mb-6"><p><strong class="font-medium text-brand-900">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-brand-900">Address:</strong> ${order.address}</p><p><strong class="font-medium text-brand-900">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-medium text-brand-900 border-t border-brand-100 pt-4"><span>Total Paid</span><span>₹${Number(order.total).toFixed(2)}</span></div></div>`;
+            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-text-muted hover:text-brand-500 text-sm mb-6 flex items-center gap-2 transition-colors"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-black/20 rounded-xl p-6 border border-white/5 mb-6"><h3 class="font-serif text-text-main mb-4 text-lg">Tracking Status</h3><p class="text-sm text-brand-400 capitalize mb-6 font-medium bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-4 pl-2"><div class="flex items-center gap-4"><div class="w-3 h-3 rounded-full bg-brand-500 shadow-[0_0_10px_rgba(229,141,103,0.8)]"></div><span class="text-sm text-text-main">Order Placed</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Processing</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Shipped</span></div></div></div><div class="bg-black/20 rounded-xl p-6 border border-white/5"><h3 class="font-serif text-text-main mb-4 text-lg">Summary</h3><div class="text-sm text-text-muted space-y-2 mb-6"><p><strong class="font-medium text-text-main">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-text-main">Address:</strong> ${order.address}</p><p><strong class="font-medium text-text-main">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-medium text-text-main border-t border-white/10 pt-4"><span>Total Paid</span><span class="text-brand-400">₹${Number(order.total).toFixed(2)}</span></div></div>`;
         }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); }
         function openAiModal() { openModal({modal: modals.ai, content: modals.aiContent}); }
@@ -947,7 +928,7 @@
 
         async function submitCustomOrder(e) {
             e.preventDefault(); const btn = document.getElementById('custom-order-submit-btn'); const orig = btn.innerHTML;
-            btn.innerHTML = `<div class="loader mx-auto border-brand-50 border-t-white"></div>`; btn.disabled = true;
+            btn.innerHTML = `<div class="loader mx-auto"></div>`; btn.disabled = true;
             const customOrderId = 'HKH-CUST-' + Date.now().toString().slice(-4);
             await supabaseClient.from('orders').insert([{ id: customOrderId, customer_name: document.getElementById('custom-req-name').value, phone: document.getElementById('custom-req-phone').value, email: document.getElementById('custom-req-email').value, address: document.getElementById('custom-req-address').value, product_name: "Bespoke Custom Request", quantity: 1, total: 0, payment_status: "pending", order_status: "confirmed" }]);
             btn.innerHTML = "Request Sent"; setTimeout(() => { closeCustomOrderModal(); btn.innerHTML=orig; btn.disabled=false; }, 1500);
