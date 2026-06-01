@@ -21,24 +21,24 @@
             theme: {
                 extend: {
                     colors: {
-                        // Elegant Midnight Navy Theme Palette
+                        // Midnight Rose Crochet Theme Palette
                         surface: {
-                            900: '#060B19', // Deepest background
-                            800: '#0B132B', // Main background
-                            700: '#152243', // Card background
-                            600: '#233560', // Lighter panels
+                            900: '#1a1025', // Deep blackberry background
+                            800: '#23153c', // Midnight amethyst (Main)
+                            700: '#341f53', // Rich plum (Cards)
+                            600: '#472a6b', // Lighter violet panels
                         },
                         brand: {
-                            50: '#FFF5F0',
-                            100: '#FDECE4',
-                            400: '#F4A282',
-                            500: '#E58D67', // Primary glowing copper
-                            600: '#D66F43',
-                            900: '#3D150B',
+                            50: '#fff0f3',
+                            100: '#ffe4e8',
+                            400: '#ff8fa3',
+                            500: '#ff4d6d', // Vibrant Rose/Coral accent
+                            600: '#c9184a',
+                            900: '#590d22',
                         },
                         text: {
-                            main: '#FDFBF9',
-                            muted: '#AFA39C',
+                            main: '#fff0f3',
+                            muted: '#ffb3c6',
                         }
                     },
                     fontFamily: {
@@ -48,11 +48,12 @@
                     animation: {
                         'ambient-glow': 'ambient-glow 8s ease-in-out infinite alternate',
                         'float': 'float 6s cubic-bezier(0.25, 1, 0.5, 1) infinite',
+                        'spin-slow': 'spin 12s linear infinite',
                     },
                     keyframes: {
                         'ambient-glow': {
-                            '0%': { transform: 'scale(1) translate(0, 0)', opacity: 0.4 },
-                            '100%': { transform: 'scale(1.2) translate(20px, -20px)', opacity: 0.7 },
+                            '0%': { transform: 'scale(1) translate(0, 0)', opacity: 0.3 },
+                            '100%': { transform: 'scale(1.3) translate(25px, -25px)', opacity: 0.6 },
                         },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
@@ -70,67 +71,114 @@
         })();
     </script>
     <style>
-        /* Smooth Dark Theme Base */
+        /* Midnight Crochet Dark Theme Base */
         body {
-            background-color: #0B132B;
-            color: #FDFBF9;
+            background-color: #23153c;
+            /* Subtle CSS knit/wave background pattern */
+            background-image: radial-gradient(circle at 100% 150%, #341f53 24%, transparent 24%, transparent 28%, #341f53 28%, #341f53 36%, transparent 36%, transparent 40%, #341f53 40%, #341f53 48%, transparent 48%, transparent 52%, #341f53 52%, #341f53 60%, transparent 60%, transparent 64%, #341f53 64%, #341f53 72%, transparent 72%, transparent 76%, #341f53 76%, #341f53 84%, transparent 84%, transparent 88%, #341f53 88%, #341f53 96%, transparent 96%, transparent 100%);
+            background-size: 120px 120px;
+            color: #fff0f3;
             overflow-x: hidden;
+        }
+
+        /* Thematic Gradients - Overriding solid colors */
+        .bg-brand-500 {
+            background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%) !important;
+            border: none;
+        }
+        
+        .hover\:bg-brand-400:hover {
+            background: linear-gradient(135deg, #ff8fa3 0%, #ff4d6d 100%) !important;
+        }
+
+        .text-brand-500 {
+            background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .border-brand-500 {
+            border-color: #ff4d6d !important;
         }
 
         /* Glassmorphism Navigation */
         .glass-nav {
-            background: rgba(11, 19, 43, 0.6);
+            background: rgba(35, 21, 60, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 179, 198, 0.1);
         }
 
-        /* Buttery Smooth Cards */
+        /* Buttery Smooth Cards with Crochet Graphics */
         .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 179, 198, 0.08);
             border-radius: 1.5rem;
             transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Geometric Crochet Doily Overlay */
+        .glass-card::before {
+             content: '';
+             position: absolute;
+             top: -40px;
+             right: -40px;
+             width: 120px;
+             height: 120px;
+             background: radial-gradient(circle, transparent 20%, rgba(255,179,198,0.04) 20%, rgba(255,179,198,0.04) 40%, transparent 40%, transparent 60%, rgba(255,179,198,0.04) 60%, rgba(255,179,198,0.04) 80%, transparent 80%);
+             border-radius: 50%;
+             pointer-events: none;
+             z-index: 0;
+             transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover::before {
+             transform: scale(1.4) rotate(90deg);
+             background: radial-gradient(circle, transparent 20%, rgba(255,77,109,0.08) 20%, rgba(255,77,109,0.08) 40%, transparent 40%, transparent 60%, rgba(255,77,109,0.08) 60%, rgba(255,77,109,0.08) 80%, transparent 80%);
         }
 
         .glass-card:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(229, 141, 103, 0.4);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 77, 109, 0.4);
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(229, 141, 103, 0.1);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 25px rgba(255, 77, 109, 0.15);
         }
 
-        /* Ambient Orbs */
+        /* Ambient Orbs - Magical Yarn Balls */
         .orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
+            filter: blur(90px);
             z-index: -1;
             pointer-events: none;
+            background: radial-gradient(circle at center, rgba(255,77,109,0.3) 0%, rgba(144,35,168,0.15) 60%, transparent 100%) !important;
+            mix-blend-mode: screen;
         }
 
         /* Dark Mode Form Elements */
         input, textarea {
-            background: rgba(0, 0, 0, 0.2) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            background: rgba(0, 0, 0, 0.25) !important;
+            border: 1px solid rgba(255, 179, 198, 0.15) !important;
             color: white !important;
             transition: all 0.3s ease;
         }
 
         input:focus, textarea:focus {
-            border-color: #E58D67 !important;
-            box-shadow: 0 0 0 4px rgba(229, 141, 103, 0.1) !important;
+            border-color: #ff4d6d !important;
+            box-shadow: 0 0 0 4px rgba(255, 77, 109, 0.15) !important;
             outline: none;
         }
 
         input::placeholder, textarea::placeholder {
-            color: #AFA39C !important;
+            color: #ffb3c6 !important;
         }
 
         /* Loaders & Scrollbars */
         .loader {
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top: 3px solid #E58D67;
+            border: 3px solid rgba(255, 179, 198, 0.1);
+            border-top: 3px solid #ff4d6d;
             border-radius: 50%;
             width: 20px;
             height: 20px;
@@ -140,9 +188,9 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #060B19; }
-        ::-webkit-scrollbar-thumb { background: #233560; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #E58D67; }
+        ::-webkit-scrollbar-track { background: #1a1025; }
+        ::-webkit-scrollbar-thumb { background: #472a6b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff4d6d; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
@@ -154,11 +202,11 @@
 
 <body class="font-sans antialiased flex flex-col min-h-screen">
 
-    <div class="orb bg-brand-600/20 w-[600px] h-[600px] top-[-200px] left-[-200px] animate-ambient-glow"></div>
-    <div class="orb bg-orange-600/10 w-[500px] h-[500px] top-[30%] right-[-100px] animate-ambient-glow" style="animation-delay: 2s;"></div>
-    <div class="orb bg-brand-500/15 w-[800px] h-[800px] bottom-[-200px] left-[10%] animate-ambient-glow" style="animation-delay: 4s;"></div>
+    <div class="orb w-[600px] h-[600px] top-[-200px] left-[-200px] animate-ambient-glow"></div>
+    <div class="orb w-[500px] h-[500px] top-[30%] right-[-100px] animate-ambient-glow" style="animation-delay: 2s; background: radial-gradient(circle at center, rgba(255,143,163,0.3) 0%, rgba(71,42,107,0.2) 60%, transparent 100%) !important;"></div>
+    <div class="orb w-[800px] h-[800px] bottom-[-200px] left-[10%] animate-ambient-glow" style="animation-delay: 4s;"></div>
 
-    <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2.5 text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(229,141,103,0.3)] z-50 relative">
+    <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2.5 text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] z-50 relative">
         <span id="promo-text">Opening Sale: Up to 30% Off</span>
     </div>
 
@@ -189,7 +237,7 @@
                 <div class="flex items-center gap-4">
                     <button onclick="toggleCart()" class="relative p-2.5 text-text-main hover:text-brand-500 transition-colors flex items-center justify-center group">
                         <i class="fa-solid fa-basket-shopping text-xl transform group-hover:scale-110 transition-transform"></i>
-                        <span id="cart-badge" class="absolute top-0 right-0 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-surface-900 bg-brand-500 rounded-full hidden shadow-[0_0_10px_rgba(229,141,103,0.5)]">0</span>
+                        <span id="cart-badge" class="absolute top-0 right-0 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-surface-900 bg-brand-500 rounded-full hidden shadow-[0_0_10px_rgba(255,77,109,0.6)]">0</span>
                     </button>
                     
                     <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-text-main p-2">
@@ -239,7 +287,7 @@
                 <span class="text-text-muted font-medium text-sm uppercase tracking-widest">Subtotal</span>
                 <span id="cart-total" class="text-2xl font-serif font-medium text-text-main">₹0.00</span>
             </div>
-            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.2)] flex justify-center items-center gap-2">
+            <button id="checkout-btn" onclick="checkout()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(255,77,109,0.3)] flex justify-center items-center gap-2">
                 Checkout Securely <i class="fa-solid fa-arrow-right"></i>
             </button>
         </div>
@@ -267,7 +315,7 @@
                             Discover deeply aesthetic, meticulously hand-hooked crochet. Designed for those who appreciate slow fashion and beautiful spaces.
                         </p>
                         <div class="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start">
-                            <a href="#shop" class="inline-flex justify-center items-center px-8 py-4 bg-brand-500 text-surface-900 rounded-full font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.3)] hover:shadow-[0_0_30px_rgba(229,141,103,0.5)]">
+                            <a href="#shop" class="inline-flex justify-center items-center px-8 py-4 bg-brand-500 text-surface-900 rounded-full font-bold hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(255,77,109,0.4)] hover:shadow-[0_0_35px_rgba(255,77,109,0.6)]">
                                 Shop Collection
                             </a>
                             <a href="#custom" class="inline-flex justify-center items-center px-8 py-4 bg-white/5 text-text-main border border-white/10 rounded-full font-medium hover:bg-white/10 hover:border-brand-500/50 transition-all backdrop-blur-sm">
@@ -282,7 +330,7 @@
                             <img src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover" alt="Crochet">
                         </div>
                         <div class="absolute left-0 bottom-10 w-1/2 aspect-square rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-20 animate-float" style="animation-delay: -3s;">
-                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%]" alt="Detail">
+                            <img src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[20%]" alt="Detail">
                         </div>
                     </div>
                 </div>
@@ -298,7 +346,7 @@
                     </div>
                     
                     <div class="flex flex-wrap gap-3" id="category-filters">
-                        <button class="filter-btn bg-brand-500 text-surface-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(229,141,103,0.3)] transition-all" data-filter="all">All</button>
+                        <button class="filter-btn bg-brand-500 text-surface-900 px-6 py-2.5 rounded-full text-sm font-bold shadow-[0_0_15px_rgba(255,77,109,0.4)] transition-all" data-filter="all">All</button>
                         <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Clothing">Wearables</button>
                         <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Decor & Flowers">Decor</button>
                         <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-6 py-2.5 rounded-full text-sm font-medium hover:text-text-main hover:border-white/30 transition-all" data-filter="Accessories">Accessories</button>
@@ -355,7 +403,7 @@
 
         <section id="custom" class="py-24 relative border-t border-white/5">
             <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-500/10 text-brand-500 mb-6 text-2xl border border-brand-500/20 shadow-[0_0_30px_rgba(229,141,103,0.1)]">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-brand-500/10 text-brand-500 mb-6 text-2xl border border-brand-500/20 shadow-[0_0_30px_rgba(255,77,109,0.2)]">
                     <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </div>
                 <h2 class="text-4xl md:text-5xl font-serif text-text-main mb-6">Bespoke Commissions</h2>
@@ -363,7 +411,7 @@
                     Have a specific vision? Whether it’s a custom color palette, precise sizing, or a completely new concept, let’s craft something uniquely yours.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-5 justify-center">
-                    <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-500 text-surface-900 px-8 py-4 rounded-full font-bold text-base hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(229,141,103,0.3)] active:scale-95">
+                    <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()" class="bg-brand-500 text-surface-900 px-8 py-4 rounded-full font-bold text-base hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(255,77,109,0.4)] active:scale-95">
                         Submit a Request
                     </button>
                     <button onclick="openAiModal()" class="bg-white/5 border border-white/10 text-text-main px-8 py-4 rounded-full font-medium text-base hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-sm">
@@ -474,7 +522,7 @@
                 </div>
 
                 <div class="mt-auto">
-                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.3)] active:scale-95 flex justify-center items-center gap-2">
+                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] active:scale-95 flex justify-center items-center gap-2">
                         Add to Basket — <span id="modal-btn-price"></span>
                     </button>
                 </div>
@@ -506,7 +554,7 @@
                     <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-2">Full Address</label>
                     <textarea id="cust-address" required rows="3" class="w-full p-3 rounded-lg text-sm resize-none"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.3)] mt-2">
+                <button type="submit" class="w-full bg-brand-500 text-surface-900 py-4 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] mt-2">
                     Continue to Payment
                 </button>
             </form>
@@ -620,7 +668,7 @@
                         <label class="block text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Reference Image (Optional)</label>
                         <input type="file" id="custom-req-image" accept="image/*" class="w-full text-xs text-text-muted file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-medium file:bg-white/10 file:text-white cursor-pointer border border-white/10 rounded-lg p-2 bg-black/20" />
                     </div>
-                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors mt-4 shadow-[0_0_15px_rgba(229,141,103,0.2)]">
+                    <button type="submit" id="custom-order-submit-btn" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors mt-4 shadow-[0_0_15px_rgba(255,77,109,0.2)]">
                         Submit Request
                     </button>
                 </form>
@@ -640,7 +688,7 @@
                 <div id="ai-input-view">
                     <label class="block text-text-main font-medium mb-3 text-sm">Describe the recipient or occasion.</label>
                     <textarea id="ai-prompt" rows="4" class="w-full p-4 rounded-lg text-sm resize-none mb-4" placeholder="e.g., A housewarming gift for a moody apartment..."></textarea>
-                    <button onclick="generateIdea()" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(229,141,103,0.2)]">
+                    <button onclick="generateIdea()" class="w-full bg-brand-500 text-surface-900 py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.2)]">
                         Generate Concept
                     </button>
                 </div>
@@ -654,7 +702,7 @@
                     <div id="ai-result-content" class="text-text-main text-sm font-light leading-relaxed mb-6 bg-black/20 p-6 rounded-lg border border-white/5"></div>
                     <div class="flex gap-4">
                         <button onclick="resetAiModal()" class="flex-1 py-3 border border-white/10 rounded-lg text-sm font-medium text-text-muted hover:bg-white/5 transition-colors">Retry</button>
-                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(229,141,103,0.2)]">Request Concept</button>
+                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="flex-1 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(255,77,109,0.2)]">Request Concept</button>
                     </div>
                 </div>
                 
@@ -744,8 +792,8 @@
 
             if (!SHOP_CONFIG.takingOrders) {
                 banner.innerHTML = `<i class="fa-solid fa-circle-info text-brand-500"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden');
-                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-500', 'bg-surface-600'); customBtn.classList.replace('text-surface-900', 'text-text-muted'); customBtn.innerHTML = 'Orders Paused'; customBtn.classList.remove('shadow-[0_0_20px_rgba(229,141,103,0.3)]'); }
-                if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-500', 'bg-surface-600'); checkoutBtn.classList.replace('text-surface-900', 'text-text-muted'); checkoutBtn.innerHTML = 'Checkout Paused'; checkoutBtn.classList.remove('shadow-[0_0_20px_rgba(229,141,103,0.2)]'); }
+                if (customBtn) { customBtn.disabled = true; customBtn.classList.replace('bg-brand-500', 'bg-surface-600'); customBtn.classList.replace('text-surface-900', 'text-text-muted'); customBtn.innerHTML = 'Orders Paused'; customBtn.classList.remove('shadow-[0_0_20px_rgba(255,77,109,0.3)]'); }
+                if (checkoutBtn) { checkoutBtn.disabled = true; checkoutBtn.classList.replace('bg-brand-500', 'bg-surface-600'); checkoutBtn.classList.replace('text-surface-900', 'text-text-muted'); checkoutBtn.innerHTML = 'Checkout Paused'; checkoutBtn.classList.remove('shadow-[0_0_20px_rgba(255,77,109,0.3)]'); }
             }
         }
 
@@ -786,8 +834,8 @@
         function setupFilters() {
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    filterBtns.forEach(b => { b.classList.remove('bg-brand-500', 'text-surface-900', 'shadow-[0_0_15px_rgba(229,141,103,0.3)]'); b.classList.add('bg-white/5', 'text-text-muted', 'border-white/10'); b.classList.remove('border-transparent'); });
-                    e.target.classList.add('bg-brand-500', 'text-surface-900', 'border-transparent', 'shadow-[0_0_15px_rgba(229,141,103,0.3)]'); e.target.classList.remove('bg-white/5', 'text-text-muted', 'border-white/10');
+                    filterBtns.forEach(b => { b.classList.remove('bg-brand-500', 'text-surface-900', 'shadow-[0_0_15px_rgba(255,77,109,0.3)]'); b.classList.add('bg-white/5', 'text-text-muted', 'border-white/10'); b.classList.remove('border-transparent'); });
+                    e.target.classList.add('bg-brand-500', 'text-surface-900', 'border-transparent', 'shadow-[0_0_15px_rgba(255,77,109,0.3)]'); e.target.classList.remove('bg-white/5', 'text-text-muted', 'border-white/10');
                     currentFilter = e.target.dataset.filter; renderProducts();
                 });
             });
@@ -887,7 +935,7 @@
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (total <= 0) return;
-            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#0B132B" } };
+            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#120E0C" } };
             try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function(res){ alert("Failed"); btn.innerHTML=orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down. Use UPI."); btn.innerHTML=orig; }
         }
 
@@ -917,7 +965,7 @@
         function viewOrderDetails(orderId) {
             const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId); if (!order) return;
             document.getElementById('tracking-search-bar').classList.add('hidden'); document.getElementById('orders-list-view').classList.add('hidden'); const detailView = document.getElementById('order-detail-view'); detailView.classList.remove('hidden');
-            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-text-muted hover:text-brand-500 text-sm mb-6 flex items-center gap-2 transition-colors"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-black/20 rounded-xl p-6 border border-white/5 mb-6"><h3 class="font-serif text-text-main mb-4 text-lg">Tracking Status</h3><p class="text-sm text-brand-400 capitalize mb-6 font-medium bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-4 pl-2"><div class="flex items-center gap-4"><div class="w-3 h-3 rounded-full bg-brand-500 shadow-[0_0_10px_rgba(229,141,103,0.8)]"></div><span class="text-sm text-text-main">Order Placed</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Processing</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Shipped</span></div></div></div><div class="bg-black/20 rounded-xl p-6 border border-white/5"><h3 class="font-serif text-text-main mb-4 text-lg">Summary</h3><div class="text-sm text-text-muted space-y-2 mb-6"><p><strong class="font-medium text-text-main">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-text-main">Address:</strong> ${order.address}</p><p><strong class="font-medium text-text-main">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-medium text-text-main border-t border-white/10 pt-4"><span>Total Paid</span><span class="text-brand-400">₹${Number(order.total).toFixed(2)}</span></div></div>`;
+            detailView.innerHTML = `<button onclick="backToOrderList()" class="text-text-muted hover:text-brand-500 text-sm mb-6 flex items-center gap-2 transition-colors"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-black/20 rounded-xl p-6 border border-white/5 mb-6"><h3 class="font-serif text-text-main mb-4 text-lg">Tracking Status</h3><p class="text-sm text-brand-400 capitalize mb-6 font-medium bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-4 pl-2"><div class="flex items-center gap-4"><div class="w-3 h-3 rounded-full bg-brand-500 shadow-[0_0_10px_rgba(255,77,109,0.8)]"></div><span class="text-sm text-text-main">Order Placed</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Processing</span></div><div class="flex items-center gap-4 opacity-50"><div class="w-3 h-3 rounded-full bg-white/20"></div><span class="text-sm text-text-main">Shipped</span></div></div></div><div class="bg-black/20 rounded-xl p-6 border border-white/5"><h3 class="font-serif text-text-main mb-4 text-lg">Summary</h3><div class="text-sm text-text-muted space-y-2 mb-6"><p><strong class="font-medium text-text-main">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-text-main">Address:</strong> ${order.address}</p><p><strong class="font-medium text-text-main">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-medium text-text-main border-t border-white/10 pt-4"><span>Total Paid</span><span class="text-brand-400">₹${Number(order.total).toFixed(2)}</span></div></div>`;
         }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); }
         function openAiModal() { openModal({modal: modals.ai, content: modals.aiContent}); }
