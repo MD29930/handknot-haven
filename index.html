@@ -21,12 +21,12 @@
             theme: {
                 extend: {
                     colors: {
-                        // Rich, Warm Dark Theme Palette
+                        // Elegant Midnight Navy Theme Palette
                         surface: {
-                            900: '#0A0807', // Deepest background
-                            800: '#120E0C', // Main background
-                            700: '#1C1613', // Card background
-                            600: '#2A221E', // Lighter panels
+                            900: '#060B19', // Deepest background
+                            800: '#0B132B', // Main background
+                            700: '#152243', // Card background
+                            600: '#233560', // Lighter panels
                         },
                         brand: {
                             50: '#FFF5F0',
@@ -72,14 +72,14 @@
     <style>
         /* Smooth Dark Theme Base */
         body {
-            background-color: #120E0C;
+            background-color: #0B132B;
             color: #FDFBF9;
             overflow-x: hidden;
         }
 
         /* Glassmorphism Navigation */
         .glass-nav {
-            background: rgba(18, 14, 12, 0.6);
+            background: rgba(11, 19, 43, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -140,8 +140,8 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0A0807; }
-        ::-webkit-scrollbar-thumb { background: #2A221E; border-radius: 4px; }
+        ::-webkit-scrollbar-track { background: #060B19; }
+        ::-webkit-scrollbar-thumb { background: #233560; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #E58D67; }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -887,7 +887,7 @@
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             if (total <= 0) return;
-            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#120E0C" } };
+            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#0B132B" } };
             try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function(res){ alert("Failed"); btn.innerHTML=orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down. Use UPI."); btn.innerHTML=orig; }
         }
 
