@@ -94,6 +94,7 @@
         .text-brand-500 {
             background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -813,7 +814,6 @@
 
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
-                // Added horizontal scroll item classes: flex-none, w-[85%], snap-center
                 card.className = 'product-card glass-card overflow-hidden flex flex-col group cursor-pointer transform-gpu flex-none w-[85%] sm:w-auto snap-center shrink-0';
                 card.onclick = () => openProductModal(product.id);
 
