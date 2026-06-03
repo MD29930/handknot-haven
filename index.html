@@ -52,8 +52,8 @@
                     },
                     keyframes: {
                         'ambient-glow': {
-                            '0%': { transform: 'scale(1) translate(0, 0)', opacity: 0.3 },
-                            '100%': { transform: 'scale(1.3) translate(25px, -25px)', opacity: 0.6 },
+                            '0%': { transform: 'scale(1) translate(0, 0)', opacity: 0.5 },
+                            '100%': { transform: 'scale(1.2) translate(15px, -15px)', opacity: 0.8 },
                         },
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
@@ -69,8 +69,8 @@
         body {
             background-color: #050203;
             background-image: 
-                radial-gradient(circle at 80% -10%, rgba(201, 24, 74, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 10% 110%, rgba(255, 77, 109, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% -10%, rgba(201, 24, 74, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 10% 110%, rgba(255, 77, 109, 0.08) 0%, transparent 50%),
                 linear-gradient(135deg, #050203 0%, #0f0508 100%);
             background-attachment: fixed;
             color: #ffffff;
@@ -98,9 +98,9 @@
         }
 
         .glass-nav {
-            background: rgba(15, 5, 8, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(15, 5, 8, 0.9); /* Solidified slightly for mobile perf */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(255, 179, 198, 0.05);
         }
 
@@ -108,9 +108,10 @@
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid rgba(255, 179, 198, 0.05);
             border-radius: 1.5rem;
-            transition: all 0.4s ease-out;
+            transition: all 0.3s ease-out;
             position: relative;
             overflow: hidden;
+            transform: translateZ(0); /* Hardware acceleration */
         }
 
         .glass-card::before {
@@ -124,7 +125,7 @@
              border-radius: 50%;
              pointer-events: none;
              z-index: 0;
-             transition: all 0.5s ease-out;
+             transition: all 0.4s ease-out;
              transform: translateZ(0);
         }
 
@@ -140,17 +141,6 @@
                 transform: translateY(-4px) translateZ(0);
                 box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255, 77, 109, 0.1);
             }
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px); /* Reduced blur radius slightly for massive performance gain */
-            z-index: -1;
-            pointer-events: none;
-            mix-blend-mode: screen;
-            transform: translateZ(0); /* Force GPU acceleration */
-            will-change: transform, opacity;
         }
 
         input, textarea {
@@ -190,9 +180,10 @@
 
 <body class="font-sans antialiased flex flex-col min-h-screen relative">
 
-    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none">
-        <div class="absolute inset-0 flex items-center justify-center opacity-[0.03] mix-blend-screen text-brand-500">
-            <svg class="w-[200vw] h-[200vw] sm:w-[150vw] sm:h-[150vw] md:w-[100vw] md:h-[100vw] animate-spin-slow transform-gpu" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+    <div class="fixed inset-0 z-[-2] overflow-hidden pointer-events-none bg-[#050203]">
+        
+        <div class="absolute inset-0 flex items-center justify-center opacity-[0.05] text-brand-500">
+            <svg class="w-[150%] max-w-none md:w-[100%] h-auto animate-spin-slow transform-gpu" viewBox="0 0 200 200" fill="none" stroke="currentColor">
                 <circle cx="100" cy="100" r="80" stroke-width="0.3"/>
                 <circle cx="100" cy="100" r="75" stroke-width="0.1" stroke-dasharray="2 2"/>
                 <circle cx="100" cy="100" r="60" stroke-width="0.2"/>
@@ -201,9 +192,9 @@
             </svg>
         </div>
 
-        <div class="orb w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] top-[-50px] left-[-100px] animate-ambient-glow" style="background: radial-gradient(circle, rgba(255,77,109,0.15) 0%, transparent 70%);"></div>
-        <div class="orb w-[400px] sm:w-[600px] h-[400px] sm:h-[600px] top-[40%] right-[-150px] animate-ambient-glow" style="animation-delay: 3s; background: radial-gradient(circle, rgba(201,24,74,0.12) 0%, transparent 70%);"></div>
-        <div class="orb w-[500px] sm:w-[700px] h-[500px] sm:h-[700px] bottom-[-150px] left-[10%] animate-ambient-glow" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 70%);"></div>
+        <div class="absolute w-[300px] md:w-[600px] h-[300px] md:h-[600px] top-[-10%] left-[-10%] rounded-full animate-ambient-glow transform-gpu" style="background: radial-gradient(circle, rgba(255,77,109,0.15) 0%, transparent 60%);"></div>
+        <div class="absolute w-[400px] md:w-[700px] h-[400px] md:h-[700px] top-[40%] right-[-20%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 3s; background: radial-gradient(circle, rgba(201,24,74,0.1) 0%, transparent 60%);"></div>
+        <div class="absolute w-[500px] md:w-[800px] h-[500px] md:h-[800px] bottom-[-20%] left-[10%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 60%);"></div>
     </div>
 
     <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] z-50 relative">
@@ -361,7 +352,6 @@
         <section id="about" class="py-16 sm:py-24 relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="glass-card p-6 sm:p-10 md:p-16 relative overflow-hidden bg-surface-800/50 backdrop-blur-xl border border-white/5">
-                    <div class="absolute top-0 right-0 w-[200px] sm:w-[400px] h-[200px] sm:h-[400px] bg-brand-600/10 rounded-full blur-[60px] sm:blur-[80px] pointer-events-none transform-gpu"></div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
                         <div class="lg:col-span-7">
@@ -529,7 +519,7 @@
             </div>
         </div>
     </div>
-
+    
     <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeCheckoutForm()"></div>
         <div class="relative bg-surface-800 border border-white/10 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
@@ -771,15 +761,30 @@
         function init() {
             const savedCart = localStorage.getItem('handknot_cart');
             if (savedCart) { try { cart = JSON.parse(savedCart); updateCartUI(); } catch (e) { localStorage.removeItem('handknot_cart'); } }
-            applyShopStatus(); loadProducts(); setupFilters();
+            
+            // Force immediate render of fallback products so it's never empty
+            renderProducts(); 
+            applyShopStatus(); 
+            setupFilters();
+            
+            // Then asynchronously try to load from Supabase
+            loadProducts(); 
 
+            // Scroll throttler for performance
+            let ticking = false;
             window.addEventListener('scroll', () => {
-                const nav = document.getElementById('navbar');
-                const promoBanner = document.getElementById('promo-banner');
-                const bannerHeight = promoBanner && !promoBanner.classList.contains('hidden') ? promoBanner.offsetHeight : 0;
-                if (window.scrollY > 10) { nav.style.top = '0px'; nav.classList.add('shadow-lg', 'glass-nav'); nav.classList.remove('bg-transparent'); } 
-                else { nav.style.top = bannerHeight + 'px'; nav.classList.remove('shadow-lg', 'glass-nav'); nav.classList.add('bg-transparent'); }
-            });
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const nav = document.getElementById('navbar');
+                        const promoBanner = document.getElementById('promo-banner');
+                        const bannerHeight = promoBanner && !promoBanner.classList.contains('hidden') ? promoBanner.offsetHeight : 0;
+                        if (window.scrollY > 10) { nav.style.top = '0px'; nav.classList.add('shadow-lg', 'glass-nav'); nav.classList.remove('bg-transparent'); } 
+                        else { nav.style.top = bannerHeight + 'px'; nav.classList.remove('shadow-lg', 'glass-nav'); nav.classList.add('bg-transparent'); }
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
         }
 
         function applyShopStatus() {
@@ -983,18 +988,37 @@
         function trackOrderSubmit() { viewOrderDetails(document.getElementById('track-order-input').value.trim()); }
 
         async function loadProducts() {
-            const { data } = await supabaseClient.from('products').select('*');
-            if (data) { products = data.map(p => ({ id: p.id, name: p.name, price: Number(p.price), discount: Number(p.discount || 0), category: p.category, image: p.image_url, badge: p.badge, description: p.description, craftingTime: p.crafting_time, materialName: p.material_name, allowAddons: p.allow_addons, accessoryAddons: p.accessory_addons })); renderProducts(); }
+            try {
+                const { data, error } = await supabaseClient.from('products').select('*');
+                if (data && data.length > 0) { 
+                    products = data.map(p => ({ 
+                        id: p.id, name: p.name, price: Number(p.price), discount: Number(p.discount || 0), 
+                        category: p.category, image: p.image_url, badge: p.badge, description: p.description, 
+                        craftingTime: p.crafting_time, materialName: p.material_name, allowAddons: p.allow_addons, 
+                        accessoryAddons: p.accessory_addons 
+                    })); 
+                    renderProducts(); 
+                }
+            } catch (err) {
+                console.warn("Using fallback product catalog due to Supabase connection.");
+            }
         }
+        
         async function saveOrder(id, total) {
             await supabaseClient.from('orders').insert([{ id, customer_name: document.getElementById('cust-name').value, phone: document.getElementById('cust-phone').value, email: document.getElementById('cust-email').value, address: document.getElementById('cust-address').value, product_name: cart.map(i => i.name).join(", "), quantity: cart.reduce((s, i) => s + i.quantity, 0), total, payment_status: "paid", order_status: "confirmed" }]); return true;
         }
 
         document.addEventListener('DOMContentLoaded', async () => {
-            const { data } = await supabaseClient.from('store_settings').select('is_open').eq('id', 1).single();
-            if(data) SHOP_CONFIG.takingOrders = data.is_open; applyShopStatus();
-            supabaseClient.channel('live').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'store_settings' }, p => { SHOP_CONFIG.takingOrders = p.new.is_open; applyShopStatus(); }).subscribe();
+            try {
+                const { data } = await supabaseClient.from('store_settings').select('is_open').eq('id', 1).single();
+                if(data) {
+                    SHOP_CONFIG.takingOrders = data.is_open; 
+                    applyShopStatus();
+                }
+                supabaseClient.channel('live').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'store_settings' }, p => { SHOP_CONFIG.takingOrders = p.new.is_open; applyShopStatus(); }).subscribe();
+            } catch(e) {}
         });
+        
         init();
     </script>
 </body>
