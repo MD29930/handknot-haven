@@ -66,12 +66,20 @@
     </script>
     
     <style>
-        /* Base reset to ensure fixed background renders properly */
-        body {
-            background-color: transparent;
+        /* Base reset to ensure fixed background renders properly AND kills rubber-band bounce */
+        html, body {
+            background-color: #050203;
             color: #ffffff;
             overflow-x: hidden;
             width: 100%;
+            overscroll-behavior-y: none; /* Stops the main page from bouncing */
+        }
+
+        /* Stops bounce inside the cart and all scrollable popups */
+        #cart-items-container,
+        .overflow-y-auto {
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
         }
 
         .theme-bg-layer {
@@ -206,7 +214,7 @@
         <div class="absolute w-[500px] md:w-[800px] h-[500px] md:h-[800px] bottom-[-20%] left-[10%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 60%);"></div>
     </div>
 
-    <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] relative">
+    <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] z-30 relative">
         <span id="promo-text">Opening Sale: Up to 30% Off</span>
     </div>
 
