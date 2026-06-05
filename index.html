@@ -203,6 +203,7 @@
 <body class="font-sans antialiased flex flex-col min-h-screen relative text-white">
 
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none theme-bg-layer">
+        
         <div class="absolute inset-0 flex items-center justify-center opacity-[0.08] sm:opacity-[0.05] text-brand-500">
             <svg class="w-[180%] max-w-none md:w-[100%] h-auto animate-spin-slow transform-gpu" viewBox="0 0 200 200" fill="none" stroke="currentColor">
                 <circle cx="100" cy="100" r="80" stroke-width="0.3"/>
@@ -212,11 +213,13 @@
                 <path d="M100 40 A60 60 0 0 1 160 100 A60 60 0 0 1 100 160 A60 60 0 0 1 40 100 A60 60 0 0 1 100 40" stroke-width="0.1" stroke-dasharray="1 3"/>
             </svg>
         </div>
+
         <div class="absolute w-[300px] md:w-[600px] h-[300px] md:h-[600px] top-[-10%] left-[-10%] rounded-full animate-ambient-glow transform-gpu" style="background: radial-gradient(circle, rgba(255,77,109,0.15) 0%, transparent 60%);"></div>
         <div class="absolute w-[400px] md:w-[700px] h-[400px] md:h-[700px] top-[40%] right-[-20%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 3s; background: radial-gradient(circle, rgba(201,24,74,0.1) 0%, transparent 60%);"></div>
         <div class="absolute w-[500px] md:w-[800px] h-[500px] md:h-[800px] bottom-[-20%] left-[10%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 60%);"></div>
     </div>
 
+    <!-- Promo Banner correctly placed below cart overlay Z-index -->
     <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] z-30 relative">
         <span id="promo-text">Opening Sale: Up to 30% Off</span>
     </div>
@@ -225,16 +228,19 @@
         <nav class="glass-nav fixed w-full z-40 transition-all duration-300" id="navbar">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-[70px] sm:h-[80px] items-center">
+                    
                     <div class="flex-shrink-0 flex items-center">
                         <a href="#" class="font-serif text-xl sm:text-2xl font-medium text-text-main flex items-center gap-2 sm:gap-3 group">
                             <i class="fa-solid fa-fan text-brand-500 transform group-hover:rotate-180 transition-transform duration-700"></i>
                             HandKnot Haven
                         </a>
                     </div>
+
                     <div class="hidden lg:flex items-center space-x-8">
                         <a href="#shop" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Shop</a>
                         <a href="#about" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Story</a>
                         <a href="#custom" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Custom</a>
+                        
                         <div class="flex items-center gap-6 pl-8 border-l border-white/10">
                             <a href="#contact" class="text-sm font-medium text-text-main hover:text-brand-500 transition-colors">Contact</a>
                             <button onclick="openOrdersModal()" class="flex items-center gap-2 text-sm font-medium bg-white/5 border border-white/10 text-text-main px-5 py-2.5 rounded-full hover:bg-brand-500 hover:text-surface-900 hover:border-brand-500 transition-all duration-300">
@@ -242,11 +248,13 @@
                             </button>
                         </div>
                     </div>
+
                     <div class="flex items-center gap-3 sm:gap-4">
                         <button onclick="toggleCart()" class="relative p-2 text-text-main hover:text-brand-500 transition-colors flex items-center justify-center group">
                             <i class="fa-solid fa-basket-shopping text-lg sm:text-xl transform group-hover:scale-110 transition-transform"></i>
                             <span id="cart-badge" class="absolute top-0 right-0 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-surface-900 bg-brand-500 rounded-full hidden shadow-[0_0_10px_rgba(255,77,109,0.6)]">0</span>
                         </button>
+                        
                         <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-text-main p-2">
                             <i class="fa-solid fa-bars text-xl sm:text-2xl"></i>
                         </button>
@@ -267,12 +275,12 @@
             </div>
         </nav>
 
-        <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-surface-700/90 backdrop-blur-md text-text-main px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center gap-2 sm:gap-3 border border-white/10 w-11/12 max-w-max text-center"></div>
-
         <main class="flex-grow">
+
             <section id="home" class="relative pt-28 pb-16 lg:pt-48 lg:pb-32 flex items-center min-h-[85vh] sm:min-h-[90vh]">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                        
                         <div class="lg:w-1/2 text-center lg:text-left z-10">
                             <div class="inline-flex items-center gap-2 py-1.5 px-3 sm:px-4 bg-white/5 border border-white/10 rounded-full text-brand-400 text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-6 sm:mb-8 backdrop-blur-sm">
                                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Handcrafted Magic
@@ -292,6 +300,7 @@
                                 </a>
                             </div>
                         </div>
+                        
                         <div class="lg:w-1/2 w-full hidden md:block relative h-[400px] lg:h-[500px]">
                             <div class="absolute right-0 top-0 w-3/4 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-10 animate-float transform-gpu">
                                 <div class="absolute inset-0 bg-surface-900/20 z-10 mix-blend-overlay"></div>
@@ -307,18 +316,87 @@
 
             <section id="shop" class="py-16 sm:py-24 relative border-t border-white/5 bg-surface-800/30 backdrop-blur-md">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 sm:mb-16 gap-6">
-                        <div>
-                            <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-2 sm:mb-3">The Collection</h2>
-                            <p class="text-text-muted font-light text-sm sm:text-base">Freshly crafted dark aesthetics.</p>
-                        </div>
-                        <div class="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 no-scrollbar" id="category-filters">
-                            <button class="filter-btn bg-brand-500 text-surface-900 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold shadow-[0_0_15px_rgba(255,77,109,0.4)] transition-all whitespace-nowrap" data-filter="all">All</button>
-                            <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium hover:text-text-main hover:border-white/30 transition-all whitespace-nowrap" data-filter="Clothing">Wearables</button>
-                            <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium hover:text-text-main hover:border-white/30 transition-all whitespace-nowrap" data-filter="Decor & Flowers">Decor</button>
-                            <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium hover:text-text-main hover:border-white/30 transition-all whitespace-nowrap" data-filter="Accessories">Accessories</button>
-                        </div>
+                    
+                    <div class="text-center sm:text-left mb-10 sm:mb-12">
+                        <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-2 sm:mb-3">The Collection</h2>
+                        <p class="text-text-muted font-light text-sm sm:text-base">Freshly crafted dark aesthetics.</p>
                     </div>
+                    
+                    <!-- NEW INSTAGRAM STYLE CATEGORY FILTERS -->
+                    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 no-scrollbar items-start justify-start md:justify-center mb-8 px-2 sm:px-0" id="category-filters">
+                        
+                        <!-- All (Active by default) -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-100 scale-105 grayscale-0" data-filter="all">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800 flex items-center justify-center">
+                                    <i class="fa-solid fa-border-all text-brand-400 text-xl sm:text-2xl"></i>
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-main transition-colors filter-text">All</span>
+                        </button>
+
+                        <!-- Flowers -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Flowers">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1490750967868-8f5d475cece3?q=80&w=200&auto=format&fit=crop" alt="Flowers" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Flowers</span>
+                        </button>
+
+                        <!-- Tops -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Tops">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1434389670869-c4ee23f11462?q=80&w=200&auto=format&fit=crop" alt="Tops" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Tops</span>
+                        </button>
+
+                        <!-- Keychains -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Keychains">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1605369654152-6fc281bf21d4?q=80&w=200&auto=format&fit=crop" alt="Keychains" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Keychains</span>
+                        </button>
+
+                        <!-- Purse -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Purse">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=200&auto=format&fit=crop" alt="Purse" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Purse</span>
+                        </button>
+
+                        <!-- Accessories -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Accessories">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=200&auto=format&fit=crop" alt="Accessories" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Accessories</span>
+                        </button>
+
+                        <!-- Plushies -->
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Plushies">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1556012018-50c5c0da73bf?q=80&w=200&auto=format&fit=crop" alt="Plushies" class="w-full h-full object-cover" loading="lazy">
+                                </div>
+                            </div>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Plushies</span>
+                        </button>
+
+                    </div>
+
                     <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 py-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 no-scrollbar" id="product-grid">
                     </div>
                 </div>
@@ -327,14 +405,20 @@
             <section id="about" class="py-16 sm:py-24 relative overflow-hidden">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="glass-card p-6 sm:p-10 md:p-16 relative overflow-hidden bg-surface-800/50 backdrop-blur-xl border border-white/5">
+                        
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
                             <div class="lg:col-span-7">
                                 <span class="text-brand-500 font-semibold text-[10px] sm:text-xs tracking-widest uppercase mb-3 sm:mb-4 block">The Maker</span>
                                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif text-text-main mb-4 sm:mb-6 leading-tight">Hi, I'm Vaishali. <br>Welcome to my sanctuary.</h2>
                                 <div class="space-y-4 sm:space-y-6 text-text-muted font-light text-sm sm:text-lg leading-relaxed">
-                                    <p>Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet.</p>
-                                    <p>Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.</p>
+                                    <p>
+                                        Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet. 
+                                    </p>
+                                    <p>
+                                        Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.
+                                    </p>
                                 </div>
+                                
                                 <div class="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-white/10 grid grid-cols-2 gap-4 sm:gap-8">
                                     <div>
                                         <div class="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-3 sm:mb-4 text-lg sm:text-xl"><i class="fa-solid fa-leaf"></i></div>
@@ -348,6 +432,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="lg:col-span-5 relative hidden sm:block">
                                 <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
                                     <div class="absolute inset-0 bg-brand-900/30 mix-blend-overlay z-10"></div>
@@ -378,6 +463,7 @@
                     </div>
                 </div>
             </section>
+
         </main>
 
         <footer id="contact" class="bg-[#020101] pt-16 sm:pt-24 pb-8 sm:pb-10 border-t border-white/5 relative z-30">
@@ -386,7 +472,9 @@
                     <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-3 sm:mb-4">Connect with the Studio</h2>
                     <p class="text-text-muted font-light text-sm sm:text-lg">No floating widgets. Just direct, easy communication.</p>
                 </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto mb-16 sm:mb-20">
+                    
                     <a href="https://wa.me/919925617845" target="_blank" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 rounded-full flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-brands fa-whatsapp"></i>
@@ -394,6 +482,7 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">WhatsApp</h3>
                         <p class="text-text-muted text-xs sm:text-sm">+91 99256 17845</p>
                     </a>
+
                     <a href="mailto:handknothaven@gmail.com" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-regular fa-envelope"></i>
@@ -401,6 +490,7 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">Email</h3>
                         <p class="text-text-muted text-xs sm:text-sm break-all">handknothaven@gmail.com</p>
                     </a>
+
                     <button onclick="openOrdersModal()" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-white/5 text-white/70 border border-white/10 rounded-full flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-solid fa-location-crosshairs"></i>
@@ -408,7 +498,9 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">Track Order</h3>
                         <p class="text-text-muted text-xs sm:text-sm">Live shipping updates</p>
                     </button>
+
                 </div>
+
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left border-t border-white/5 pt-6 sm:pt-8">
                     <a href="#" class="font-serif text-lg sm:text-xl text-text-main flex items-center gap-2">
                         <i class="fa-solid fa-fan text-brand-500"></i> HandKnot Haven
@@ -662,24 +754,24 @@
             saleMessage: "Opening Sale: Up to 30% Off Selected Creations"
         };
 
-        // Fallback Product Catalog. Uses WebP format. 
+        // Fallback Product Catalog matched exactly to new categories
         let products = [
             {
-                id: 1, name: "Midnight Bloom Dress", price: 1500.00, category: "Clothing",
+                id: 1, name: "Midnight Bloom Dress", price: 1500.00, category: "Tops",
                 image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=70&w=600&fmt=webp&auto=format&fit=crop",
                 badge: "Bespoke", description: "An elegant piece featuring a rich ruby-red body with delicate accents.",
                 perfectFor: "Special occasions.", careInstructions: "Hand wash cold, lay flat.", materialName: "Organic Cotton",
                 materialBenefit: "Highly breathable.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{name:"Matching Trim", price: 200}]
             },
             {
-                id: 2, name: "Azure Lace Crop", price: 2200, category: "Clothing",
+                id: 2, name: "Azure Lace Crop", price: 2200, category: "Tops",
                 image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=70&w=600&fmt=webp&auto=format&fit=crop",
                 badge: "Custom Color", description: "Handcrafted crop top designed for sophisticated layering.",
                 perfectFor: "Resort wear.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
                 materialBenefit: "Soft structure.", craftingTime: "4-5 days"
             },
             {
-                id: 3, name: "Sunny Bloom Pot", price: 300.00, category: "Decor & Flowers",
+                id: 3, name: "Sunny Bloom Pot", price: 300.00, category: "Flowers",
                 image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=70&w=600&fmt=webp&auto=format&fit=crop",
                 badge: "Classic", description: "Bring warmth indoors with this structured crochet decor piece.",
                 perfectFor: "Desk accent.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
@@ -789,11 +881,29 @@
         }
 
         function setupFilters() {
-            filterBtns.forEach(btn => {
+            const allFilterBtns = document.querySelectorAll('.filter-btn');
+            allFilterBtns.forEach(btn => {
                 btn.addEventListener('click', (e) => {
-                    filterBtns.forEach(b => { b.classList.remove('bg-brand-500', 'text-surface-900', 'shadow-[0_0_15px_rgba(255,77,109,0.4)]'); b.classList.add('bg-white/5', 'text-text-muted', 'border-white/10'); b.classList.remove('border-transparent'); });
-                    e.target.classList.add('bg-brand-500', 'text-surface-900', 'border-transparent', 'shadow-[0_0_15px_rgba(255,77,109,0.4)]'); e.target.classList.remove('bg-white/5', 'text-text-muted', 'border-white/10');
-                    currentFilter = e.target.dataset.filter; renderProducts();
+                    const target = e.currentTarget;
+                    
+                    // Reset all to unselected state (grayed out)
+                    allFilterBtns.forEach(b => {
+                        b.classList.remove('opacity-100', 'scale-105', 'grayscale-0');
+                        b.classList.add('opacity-60', 'grayscale-[30%]');
+                        b.querySelector('.filter-text').classList.remove('text-text-main');
+                        b.querySelector('.filter-text').classList.add('text-text-muted');
+                        b.querySelector('.filter-ring').classList.remove('shadow-[0_0_15px_rgba(255,77,109,0.3)]');
+                    });
+                    
+                    // Set active state on clicked
+                    target.classList.remove('opacity-60', 'grayscale-[30%]');
+                    target.classList.add('opacity-100', 'scale-105', 'grayscale-0');
+                    target.querySelector('.filter-text').classList.remove('text-text-muted');
+                    target.querySelector('.filter-text').classList.add('text-text-main');
+                    target.querySelector('.filter-ring').classList.add('shadow-[0_0_15px_rgba(255,77,109,0.3)]');
+                    
+                    currentFilter = target.dataset.filter; 
+                    renderProducts();
                 });
             });
         }
