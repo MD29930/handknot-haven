@@ -80,11 +80,22 @@
             width: 100%;
         }
 
-        /* Remove annoying white tap highlight on mobile */
-        button, a, .filter-btn {
-            -webkit-tap-highlight-color: transparent;
-            outline: none;
+        /* --- BULLETPROOF ANTI-OUTLINE & ANTI-HIGHLIGHT --- */
+        * {
+            -webkit-tap-highlight-color: transparent !important;
         }
+        *:focus, *:focus-visible, *:active {
+            outline: none !important;
+            box-shadow: none; /* Prevents Tailwind's default focus ring from forcing a shape */
+        }
+        /* Restore our custom box shadows for specific elements where we want them */
+        .filter-ring.shadow-\[0_0_15px_rgba\(255\,77\,109\,0\.3\)\] {
+            box-shadow: 0 0 15px rgba(255, 77, 109, 0.3) !important;
+        }
+        input:focus, textarea:focus {
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.15) !important;
+        }
+        /* ------------------------------------------------ */
 
         /* Stops scroll momentum inside popups so the background doesn't move */
         #cart-items-container,
@@ -180,7 +191,7 @@
 
         input:focus, textarea:focus {
             border-color: #ff4d6d !important;
-            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.15) !important;
+            /* Box shadow is restored in the anti-outline block above */
             outline: none;
         }
 
@@ -225,7 +236,6 @@
         <div class="absolute w-[500px] md:w-[800px] h-[500px] md:h-[800px] bottom-[-20%] left-[10%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 60%);"></div>
     </div>
 
-    <!-- Promo Banner correctly placed below cart overlay Z-index -->
     <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] z-30 relative">
         <span id="promo-text">Opening Sale: Up to 30% Off</span>
     </div>
@@ -332,74 +342,67 @@
                     
                     <div class="flex overflow-x-auto gap-6 sm:gap-8 pt-6 pb-6 px-4 no-scrollbar items-start justify-start md:justify-center w-full max-w-5xl mx-auto mb-8" id="category-filters">
                         
-                        <!-- All (Active by default) -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-100 scale-105 grayscale-0" data-filter="all">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-100 scale-105 grayscale-0 cursor-pointer" data-filter="all">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring shadow-[0_0_15px_rgba(255,77,109,0.3)]">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800 flex items-center justify-center">
-                                    <i class="fa-solid fa-border-all text-brand-400 text-xl sm:text-2xl"></i>
+                                    <i class="fa-solid fa-border-all text-brand-400 text-xl sm:text-2xl pointer-events-none"></i>
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-main transition-colors filter-text">All</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-main transition-colors filter-text pointer-events-none">All</span>
                         </button>
 
-                        <!-- Flowers -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Flowers">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="Flowers">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=200&auto=format&fit=crop" alt="Flowers" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=200&auto=format&fit=crop" alt="Flowers" class="w-full h-full object-cover pointer-events-none" loading="lazy">
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Flowers</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Flowers</span>
                         </button>
 
-                        <!-- Tops -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Tops">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="Tops">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=200&auto=format&fit=crop" alt="Tops" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=200&auto=format&fit=crop" alt="Tops" class="w-full h-full object-cover pointer-events-none" loading="lazy">
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Tops</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Tops</span>
                         </button>
 
-                        <!-- Keychains -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Keychains">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="Keychains">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop" alt="Keychains" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop" alt="Keychains" class="w-full h-full object-cover pointer-events-none" loading="lazy">
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Keychains</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Keychains</span>
                         </button>
 
-                        <!-- Purse -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Purse">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="Purse">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=200&auto=format&fit=crop" alt="Purse" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=200&auto=format&fit=crop" alt="Purse" class="w-full h-full object-cover pointer-events-none" loading="lazy">
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Purse</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Purse</span>
                         </button>
 
-                        <!-- Accessories -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Accessories">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="Accessories">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=200&auto=format&fit=crop" alt="Accessories" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=200&auto=format&fit=crop" alt="Accessories" class="w-full h-full object-cover pointer-events-none" loading="lazy">
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Accessories</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Accessories</span>
                         </button>
 
-                        <!-- Plushies -->
-                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Plushies">
+                        <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="Plushies">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1556012018-50c5c0da73bf?q=80&w=200&auto=format&fit=crop" alt="Plushies" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1556012018-50c5c0da73bf?q=80&w=200&auto=format&fit=crop" alt="Plushies" class="w-full h-full object-cover pointer-events-none" loading="lazy">
                                 </div>
                             </div>
-                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Plushies</span>
+                            <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Plushies</span>
                         </button>
 
                     </div>
@@ -520,7 +523,6 @@
         </footer>
     </div>
 
-    <!-- Modals properly placed outside the relative wrapper at the root level -->
     <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
 
     <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-surface-800 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-300 ease-in-out border-l border-white/10">
@@ -563,7 +565,6 @@
             </button>
             <div class="w-full md:w-1/2 h-56 sm:h-72 md:h-auto bg-surface-900 relative shrink-0">
                 <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 pointer-events-none"></div>
-                <!-- Images inside modals can be lazy loaded -->
                 <img id="modal-img" src="" class="w-full h-full object-cover" loading="lazy">
             </div>
             <div class="w-full md:w-1/2 p-5 sm:p-8 md:p-12 overflow-y-auto flex flex-col">
@@ -876,7 +877,7 @@
                 <div class="relative aspect-[4/3] overflow-hidden bg-surface-900 border-b border-white/5">
                     ${product.badge ? `<span class="absolute top-3 left-3 bg-brand-500/20 backdrop-blur-sm text-brand-400 border border-brand-500/30 text-[10px] font-medium tracking-wide px-2.5 py-1 rounded-md z-10">${product.badge}</span>` : ''}
                     <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 transition-opacity opacity-0 group-hover:opacity-100 duration-500"></div>
-                    <img loading="lazy" src="${optimizedImage}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu">
+                    <img loading="lazy" src="${optimizedImage}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu pointer-events-none">
                 </div>
                 <div class="p-4 sm:p-5 flex flex-col flex-grow relative z-20">
                     <p class="text-[9px] sm:text-[10px] text-brand-500 font-medium uppercase tracking-widest mb-1 sm:mb-1.5">${product.category}</p>
