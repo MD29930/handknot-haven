@@ -219,7 +219,6 @@
         <div class="absolute w-[500px] md:w-[800px] h-[500px] md:h-[800px] bottom-[-20%] left-[10%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 60%);"></div>
     </div>
 
-    <!-- Promo Banner correctly placed below cart overlay Z-index -->
     <div id="promo-banner" class="hidden bg-brand-500 text-surface-900 text-center py-2 px-4 text-xs sm:text-sm font-bold tracking-widest uppercase shadow-[0_0_20px_rgba(255,77,109,0.4)] z-30 relative">
         <span id="promo-text">Opening Sale: Up to 30% Off</span>
     </div>
@@ -275,6 +274,8 @@
             </div>
         </nav>
 
+        <div id="shop-status-banner" class="hidden fixed top-[100px] left-1/2 transform -translate-x-1/2 z-30 bg-surface-700/90 backdrop-blur-md text-text-main px-4 sm:px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm font-medium shadow-[0_0_20px_rgba(0,0,0,0.5)] flex items-center gap-2 sm:gap-3 border border-white/10 w-11/12 max-w-max text-center"></div>
+
         <main class="flex-grow">
 
             <section id="home" class="relative pt-28 pb-16 lg:pt-48 lg:pb-32 flex items-center min-h-[85vh] sm:min-h-[90vh]">
@@ -317,17 +318,16 @@
             <section id="shop" class="py-16 sm:py-24 relative border-t border-white/5 bg-surface-800/30 backdrop-blur-md">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     
-                    <div class="text-center sm:text-left mb-10 sm:mb-12">
+                    <div class="text-center mb-10 sm:mb-12">
                         <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-2 sm:mb-3">The Collection</h2>
                         <p class="text-text-muted font-light text-sm sm:text-base">Freshly crafted dark aesthetics.</p>
                     </div>
                     
-                    <!-- NEW INSTAGRAM STYLE CATEGORY FILTERS -->
-                    <div class="flex overflow-x-auto gap-4 sm:gap-6 pb-6 no-scrollbar items-start justify-start md:justify-center mb-8 px-2 sm:px-0" id="category-filters">
+                    <div class="flex overflow-x-auto gap-6 sm:gap-8 pt-6 pb-6 px-4 no-scrollbar items-start justify-start md:justify-center w-full max-w-5xl mx-auto mb-8" id="category-filters">
                         
                         <!-- All (Active by default) -->
                         <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-100 scale-105 grayscale-0" data-filter="all">
-                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring shadow-[0_0_15px_rgba(255,77,109,0.3)]">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800 flex items-center justify-center">
                                     <i class="fa-solid fa-border-all text-brand-400 text-xl sm:text-2xl"></i>
                                 </div>
@@ -339,7 +339,7 @@
                         <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Flowers">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1490750967868-8f5d475cece3?q=80&w=200&auto=format&fit=crop" alt="Flowers" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=200&auto=format&fit=crop" alt="Flowers" class="w-full h-full object-cover" loading="lazy">
                                 </div>
                             </div>
                             <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Flowers</span>
@@ -349,7 +349,7 @@
                         <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Tops">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1434389670869-c4ee23f11462?q=80&w=200&auto=format&fit=crop" alt="Tops" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=200&auto=format&fit=crop" alt="Tops" class="w-full h-full object-cover" loading="lazy">
                                 </div>
                             </div>
                             <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Tops</span>
@@ -359,7 +359,7 @@
                         <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group focus:outline-none transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0" data-filter="Keychains">
                             <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
                                 <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                                    <img src="https://images.unsplash.com/photo-1605369654152-6fc281bf21d4?q=80&w=200&auto=format&fit=crop" alt="Keychains" class="w-full h-full object-cover" loading="lazy">
+                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop" alt="Keychains" class="w-full h-full object-cover" loading="lazy">
                                 </div>
                             </div>
                             <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text">Keychains</span>
@@ -405,20 +405,14 @@
             <section id="about" class="py-16 sm:py-24 relative overflow-hidden">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="glass-card p-6 sm:p-10 md:p-16 relative overflow-hidden bg-surface-800/50 backdrop-blur-xl border border-white/5">
-                        
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
                             <div class="lg:col-span-7">
                                 <span class="text-brand-500 font-semibold text-[10px] sm:text-xs tracking-widest uppercase mb-3 sm:mb-4 block">The Maker</span>
                                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif text-text-main mb-4 sm:mb-6 leading-tight">Hi, I'm Vaishali. <br>Welcome to my sanctuary.</h2>
                                 <div class="space-y-4 sm:space-y-6 text-text-muted font-light text-sm sm:text-lg leading-relaxed">
-                                    <p>
-                                        Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet. 
-                                    </p>
-                                    <p>
-                                        Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.
-                                    </p>
+                                    <p>Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet.</p>
+                                    <p>Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.</p>
                                 </div>
-                                
                                 <div class="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-white/10 grid grid-cols-2 gap-4 sm:gap-8">
                                     <div>
                                         <div class="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-3 sm:mb-4 text-lg sm:text-xl"><i class="fa-solid fa-leaf"></i></div>
@@ -432,7 +426,6 @@
                                     </div>
                                 </div>
                             </div>
-                            
                             <div class="lg:col-span-5 relative hidden sm:block">
                                 <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
                                     <div class="absolute inset-0 bg-brand-900/30 mix-blend-overlay z-10"></div>
@@ -463,7 +456,6 @@
                     </div>
                 </div>
             </section>
-
         </main>
 
         <footer id="contact" class="bg-[#020101] pt-16 sm:pt-24 pb-8 sm:pb-10 border-t border-white/5 relative z-30">
@@ -472,9 +464,7 @@
                     <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-3 sm:mb-4">Connect with the Studio</h2>
                     <p class="text-text-muted font-light text-sm sm:text-lg">No floating widgets. Just direct, easy communication.</p>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto mb-16 sm:mb-20">
-                    
                     <a href="https://wa.me/919925617845" target="_blank" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 rounded-full flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-brands fa-whatsapp"></i>
@@ -482,7 +472,6 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">WhatsApp</h3>
                         <p class="text-text-muted text-xs sm:text-sm">+91 99256 17845</p>
                     </a>
-
                     <a href="mailto:handknothaven@gmail.com" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-regular fa-envelope"></i>
@@ -490,7 +479,6 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">Email</h3>
                         <p class="text-text-muted text-xs sm:text-sm break-all">handknothaven@gmail.com</p>
                     </a>
-
                     <button onclick="openOrdersModal()" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-white/5 text-white/70 border border-white/10 rounded-full flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-solid fa-location-crosshairs"></i>
@@ -498,9 +486,7 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">Track Order</h3>
                         <p class="text-text-muted text-xs sm:text-sm">Live shipping updates</p>
                     </button>
-
                 </div>
-
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left border-t border-white/5 pt-6 sm:pt-8">
                     <a href="#" class="font-serif text-lg sm:text-xl text-text-main flex items-center gap-2">
                         <i class="fa-solid fa-fan text-brand-500"></i> HandKnot Haven
@@ -513,6 +499,7 @@
         </footer>
     </div>
 
+    <!-- Modals properly placed outside the relative wrapper at the root level -->
     <div id="cart-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity" onclick="toggleCart()"></div>
 
     <div id="cart-sidebar" class="fixed inset-y-0 right-0 max-w-md w-full bg-surface-800 shadow-2xl z-50 transform translate-x-full flex flex-col transition-transform duration-300 ease-in-out border-l border-white/10">
