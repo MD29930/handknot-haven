@@ -8,38 +8,28 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://images.unsplash.com">
+    <link rel="preconnect" href="https://khsndsegwznolzqydizh.supabase.co" crossorigin>
+    
+    <link rel="preload" as="image" href="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=70&w=800&fmt=webp&auto=format&fit=crop">
 
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" media="print" onload="this.media='all'">
+
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
-    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        surface: {
-                            900: '#050203', 
-                            800: '#0f0508', 
-                            700: '#1a080d', 
-                            600: '#2b0f17', 
-                        },
-                        brand: {
-                            50: '#fff0f3',
-                            100: '#ffe4e8',
-                            400: '#ff8fa3',
-                            500: '#ff4d6d', 
-                            600: '#c9184a',
-                            900: '#590d22',
-                        },
-                        text: {
-                            main: '#ffffff',
-                            muted: '#ffb3c6',
-                        }
+                        surface: { 900: '#050203', 800: '#0f0508', 700: '#1a080d', 600: '#2b0f17' },
+                        brand: { 50: '#fff0f3', 100: '#ffe4e8', 400: '#ff8fa3', 500: '#ff4d6d', 600: '#c9184a', 900: '#590d22' },
+                        text: { main: '#ffffff', muted: '#ffb3c6' }
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
@@ -66,7 +56,6 @@
     </script>
     
     <style>
-        /* Base reset to ensure fixed background renders properly */
         body {
             background-color: transparent;
             color: #ffffff;
@@ -82,14 +71,8 @@
                 linear-gradient(135deg, #050203 0%, #0f0508 100%);
         }
 
-        .bg-brand-500 {
-            background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%) !important;
-            border: none;
-        }
-        
-        .hover\:bg-brand-400:hover {
-            background: linear-gradient(135deg, #ff8fa3 0%, #ff4d6d 100%) !important;
-        }
+        .bg-brand-500 { background: linear-gradient(135deg, #ff4d6d 0%, #c9184a 100%) !important; border: none; }
+        .hover\:bg-brand-400:hover { background: linear-gradient(135deg, #ff8fa3 0%, #ff4d6d 100%) !important; }
 
         .text-brand-500 {
             background: linear-gradient(135deg, #ff4d6d, #ffb3c6);
@@ -98,14 +81,12 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .border-brand-500 {
-            border-color: #ff4d6d !important;
-        }
+        .border-brand-500 { border-color: #ff4d6d !important; }
 
         .glass-nav {
             background: rgba(15, 5, 8, 0.85); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border-bottom: 1px solid rgba(255, 179, 198, 0.05);
         }
 
@@ -117,6 +98,7 @@
             position: relative;
             overflow: hidden;
             transform: translateZ(0); 
+            will-change: transform; /* Hint for browser GPU */
         }
 
         .glass-card::before {
@@ -148,7 +130,6 @@
             }
         }
 
-        /* Hide Scrollbar for Horizontal Scroller */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -165,9 +146,7 @@
             outline: none;
         }
 
-        input::placeholder, textarea::placeholder {
-            color: #ffb3c6 !important;
-        }
+        input::placeholder, textarea::placeholder { color: #ffb3c6 !important; }
 
         .loader {
             border: 3px solid rgba(255, 179, 198, 0.1);
@@ -190,7 +169,6 @@
 <body class="font-sans antialiased flex flex-col min-h-screen relative text-white">
 
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none theme-bg-layer">
-        
         <div class="absolute inset-0 flex items-center justify-center opacity-[0.08] sm:opacity-[0.05] text-brand-500">
             <svg class="w-[180%] max-w-none md:w-[100%] h-auto animate-spin-slow transform-gpu" viewBox="0 0 200 200" fill="none" stroke="currentColor">
                 <circle cx="100" cy="100" r="80" stroke-width="0.3"/>
@@ -200,7 +178,6 @@
                 <path d="M100 40 A60 60 0 0 1 160 100 A60 60 0 0 1 100 160 A60 60 0 0 1 40 100 A60 60 0 0 1 100 40" stroke-width="0.1" stroke-dasharray="1 3"/>
             </svg>
         </div>
-
         <div class="absolute w-[300px] md:w-[600px] h-[300px] md:h-[600px] top-[-10%] left-[-10%] rounded-full animate-ambient-glow transform-gpu" style="background: radial-gradient(circle, rgba(255,77,109,0.15) 0%, transparent 60%);"></div>
         <div class="absolute w-[400px] md:w-[700px] h-[400px] md:h-[700px] top-[40%] right-[-20%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 3s; background: radial-gradient(circle, rgba(201,24,74,0.1) 0%, transparent 60%);"></div>
         <div class="absolute w-[500px] md:w-[800px] h-[500px] md:h-[800px] bottom-[-20%] left-[10%] rounded-full animate-ambient-glow transform-gpu" style="animation-delay: 5s; background: radial-gradient(circle, rgba(255,143,163,0.08) 0%, transparent 60%);"></div>
@@ -214,19 +191,16 @@
         <nav class="glass-nav fixed w-full z-40 transition-all duration-300" id="navbar">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between h-[70px] sm:h-[80px] items-center">
-                    
                     <div class="flex-shrink-0 flex items-center">
                         <a href="#" class="font-serif text-xl sm:text-2xl font-medium text-text-main flex items-center gap-2 sm:gap-3 group">
                             <i class="fa-solid fa-fan text-brand-500 transform group-hover:rotate-180 transition-transform duration-700"></i>
                             HandKnot Haven
                         </a>
                     </div>
-
                     <div class="hidden lg:flex items-center space-x-8">
                         <a href="#shop" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Shop</a>
                         <a href="#about" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Story</a>
                         <a href="#custom" class="text-sm font-medium text-text-muted hover:text-brand-500 transition-colors">Custom</a>
-                        
                         <div class="flex items-center gap-6 pl-8 border-l border-white/10">
                             <a href="#contact" class="text-sm font-medium text-text-main hover:text-brand-500 transition-colors">Contact</a>
                             <button onclick="openOrdersModal()" class="flex items-center gap-2 text-sm font-medium bg-white/5 border border-white/10 text-text-main px-5 py-2.5 rounded-full hover:bg-brand-500 hover:text-surface-900 hover:border-brand-500 transition-all duration-300">
@@ -234,13 +208,11 @@
                             </button>
                         </div>
                     </div>
-
                     <div class="flex items-center gap-3 sm:gap-4">
                         <button onclick="toggleCart()" class="relative p-2 text-text-main hover:text-brand-500 transition-colors flex items-center justify-center group">
                             <i class="fa-solid fa-basket-shopping text-lg sm:text-xl transform group-hover:scale-110 transition-transform"></i>
                             <span id="cart-badge" class="absolute top-0 right-0 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-surface-900 bg-brand-500 rounded-full hidden shadow-[0_0_10px_rgba(255,77,109,0.6)]">0</span>
                         </button>
-                        
                         <button type="button" onclick="toggleMobileMenu()" class="lg:hidden text-text-main p-2">
                             <i class="fa-solid fa-bars text-xl sm:text-2xl"></i>
                         </button>
@@ -272,7 +244,6 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-
             <div class="flex-1 overflow-y-auto p-4 sm:p-6" id="cart-items-container">
                 <div class="text-center text-text-muted mt-20 flex flex-col items-center" id="empty-cart-msg">
                     <div class="w-16 sm:w-20 h-16 sm:h-20 bg-white/5 rounded-full flex items-center justify-center mb-6 border border-white/5">
@@ -282,7 +253,6 @@
                     <button onclick="toggleCart(); document.getElementById('shop').scrollIntoView();" class="mt-6 text-sm text-brand-500 hover:text-brand-400 transition-colors border-b border-brand-500 pb-1">Discover pieces</button>
                 </div>
             </div>
-
             <div class="border-t border-white/5 p-4 sm:p-6 bg-surface-900/80">
                 <div class="flex justify-between items-center mb-4 sm:mb-6">
                     <span class="text-text-muted font-medium text-sm uppercase tracking-widest">Subtotal</span>
@@ -300,11 +270,9 @@
         </div>
 
         <main class="flex-grow">
-
             <section id="home" class="relative pt-28 pb-16 lg:pt-48 lg:pb-32 flex items-center min-h-[85vh] sm:min-h-[90vh]">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-                        
                         <div class="lg:w-1/2 text-center lg:text-left z-10">
                             <div class="inline-flex items-center gap-2 py-1.5 px-3 sm:px-4 bg-white/5 border border-white/10 rounded-full text-brand-400 text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-6 sm:mb-8 backdrop-blur-sm">
                                 <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Handcrafted Magic
@@ -324,14 +292,13 @@
                                 </a>
                             </div>
                         </div>
-                        
                         <div class="lg:w-1/2 w-full hidden md:block relative h-[400px] lg:h-[500px]">
                             <div class="absolute right-0 top-0 w-3/4 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-10 animate-float transform-gpu">
                                 <div class="absolute inset-0 bg-surface-900/20 z-10 mix-blend-overlay"></div>
-                                <img fetchpriority="high" src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover" alt="Crochet">
+                                <img fetchpriority="high" src="https://images.unsplash.com/photo-1606464539825-998846c4342d?q=70&w=800&fmt=webp&auto=format&fit=crop" class="w-full h-full object-cover" alt="Crochet">
                             </div>
                             <div class="absolute left-0 bottom-10 w-1/2 aspect-square rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl z-20 animate-float transform-gpu" style="animation-delay: -3s;">
-                                <img fetchpriority="high" src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[20%]" alt="Detail">
+                                <img loading="lazy" src="https://images.unsplash.com/photo-1584992236310-6edddc08acff?q=70&w=500&fmt=webp&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[20%]" alt="Detail">
                             </div>
                         </div>
                     </div>
@@ -345,7 +312,6 @@
                             <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-2 sm:mb-3">The Collection</h2>
                             <p class="text-text-muted font-light text-sm sm:text-base">Freshly crafted dark aesthetics.</p>
                         </div>
-                        
                         <div class="flex flex-wrap gap-2 sm:gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 no-scrollbar" id="category-filters">
                             <button class="filter-btn bg-brand-500 text-surface-900 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold shadow-[0_0_15px_rgba(255,77,109,0.4)] transition-all whitespace-nowrap" data-filter="all">All</button>
                             <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium hover:text-text-main hover:border-white/30 transition-all whitespace-nowrap" data-filter="Clothing">Wearables</button>
@@ -353,7 +319,6 @@
                             <button class="filter-btn bg-white/5 text-text-muted border border-white/10 px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium hover:text-text-main hover:border-white/30 transition-all whitespace-nowrap" data-filter="Accessories">Accessories</button>
                         </div>
                     </div>
-
                     <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 py-4 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 no-scrollbar" id="product-grid">
                     </div>
                 </div>
@@ -362,20 +327,14 @@
             <section id="about" class="py-16 sm:py-24 relative overflow-hidden">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="glass-card p-6 sm:p-10 md:p-16 relative overflow-hidden bg-surface-800/50 backdrop-blur-xl border border-white/5">
-                        
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center relative z-10">
                             <div class="lg:col-span-7">
                                 <span class="text-brand-500 font-semibold text-[10px] sm:text-xs tracking-widest uppercase mb-3 sm:mb-4 block">The Maker</span>
                                 <h2 class="text-3xl sm:text-4xl md:text-5xl font-serif text-text-main mb-4 sm:mb-6 leading-tight">Hi, I'm Vaishali. <br>Welcome to my sanctuary.</h2>
                                 <div class="space-y-4 sm:space-y-6 text-text-muted font-light text-sm sm:text-lg leading-relaxed">
-                                    <p>
-                                        Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet. 
-                                    </p>
-                                    <p>
-                                        Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.
-                                    </p>
+                                    <p>Based in Tathawade, Pune, HandKnot Haven is where my problem-solving mindset meets the meditative art of crochet.</p>
+                                    <p>Every item in this collection is hooked entirely by hand in my studio. I am dedicated to slow fashion—utilizing sustainable yarns, zero-waste practices, and creating pieces with undeniable longevity and soul.</p>
                                 </div>
-                                
                                 <div class="mt-8 sm:mt-10 pt-6 sm:pt-8 border-t border-white/10 grid grid-cols-2 gap-4 sm:gap-8">
                                     <div>
                                         <div class="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-brand-400 mb-3 sm:mb-4 text-lg sm:text-xl"><i class="fa-solid fa-leaf"></i></div>
@@ -389,11 +348,10 @@
                                     </div>
                                 </div>
                             </div>
-                            
                             <div class="lg:col-span-5 relative hidden sm:block">
                                 <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/10 shadow-2xl relative">
                                     <div class="absolute inset-0 bg-brand-900/30 mix-blend-overlay z-10"></div>
-                                    <img loading="lazy" src="https://images.unsplash.com/photo-1584288417180-2c35848ba335?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover" alt="Yarn texture">
+                                    <img loading="lazy" src="https://images.unsplash.com/photo-1584288417180-2c35848ba335?q=70&w=600&fmt=webp&auto=format&fit=crop" class="w-full h-full object-cover" alt="Yarn texture">
                                 </div>
                             </div>
                         </div>
@@ -420,7 +378,6 @@
                     </div>
                 </div>
             </section>
-
         </main>
 
         <footer id="contact" class="bg-[#020101] pt-16 sm:pt-24 pb-8 sm:pb-10 border-t border-white/5 relative z-30">
@@ -429,9 +386,7 @@
                     <h2 class="text-3xl sm:text-4xl font-serif text-text-main mb-3 sm:mb-4">Connect with the Studio</h2>
                     <p class="text-text-muted font-light text-sm sm:text-lg">No floating widgets. Just direct, easy communication.</p>
                 </div>
-
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto mb-16 sm:mb-20">
-                    
                     <a href="https://wa.me/919925617845" target="_blank" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-[#25D366]/10 text-[#25D366] border border-[#25D366]/20 rounded-full flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-brands fa-whatsapp"></i>
@@ -439,7 +394,6 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">WhatsApp</h3>
                         <p class="text-text-muted text-xs sm:text-sm">+91 99256 17845</p>
                     </a>
-
                     <a href="mailto:handknothaven@gmail.com" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-regular fa-envelope"></i>
@@ -447,7 +401,6 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">Email</h3>
                         <p class="text-text-muted text-xs sm:text-sm break-all">handknothaven@gmail.com</p>
                     </a>
-
                     <button onclick="openOrdersModal()" class="glass-card p-6 sm:p-8 flex flex-col items-center text-center group bg-surface-900/50">
                         <div class="w-14 sm:w-16 h-14 sm:h-16 bg-white/5 text-white/70 border border-white/10 rounded-full flex items-center justify-center text-xl sm:text-2xl mb-4 sm:mb-5 group-hover:scale-110 transition-transform transform-gpu">
                             <i class="fa-solid fa-location-crosshairs"></i>
@@ -455,9 +408,7 @@
                         <h3 class="text-text-main font-medium text-base sm:text-lg mb-1">Track Order</h3>
                         <p class="text-text-muted text-xs sm:text-sm">Live shipping updates</p>
                     </button>
-
                 </div>
-
                 <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left border-t border-white/5 pt-6 sm:pt-8">
                     <a href="#" class="font-serif text-lg sm:text-xl text-text-main flex items-center gap-2">
                         <i class="fa-solid fa-fan text-brand-500"></i> HandKnot Haven
@@ -473,22 +424,18 @@
     <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onclick="closeProductModal()"></div>
         <div class="relative bg-surface-800 border border-white/10 w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0" id="product-modal-content">
-            
             <button onclick="closeProductModal()" class="absolute top-3 sm:top-4 right-3 sm:right-4 text-text-main hover:text-brand-500 z-20 bg-black/60 backdrop-blur border border-white/10 w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center transition-colors">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-
             <div class="w-full md:w-1/2 h-56 sm:h-72 md:h-auto bg-surface-900 relative shrink-0">
                 <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 pointer-events-none"></div>
                 <img id="modal-img" src="" class="w-full h-full object-cover" loading="lazy">
             </div>
-
             <div class="w-full md:w-1/2 p-5 sm:p-8 md:p-12 overflow-y-auto flex flex-col">
                 <div class="text-[9px] sm:text-[10px] text-brand-400 font-bold tracking-widest uppercase mb-2 sm:mb-3 border border-brand-500/30 bg-brand-500/10 w-max px-2 sm:px-3 py-1 rounded" id="modal-category"></div>
                 <h3 class="text-2xl sm:text-3xl font-serif text-text-main mb-3 sm:mb-4" id="modal-title"></h3>
                 <div class="mb-4 sm:mb-6" id="modal-price"></div>
                 <p class="text-text-muted font-light mb-6 sm:mb-8 leading-relaxed text-xs sm:text-sm" id="modal-desc"></p>
-
                 <div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
                     <div class="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5">
                         <h4 class="font-medium text-text-main text-[10px] sm:text-xs uppercase tracking-wider mb-1" id="modal-material-name">Material</h4>
@@ -499,7 +446,6 @@
                         <p class="text-brand-400 text-xs font-light" id="modal-crafting-time"></p>
                     </div>
                 </div>
-
                 <div class="space-y-5 sm:space-y-6 mb-6 sm:mb-8 flex-grow">
                     <div id="modal-size-section" class="hidden">
                         <h4 class="font-medium text-text-main mb-2 sm:mb-3 text-xs sm:text-sm">Measurements (Optional)</h4>
@@ -510,18 +456,15 @@
                             <input type="text" id="measure-length" placeholder="Length" class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm">
                         </div>
                     </div>
-
                     <div>
                         <h4 class="font-medium text-text-main mb-2 sm:mb-3 text-xs sm:text-sm">Design Notes</h4>
                         <textarea id="modal-custom" rows="2" class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm resize-none" placeholder="Preferred color changes..."></textarea>
                     </div>
                 </div>
-
                 <div id="storefront-customization-engine" class="hidden border-t border-white/10 pt-5 sm:pt-6 mb-5 sm:mb-6">
                     <h4 class="font-medium text-text-main mb-2 sm:mb-3 text-xs sm:text-sm">Optional Additions</h4>
                     <div id="storefront-addons-list" class="space-y-2"></div>
                 </div>
-
                 <div class="mt-auto">
                     <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()" class="w-full bg-brand-500 text-surface-900 py-3.5 sm:py-4 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] active:scale-95 flex justify-center items-center gap-2">
                         Add to Basket — <span id="modal-btn-price"></span>
@@ -530,7 +473,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="checkout-form-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeCheckoutForm()"></div>
         <div class="relative bg-surface-800 border border-white/10 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
@@ -539,22 +482,10 @@
                 <button onclick="closeCheckoutForm()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="handleCheckoutForm(event)" class="p-5 sm:p-8 space-y-4 sm:space-y-5">
-                <div>
-                    <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1 sm:mb-2">Full Name</label>
-                    <input type="text" id="cust-name" required class="w-full p-2.5 sm:p-3 rounded-lg text-sm" />
-                </div>
-                <div>
-                    <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1 sm:mb-2">Phone Number</label>
-                    <input type="tel" id="cust-phone" required class="w-full p-2.5 sm:p-3 rounded-lg text-sm" />
-                </div>
-                <div>
-                    <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1 sm:mb-2">Email</label>
-                    <input type="email" id="cust-email" required class="w-full p-2.5 sm:p-3 rounded-lg text-sm" />
-                </div>
-                <div>
-                    <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1 sm:mb-2">Full Address</label>
-                    <textarea id="cust-address" required rows="3" class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none"></textarea>
-                </div>
+                <div><input type="text" id="cust-name" required placeholder="Full Name" class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
+                <div><input type="tel" id="cust-phone" required placeholder="Phone Number" class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
+                <div><input type="email" id="cust-email" required placeholder="Email" class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
+                <div><textarea id="cust-address" required placeholder="Full Address" rows="3" class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none"></textarea></div>
                 <button type="submit" class="w-full bg-brand-500 text-surface-900 py-3.5 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] mt-2">
                     Continue to Payment
                 </button>
@@ -577,13 +508,11 @@
                 <button id="razorpay-btn" onclick="initiateRazorpayPayment()" class="w-full bg-white text-black py-3.5 sm:py-4 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 mb-5 sm:mb-6">
                     <i class="fa-solid fa-building-columns"></i> Pay via Razorpay
                 </button>
-                
                 <div class="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
                     <div class="flex-1 h-px bg-white/10"></div>
                     <span class="text-[10px] sm:text-xs text-text-muted font-medium uppercase tracking-widest">Or</span>
                     <div class="flex-1 h-px bg-white/10"></div>
                 </div>
-
                 <div class="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 text-center">
                     <p class="text-xs sm:text-sm text-text-main mb-3 sm:mb-4">UPI: <span class="font-bold text-brand-400 tracking-wide">handknothaven@upi</span></p>
                     <button id="manual-upi-btn" onclick="confirmManualUPIPayment()" class="w-full bg-transparent border border-brand-500 text-brand-400 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 transition-colors">
@@ -606,7 +535,6 @@
             <div class="p-5 sm:p-6 text-center">
                 <p class="text-[10px] sm:text-xs text-text-muted uppercase tracking-widest font-medium mb-1">Expected Dispatch</p>
                 <p class="text-brand-400 font-medium text-sm sm:text-base mb-5 sm:mb-6" id="confirm-dispatch-date"></p>
-                
                 <button onclick="closeOrderConfirmation(); openOrdersModal();" class="w-full bg-white/5 border border-white/10 text-text-main py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium hover:bg-white/10 transition-colors mb-2 sm:mb-3">Track Order</button>
                 <button onclick="closeOrderConfirmation()" class="w-full bg-brand-500 text-surface-900 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-bold hover:bg-brand-400 transition-colors">Continue Shopping</button>
             </div>
@@ -620,14 +548,12 @@
                 <h3 class="text-lg sm:text-xl font-serif text-text-main" id="orders-modal-title">Track Order</h3>
                 <button onclick="closeOrdersModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div id="tracking-search-bar" class="p-4 sm:p-6 border-b border-white/5">
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <input type="text" id="track-order-input" placeholder="Enter Order ID..." class="flex-1 p-3 rounded-lg text-sm">
                     <button onclick="trackOrderSubmit()" class="w-full sm:w-auto px-6 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors">Find</button>
                 </div>
             </div>
-
             <div id="orders-list-view" class="p-4 sm:p-6 overflow-y-auto flex-1"></div>
             <div id="order-detail-view" class="p-4 sm:p-6 overflow-y-auto flex-1 hidden"></div>
         </div>
@@ -640,31 +566,15 @@
                 <h3 class="text-lg sm:text-xl font-serif text-text-main">Commission Request</h3>
                 <button onclick="closeCustomOrderModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div class="p-5 sm:p-8 overflow-y-auto flex-1">
                 <form id="custom-order-form" onsubmit="submitCustomOrder(event)" class="space-y-3 sm:space-y-4">
-                    <div>
-                        <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Your Name</label>
-                        <input type="text" id="custom-req-name" required class="w-full p-2.5 sm:p-3 rounded-lg text-sm" />
-                    </div>
+                    <div><input type="text" id="custom-req-name" required placeholder="Your Name" class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        <div>
-                            <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Phone</label>
-                            <input type="tel" id="custom-req-phone" required class="w-full p-2.5 sm:p-3 rounded-lg text-sm" />
-                        </div>
-                        <div>
-                            <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Email</label>
-                            <input type="email" id="custom-req-email" required class="w-full p-2.5 sm:p-3 rounded-lg text-sm" />
-                        </div>
+                        <div><input type="tel" id="custom-req-phone" required placeholder="Phone" class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
+                        <div><input type="email" id="custom-req-email" required placeholder="Email" class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
                     </div>
-                    <div>
-                        <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Delivery Address</label>
-                        <textarea id="custom-req-address" required rows="2" class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none"></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Description</label>
-                        <textarea id="custom-req-desc" required rows="3" class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none" placeholder="Visions, colors..."></textarea>
-                    </div>
+                    <div><textarea id="custom-req-address" required placeholder="Delivery Address" rows="2" class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none"></textarea></div>
+                    <div><textarea id="custom-req-desc" required placeholder="Description (Visions, colors...)" rows="3" class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none"></textarea></div>
                     <div>
                         <label class="block text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-wider mb-1">Reference Image (Optional)</label>
                         <input type="file" id="custom-req-image" accept="image/*" class="w-full text-xs text-text-muted file:mr-4 file:py-2 file:px-3 sm:file:px-4 file:rounded file:border-0 file:text-[10px] sm:file:text-xs file:font-medium file:bg-white/10 file:text-white cursor-pointer border border-white/10 rounded-lg p-1.5 sm:p-2 bg-black/20" />
@@ -684,21 +594,17 @@
                 <h3 class="text-lg sm:text-xl font-serif text-text-main flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles text-brand-400"></i> AI Concept Generator</h3>
                 <button onclick="closeAiModal()" class="text-text-muted hover:text-white transition-colors"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            
             <div class="p-5 sm:p-8 overflow-y-auto flex-1">
                 <div id="ai-input-view">
-                    <label class="block text-text-main font-medium mb-2 sm:mb-3 text-xs sm:text-sm">Describe the recipient or occasion.</label>
-                    <textarea id="ai-prompt" rows="4" class="w-full p-3 sm:p-4 rounded-lg text-sm resize-none mb-3 sm:mb-4" placeholder="e.g., A housewarming gift for a moody apartment..."></textarea>
+                    <textarea id="ai-prompt" rows="4" class="w-full p-3 sm:p-4 rounded-lg text-sm resize-none mb-3 sm:mb-4" placeholder="Describe the recipient or occasion... (e.g., A housewarming gift for a moody apartment...)"></textarea>
                     <button onclick="generateIdea()" class="w-full bg-brand-500 text-surface-900 py-3 sm:py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.2)]">
                         Generate Concept
                     </button>
                 </div>
-                
                 <div id="ai-loading-view" class="hidden flex-col items-center justify-center py-10 sm:py-12 text-center text-brand-400">
                     <div class="loader mb-3 sm:mb-4 border-white/10 border-t-brand-500"></div>
                     <p class="text-xs sm:text-sm font-medium">Curating ideas...</p>
                 </div>
-                
                 <div id="ai-result-view" class="hidden flex-col">
                     <div id="ai-result-content" class="text-text-main text-xs sm:text-sm font-light leading-relaxed mb-5 sm:mb-6 bg-black/20 p-4 sm:p-6 rounded-lg border border-white/5"></div>
                     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
@@ -706,7 +612,6 @@
                         <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();" class="w-full sm:w-1/2 py-2.5 sm:py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(255,77,109,0.2)]">Request Concept</button>
                     </div>
                 </div>
-                
                 <div id="ai-error-view" class="hidden flex-col items-center justify-center py-10 sm:py-12 text-center text-brand-500">
                     <p class="text-xs sm:text-sm font-medium mb-3 sm:mb-4">Connection issue. Please try again.</p>
                     <button onclick="resetAiModal()" class="px-5 sm:px-6 py-2 sm:py-2.5 border border-white/10 rounded-lg text-sm hover:bg-white/5 text-text-main">Back</button>
@@ -723,24 +628,25 @@
             saleMessage: "Opening Sale: Up to 30% Off Selected Creations"
         };
 
+        // Fallback Product Catalog. Uses WebP format. 
         let products = [
             {
                 id: 1, name: "Midnight Bloom Dress", price: 1500.00, category: "Clothing",
-                image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=80&w=800&auto=format&fit=crop",
+                image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=70&w=600&fmt=webp&auto=format&fit=crop",
                 badge: "Bespoke", description: "An elegant piece featuring a rich ruby-red body with delicate accents.",
                 perfectFor: "Special occasions.", careInstructions: "Hand wash cold, lay flat.", materialName: "Organic Cotton",
                 materialBenefit: "Highly breathable.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{name:"Matching Trim", price: 200}]
             },
             {
                 id: 2, name: "Azure Lace Crop", price: 2200, category: "Clothing",
-                image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=80&w=800&auto=format&fit=crop",
+                image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=70&w=600&fmt=webp&auto=format&fit=crop",
                 badge: "Custom Color", description: "Handcrafted crop top designed for sophisticated layering.",
                 perfectFor: "Resort wear.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
                 materialBenefit: "Soft structure.", craftingTime: "4-5 days"
             },
             {
                 id: 3, name: "Sunny Bloom Pot", price: 300.00, category: "Decor & Flowers",
-                image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=80&w=800&auto=format&fit=crop",
+                image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=70&w=600&fmt=webp&auto=format&fit=crop",
                 badge: "Classic", description: "Bring warmth indoors with this structured crochet decor piece.",
                 perfectFor: "Desk accent.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
                 materialBenefit: "Firm structure.", craftingTime: "2-3 days"
@@ -760,24 +666,28 @@
         const toast = document.getElementById('toast');
 
         const modals = {
-            product: document.getElementById('product-modal'), productContent: document.getElementById('product-modal-content'),
-            orderConf: document.getElementById('order-confirmation-modal'), orderConfContent: document.querySelector('#order-confirmation-modal > div:last-child'),
-            checkout: document.getElementById('checkout-form-modal'), checkoutContent: document.querySelector('#checkout-form-modal > div:last-child'),
-            payment: document.getElementById('payment-modal'), paymentContent: document.querySelector('#payment-modal > div:last-child'),
-            orders: document.getElementById('orders-modal'), ordersContent: document.querySelector('#orders-modal > div:last-child'),
-            ai: document.getElementById('ai-modal'), aiContent: document.querySelector('#ai-modal > div:last-child'),
-            custom: document.getElementById('custom-order-modal'), customContent: document.querySelector('#custom-order-modal > div:last-child')
+            product: { modal: document.getElementById('product-modal'), content: document.getElementById('product-modal-content') },
+            orderConf: { modal: document.getElementById('order-confirmation-modal'), content: document.querySelector('#order-confirmation-modal > div:last-child') },
+            checkout: { modal: document.getElementById('checkout-form-modal'), content: document.querySelector('#checkout-form-modal > div:last-child') },
+            payment: { modal: document.getElementById('payment-modal'), content: document.querySelector('#payment-modal > div:last-child') },
+            orders: { modal: document.getElementById('orders-modal'), content: document.querySelector('#orders-modal > div:last-child') },
+            ai: { modal: document.getElementById('ai-modal'), content: document.querySelector('#ai-modal > div:last-child') },
+            custom: { modal: document.getElementById('custom-order-modal'), content: document.querySelector('#custom-order-modal > div:last-child') }
         };
 
         function init() {
             const savedCart = localStorage.getItem('handknot_cart');
             if (savedCart) { try { cart = JSON.parse(savedCart); updateCartUI(); } catch (e) { localStorage.removeItem('handknot_cart'); } }
             
+            // Force immediate render of fallback products
             renderProducts(); 
             applyShopStatus(); 
             setupFilters();
+            
+            // Async loading
             loadProducts(); 
 
+            // Scroll throttler for performance
             let ticking = false;
             window.addEventListener('scroll', () => {
                 if (!ticking) {
@@ -814,6 +724,7 @@
 
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
+                // Added horizontal scroll item classes
                 card.className = 'product-card glass-card overflow-hidden flex flex-col group cursor-pointer transform-gpu flex-none w-[85%] sm:w-auto snap-center shrink-0';
                 card.onclick = () => openProductModal(product.id);
 
@@ -825,11 +736,17 @@
                     priceDisplay = `<div class="flex items-baseline gap-2"><span class="text-base font-semibold text-text-main">₹${calculatedSalePrice.toFixed(2)}</span><span class="text-xs font-normal text-text-muted line-through">₹${rawPrice.toFixed(2)}</span></div>`;
                 }
 
+                // Compress incoming images
+                let optimizedImage = product.image;
+                if(optimizedImage.includes('unsplash.com')) {
+                     optimizedImage += '&fmt=webp&q=70&w=600';
+                }
+
                 card.innerHTML = `
                 <div class="relative aspect-[4/3] overflow-hidden bg-surface-900 border-b border-white/5">
                     ${product.badge ? `<span class="absolute top-3 left-3 bg-brand-500/20 backdrop-blur-sm text-brand-400 border border-brand-500/30 text-[10px] font-medium tracking-wide px-2.5 py-1 rounded-md z-10">${product.badge}</span>` : ''}
                     <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 transition-opacity opacity-0 group-hover:opacity-100 duration-500"></div>
-                    <img loading="lazy" src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu">
+                    <img loading="lazy" src="${optimizedImage}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu">
                 </div>
                 <div class="p-4 sm:p-5 flex flex-col flex-grow relative z-20">
                     <p class="text-[9px] sm:text-[10px] text-brand-500 font-medium uppercase tracking-widest mb-1 sm:mb-1.5">${product.category}</p>
@@ -881,10 +798,10 @@
                 addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-2.5 sm:p-3 bg-black/20 rounded-lg cursor-pointer border border-white/5 hover:border-brand-500/30 transition-colors"><div class="flex items-center gap-2 sm:gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="accent-brand-500"><span class="text-xs sm:text-sm text-text-main">${item.name}</span></div><span class="text-[10px] sm:text-xs font-medium text-brand-400">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
             } else { addonContainer.classList.add('hidden'); }
 
-            recalculateModalPrice(); openModal({modal: modals.product, content: modals.productContent});
+            recalculateModalPrice(); openModal(modals.product);
         }
 
-        function closeProductModal() { closeModal({modal: modals.product, content: modals.productContent}); }
+        function closeProductModal() { closeModal(modals.product); }
         function recalculateModalPrice() {
             let totalPrice = currentModalCalculatedBasePrice;
             document.querySelectorAll('input[name="product-addon-choice"]:checked').forEach(cb => { if (activeProductAddons[cb.value]) totalPrice += Number(activeProductAddons[cb.value].price); });
@@ -934,14 +851,14 @@
             localStorage.setItem('handknot_cart', JSON.stringify(cart));
         }
 
-        function checkout() { if (!SHOP_CONFIG.takingOrders || cart.length === 0) return; toggleCart(); openModal({modal: modals.checkout, content: modals.checkoutContent}); }
-        function closeCheckoutForm() { closeModal({modal: modals.checkout, content: modals.checkoutContent}); }
+        function checkout() { if (!SHOP_CONFIG.takingOrders || cart.length === 0) return; toggleCart(); openModal(modals.checkout); }
+        function closeCheckoutForm() { closeModal(modals.checkout); }
         
         function handleCheckoutForm(e) {
             e.preventDefault(); document.getElementById('payment-total-amount').textContent = '₹' + cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
-            closeCheckoutForm(); setTimeout(() => openModal({modal: modals.payment, content: modals.paymentContent}), 400);
+            closeCheckoutForm(); setTimeout(() => openModal(modals.payment), 400);
         }
-        function closePaymentModal() { closeModal({modal: modals.payment, content: modals.paymentContent}); }
+        function closePaymentModal() { closeModal(modals.payment); }
 
         function initiateRazorpayPayment() {
             const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -957,12 +874,12 @@
             await saveOrder(orderId, totalPaid);
             emailjs.send("service_yt6ze52", "template_xyc0kaq", { order_id: orderId, customer_email: document.getElementById('cust-email').value, customer_name: document.getElementById('cust-name').value, product_name: cart.map(i => i.name).join(", "), total_amount: totalPaid }).catch(e=>e);
             userOrders.push({ id: orderId, created_at: new Date().toISOString(), total: totalPaid, order_status: 'confirmed' });
-            cart = []; updateCartUI(); closePaymentModal(); document.getElementById('confirm-order-id').textContent = orderId; document.getElementById('confirm-dispatch-date').textContent = d.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}); setTimeout(() => openModal({modal: modals.orderConf, content: modals.orderConfContent}), 400);
+            cart = []; updateCartUI(); closePaymentModal(); document.getElementById('confirm-order-id').textContent = orderId; document.getElementById('confirm-dispatch-date').textContent = d.toLocaleDateString('en-IN', {day: 'numeric', month: 'short', year: 'numeric'}); setTimeout(() => openModal(modals.orderConf), 400);
         }
-        function closeOrderConfirmation() { closeModal({modal: modals.orderConf, content: modals.orderConfContent}); }
+        function closeOrderConfirmation() { closeModal(modals.orderConf); }
 
-        function openOrdersModal() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); renderOrdersList(); openModal({modal: modals.orders, content: modals.ordersContent}); }
-        function closeOrdersModal() { closeModal({modal: modals.orders, content: modals.ordersContent}); }
+        function openOrdersModal() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); renderOrdersList(); openModal(modals.orders); }
+        function closeOrdersModal() { closeModal(modals.orders); }
 
         async function fetchUserOrders() { const q = document.getElementById('track-order-input').value.trim(); let query = supabaseClient.from('orders').select('*').order('created_at', { ascending: false }); if (q) query = query.or(`id.eq.${q},phone.eq.${q}`); const { data } = await query; return data || []; }
 
@@ -979,10 +896,10 @@
             detailView.innerHTML = `<button onclick="backToOrderList()" class="text-text-muted hover:text-brand-500 text-xs sm:text-sm mb-4 sm:mb-6 flex items-center gap-2 transition-colors"><i class="fa-solid fa-arrow-left"></i> Back</button><div class="bg-black/20 rounded-xl p-4 sm:p-6 border border-white/5 mb-4 sm:mb-6"><h3 class="font-serif text-text-main mb-3 sm:mb-4 text-base sm:text-lg">Tracking Status</h3><p class="text-xs sm:text-sm text-brand-400 capitalize mb-4 sm:mb-6 font-medium bg-brand-500/10 p-2 sm:p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status || 'Confirmed'}</p><div class="space-y-3 sm:space-y-4 pl-1 sm:pl-2"><div class="flex items-center gap-3 sm:gap-4"><div class="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-brand-500 shadow-[0_0_10px_rgba(255,77,109,0.8)]"></div><span class="text-xs sm:text-sm text-text-main">Order Placed</span></div><div class="flex items-center gap-3 sm:gap-4 opacity-50"><div class="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-white/20"></div><span class="text-xs sm:text-sm text-text-main">Processing</span></div><div class="flex items-center gap-3 sm:gap-4 opacity-50"><div class="w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full bg-white/20"></div><span class="text-xs sm:text-sm text-text-main">Shipped</span></div></div></div><div class="bg-black/20 rounded-xl p-4 sm:p-6 border border-white/5"><h3 class="font-serif text-text-main mb-3 sm:mb-4 text-base sm:text-lg">Summary</h3><div class="text-xs sm:text-sm text-text-muted space-y-1.5 sm:space-y-2 mb-4 sm:mb-6"><p><strong class="font-medium text-text-main">To:</strong> ${order.customer_name}</p><p><strong class="font-medium text-text-main">Address:</strong> ${order.address}</p><p><strong class="font-medium text-text-main">Items:</strong> ${order.product_name}</p></div><div class="flex justify-between font-medium text-text-main border-t border-white/10 pt-3 sm:pt-4 text-xs sm:text-sm"><span>Total Paid</span><span class="text-brand-400">₹${Number(order.total).toFixed(2)}</span></div></div>`;
         }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); }
-        function openAiModal() { openModal({modal: modals.ai, content: modals.aiContent}); }
-        function closeAiModal() { closeModal({modal: modals.ai, content: modals.aiContent}); }
-        function openCustomOrderModal() { if(!SHOP_CONFIG.takingOrders) return; openModal({modal: modals.custom, content: modals.customContent}); }
-        function closeCustomOrderModal() { closeModal({modal: modals.custom, content: modals.customContent}); document.getElementById('custom-order-form').reset(); }
+        function openAiModal() { openModal(modals.ai); }
+        function closeAiModal() { closeModal(modals.ai); }
+        function openCustomOrderModal() { if(!SHOP_CONFIG.takingOrders) return; openModal(modals.custom); }
+        function closeCustomOrderModal() { closeModal(modals.custom); document.getElementById('custom-order-form').reset(); }
         function showToast() { toast.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 2500); }
 
         async function submitCustomOrder(e) {
