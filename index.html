@@ -250,6 +250,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #ff4d6d;
         }
+
+        [data-view="hidden"] {
+            display: none !important;
+        }
+
+        [data-view="visible"] {
+            display: block !important;
+        }
     </style>
 </head>
 
@@ -1541,27 +1549,18 @@
             const switchBtn = document.getElementById('switch-tracking-email-btn');
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
 
-            // Force visibility panels back to default listing frames
-            document.getElementById('orders-list-view').style.display = 'block';
-            document.getElementById('orders-list-view').classList.remove('hidden');
-            document.getElementById('order-detail-view').style.display = 'none';
-            document.getElementById('order-detail-view').classList.add('hidden');
+            // Force visibility panels back to standard list displays safely
+            document.getElementById('orders-list-view').setAttribute('data-view', 'visible');
+            document.getElementById('order-detail-view').setAttribute('data-view', 'hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
 
-            // 🌟 FORCE LOCK: Manage direct layout display attributes right on load frames
             if (rememberedEmail && rememberedEmail.trim() !== "") {
                 document.getElementById('track-order-input').value = rememberedEmail;
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'none';
-                    searchBarContainer.classList.add('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'hidden');
                 if (switchBtn) switchBtn.classList.remove('hidden');
             } else {
                 document.getElementById('track-order-input').value = '';
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'block';
-                    searchBarContainer.classList.remove('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'visible');
                 if (switchBtn) switchBtn.classList.add('hidden');
             }
 
@@ -1639,10 +1638,7 @@
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
 
             if (!emailCheck && !rememberedEmail) {
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'block';
-                    searchBarContainer.classList.remove('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'visible');
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
                         <i class="fa-solid fa-fingerprint text-4xl mb-4 text-brand-900 opacity-60"></i>
@@ -1652,12 +1648,8 @@
                 return;
             }
 
-            // 🌟 FORCE LOCK: Force the bar away using inline style declarations during list assembly
             if (rememberedEmail && rememberedEmail.trim() !== "" && !previousTrackingEmailBackup) {
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'none';
-                    searchBarContainer.classList.add('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'hidden');
             }
 
             listContainer.innerHTML = `
@@ -1670,10 +1662,7 @@
             userOrders = await fetchUserOrders();
 
             if (!userOrders || userOrders.length === 0) {
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'block';
-                    searchBarContainer.classList.remove('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'visible');
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
                         <i class="fa-solid fa-ghost text-3xl mb-3 text-brand-900 opacity-50"></i>
@@ -1748,40 +1737,18 @@
 
         function viewOrderDetails(orderId) {
             const order = userOrders.find(o => o.id.toString() === orderId.toString());
+            if (!order) return;
 
-            if (!order) {
-                console.error("Order details lookup failure:", orderId);
-                return;
+            // 🌟 SWAP ATTRIBUTES: Hide list, show details instantly via data-view overrides
+            if (document.getElementById('tracking-search-bar')) {
+                document.getElementById('tracking-search-bar').setAttribute('data-view', 'hidden');
             }
-
-            // 1. Instantly hide the search bar and the main list container elements explicitly
-            const searchBarContainer = document.getElementById('tracking-search-bar');
-            if (searchBarContainer) {
-                searchBarContainer.style.display = 'none';
-                searchBarContainer.classList.add('hidden');
-            }
-
-            const listView = document.getElementById('orders-list-view');
-            if (listView) {
-                listView.style.display = 'none';
-                listView.classList.add('hidden');
-            }
-
-            // 2. Reveal the detail view container cleanly
-            const detailView = document.getElementById('order-detail-view');
-            if (detailView) {
-                detailView.style.display = 'block';
-                detailView.classList.remove('hidden');
-            }
+            document.getElementById('orders-list-view').setAttribute('data-view', 'hidden');
+            document.getElementById('order-detail-view').setAttribute('data-view', 'visible');
 
             const status = (order.order_status || 'confirmed').toLowerCase();
             const statusLevel = getStatusLevel(status);
 
-            const dispatchDate = new Date(order.created_at || new Date());
-            dispatchDate.setDate(dispatchDate.getDate() + 7);
-            const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
-
-            // 🌟 FIXED: Clean inline layout styling on the back arrow trigger button
             document.getElementById('orders-modal-title').innerHTML = `
                 <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-2 transition-all focus:outline-none cursor-pointer border-0 bg-transparent p-0 inline-flex items-center align-middle" type="button">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -1791,15 +1758,11 @@
             let showExchangeButton = false;
             if (status === 'delivered') {
                 const deliveryTimestamp = new Date(order.updated_at || order.created_at || new Date());
-                const currentSystemTime = new Date();
-                const hoursElapsedSinceDelivery = (currentSystemTime - deliveryTimestamp) / (1000 * 60 * 60);
-
-                if (hoursElapsedSinceDelivery <= 48) {
-                    showExchangeButton = true;
-                }
+                const hoursElapsedSinceDelivery = (new Date() - deliveryTimestamp) / (1000 * 60 * 60);
+                if (hoursElapsedSinceDelivery <= 48) showExchangeButton = true;
             }
 
-            detailView.innerHTML = `
+            document.getElementById('order-detail-view').innerHTML = `
                 <div class="space-y-6 text-left">
                     <div class="bg-black/20 rounded-xl p-5 sm:p-6 border border-white/5">
                         <h3 class="text-base sm:text-lg font-serif text-text-main mb-5">Tracking Status</h3>
@@ -1863,7 +1826,23 @@
             window.open(`https://wa.me/919925617845?text=${encodedMessage}`, '_blank');
         }
 
-        function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500 mr-2"></i> Order History'; }
+        function backToOrderList() {
+            const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
+            const searchBarContainer = document.getElementById('tracking-search-bar');
+            const activeBackup = typeof previousTrackingEmailBackup !== 'undefined' ? previousTrackingEmailBackup : null;
+
+            if ((rememberedEmail && rememberedEmail.trim() !== "") || activeBackup) {
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'hidden');
+            } else {
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'visible');
+            }
+
+            // 🌟 SWAP ATTRIBUTES BACK: Force list to show and hide details perfectly
+            document.getElementById('orders-list-view').setAttribute('data-view', 'visible');
+            document.getElementById('order-detail-view').setAttribute('data-view', 'hidden');
+
+            document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
+        }
         function openAiModal() { openModal(modals.ai); }
         function closeAiModal() { closeModal(modals.ai); }
         function openCustomOrderModal() { if (!SHOP_CONFIG.takingOrders) { showToast("Custom requests are temporarily paused."); return; } openModal(modals.custom); }
