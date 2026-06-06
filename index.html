@@ -1711,8 +1711,11 @@
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
             const searchBarContainer = document.getElementById('tracking-search-bar');
 
-            // 🌟 FORCE LOCK: Absolutely kill visual inheritance lines during back transitions
-            if (rememberedEmail && rememberedEmail.trim() !== "" && !previousTrackingEmailBackup) {
+            // 🌟 FIXED: Added window scoping safety to verify your backup variables safely
+            const activeBackup = typeof previousTrackingEmailBackup !== 'undefined' ? previousTrackingEmailBackup : null;
+
+            // Keep the bar hidden on back navigation if an email session is active
+            if ((rememberedEmail && rememberedEmail.trim() !== "") || activeBackup) {
                 if (searchBarContainer) {
                     searchBarContainer.style.display = 'none';
                     searchBarContainer.classList.add('hidden');
@@ -1724,11 +1727,20 @@
                 }
             }
 
-            // Restore primary structural components smoothly
-            document.getElementById('orders-list-view').style.display = 'block';
-            document.getElementById('orders-list-view').classList.remove('hidden');
-            document.getElementById('order-detail-view').style.display = 'none';
-            document.getElementById('order-detail-view').classList.add('hidden');
+            // 🌟 FIXED: Explicitly force list display block transformations back online
+            const listView = document.getElementById('orders-list-view');
+            const detailView = document.getElementById('order-detail-view');
+
+            if (listView) {
+                listView.style.display = 'block';
+                listView.classList.remove('hidden');
+            }
+            if (detailView) {
+                detailView.style.display = 'none';
+                detailView.classList.add('hidden');
+            }
+
+            // Restore primary tracker window title text layout header
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
         }
 
