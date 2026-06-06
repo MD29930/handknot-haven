@@ -1492,10 +1492,12 @@
                 return;
             }
 
-            list.innerHTML = ''; // Clear loading
+            list.innerHTML = ''; // Clear loading spinner
 
             userOrders.forEach(order => {
                 const div = document.createElement('div');
+                // We call viewOrderDetails with the order.id directly
+                div.onclick = () => viewOrderDetails(order.id);
                 div.className = "bg-black/20 border border-white/5 rounded-xl p-3 sm:p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-500/50 transition-colors";
                 div.innerHTML = `
             <div>
@@ -1506,16 +1508,19 @@
             </div>
             <div class="text-right font-medium text-brand-400 text-xs sm:text-sm">₹${Number(order.total || 0).toFixed(2)}</div>
         `;
-
-                // Use a proper event listener instead of an inline onclick
-                div.addEventListener('click', () => {
-                    viewOrderDetailsDirect(order);
-                });
                 list.appendChild(div);
             });
         }
 
-        function viewOrderDetailsDirect(order) {
+        function viewOrderDetails(orderId) {
+            // 1. Find the order in your loaded userOrders array
+            const order = userOrders.find(o => o.id.toString() === orderId.toString());
+
+            if (!order) {
+                console.error("Order not found in memory:", orderId);
+                return;
+            }
+
             document.getElementById('tracking-search-bar').classList.add('hidden');
             document.getElementById('orders-list-view').classList.add('hidden');
             const detailView = document.getElementById('order-detail-view');
@@ -1524,8 +1529,8 @@
             const status = (order.order_status || 'confirmed').toLowerCase();
             const statusLevel = getStatusLevel(status);
 
-            const createdDate = new Date(order.created_at || new Date());
-            const dispatchDate = new Date(createdDate);
+            // Calculate Dispatch Date
+            const dispatchDate = new Date(order.created_at || new Date());
             dispatchDate.setDate(dispatchDate.getDate() + 7);
             const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
