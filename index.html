@@ -1747,47 +1747,47 @@
         // ====== REPLACE YOUR ENTIRE viewOrderDetails() FUNCTION IN INDEX.HTML ======
 
         function viewOrderDetails(orderId) {
-            // 1. Find target record securely inside the runtime array
             const order = userOrders.find(o => o.id.toString() === orderId.toString());
 
             if (!order) {
-                console.error("Order details look up index failure parameters mapping:", orderId);
-                alert("Could not load tracking specifics for this selection entry slot.");
+                console.error("Order details lookup failure:", orderId);
                 return;
             }
 
-            // 2. Hide tracking input bar and main list elements using explicit display styles
+            // 1. Instantly hide the search bar and the main list container elements explicitly
             const searchBarContainer = document.getElementById('tracking-search-bar');
             if (searchBarContainer) {
                 searchBarContainer.style.display = 'none';
                 searchBarContainer.classList.add('hidden');
             }
 
-            document.getElementById('orders-list-view').style.display = 'none';
-            document.getElementById('orders-list-view').classList.add('hidden');
+            const listView = document.getElementById('orders-list-view');
+            if (listView) {
+                listView.style.display = 'none';
+                listView.classList.add('hidden');
+            }
 
-            // Uncover the detail view container frame cleanly
+            // 2. Reveal the detail view container cleanly
             const detailView = document.getElementById('order-detail-view');
-            detailView.style.display = 'block';
-            detailView.classList.remove('hidden');
+            if (detailView) {
+                detailView.style.display = 'block';
+                detailView.classList.remove('hidden');
+            }
 
-            // 3. Format tracking attributes
             const status = (order.order_status || 'confirmed').toLowerCase();
             const statusLevel = getStatusLevel(status);
 
-            // Compute exact relative delivery timelines 
             const dispatchDate = new Date(order.created_at || new Date());
             dispatchDate.setDate(dispatchDate.getDate() + 7);
             const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
-            // Set up title text and injection anchors securely
+            // 🌟 FIXED: Clean inline layout styling on the back arrow trigger button
             document.getElementById('orders-modal-title').innerHTML = `
-                <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-3 transition-colors focus:outline-none cursor-pointer border-0 bg-transparent p-0 inline-flex items-center">
+                <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-2 transition-all focus:outline-none cursor-pointer border-0 bg-transparent p-0 inline-flex items-center align-middle" type="button">
                     <i class="fa-solid fa-arrow-left"></i>
-                </button> Order #${order.id}
+                </button> <span class="align-middle">Order #${order.id}</span>
             `;
 
-            // Evaluate if this specific customer file qualifies for custom exchange windows (48-hr rule)
             let showExchangeButton = false;
             if (status === 'delivered') {
                 const deliveryTimestamp = new Date(order.updated_at || order.created_at || new Date());
@@ -1799,7 +1799,6 @@
                 }
             }
 
-            // 4. Inject clean template block content down to the view panel container
             detailView.innerHTML = `
                 <div class="space-y-6 text-left">
                     <div class="bg-black/20 rounded-xl p-5 sm:p-6 border border-white/5">
@@ -1837,14 +1836,6 @@
                     </div>
                 </div>
             `;
-        }
-        // This function determines the progress bar stage
-        function getStatusLevel(s) {
-            const x = (s || '').toLowerCase().trim();
-            if (x === 'delivered') return 4;
-            if (x === 'shipped') return 3;
-            if (x === 'processing') return 2;
-            return 1; // Default to confirmed
         }
 
         // This function renders the timeline steps in your modal
