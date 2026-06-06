@@ -1484,32 +1484,32 @@
         function confirmManualUPIPayment() { const btn = document.getElementById('manual-upi-btn'); const orig = btn.innerHTML; btn.innerHTML = `<div class="loader mx-auto"></div>`; setTimeout(() => { finalizeOrderProcess(); btn.innerHTML = orig; }, 1500); }
 
         async function finalizeOrderProcess() {
-            const orderId = 'HKH' + Date.now().toString().slice(-3) + Math.floor(100 + Math.random() * 900); 
-            const d = new Date(); 
-            d.setDate(d.getDate() + 7); 
+            const orderId = 'HKH' + Date.now().toString().slice(-3) + Math.floor(100 + Math.random() * 900);
+            const d = new Date();
+            d.setDate(d.getDate() + 7);
             const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            
+
             await saveOrder(orderId, totalPaid);
-            
-            emailjs.send("service_yt6ze52", "template_xyc0kaq", { 
-                order_id: orderId, 
-                customer_email: document.getElementById('cust-email').value, 
-                customer_name: document.getElementById('cust-name').value, 
-                product_name: cart.map(i => i.name).join(", "), 
-                total_amount: totalPaid 
+
+            emailjs.send("service_yt6ze52", "template_xyc0kaq", {
+                order_id: orderId,
+                customer_email: document.getElementById('cust-email').value,
+                customer_name: document.getElementById('cust-name').value,
+                product_name: cart.map(i => i.name).join(", "),
+                total_amount: totalPaid
             }).catch(e => e);
 
             const placedDate = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
             const formattedDate = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
-            userOrders.push({ 
-                id: orderId, 
-                created_at: new Date().toISOString(), 
-                placedDate: placedDate, 
-                dispatchDate: formattedDate, 
-                items: [...cart], 
-                total: totalPaid, 
-                order_status: 'confirmed' 
+            userOrders.push({
+                id: orderId,
+                created_at: new Date().toISOString(),
+                placedDate: placedDate,
+                dispatchDate: formattedDate,
+                items: [...cart],
+                total: totalPaid,
+                order_status: 'confirmed'
             });
 
             // 🌟 FIXED: Capture the checkout email and lock it into localStorage once
@@ -1519,16 +1519,16 @@
             }
 
             // Clear state and proceed to confirmation
-            cart = []; 
-            updateCartUI(); 
-            closePaymentModal(); 
-            
-            document.getElementById('confirm-order-id').textContent = orderId; 
-            document.getElementById('confirm-dispatch-date').textContent = formattedDate; 
-            
+            cart = [];
+            updateCartUI();
+            closePaymentModal();
+
+            document.getElementById('confirm-order-id').textContent = orderId;
+            document.getElementById('confirm-dispatch-date').textContent = formattedDate;
+
             setTimeout(() => openModal(modals.orderConf), 400);
         }
-        
+
         function closeOrderConfirmation() { closeModal(modals.orderConf); }
 
         function openOrdersModal() {
@@ -1663,12 +1663,21 @@
             }).join('');
         }
 
+        // ====== REPLACE YOUR EXISTING backToOrderList() BLOCK WITH THIS ======
+
         function backToOrderList() {
-            // Handles cleanly populating returning views
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
-            if (!rememberedEmail) {
-                document.getElementById('tracking-search-bar').classList.remove('hidden');
+            const searchBarContainer = document.getElementById('tracking-search-bar');
+
+            if (rememberedEmail) {
+                // 🌟 FIXED: Explicitly force the input bar to hide if an email is already stored!
+                if (searchBarContainer) searchBarContainer.classList.add('hidden');
+            } else {
+                // Show it only if they haven't saved an email yet
+                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
             }
+
+            // Restore the layout frames and primary header text
             document.getElementById('orders-list-view').classList.remove('hidden');
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
