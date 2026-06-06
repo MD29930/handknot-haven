@@ -1482,60 +1482,78 @@
         async function fetchUserOrders() { const q = document.getElementById('track-order-input').value.trim(); let query = supabaseClient.from('orders').select('*').order('created_at', { ascending: false }); if (q) query = query.or(`id.eq.${q},phone.eq.${q}`); const { data } = await query; return data || []; }
 
         async function renderOrdersList() {
-            const list = document.getElementById('orders-list-view'); list.innerHTML = `<div class="text-center py-10"><div class="loader mx-auto mb-3"></div><span class="text-sm text-text-muted">Loading...</span></div>`;
-            userOrders = await fetchUserOrders();
-            if (!userOrders.length) { list.innerHTML = `<div class="text-center py-10 text-text-muted text-sm font-medium">No orders found.</div>`; return; }
-            list.innerHTML = userOrders.map(o => `<div onclick="viewOrderDetails('${o.id}')" class="bg-black/20 border border-white/5 rounded-xl p-3 sm:p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-500/50 transition-colors"><div><h4 class="font-medium text-text-main text-xs sm:text-sm mb-1">Order #${o.id}</h4><span class="text-[9px] sm:text-[10px] text-brand-400 bg-brand-500/10 border border-brand-500/20 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded uppercase tracking-wide font-medium">${o.order_status || 'confirmed'}</span></div><div class="text-right font-medium text-brand-400 text-xs sm:text-sm">₹${Number(o.total).toFixed(2)}</div></div>`).join('');
-        }
+            const list = document.getElementById('orders-list-view');
+            list.innerHTML = `<div class="text-center py-10"><div class="loader mx-auto mb-3"></div><span class="text-sm text-text-muted">Loading...</span></div>`;
 
-        function viewOrderDetails(orderId) {
-            const order = userOrders.find(o => o.id == orderId || o.id.toString() === orderId);
-            if (!order) {
-                console.error("Order not found:", orderId);
+            userOrders = await fetchUserOrders();
+
+            if (!userOrders || userOrders.length === 0) {
+                list.innerHTML = `<div class="text-center py-10 text-text-muted text-sm font-medium">No orders found.</div>`;
                 return;
             }
 
-            const ordersListView = document.getElementById('orders-list-view');
-            const orderDetailView = document.getElementById('order-detail-view');
-            const trackingSearchBar = document.getElementById('tracking-search-bar');
+            list.innerHTML = userOrders.map(order => {
+                // Store order as JSON string in the onclick to ensure data is passed perfectly
+                const orderDataStr = JSON.stringify(order).replace(/'/g, "&#39;");
+                const status = (order.order_status || 'confirmed').toLowerCase();
 
-            trackingSearchBar.classList.add('hidden');
-            ordersListView.classList.add('hidden');
-            orderDetailView.classList.remove('hidden');
+                return `
+            <div onclick="viewOrderDetailsByData('${orderDataStr}')" 
+                 class="bg-black/20 border border-white/5 rounded-xl p-4 mb-3 flex justify-between items-center cursor-pointer hover:border-brand-500/50 transition-colors">
+                <div>
+                    <h4 class="font-medium text-text-main text-sm mb-1">Order #${order.id}</h4>
+                    <span class="text-[10px] text-brand-400 bg-brand-500/10 border border-brand-500/20 px-2 py-1 rounded uppercase tracking-wide font-medium">${status}</span>
+                </div>
+                <div class="text-right font-medium text-brand-400 text-sm">₹${Number(order.total || 0).toFixed(2)}</div>
+            </div>`;
+            }).join('');
+        }
 
-            const statusLevel = getStatusLevel(order.order_status);
-            const isReportable = checkDamageWindow(order.order_status, order.updated_at || order.created_at);
-            const dispatchDate = new Date(order.created_at || new Date());
+        function viewOrderDetailsByData(dataString) {
+            const order = JSON.parse(dataString);
+
+            document.getElementById('tracking-search-bar').classList.add('hidden');
+            document.getElementById('orders-list-view').classList.add('hidden');
+            const detailView = document.getElementById('order-detail-view');
+            detailView.classList.remove('hidden');
+
+            const status = (order.order_status || 'confirmed').toLowerCase();
+            const statusLevel = getStatusLevel(status);
+
+            // Dispatch date logic
+            const createdDate = new Date(order.created_at || new Date());
+            const dispatchDate = new Date(createdDate);
             dispatchDate.setDate(dispatchDate.getDate() + 7);
             const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
             document.getElementById('orders-modal-title').innerHTML = `
-            <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-3 transition-colors">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button> Order #${order.id.toString().slice(0, 12)}`;
+        <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-3 transition-colors focus:outline-none">
+            <i class="fa-solid fa-arrow-left"></i>
+        </button> Order #${order.id}`;
 
-            // Populate the details directly from the 'order' object found in the array
-            orderDetailView.innerHTML = `
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
-                <div class="bg-black/20 rounded-2xl p-6 border border-white/5">
-                    <h3 class="text-lg font-serif text-text-main mb-4 flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-brand-500"></i> Tracking</h3>
-                    <p class="text-brand-400 font-medium mb-4 bg-brand-500/10 p-2 rounded border border-brand-500/20 inline-block">Status: ${order.order_status}</p>
-                    <div class="space-y-6">
-                        ${renderTimelineStep('Confirmed', 'Order accepted', statusLevel >= 1, 'fa-clipboard-check')}
-                        ${renderTimelineStep('Processing', 'Crafting items', statusLevel >= 2, 'fa-hand-sparkles')}
-                        ${renderTimelineStep('Shipped', 'Out for delivery', statusLevel >= 3, 'fa-truck-fast')}
-                    </div>
+            detailView.innerHTML = `
+        <div class="space-y-6 text-left">
+            <div class="bg-black/20 rounded-xl p-6 border border-white/5">
+                <h3 class="text-lg font-serif text-text-main mb-6">Tracking Status</h3>
+                <p class="text-brand-400 capitalize mb-6 font-bold bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status}</p>
+                <div class="space-y-8 pl-2">
+                    ${renderTimelineStep('Confirmed', 'Order accepted', statusLevel >= 1, 'fa-clipboard-check')}
+                    ${renderTimelineStep('Processing', 'Crafting your items', statusLevel >= 2, 'fa-hand-sparkles')}
+                    ${renderTimelineStep('Shipped', 'Handed over to courier', statusLevel >= 3, 'fa-truck-fast')}
+                    ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
                 </div>
-                <div class="bg-black/20 rounded-2xl p-6 border border-white/5">
-                    <h3 class="text-lg font-serif text-text-main mb-4">Summary</h3>
-                    <div class="text-sm text-text-muted space-y-2 mb-6">
-                        <p><strong>To:</strong> ${order.customer_name}</p>
-                        <p><strong>Address:</strong> ${order.address}</p>
-                        <p><strong>Items:</strong> ${order.product_name}</p>
-                    </div>
-                    <div class="font-bold text-xl text-brand-400">Total: ₹${Number(order.total).toFixed(2)}</div>
+            </div>
+            
+            <div class="bg-black/20 rounded-xl p-6 border border-white/5">
+                <h3 class="text-lg font-serif text-text-main mb-4">Order Summary</h3>
+                <div class="text-sm text-text-muted space-y-2">
+                    <p><strong class="text-text-main">Customer:</strong> ${order.customer_name || 'N/A'}</p>
+                    <p><strong class="text-text-main">Address:</strong> ${order.address || 'N/A'}</p>
+                    <p><strong class="text-text-main">Items:</strong> ${order.product_name || 'N/A'}</p>
+                    <p><strong class="text-text-main">Total:</strong> ₹${Number(order.total || 0).toFixed(2)}</p>
                 </div>
-            </div>`;
+            </div>
+        </div>`;
         }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500 mr-2"></i> Order History'; }
         function openAiModal() { openModal(modals.ai); }
