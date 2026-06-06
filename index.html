@@ -1631,8 +1631,11 @@
             const emailCheck = document.getElementById('track-order-input').value.trim();
             const searchBarContainer = document.getElementById('tracking-search-bar');
 
+            // 1. Check device memory state first
+            const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
+
             // If no account tracking identity is verified yet, show a clean onboarding display prompt
-            if (!emailCheck) {
+            if (!emailCheck && !rememberedEmail) {
                 if (searchBarContainer) searchBarContainer.classList.remove('hidden');
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
@@ -1641,6 +1644,12 @@
                     </div>
                 `;
                 return;
+            }
+
+            // 🌟 FIXED: If an email is verified in storage, FORCE hide the bar immediately! 
+            // This prevents data fetch delays or UI re-renders from toggling it back open.
+            if (rememberedEmail && rememberedEmail.trim() !== "" && !previousTrackingEmailBackup) {
+                if (searchBarContainer) searchBarContainer.classList.add('hidden');
             }
 
             listContainer.innerHTML = `
@@ -1653,7 +1662,7 @@
             userOrders = await fetchUserOrders();
 
             if (!userOrders || userOrders.length === 0) {
-                // Keep search bar visible if no orders were found so they can check for typos
+                // Keep search bar visible ONLY if no orders exist for this email string so they can fix typos
                 if (searchBarContainer) searchBarContainer.classList.remove('hidden');
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
@@ -1663,10 +1672,6 @@
                 `;
                 return;
             }
-
-            // 🌟 FIXED: If we successfully found orders, HIDE the search bar instantly!
-            // It will now ONLY show up again if they click your "Change Email" button.
-            if (searchBarContainer) searchBarContainer.classList.add('hidden');
 
             listContainer.innerHTML = userOrders.map(order => {
                 const status = (order.order_status || 'confirmed').toLowerCase();
