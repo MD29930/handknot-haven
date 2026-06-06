@@ -1090,32 +1090,26 @@
     <!-- ====== REPLACE YOUR EXISTING orders-modal DIV REGION EXCLUSIVELY ====== -->
     <div id="orders-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeOrdersModal()"></div>
-        <div
-            class="relative bg-surface-800 border border-white/10 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
             <div class="p-5 sm:p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-lg sm:text-xl font-serif text-text-main flex items-center gap-2"
-                    id="orders-modal-title">
+                <h3 class="text-lg sm:text-xl font-serif text-text-main flex items-center gap-2" id="orders-modal-title">
                     <i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History
                 </h3>
                 <div class="flex items-center gap-3">
-                    <!-- Toggle button to switch emails manually -->
                     <button id="switch-tracking-email-btn" onclick="forgetTrackingEmail()"
                         class="hidden text-[11px] font-bold text-brand-400 border border-brand-500/20 bg-brand-500/5 px-2.5 py-1 rounded-lg hover:bg-brand-500/20 transition-all focus:outline-none cursor-pointer">
                         <i class="fa-solid fa-right-from-bracket mr-1"></i> Change Email
                     </button>
-                    <button onclick="closeOrdersModal()"
-                        class="text-text-muted hover:text-white transition-colors p-1.5"><i
-                            class="fa-solid fa-xmark"></i></button>
+                    <button onclick="closeOrdersModal()" class="text-text-muted hover:text-white transition-colors p-1.5 cursor-pointer">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
             </div>
 
-            <!-- Email Verification Landing Panel -->
-            <div id="tracking-search-bar" class="p-4 sm:p-6 border-b border-white/5 bg-surface-900/30">
-                <p class="text-xs text-text-muted mb-3 font-light">Please verify your account email address parameters
-                    to pull your secure transaction entries down:</p>
+            <div id="tracking-search-bar" data-view="visible" class="p-4 sm:p-6 border-b border-white/5 bg-surface-900/30">
+                <p class="text-xs text-text-muted mb-3 font-light">Please verify your account email address parameters to pull your secure transaction entries down:</p>
                 <div class="flex flex-col sm:flex-row gap-2 sm:gap-3">
-                    <input type="email" id="track-order-input"
-                        placeholder="Enter your purchase email id (e.g. name@domain.com)..."
+                    <input type="email" id="track-order-input" placeholder="Enter your purchase email id (e.g. name@domain.com)..."
                         class="flex-1 p-3 rounded-lg text-sm outline-none font-medium">
                     <button onclick="saveTrackingEmailAndSearch()"
                         class="w-full sm:w-auto px-6 py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-md cursor-pointer focus:outline-none">
@@ -1124,8 +1118,8 @@
                 </div>
             </div>
 
-            <div id="orders-list-view" class="p-4 sm:p-6 overflow-y-auto flex-1"></div>
-            <div id="order-detail-view" class="p-4 sm:p-6 overflow-y-auto flex-1 hidden"></div>
+            <div id="orders-list-view" data-view="visible" class="p-4 sm:p-6 overflow-y-auto flex-1"></div>
+            <div id="order-detail-view" data-view="hidden" class="p-4 sm:p-6 overflow-y-auto flex-1"></div>
         </div>
     </div>
 
@@ -1545,14 +1539,14 @@
         // ====== REPLACE YOUR ENTIRE openOrdersModal() FUNCTION WITH THIS ======
 
         function openOrdersModal() {
-            const searchBarContainer = document.getElementById('tracking-search-bar');
-            const switchBtn = document.getElementById('switch-tracking-email-btn');
-            const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
-
-            // Force visibility panels back to standard list displays safely
+            // Restore default workspace states smoothly via attributes
             document.getElementById('orders-list-view').setAttribute('data-view', 'visible');
             document.getElementById('order-detail-view').setAttribute('data-view', 'hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
+
+            const searchBarContainer = document.getElementById('tracking-search-bar');
+            const switchBtn = document.getElementById('switch-tracking-email-btn');
+            const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
 
             if (rememberedEmail && rememberedEmail.trim() !== "") {
                 document.getElementById('track-order-input').value = rememberedEmail;
@@ -1569,12 +1563,10 @@
         }
 
         function closeOrdersModal() {
-            // 🌟 FIXED: If they clicked "Change Email" but closed the modal without saving, restore memory!
             if (previousTrackingEmailBackup) {
                 localStorage.setItem('hkh_customer_lookup_email', previousTrackingEmailBackup);
-                previousTrackingEmailBackup = null; // Clear temporary instance anchor
+                previousTrackingEmailBackup = null; 
             }
-
             closeModal(modals.orders);
         }
 
@@ -1586,12 +1578,10 @@
                 return;
             }
 
-            // Lock the verified email into storage
             localStorage.setItem('hkh_customer_lookup_email', emailValue);
-            previousTrackingEmailBackup = null; // Clear out temporary backup state safely
+            previousTrackingEmailBackup = null; 
 
-            // Hide entry input UI bars
-            document.getElementById('tracking-search-bar').classList.add('hidden');
+            document.getElementById('tracking-search-bar').setAttribute('data-view', 'hidden');
             const switchBtn = document.getElementById('switch-tracking-email-btn');
             if (switchBtn) switchBtn.classList.remove('hidden');
 
@@ -1599,15 +1589,13 @@
         }
 
         function forgetTrackingEmail() {
-            // 🌟 FIXED: Instead of wiping localStorage instantly, take a temporary backup first!
             const currentSavedEmail = localStorage.getItem('hkh_customer_lookup_email');
             if (currentSavedEmail) {
                 previousTrackingEmailBackup = currentSavedEmail;
             }
 
-            // Uncover the text input area so they can write their change parameters
             document.getElementById('track-order-input').value = '';
-            document.getElementById('tracking-search-bar').classList.remove('hidden');
+            document.getElementById('tracking-search-bar').setAttribute('data-view', 'visible');
             document.getElementById('switch-tracking-email-btn').classList.add('hidden');
         }
 
@@ -1615,7 +1603,6 @@
             const emailTarget = document.getElementById('track-order-input').value.trim().toLowerCase();
             if (!emailTarget) return [];
 
-            // STRICT FILTERING: Instruct Supabase to query ONLY records matching this individual's email column
             const { data, error } = await supabaseClient
                 .from('orders')
                 .select('*')
@@ -1699,37 +1686,16 @@
         function backToOrderList() {
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
             const searchBarContainer = document.getElementById('tracking-search-bar');
-
-            // 🌟 FIXED: Added window scoping safety to verify your backup variables safely
             const activeBackup = typeof previousTrackingEmailBackup !== 'undefined' ? previousTrackingEmailBackup : null;
 
-            // Keep the bar hidden on back navigation if an email session is active
             if ((rememberedEmail && rememberedEmail.trim() !== "") || activeBackup) {
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'none';
-                    searchBarContainer.classList.add('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'hidden');
             } else {
-                if (searchBarContainer) {
-                    searchBarContainer.style.display = 'block';
-                    searchBarContainer.classList.remove('hidden');
-                }
+                if (searchBarContainer) searchBarContainer.setAttribute('data-view', 'visible');
             }
 
-            // 🌟 FIXED: Explicitly force list display block transformations back online
-            const listView = document.getElementById('orders-list-view');
-            const detailView = document.getElementById('order-detail-view');
-
-            if (listView) {
-                listView.style.display = 'block';
-                listView.classList.remove('hidden');
-            }
-            if (detailView) {
-                detailView.style.display = 'none';
-                detailView.classList.add('hidden');
-            }
-
-            // Restore primary tracker window title text layout header
+            document.getElementById('orders-list-view').setAttribute('data-view', 'visible');
+            document.getElementById('order-detail-view').setAttribute('data-view', 'hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
         }
 
@@ -1843,6 +1809,13 @@
 
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
         }
+        function getStatusLevel(s) {
+            const x = (s || '').toLowerCase().trim();
+            if (x === 'delivered') return 4;
+            if (x === 'shipped') return 3;
+            if (x === 'processing') return 2;
+            return 1; 
+        }
         function openAiModal() { openModal(modals.ai); }
         function closeAiModal() { closeModal(modals.ai); }
         function openCustomOrderModal() { if (!SHOP_CONFIG.takingOrders) { showToast("Custom requests are temporarily paused."); return; } openModal(modals.custom); }
@@ -1884,8 +1857,10 @@
             btn.innerHTML = `<i class="fa-solid fa-check"></i> Request Registered!`; btn.classList.replace('bg-brand-500', 'bg-green-600');
             setTimeout(() => { closeCustomOrderModal(); btn.innerHTML = orig; btn.classList.replace('bg-green-600', 'bg-brand-500'); btn.disabled = false; openOrderConfirmation(customOrderId, "Pending Review"); }, 1500);
         }
-        function trackOrderSubmit() { viewOrderDetails(document.getElementById('track-order-input').value.trim()); }
-
+       function trackOrderSubmit() { 
+            saveTrackingEmailAndSearch(); 
+        }
+        
         async function loadProducts() {
             try {
                 const { data, error } = await supabaseClient.from('products').select('*');
