@@ -1616,6 +1616,19 @@
             <p class="text-xs text-text-muted mt-1">${desc}</p>
         </div>`;
         }
+
+        // This function triggers when a customer requests an exchange
+        function reportDamage(orderId) {
+            // Generates a pre-filled, professional message for your WhatsApp chat
+            const message = `Hi Vaishali, I am writing to request a size issue/damage exchange for my HandKnot Haven order #${orderId}. [Attaching reference photos below]`;
+
+            // Encodes the spaces and characters safely for a URL link
+            const encodedMessage = encodeURIComponent(message);
+
+            // Securely opens your WhatsApp link in a clean, active browser tab
+            window.open(`https://wa.me/919925617845?text=${encodedMessage}`, '_blank');
+        }
+
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500 mr-2"></i> Order History'; }
         function openAiModal() { openModal(modals.ai); }
         function closeAiModal() { closeModal(modals.ai); }
