@@ -1619,12 +1619,16 @@
             return data || [];
         }
 
+        // ====== REPLACE YOUR ENTIRE renderOrdersList() FUNCTION WITH THIS ======
+
         async function renderOrdersList() {
             const listContainer = document.getElementById('orders-list-view');
             const emailCheck = document.getElementById('track-order-input').value.trim();
+            const searchBarContainer = document.getElementById('tracking-search-bar');
 
             // If no account tracking identity is verified yet, show a clean onboarding display prompt
             if (!emailCheck) {
+                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
                         <i class="fa-solid fa-fingerprint text-4xl mb-4 text-brand-900 opacity-60"></i>
@@ -1644,6 +1648,8 @@
             userOrders = await fetchUserOrders();
 
             if (!userOrders || userOrders.length === 0) {
+                // Keep search bar visible if no orders were found so they can check for typos
+                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
                         <i class="fa-solid fa-ghost text-3xl mb-3 text-brand-900 opacity-50"></i>
@@ -1652,6 +1658,10 @@
                 `;
                 return;
             }
+
+            // 🌟 FIXED: If we successfully found orders, HIDE the search bar instantly!
+            // It will now ONLY show up again if they click your "Change Email" button.
+            if (searchBarContainer) searchBarContainer.classList.add('hidden');
 
             listContainer.innerHTML = userOrders.map(order => {
                 const status = (order.order_status || 'confirmed').toLowerCase();
