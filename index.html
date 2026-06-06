@@ -1531,26 +1531,26 @@
 
         function closeOrderConfirmation() { closeModal(modals.orderConf); }
 
+        // Global scratchpad memory variable to hold onto previous email state temporary
+        let previousTrackingEmailBackup = null;
+
         function openOrdersModal() {
-            // Restore default view states
+            // Restore clean layout states
             document.getElementById('orders-list-view').classList.remove('hidden');
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
 
-            // Pull any previously verified profile email from device memory
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
             const searchBarContainer = document.getElementById('tracking-search-bar');
             const switchBtn = document.getElementById('switch-tracking-email-btn');
 
-            if (rememberedEmail) {
-                // User has already unlocked this section before! Set field value and hide verification panel
+            if (rememberedEmail && rememberedEmail.trim() !== "") {
                 document.getElementById('track-order-input').value = rememberedEmail;
-                searchBarContainer.classList.add('hidden');
+                if (searchBarContainer) searchBarContainer.classList.add('hidden');
                 if (switchBtn) switchBtn.classList.remove('hidden');
             } else {
-                // Fresh user. Show input verification form
                 document.getElementById('track-order-input').value = '';
-                searchBarContainer.classList.remove('hidden');
+                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
                 if (switchBtn) switchBtn.classList.add('hidden');
             }
 
@@ -1558,21 +1558,29 @@
             openModal(modals.orders);
         }
 
-        function closeOrdersModal() { closeModal(modals.orders); }
+        function closeOrdersModal() {
+            // 🌟 FIXED: If they clicked "Change Email" but closed the modal without saving, restore memory!
+            if (previousTrackingEmailBackup) {
+                localStorage.setItem('hkh_customer_lookup_email', previousTrackingEmailBackup);
+                previousTrackingEmailBackup = null; // Clear temporary instance anchor
+            }
+
+            closeModal(modals.orders);
+        }
 
         function saveTrackingEmailAndSearch() {
             const emailValue = document.getElementById('track-order-input').value.trim().toLowerCase();
 
-            // Basic regex validation barrier to prevent blank or structural script breaks
             if (!emailValue || !emailValue.includes('@')) {
                 alert("Please enter a valid structural email address to process lookups.");
                 return;
             }
 
-            // Save email context once to the browser so they never have to type it again!
+            // Lock the verified email into storage
             localStorage.setItem('hkh_customer_lookup_email', emailValue);
+            previousTrackingEmailBackup = null; // Clear out temporary backup state safely
 
-            // Animate search panel away and display historical items
+            // Hide entry input UI bars
             document.getElementById('tracking-search-bar').classList.add('hidden');
             const switchBtn = document.getElementById('switch-tracking-email-btn');
             if (switchBtn) switchBtn.classList.remove('hidden');
@@ -1581,19 +1589,16 @@
         }
 
         function forgetTrackingEmail() {
-            // Clears device memory cleanly when they click "Change Email"
-            localStorage.removeItem('hkh_customer_lookup_email');
+            // 🌟 FIXED: Instead of wiping localStorage instantly, take a temporary backup first!
+            const currentSavedEmail = localStorage.getItem('hkh_customer_lookup_email');
+            if (currentSavedEmail) {
+                previousTrackingEmailBackup = currentSavedEmail;
+            }
+
+            // Uncover the text input area so they can write their change parameters
             document.getElementById('track-order-input').value = '';
             document.getElementById('tracking-search-bar').classList.remove('hidden');
             document.getElementById('switch-tracking-email-btn').classList.add('hidden');
-
-            // Clear out the previous email's list view instantly so it stays empty until the new search
-            document.getElementById('orders-list-view').innerHTML = `
-                <div class="text-center py-12 text-text-muted">
-                    <i class="fa-solid fa-fingerprint text-4xl mb-4 text-brand-900 opacity-60"></i>
-                    <p class="font-medium text-sm">Account tracking locked. Enter your email address parameters above to view matching purchases.</p>
-                </div>
-            `;
         }
 
         async function fetchUserOrders() {
@@ -1673,17 +1678,16 @@
         // ====== REPLACE YOUR EXISTING backToOrderList() BLOCK WITH THIS ======
 
         function backToOrderList() {
-            // 🌟 FIXED: Unified key to explicitly track 'hkh_customer_lookup_email'
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
             const searchBarContainer = document.getElementById('tracking-search-bar');
 
-            if (rememberedEmail && rememberedEmail.trim() !== "") {
+            // If they have a saved email OR a backup memory row waiting, keep input hidden!
+            if ((rememberedEmail && rememberedEmail.trim() !== "") || previousTrackingEmailBackup) {
                 if (searchBarContainer) searchBarContainer.classList.add('hidden');
             } else {
                 if (searchBarContainer) searchBarContainer.classList.remove('hidden');
             }
 
-            // Restore primary frame elements
             document.getElementById('orders-list-view').classList.remove('hidden');
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
