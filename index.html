@@ -1581,12 +1581,19 @@
         }
 
         function forgetTrackingEmail() {
-            // Clears device memory if they choose to change profiles explicitly
+            // Clears device memory cleanly when they click "Change Email"
             localStorage.removeItem('hkh_customer_lookup_email');
             document.getElementById('track-order-input').value = '';
             document.getElementById('tracking-search-bar').classList.remove('hidden');
             document.getElementById('switch-tracking-email-btn').classList.add('hidden');
-            renderOrdersList();
+
+            // Clear out the previous email's list view instantly so it stays empty until the new search
+            document.getElementById('orders-list-view').innerHTML = `
+                <div class="text-center py-12 text-text-muted">
+                    <i class="fa-solid fa-fingerprint text-4xl mb-4 text-brand-900 opacity-60"></i>
+                    <p class="font-medium text-sm">Account tracking locked. Enter your email address parameters above to view matching purchases.</p>
+                </div>
+            `;
         }
 
         async function fetchUserOrders() {
@@ -1666,18 +1673,17 @@
         // ====== REPLACE YOUR EXISTING backToOrderList() BLOCK WITH THIS ======
 
         function backToOrderList() {
+            // 🌟 FIXED: Unified key to explicitly track 'hkh_customer_lookup_email'
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
             const searchBarContainer = document.getElementById('tracking-search-bar');
 
-            if (rememberedEmail) {
-                // 🌟 FIXED: Explicitly force the input bar to hide if an email is already stored!
+            if (rememberedEmail && rememberedEmail.trim() !== "") {
                 if (searchBarContainer) searchBarContainer.classList.add('hidden');
             } else {
-                // Show it only if they haven't saved an email yet
                 if (searchBarContainer) searchBarContainer.classList.remove('hidden');
             }
 
-            // Restore the layout frames and primary header text
+            // Restore primary frame elements
             document.getElementById('orders-list-view').classList.remove('hidden');
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
