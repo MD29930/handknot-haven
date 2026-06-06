@@ -1732,88 +1732,99 @@
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
         }
 
+        // ====== REPLACE YOUR ENTIRE viewOrderDetails() FUNCTION IN INDEX.HTML ======
+
         function viewOrderDetails(orderId) {
-            // 1. Find the order in your loaded userOrders array
+            // 1. Find target record securely inside the runtime array
             const order = userOrders.find(o => o.id.toString() === orderId.toString());
 
             if (!order) {
-                console.error("Order not found in memory:", orderId);
+                console.error("Order details look up index failure parameters mapping:", orderId);
+                alert("Could not load tracking specifics for this selection entry slot.");
                 return;
             }
 
-            document.getElementById('tracking-search-bar').classList.add('hidden');
+            // 2. Hide tracking input bar and main list elements using explicit display styles
+            const searchBarContainer = document.getElementById('tracking-search-bar');
+            if (searchBarContainer) {
+                searchBarContainer.style.display = 'none';
+                searchBarContainer.classList.add('hidden');
+            }
+
+            document.getElementById('orders-list-view').style.display = 'none';
             document.getElementById('orders-list-view').classList.add('hidden');
+
+            // Uncover the detail view container frame cleanly
             const detailView = document.getElementById('order-detail-view');
+            detailView.style.display = 'block';
             detailView.classList.remove('hidden');
 
+            // 3. Format tracking attributes
             const status = (order.order_status || 'confirmed').toLowerCase();
             const statusLevel = getStatusLevel(status);
 
-            // Calculate Dispatch Date
+            // Compute exact relative delivery timelines 
             const dispatchDate = new Date(order.created_at || new Date());
             dispatchDate.setDate(dispatchDate.getDate() + 7);
             const formattedDispatch = dispatchDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
+            // Set up title text and injection anchors securely
             document.getElementById('orders-modal-title').innerHTML = `
-        <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-3 transition-colors focus:outline-none">
-            <i class="fa-solid fa-arrow-left"></i>
-        </button> Order #${order.id}`;
+                <button onclick="backToOrderList()" class="text-brand-500 hover:text-brand-400 mr-3 transition-colors focus:outline-none cursor-pointer border-0 bg-transparent p-0 inline-flex items-center">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button> Order #${order.id}
+            `;
 
-            // -----------------------------------------------------------------
-            // ⏰ LIVETIME 48-HOUR ELIGIBILITY EVALUATION FOR EXCHANGE INTERFACE
-            // -----------------------------------------------------------------
+            // Evaluate if this specific customer file qualifies for custom exchange windows (48-hr rule)
             let showExchangeButton = false;
-
             if (status === 'delivered') {
-                // Fallback to created_at if your database record hasn't written an updated_at string yet
                 const deliveryTimestamp = new Date(order.updated_at || order.created_at || new Date());
                 const currentSystemTime = new Date();
-
-                // Calculate total difference in hours elapsed since the marker
                 const hoursElapsedSinceDelivery = (currentSystemTime - deliveryTimestamp) / (1000 * 60 * 60);
 
-                // If it falls within the absolute strict window, enable interface rendering
                 if (hoursElapsedSinceDelivery <= 48) {
                     showExchangeButton = true;
                 }
             }
-            // -----------------------------------------------------------------
 
+            // 4. Inject clean template block content down to the view panel container
             detailView.innerHTML = `
-        <div class="space-y-6 text-left">
-            <div class="bg-black/20 rounded-xl p-6 border border-white/5">
-                <h3 class="text-lg font-serif text-text-main mb-6">Tracking Status</h3>
-                <p class="text-brand-400 capitalize mb-6 font-bold bg-brand-500/10 p-3 rounded-lg border border-brand-500/20 inline-block">Current: ${order.order_status}</p>
-                <div class="space-y-8 pl-2">
-                    ${renderTimelineStep('Confirmed', 'Order accepted', statusLevel >= 1, 'fa-clipboard-check')}
-                    ${renderTimelineStep('Processing', 'Crafting your items', statusLevel >= 2, 'fa-hand-sparkles')}
-                    ${renderTimelineStep('Shipped', 'Handed over to courier', statusLevel >= 3, 'fa-truck-fast')}
-                    ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
-                </div>
-            </div>
-            
-            <div class="bg-black/20 rounded-xl p-6 border border-white/5">
-                <h3 class="text-lg font-serif text-text-main mb-4">Order Summary</h3>
-                <div class="text-sm text-text-muted space-y-2 mb-6">
-                    <p><strong class="text-text-main">Customer:</strong> ${order.customer_name || 'N/A'}</p>
-                    <p><strong class="text-text-main">Address:</strong> ${order.address || 'N/A'}</p>
-                    <p><strong class="text-text-main">Items:</strong> ${order.product_name || 'N/A'}</p>
-                </div>
+                <div class="space-y-6 text-left">
+                    <div class="bg-black/20 rounded-xl p-5 sm:p-6 border border-white/5">
+                        <h3 class="text-base sm:text-lg font-serif text-text-main mb-5">Tracking Status</h3>
+                        <p class="text-brand-400 capitalize mb-6 font-bold bg-brand-500/10 p-2.5 rounded-lg border border-brand-500/20 inline-block text-xs sm:text-sm">
+                            Current: ${order.order_status || 'Confirmed'}
+                        </p>
+                        <div class="space-y-6 pl-1.5">
+                            ${renderTimelineStep('Confirmed', 'Order accepted', statusLevel >= 1, 'fa-clipboard-check')}
+                            ${renderTimelineStep('Processing', 'Crafting your items', statusLevel >= 2, 'fa-hand-sparkles')}
+                            ${renderTimelineStep('Shipped', 'Handed over to courier', statusLevel >= 3, 'fa-truck-fast')}
+                            ${renderTimelineStep('Delivered', 'Enjoy your handmade magic!', statusLevel >= 4, 'fa-house-chimney-window')}
+                        </div>
+                    </div>
+                    
+                    <div class="bg-black/20 rounded-xl p-5 sm:p-6 border border-white/5">
+                        <h3 class="text-base sm:text-lg font-serif text-text-main mb-4">Order Summary</h3>
+                        <div class="text-xs sm:text-sm text-text-muted space-y-2.5 mb-6 leading-relaxed">
+                            <p><strong class="text-text-main font-semibold">Customer:</strong> ${order.customer_name || 'Anonymous'}</p>
+                            <p><strong class="text-text-main font-semibold">Address:</strong> ${order.address || 'No location loaded.'}</p>
+                            <p class="break-words"><strong class="text-text-main font-semibold">Items:</strong> ${order.product_name || 'Handmade Selection'}</p>
+                        </div>
 
-                <div class="bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/10 mb-4">
-                    <span class="font-bold text-text-main">Total Paid</span>
-                    <span class="font-bold text-xl text-brand-400">₹${Number(order.total || 0).toFixed(2)}</span>
-                </div>
+                        <div class="bg-white/5 p-4 rounded-xl flex justify-between items-center border border-white/10 mb-2">
+                            <span class="font-bold text-text-main text-xs sm:text-sm">Total Paid</span>
+                            <span class="font-bold text-lg sm:text-xl text-brand-400">₹${Number(order.total || 0).toFixed(2)}</span>
+                        </div>
 
-                <!-- Evaluates conditional boolean visibility marker here -->
-                ${showExchangeButton ? `
-                    <button onclick="reportDamage('${order.id}')" 
-                        class="w-full mt-4 py-3.5 bg-brand-500 text-surface-900 font-bold rounded-xl hover:bg-brand-400 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(255,77,109,0.3)] focus:outline-none">
-                        <i class="fa-solid fa-camera text-sm"></i> Request Size Issue / Damage Exchange
-                    </button>
-                ` : ''}
-            </div>
-        </div>`;
+                        ${showExchangeButton ? `
+                            <button onclick="reportDamage('${order.id}')" 
+                                class="w-full mt-4 py-3.5 bg-brand-500 text-surface-900 font-bold rounded-xl hover:bg-brand-400 transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(255,77,109,0.3)] focus:outline-none cursor-pointer">
+                                <i class="fa-solid fa-camera text-sm"></i> Request Size Issue / Damage Exchange
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
         }
         // This function determines the progress bar stage
         function getStatusLevel(s) {
