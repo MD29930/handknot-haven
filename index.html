@@ -1534,8 +1534,10 @@
         // Global scratchpad memory variable to hold onto previous email state temporary
         let previousTrackingEmailBackup = null;
 
+        // ====== REPLACE YOUR ENTIRE openOrdersModal() FUNCTION WITH THIS ======
+
         function openOrdersModal() {
-            // Restore clean layout states
+            // 1. Reset standard structural layout panels back to view arrays
             document.getElementById('orders-list-view').classList.remove('hidden');
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
@@ -1544,16 +1546,19 @@
             const searchBarContainer = document.getElementById('tracking-search-bar');
             const switchBtn = document.getElementById('switch-tracking-email-btn');
 
+            // 🌟 FIXED: Instantly hide the search bar BEFORE data rendering begins if memory exists!
             if (rememberedEmail && rememberedEmail.trim() !== "") {
                 document.getElementById('track-order-input').value = rememberedEmail;
-                if (searchBarContainer) searchBarContainer.classList.add('hidden');
+                if (searchBarContainer) searchBarContainer.classList.add('hidden'); // Immediate lock
                 if (switchBtn) switchBtn.classList.remove('hidden');
             } else {
+                // Keep input open only if it's a completely unverified new session
                 document.getElementById('track-order-input').value = '';
                 if (searchBarContainer) searchBarContainer.classList.remove('hidden');
                 if (switchBtn) switchBtn.classList.add('hidden');
             }
 
+            // 2. Call your database layout generator smoothly
             renderOrdersList();
             openModal(modals.orders);
         }
