@@ -1563,6 +1563,27 @@
             </div>
         </div>`;
         }
+        // This function determines the progress bar stage
+        function getStatusLevel(s) {
+            const x = (s || '').toLowerCase().trim();
+            if (x === 'delivered') return 4;
+            if (x === 'shipped') return 3;
+            if (x === 'processing') return 2;
+            return 1; // Default to confirmed
+        }
+
+        // This function renders the timeline steps in your modal
+        function renderTimelineStep(title, desc, isActive, icon) {
+            return `
+        <div class="relative pl-8 ${isActive ? '' : 'opacity-40 grayscale'}">
+            <div class="absolute -left-[19.5px] top-0 w-9 h-9 rounded-full border-[3px] flex items-center justify-center z-10 
+                ${isActive ? 'bg-surface-800 border-brand-500 text-brand-400 shadow-[0_0_10px_rgba(255,77,109,0.5)]' : 'bg-surface-800 border-white/20 text-neutral-500'}">
+                <i class="fa-solid ${icon} text-xs"></i>
+            </div>
+            <h4 class="font-bold text-sm text-text-main">${title}</h4>
+            <p class="text-xs text-text-muted mt-1">${desc}</p>
+        </div>`;
+        }
         function backToOrderList() { document.getElementById('tracking-search-bar').classList.remove('hidden'); document.getElementById('orders-list-view').classList.remove('hidden'); document.getElementById('order-detail-view').classList.add('hidden'); document.getElementById('orders-modal-title').innerHTML = '<i class="fa-solid fa-clock-rotate-left text-brand-500 mr-2"></i> Order History'; }
         function openAiModal() { openModal(modals.ai); }
         function closeAiModal() { closeModal(modals.ai); }
