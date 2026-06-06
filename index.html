@@ -1537,28 +1537,34 @@
         // ====== REPLACE YOUR ENTIRE openOrdersModal() FUNCTION WITH THIS ======
 
         function openOrdersModal() {
-            // 1. Reset standard structural layout panels back to view arrays
+            const searchBarContainer = document.getElementById('tracking-search-bar');
+            const switchBtn = document.getElementById('switch-tracking-email-btn');
+            const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
+
+            // Force visibility panels back to default listing frames
+            document.getElementById('orders-list-view').style.display = 'block';
             document.getElementById('orders-list-view').classList.remove('hidden');
+            document.getElementById('order-detail-view').style.display = 'none';
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
 
-            const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
-            const searchBarContainer = document.getElementById('tracking-search-bar');
-            const switchBtn = document.getElementById('switch-tracking-email-btn');
-
-            // 🌟 FIXED: Instantly hide the search bar BEFORE data rendering begins if memory exists!
+            // 🌟 FORCE LOCK: Manage direct layout display attributes right on load frames
             if (rememberedEmail && rememberedEmail.trim() !== "") {
                 document.getElementById('track-order-input').value = rememberedEmail;
-                if (searchBarContainer) searchBarContainer.classList.add('hidden'); // Immediate lock
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'none';
+                    searchBarContainer.classList.add('hidden');
+                }
                 if (switchBtn) switchBtn.classList.remove('hidden');
             } else {
-                // Keep input open only if it's a completely unverified new session
                 document.getElementById('track-order-input').value = '';
-                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'block';
+                    searchBarContainer.classList.remove('hidden');
+                }
                 if (switchBtn) switchBtn.classList.add('hidden');
             }
 
-            // 2. Call your database layout generator smoothly
             renderOrdersList();
             openModal(modals.orders);
         }
@@ -1630,13 +1636,13 @@
             const listContainer = document.getElementById('orders-list-view');
             const emailCheck = document.getElementById('track-order-input').value.trim();
             const searchBarContainer = document.getElementById('tracking-search-bar');
-
-            // 1. Check device memory state first
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
 
-            // If no account tracking identity is verified yet, show a clean onboarding display prompt
             if (!emailCheck && !rememberedEmail) {
-                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'block';
+                    searchBarContainer.classList.remove('hidden');
+                }
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
                         <i class="fa-solid fa-fingerprint text-4xl mb-4 text-brand-900 opacity-60"></i>
@@ -1646,10 +1652,12 @@
                 return;
             }
 
-            // 🌟 FIXED: If an email is verified in storage, FORCE hide the bar immediately! 
-            // This prevents data fetch delays or UI re-renders from toggling it back open.
+            // 🌟 FORCE LOCK: Force the bar away using inline style declarations during list assembly
             if (rememberedEmail && rememberedEmail.trim() !== "" && !previousTrackingEmailBackup) {
-                if (searchBarContainer) searchBarContainer.classList.add('hidden');
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'none';
+                    searchBarContainer.classList.add('hidden');
+                }
             }
 
             listContainer.innerHTML = `
@@ -1662,12 +1670,14 @@
             userOrders = await fetchUserOrders();
 
             if (!userOrders || userOrders.length === 0) {
-                // Keep search bar visible ONLY if no orders exist for this email string so they can fix typos
-                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'block';
+                    searchBarContainer.classList.remove('hidden');
+                }
                 listContainer.innerHTML = `
                     <div class="text-center py-12 text-text-muted">
                         <i class="fa-solid fa-ghost text-3xl mb-3 text-brand-900 opacity-50"></i>
-                        <p class="font-medium text-sm">No order history profiles linked with "${emailCheck}".</p>
+                        <p class="font-medium text-sm">No order history profiles linked with "${emailCheck || rememberedEmail}".</p>
                     </div>
                 `;
                 return;
@@ -1701,14 +1711,23 @@
             const rememberedEmail = localStorage.getItem('hkh_customer_lookup_email');
             const searchBarContainer = document.getElementById('tracking-search-bar');
 
-            // If they have a saved email OR a backup memory row waiting, keep input hidden!
-            if ((rememberedEmail && rememberedEmail.trim() !== "") || previousTrackingEmailBackup) {
-                if (searchBarContainer) searchBarContainer.classList.add('hidden');
+            // 🌟 FORCE LOCK: Absolutely kill visual inheritance lines during back transitions
+            if (rememberedEmail && rememberedEmail.trim() !== "" && !previousTrackingEmailBackup) {
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'none';
+                    searchBarContainer.classList.add('hidden');
+                }
             } else {
-                if (searchBarContainer) searchBarContainer.classList.remove('hidden');
+                if (searchBarContainer) {
+                    searchBarContainer.style.display = 'block';
+                    searchBarContainer.classList.remove('hidden');
+                }
             }
 
+            // Restore primary structural components smoothly
+            document.getElementById('orders-list-view').style.display = 'block';
             document.getElementById('orders-list-view').classList.remove('hidden');
+            document.getElementById('order-detail-view').style.display = 'none';
             document.getElementById('order-detail-view').classList.add('hidden');
             document.getElementById('orders-modal-title').innerHTML = `<i class="fa-solid fa-clock-rotate-left text-brand-500"></i> Order History`;
         }
