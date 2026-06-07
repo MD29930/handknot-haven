@@ -356,9 +356,21 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
                     <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
                         <div class="lg:w-1/2 text-center lg:text-left z-10">
-                            <div
-                                class="inline-flex items-center gap-2 py-1.5 px-3 sm:px-4 bg-white/5 border border-white/10 rounded-full text-brand-400 text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-6 sm:mb-8 backdrop-blur-sm">
-                                <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Handcrafted Magic
+                            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6 sm:mb-8">
+
+                                <!-- Badge 1: Handcrafted Magic -->
+                                <div
+                                    class="inline-flex items-center gap-2 py-1.5 px-3 sm:px-4 bg-white/5 border border-white/10 rounded-full text-brand-400 text-[10px] sm:text-xs font-semibold tracking-widest uppercase backdrop-blur-sm select-none">
+                                    <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span> Handcrafted
+                                    Magic
+                                </div>
+
+                                <!-- Badge 2: Custom Orders (Clickable to scroll to the Custom Section) -->
+                                <div onclick="document.getElementById('custom').scrollIntoView({ behavior: 'smooth' });"
+                                    class="inline-flex items-center gap-2 py-1.5 px-4 bg-brand-500/10 border border-brand-500/30 rounded-full text-brand-400 text-[10px] sm:text-xs font-bold tracking-widest uppercase backdrop-blur-sm cursor-pointer hover:bg-brand-500/20 shadow-[0_0_15px_rgba(255,77,109,0.15)] transition-all">
+                                    <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> We Accept Custom Orders!
+                                </div>
+
                             </div>
                             <h1
                                 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-serif text-text-main leading-[1.1] mb-4 sm:mb-6 drop-shadow-2xl">
@@ -375,11 +387,6 @@
                                     class="inline-flex justify-center items-center w-full sm:w-auto px-8 py-3.5 sm:py-4 bg-brand-500 text-surface-900 rounded-full font-bold text-sm sm:text-base hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(255,77,109,0.4)]">
                                     Shop Collection
                                 </a>
-                            </div>
-                            <div onclick="document.getElementById('custom').scrollIntoView();"
-                                class="inline-flex items-center gap-2 py-1.5 px-4 bg-brand-500/10 border border-brand-500/30 rounded-full text-brand-400 text-[10px] sm:text-xs font-bold tracking-widest uppercase mb-6 sm:mb-8 backdrop-blur-sm cursor-pointer hover:bg-brand-500/20 shadow-[0_0_15px_rgba(255,77,109,0.15)] transition-all">
-                                <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-                                We Accept Custom Orders (Anything You Imagine!)
                             </div>
                         </div>
                         <div class="lg:w-1/2 w-full hidden md:block relative h-[400px] lg:h-[500px]">
