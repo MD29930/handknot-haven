@@ -547,8 +547,29 @@
                                 class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Plushies</span>
                         </button>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 px-1 sm:px-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                    <div class="grid grid-cols-2 gap-3 px-1 sm:px-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full"
                         id="product-grid">
+
+                        <div
+                            class="glass-card animate-pulse overflow-hidden flex flex-col pointer-events-none w-full opacity-60">
+                            <div class="aspect-[4/3] bg-white/5 border-b border-white/5"></div>
+                            <div class="p-4 space-y-3">
+                                <div class="h-2.5 bg-white/10 rounded w-1/3"></div>
+                                <div class="h-4 bg-white/10 rounded w-3/4"></div>
+                                <div class="h-4 bg-white/10 rounded w-1/2 pt-2"></div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="glass-card animate-pulse overflow-hidden flex flex-col pointer-events-none w-full opacity-60">
+                            <div class="aspect-[4/3] bg-white/5 border-b border-white/5"></div>
+                            <div class="p-4 space-y-3">
+                                <div class="h-2.5 bg-white/10 rounded w-1/4"></div>
+                                <div class="h-4 bg-white/10 rounded w-5/6"></div>
+                                <div class="h-4 bg-white/10 rounded w-1/3 pt-2"></div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </section>
@@ -1185,29 +1206,7 @@
             saleMessage: "Opening Sale: Up to 30% Off Selected Creations"
         };
 
-        let products = [
-            {
-                id: 1, name: "Midnight Bloom Dress", price: 1500.00, category: "Tops",
-                image: "https://images.unsplash.com/photo-1620799139834-6b8f844fbe61?q=70&w=600&fmt=webp&auto=format&fit=crop",
-                badge: "Custom Size",
-                perfectFor: "Special occasions.", careInstructions: "Hand wash cold, lay flat.", materialName: "Organic Cotton",
-                materialBenefit: "Highly breathable.", craftingTime: "5-7 days", allowAddons: true, accessoryAddons: [{ name: "Matching Trim", price: 200 }]
-            },
-            {
-                id: 2, name: "Azure Lace Crop", price: 2200, category: "Tops",
-                image: "https://images.unsplash.com/photo-1554631221-1941295b9a8f?q=70&w=600&fmt=webp&auto=format&fit=crop",
-                badge: "Custom Color", description: "Handcrafted crop top designed for sophisticated layering.",
-                perfectFor: "Resort wear.", careInstructions: "Gentle wash.", materialName: "Organic Cotton",
-                materialBenefit: "Soft structure.", craftingTime: "4-5 days"
-            },
-            {
-                id: 3, name: "Sunny Bloom Pot", price: 300.00, category: "Flowers",
-                image: "https://images.unsplash.com/photo-1582142407894-ec85a1260a46?q=70&w=600&fmt=webp&auto=format&fit=crop",
-                badge: "Classic", description: "Bring warmth indoors with this structured crochet decor piece.",
-                perfectFor: "Desk accent.", careInstructions: "Dust gently.", materialName: "Organic Cotton",
-                materialBenefit: "Firm structure.", craftingTime: "2-3 days"
-            }
-        ];
+        let products = [];
 
         let cart = []; let currentFilter = 'all'; let currentModalProductId = null; let userOrders = []; let activeProductAddons = []; let currentModalCalculatedBasePrice = 0;
 
