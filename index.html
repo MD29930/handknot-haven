@@ -641,8 +641,7 @@
                         <div class="text-xs sm:text-sm text-text-muted leading-relaxed">
                             <strong class="text-text-main font-semibold block mb-0.5">💡 What counts as a Custom
                                 Order?</strong>
-                            If you saw a design on Pinterest, want a handmade replica of your favorite video game
-                            character avatar, need a customized bouquet made of specific rare flowers, or want a top
+                            If you saw a design on Pinterest, want a crochet keychain inspired by your favorite hobby, need a customized bouquet made of specific rare flowers, or want a top
                             stitched to your exact measurements—we can do it!
                         </div>
                     </div>
@@ -651,10 +650,6 @@
                         <button id="trigger-custom-order-btn" onclick="openCustomOrderModal()"
                             class="w-full sm:w-auto bg-brand-500 text-surface-900 px-8 py-3 rounded-full font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_20px_rgba(255,77,109,0.4)] active:scale-95 cursor-pointer focus:outline-none">
                             Submit a Request
-                        </button>
-                        <button onclick="openAiModal()"
-                            class="w-full sm:w-auto bg-white/5 border border-white/10 text-text-main px-8 py-3 rounded-full font-medium text-sm hover:bg-white/10 transition-colors flex items-center justify-center gap-2 backdrop-blur-sm cursor-pointer focus:outline-none">
-                            AI Gift Concierge
                         </button>
                     </div>
 
@@ -1091,53 +1086,6 @@
         </div>
     </div>
 
-    <div id="ai-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-md" onclick="closeAiModal()"></div>
-        <div
-            class="relative bg-surface-800 border border-white/10 w-full max-w-xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0">
-            <div class="p-5 sm:p-6 border-b border-white/5 flex justify-between items-center bg-surface-900/50">
-                <h3 class="text-lg sm:text-xl font-serif text-text-main flex items-center gap-2"><i
-                        class="fa-solid fa-wand-magic-sparkles text-brand-400"></i> AI Concept Generator</h3>
-                <button onclick="closeAiModal()" class="text-text-muted hover:text-white transition-colors"><i
-                        class="fa-solid fa-xmark"></i></button>
-            </div>
-            <div class="p-5 sm:p-8 overflow-y-auto flex-1">
-                <div id="ai-input-view">
-                    <textarea id="ai-prompt" rows="4"
-                        class="w-full p-3 sm:p-4 rounded-lg text-sm resize-none mb-3 sm:mb-4"
-                        placeholder="Describe the recipient or occasion... (e.g., A housewarming gift for a moody apartment...)"></textarea>
-                    <button onclick="generateIdea()"
-                        class="w-full bg-brand-500 text-surface-900 py-3 sm:py-3.5 rounded-lg text-sm font-bold hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.2)]">
-                        Generate Concept
-                    </button>
-                </div>
-                <div id="ai-loading-view"
-                    class="hidden flex-col items-center justify-center py-10 sm:py-12 text-center text-brand-400">
-                    <div class="loader mb-3 sm:mb-4 border-white/10 border-t-brand-500"></div>
-                    <p class="text-xs sm:text-sm font-medium">Curating ideas...</p>
-                </div>
-                <div id="ai-result-view" class="hidden flex-col">
-                    <div id="ai-result-content"
-                        class="text-text-main text-xs sm:text-sm font-light leading-relaxed mb-5 sm:mb-6 bg-black/20 p-4 sm:p-6 rounded-lg border border-white/5">
-                    </div>
-                    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                        <button onclick="resetAiModal()"
-                            class="w-full sm:w-1/2 py-2.5 sm:py-3 border border-white/10 rounded-lg text-sm font-medium text-text-muted hover:bg-white/5 transition-colors">Retry</button>
-                        <button onclick="closeAiModal(); document.getElementById('custom').scrollIntoView();"
-                            class="w-full sm:w-1/2 py-2.5 sm:py-3 bg-brand-500 text-surface-900 rounded-lg text-sm font-bold hover:bg-brand-400 transition-colors shadow-[0_0_15px_rgba(255,77,109,0.2)]">Request
-                            Concept</button>
-                    </div>
-                </div>
-                <div id="ai-error-view"
-                    class="hidden flex-col items-center justify-center py-10 sm:py-12 text-center text-brand-500">
-                    <p class="text-xs sm:text-sm font-medium mb-3 sm:mb-4">Connection issue. Please try again.</p>
-                    <button onclick="resetAiModal()"
-                        class="px-5 sm:px-6 py-2 sm:py-2.5 border border-white/10 rounded-lg text-sm hover:bg-white/5 text-text-main">Back</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
@@ -1202,7 +1150,6 @@
             checkout: { modal: document.getElementById('checkout-form-modal'), content: document.querySelector('#checkout-form-modal > div:last-child') },
             payment: { modal: document.getElementById('payment-modal'), content: document.querySelector('#payment-modal > div:last-child') },
             orders: { modal: document.getElementById('orders-modal'), content: document.querySelector('#orders-modal > div:last-child') },
-            ai: { modal: document.getElementById('ai-modal'), content: document.querySelector('#ai-modal > div:last-child') },
             custom: { modal: document.getElementById('custom-order-modal'), content: document.querySelector('#custom-order-modal > div:last-child') }
         };
 
@@ -1708,8 +1655,6 @@
             saveTrackingEmailAndSearch();
         }
 
-        function openAiModal() { openModal(modals.ai); }
-        function closeAiModal() { closeModal(modals.ai); }
         function openCustomOrderModal() { if (!SHOP_CONFIG.takingOrders) { showToast("Custom requests are temporarily paused."); return; } openModal(modals.custom); }
         function closeCustomOrderModal() { closeModal(modals.custom); document.getElementById('custom-order-form').reset(); }
         function showToast(m) { if (m) toast.querySelector('span').textContent = m; toast.classList.replace('opacity-0', 'opacity-100'); setTimeout(() => toast.classList.replace('opacity-100', 'opacity-0'), 2500); }
