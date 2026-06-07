@@ -778,7 +778,7 @@
                         HandKnot Haven
                     </a>
                     <p class="text-text-muted text-[10px] sm:text-xs font-light tracking-widest uppercase">
-                        &copy; © 2026 HandKnot Haven. All rights reserved.
+                        &copy; 2026 HandKnot Haven. All rights reserved.
                     </p>
                 </div>
             </div>
@@ -827,72 +827,156 @@
         <span id="toast-message" class="text-sm font-medium whitespace-nowrap">Added to basket</span>
     </div>
 
-    <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6">
+    <div id="product-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6">
         <div class="absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity" onclick="closeProductModal()">
         </div>
-        <div class="relative bg-surface-800 border border-white/10 w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col md:flex-row max-h-[90vh] overflow-hidden transform transition-all duration-300 scale-95 opacity-0"
+
+        <div class="relative bg-surface-800 border border-white/10 w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0 no-scrollbar"
             id="product-modal-content">
+
+            <!-- Global Exit Trigger -->
             <button onclick="closeProductModal()"
-                class="absolute top-3 sm:top-4 right-3 sm:right-4 text-text-main hover:text-brand-500 z-20 bg-black/60 backdrop-blur border border-white/10 w-8 sm:w-10 h-8 sm:h-10 rounded-full flex items-center justify-center transition-colors">
+                class="absolute top-4 right-4 text-text-muted hover:text-brand-500 z-30 bg-black/60 backdrop-blur border border-white/10 w-10 h-10 rounded-full flex items-center justify-center transition-colors cursor-pointer">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="w-full md:w-1/2 h-56 sm:h-72 md:h-auto bg-surface-900 relative shrink-0">
-                <div class="absolute inset-0 bg-brand-500/10 mix-blend-overlay z-10 pointer-events-none"></div>
-                <img id="modal-img" src="" class="w-full h-full object-cover" loading="lazy">
-            </div>
-            <div class="w-full md:w-1/2 p-5 sm:p-8 md:p-12 overflow-y-auto flex flex-col">
-                <div class="text-[9px] sm:text-[10px] text-brand-400 font-bold tracking-widest uppercase mb-2 sm:mb-3 border border-brand-500/30 bg-brand-500/10 w-max px-2 sm:px-3 py-1 rounded"
-                    id="modal-category"></div>
-                <h3 class="text-2xl sm:text-3xl font-serif text-text-main mb-3 sm:mb-4" id="modal-title"></h3>
-                <div class="mb-4 sm:mb-6" id="modal-price"></div>
-                <p class="text-text-muted font-light mb-6 sm:mb-8 leading-relaxed text-xs sm:text-sm" id="modal-desc">
-                </p>
-                <div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6 sm:mb-8">
-                    <div class="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5">
-                        <h4 class="font-medium text-text-main text-[10px] sm:text-xs uppercase tracking-wider mb-1"
-                            id="modal-material-name">Material</h4>
-                        <p class="text-brand-400 text-xs font-light truncate" id="modal-material-benefit">Benefit</p>
-                    </div>
-                    <div class="bg-white/5 rounded-xl p-3 sm:p-4 border border-white/5">
-                        <h4 class="font-medium text-text-main text-[10px] sm:text-xs uppercase tracking-wider mb-1">
-                            Craft Time</h4>
-                        <p class="text-brand-400 text-xs font-light" id="modal-crafting-time"></p>
-                    </div>
+
+            <!-- Top Core Half Split View Panel Layout -->
+            <div class="flex flex-col md:flex-row w-full border-b border-white/5">
+                <!-- Left Hand Graphic Display Box -->
+                <div class="w-full md:w-1/2 min-h-[300px] md:h-auto bg-surface-900 relative shrink-0">
+                    <div class="absolute inset-0 bg-brand-500/5 mix-blend-overlay z-10 pointer-events-none"></div>
+                    <img id="modal-img" src="" class="w-full h-full object-cover">
                 </div>
-                <div class="space-y-5 sm:space-y-6 mb-6 sm:mb-8 flex-grow">
-                    <div id="modal-size-section" class="hidden">
-                        <h4 class="font-medium text-text-main mb-2 sm:mb-3 text-xs sm:text-sm">Measurements (Optional)
-                        </h4>
-                        <div class="grid grid-cols-2 gap-2 sm:gap-3">
-                            <input type="text" id="measure-bust" placeholder="Bust"
-                                class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm">
-                            <input type="text" id="measure-waist" placeholder="Waist"
-                                class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm">
-                            <input type="text" id="measure-hips" placeholder="Hips"
-                                class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm">
-                            <input type="text" id="measure-length" placeholder="Length"
-                                class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm">
+
+                <!-- Right Hand Metadata Configurator Column -->
+                <div class="w-full md:w-1/2 p-5 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <div class="text-[9px] sm:text-[10px] text-brand-400 font-bold tracking-widest uppercase mb-2 border border-brand-500/30 bg-brand-500/10 w-max px-2.5 py-0.5 rounded"
+                            id="modal-category"></div>
+
+                        <h3 class="text-2xl sm:text-3xl font-serif text-text-main mb-1" id="modal-title"></h3>
+
+                        <!-- Reactive Star Elements Component -->
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="text-amber-400 text-xs flex gap-0.5" id="modal-stars-container">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                                    class="fa-solid fa-star"></i>
+                            </div>
+                            <span class="text-xs text-text-muted font-light" id="modal-reviews-count">134 reviews</span>
+                        </div>
+
+                        <!-- Availability Parameter Flag Line -->
+                        <div class="text-xs sm:text-sm text-text-muted mb-4">
+                            Availability: <span class="text-emerald-400 font-medium" id="modal-availability">In
+                                Stock</span>
+                        </div>
+
+                        <div class="mb-4" id="modal-price"></div>
+
+                        <!-- Reactive Live Calculation Subtotal Tracker Output -->
+                        <div
+                            class="text-xs sm:text-sm text-text-muted mb-5 bg-white/[0.02] border border-white/5 p-2.5 rounded-lg">
+                            Subtotal: <span class="text-text-main font-semibold"
+                                id="modal-subtotal-display">₹0.00</span>
+                        </div>
+
+                        <p class="text-text-muted font-light mb-6 leading-relaxed text-xs sm:text-sm" id="modal-desc">
+                        </p>
+
+                        <!-- Custom Sizing Specs Parameters Engine -->
+                        <div id="modal-size-section" class="hidden mb-4">
+                            <h4 class="font-medium text-text-main mb-2 text-xs">Measurements (Optional)</h4>
+                            <div class="grid grid-cols-4 gap-2">
+                                <input type="text" id="measure-bust" placeholder="Bust"
+                                    class="w-full p-2 rounded-lg text-xs text-center">
+                                <input type="text" id="measure-waist" placeholder="Waist"
+                                    class="w-full p-2 rounded-lg text-xs text-center">
+                                <input type="text" id="measure-hips" placeholder="Hips"
+                                    class="w-full p-2 rounded-lg text-xs text-center">
+                                <input type="text" id="measure-length" placeholder="Length"
+                                    class="w-full p-2 rounded-lg text-xs text-center">
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="font-medium text-text-main mb-2 text-xs">Design Notes</h4>
+                            <textarea id="modal-custom" rows="2" class="w-full p-2.5 rounded-lg text-xs resize-none"
+                                placeholder="Preferred color overrides..."></textarea>
                         </div>
                     </div>
-                    <div>
-                        <h4 class="font-medium text-text-main mb-2 sm:mb-3 text-xs sm:text-sm">Design Notes</h4>
-                        <textarea id="modal-custom" rows="2"
-                            class="w-full p-2.5 sm:p-3 rounded-lg text-xs sm:text-sm resize-none"
-                            placeholder="Preferred color changes..."></textarea>
+
+                    <!-- Quantity Configuration + Submission Interface Controls Layout -->
+                    <div class="space-y-3 mt-auto">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center bg-black/30 border border-white/10 rounded-xl px-2 h-12">
+                                <button onclick="alterModalQuantity(-1)"
+                                    class="w-8 h-8 text-xl text-text-muted hover:text-brand-400 transition-colors flex items-center justify-center">-</button>
+                                <span class="text-sm font-semibold w-8 text-center text-text-main"
+                                    id="modal-quantity-display">1</span>
+                                <button onclick="alterModalQuantity(1)"
+                                    class="w-8 h-8 text-xl text-text-muted hover:text-brand-400 transition-colors flex items-center justify-center">+</button>
+                            </div>
+                            <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()"
+                                class="flex-1 bg-brand-500 text-surface-900 h-12 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] active:scale-95 flex justify-center items-center gap-2">
+                                <i class="fa-solid fa-basket-shopping"></i> ADD TO CART
+                            </button>
+                        </div>
+
+                        <!-- Express Buy Now Bypass Path Trigger -->
+                        <button onclick="executeModalBuyNow()"
+                            class="w-full bg-white text-black h-12 rounded-xl font-bold text-sm hover:bg-neutral-200 transition-colors flex justify-center items-center gap-2 tracking-wide">
+                            BUY NOW <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
                     </div>
                 </div>
-                <div id="storefront-customization-engine"
-                    class="hidden border-t border-white/10 pt-5 sm:pt-6 mb-5 sm:mb-6">
-                    <h4 class="font-medium text-text-main mb-2 sm:mb-3 text-xs sm:text-sm">Optional Additions</h4>
-                    <div id="storefront-addons-list" class="space-y-2"></div>
-                </div>
-                <div class="mt-auto">
-                    <button id="modal-add-to-cart-btn" onclick="addToCartFromModal()"
-                        class="w-full bg-brand-500 text-surface-900 py-3.5 sm:py-4 rounded-xl font-bold text-sm hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] active:scale-95 flex justify-center items-center gap-2">
-                        Add to Basket — <span id="modal-btn-price"></span>
-                    </button>
+            </div>
+
+            <!-- Bottom Shared Feedback Review Ledger Module -->
+            <div class="w-full p-5 sm:p-8 bg-surface-900/40">
+                <h4 class="font-serif text-lg sm:text-xl text-text-main mb-6 flex items-center gap-2">
+                    <i class="fa-regular fa-comments text-brand-400"></i> Customer Reviews
+                </h4>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    <!-- Left Column Side: Review Log Creation Input Dashboard -->
+                    <form onsubmit="registerProductReview(event)"
+                        class="lg:col-span-5 bg-black/20 border border-white/5 rounded-2xl p-5 space-y-4 text-left">
+                        <h5 class="text-xs font-bold text-brand-400 uppercase tracking-widest">Share Your Thoughts</h5>
+                        <div>
+                            <input type="text" id="reviewer-name" required placeholder="Your Name"
+                                class="w-full p-2.5 rounded-lg text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] text-text-muted mb-1">Your Rating:</label>
+                            <select id="reviewer-rating"
+                                class="w-full p-2.5 rounded-lg text-xs bg-surface-900 border border-white/10 text-white select-none outline-none">
+                                <option value="5">⭐⭐⭐⭐⭐ 5 Stars</option>
+                                <option value="4">⭐⭐⭐⭐ 4 Stars</option>
+                                <option value="3">⭐⭐⭐ 3 Stars</option>
+                                <option value="2">⭐⭐ 2 Stars</option>
+                                <option value="1">⭐ 1 Star</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea id="reviewer-text" required rows="3"
+                                placeholder="Write your honest item feedback here..."
+                                class="w-full p-2.5 rounded-lg text-xs resize-none"></textarea>
+                        </div>
+                        <button type="submit"
+                            class="w-full py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-text-main hover:bg-brand-500 hover:text-surface-900 hover:border-brand-500 transition-all cursor-pointer">
+                            Submit Feedback
+                        </button>
+                    </form>
+
+                    <!-- Right Column Side: Realtime Active Feedback Stream Displays -->
+                    <div class="lg:col-span-7 space-y-3 max-h-[350px] overflow-y-auto pr-1 no-scrollbar"
+                        id="modal-reviews-stream">
+                        <!-- Dynamic content items loaded via logic execution -->
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -1247,50 +1331,195 @@
         function openModal(modalObj) { modalObj.modal.classList.remove('hidden'); modalObj.modal.classList.add('flex'); setTimeout(() => modalObj.content.classList.replace('opacity-0', 'opacity-100'), 10); }
         function closeModal(modalObj) { modalObj.content.classList.replace('opacity-100', 'opacity-0'); setTimeout(() => { modalObj.modal.classList.add('hidden'); modalObj.modal.classList.remove('flex'); }, 300); }
 
+        // =========================================================================
+        // 🌟 RE-ENGINEERED PRODUCT MODAL SYSTEM CONTROLS
+        // =========================================================================
+        let currentProductModalQuantity = 1;
+        let mockReviewsDatabase = {}; // Stores dynamically added review logs safely inside memory
+
         function openProductModal(productId) {
-            const product = products.find(p => p.id === productId); if (!product) return;
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
             currentModalProductId = productId;
-            const rawPrice = Number(product.price || 0); const discountPct = Number(product.discount || 0);
+            currentProductModalQuantity = 1; // Reset quantity baseline tracking pointer safely
+            document.getElementById('modal-quantity-display').textContent = currentProductModalQuantity;
+
+            const rawPrice = Number(product.price || 0);
+            const discountPct = Number(product.discount || 0);
 
             if (discountPct > 0) {
                 currentModalCalculatedBasePrice = rawPrice - (rawPrice * (discountPct / 100));
-                document.getElementById('modal-price').innerHTML = `<div class="flex items-center gap-2 sm:gap-3"><span class="text-xl sm:text-2xl font-serif text-brand-400">₹${currentModalCalculatedBasePrice.toFixed(2)}</span><span class="text-xs sm:text-sm font-medium text-text-muted line-through">₹${rawPrice.toFixed(2)}</span><span class="bg-brand-500/20 border border-brand-500/30 text-brand-400 text-[9px] sm:text-[10px] font-medium px-1.5 sm:px-2 py-0.5 sm:py-1 rounded">Save ${discountPct}%</span></div>`;
+                document.getElementById('modal-price').innerHTML = `
+                    <div class="flex items-baseline gap-2.5">
+                        <span class="text-2xl font-serif text-brand-400">₹${currentModalCalculatedBasePrice.toFixed(2)}</span>
+                        <span class="text-xs font-normal text-text-muted line-through opacity-60">₹${rawPrice.toFixed(2)}</span>
+                        <span class="bg-brand-500/20 border border-brand-500/30 text-brand-400 text-[9px] font-medium px-1.5 py-0.5 rounded">-${discountPct}%</span>
+                    </div>`;
             } else {
                 currentModalCalculatedBasePrice = rawPrice;
-                document.getElementById('modal-price').innerHTML = `<span class="text-xl sm:text-2xl font-serif text-brand-400">₹${rawPrice.toFixed(2)}</span>`;
+                document.getElementById('modal-price').innerHTML = `<span class="text-2xl font-serif text-brand-400">₹${rawPrice.toFixed(2)}</span>`;
             }
 
-            document.getElementById('modal-img').src = product.image || ''; document.getElementById('modal-category').textContent = product.category || '';
-            document.getElementById('modal-title').textContent = product.name || ''; document.getElementById('modal-desc').textContent = product.description || '';
-            document.getElementById('modal-material-name').textContent = product.materialName || 'Premium Yarn'; document.getElementById('modal-material-benefit').textContent = product.materialBenefit || '';
-            document.getElementById('modal-crafting-time').textContent = product.craftingTime || '3-5 days';
+            // Fill text variables securely
+            document.getElementById('modal-img').src = product.image || '';
+            document.getElementById('modal-category').textContent = product.category || 'Creations';
+            document.getElementById('modal-title').textContent = product.name || '';
+            document.getElementById('modal-desc').textContent = product.description || 'Hand-hooked precision craft selection choice detailing standard premium structure options.';
+
+            // Availability state flag
+            document.getElementById('modal-availability').textContent = SHOP_CONFIG.takingOrders ? "In Stock" : "Commissions Paused";
+            document.getElementById('modal-availability').className = SHOP_CONFIG.takingOrders ? "text-emerald-400 font-medium" : "text-brand-500 font-medium";
+
+            // Toggle dimensional panel logic configurations
             document.getElementById('modal-size-section').classList.toggle('hidden', product.category !== 'Clothing' && product.category !== 'Tops');
 
-            const addonContainer = document.getElementById('storefront-customization-engine'); const addonListEl = document.getElementById('storefront-addons-list');
-            addonListEl.innerHTML = ''; activeProductAddons = product.accessoryAddons || [];
-            if (product.allowAddons && activeProductAddons.length > 0) {
-                addonContainer.classList.remove('hidden');
-                addonListEl.innerHTML = activeProductAddons.map((item, index) => `<label class="flex items-center justify-between p-2.5 sm:p-3 bg-black/20 rounded-lg cursor-pointer border border-white/5 hover:border-brand-500/30 transition-colors"><div class="flex items-center gap-2 sm:gap-3"><input type="checkbox" name="product-addon-choice" value="${index}" onchange="recalculateModalPrice()" class="accent-brand-500"><span class="text-xs sm:text-sm text-text-main">${item.name}</span></div><span class="text-[10px] sm:text-xs font-medium text-brand-400">+ ₹${Number(item.price).toFixed(2)}</span></label>`).join('');
-            } else { addonContainer.classList.add('hidden'); }
+            // Reset local input placeholders smoothly
+            if (document.getElementById('measure-bust')) document.getElementById('measure-bust').value = '';
+            if (document.getElementById('measure-waist')) document.getElementById('measure-waist').value = '';
+            if (document.getElementById('measure-hips')) document.getElementById('measure-hips').value = '';
+            if (document.getElementById('measure-length')) document.getElementById('measure-length').value = '';
+            if (document.getElementById('modal-custom')) document.getElementById('modal-custom').value = '';
 
-            recalculateModalPrice(); openModal(modals.product);
+            recalculateModalPrice();
+            populateReviewsStream(productId);
+            openModal(modals.product);
         }
 
-        function closeProductModal() { closeModal(modals.product); }
+        function closeProductModal() {
+            closeModal(modals.product);
+        }
+
+        function alterModalQuantity(delta) {
+            currentProductModalQuantity += delta;
+            if (currentProductModalQuantity < 1) currentProductModalQuantity = 1;
+            document.getElementById('modal-quantity-display').textContent = currentProductModalQuantity;
+            recalculateModalPrice();
+        }
+
         function recalculateModalPrice() {
-            let totalPrice = currentModalCalculatedBasePrice;
-            document.querySelectorAll('input[name="product-addon-choice"]:checked').forEach(cb => { if (activeProductAddons[cb.value]) totalPrice += Number(activeProductAddons[cb.value].price); });
-            document.getElementById('modal-btn-price').textContent = `₹${totalPrice.toFixed(2)}`;
+            // Live calculation logic tracking baseline prices
+            let baseAccumulator = currentModalCalculatedBasePrice * currentProductModalQuantity;
+            document.getElementById('modal-subtotal-display').textContent = `₹${baseAccumulator.toFixed(2)}`;
         }
 
         function addToCartFromModal() {
-            const product = products.find(p => p.id === currentModalProductId); if (!product || !SHOP_CONFIG.takingOrders) return;
-            let sizeText = (product.category === 'Clothing' || product.category === 'Tops') ? `Bust: ${document.getElementById('measure-bust')?.value}` : null;
-            let dynamicAddonNameSuffix = []; let extraPrice = 0;
-            document.querySelectorAll('input[name="product-addon-choice"]:checked').forEach(cb => { const item = activeProductAddons[parseInt(cb.value)]; if (item) { dynamicAddonNameSuffix.push(item.name); extraPrice += Number(item.price); } });
+            const product = products.find(p => p.id === currentModalProductId);
+            if (!product || !SHOP_CONFIG.takingOrders) return;
 
-            cart.push({ ...product, name: dynamicAddonNameSuffix.length > 0 ? `${product.name} (+ ${dynamicAddonNameSuffix.join(", ")})` : product.name, price: currentModalCalculatedBasePrice + extraPrice, cartItemId: Date.now() + Math.random(), quantity: 1, size: sizeText, customText: document.getElementById('modal-custom')?.value || '' });
-            updateCartUI(); showToast(); closeProductModal();
+            let sizeText = (product.category === 'Clothing' || product.category === 'Tops') ?
+                `B: ${document.getElementById('measure-bust')?.value || '-'} | W: ${document.getElementById('measure-waist')?.value || '-'}` : null;
+
+            cart.push({
+                ...product,
+                price: currentModalCalculatedBasePrice,
+                cartItemId: Date.now() + Math.random(),
+                quantity: currentProductModalQuantity,
+                size: sizeText,
+                customText: document.getElementById('modal-custom')?.value || ''
+            });
+
+            updateCartUI();
+            showToast(`Added ${currentProductModalQuantity} item(s) to basket`);
+            closeProductModal();
+        }
+
+        // 🌟 NEW METHOD: Express bypass path allowing instant checkouts without manual exploration loops
+        function executeModalBuyNow() {
+            const product = products.find(p => p.id === currentModalProductId);
+            if (!product || !SHOP_CONFIG.takingOrders) return;
+
+            // Empty old basket contents first to avoid validation processing issues
+            cart = [];
+
+            let sizeText = (product.category === 'Clothing' || product.category === 'Tops') ?
+                `B: ${document.getElementById('measure-bust')?.value || '-'} | W: ${document.getElementById('measure-waist')?.value || '-'}` : null;
+
+            cart.push({
+                ...product,
+                price: currentModalCalculatedBasePrice,
+                cartItemId: Date.now() + Math.random(),
+                quantity: currentProductModalQuantity,
+                size: sizeText,
+                customText: document.getElementById('modal-custom')?.value || ''
+            });
+
+            updateCartUI();
+            closeProductModal();
+
+            // Direct launch command framework routing safely straight into delivery info entries panel
+            setTimeout(() => { checkout(); }, 350);
+        }
+
+        // =========================================================================
+        // 🌟 LIGHTWEIGHT REACTIVE LOCAL REVIEWS ENGINE
+        // =========================================================================
+        function getProductReviews(productId) {
+            if (!mockReviewsDatabase[productId]) {
+                // Preloaded fallback reviews stream log entries matching your catalog baseline indices
+                mockReviewsDatabase[productId] = [
+                    { name: "Anjali Sharma", rating: 5, text: "Absolutely stunning crochet work! Tightly hooked and exactly like the pictures.", date: "2 days ago" },
+                    { name: "Rahul Pune", rating: 4, text: "Gifted this item to my mother. She loved the textures. Premium organic feel.", date: "1 week ago" }
+                ];
+            }
+            return mockReviewsDatabase[productId];
+        }
+
+        function populateReviewsStream(productId) {
+            const streamContainer = document.getElementById('modal-reviews-stream');
+            const reviewsList = getProductReviews(productId);
+
+            // Update total counters inside layout frames dynamically
+            document.getElementById('modal-reviews-count').textContent = `${reviewsList.length} review(s)`;
+
+            if (reviewsList.length === 0) {
+                streamContainer.innerHTML = `<div class="text-xs text-text-muted py-6 text-center font-light">No reviews left for this item yet. Be the first to share!</div>`;
+                return;
+            }
+
+            streamContainer.innerHTML = reviewsList.map(review => {
+                let ratingStars = '⭐'.repeat(review.rating);
+                return `
+                    <div class="p-3.5 bg-black/30 border border-white/5 rounded-xl text-left">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs font-bold text-text-main">${review.name}</span>
+                            <span class="text-[10px] text-text-muted font-light">${review.date}</span>
+                        </div>
+                        <div class="text-[10px] mb-1.5">${ratingStars}</div>
+                        <p class="text-xs text-text-muted font-light leading-relaxed">${review.text}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function registerProductReview(event) {
+            event.preventDefault();
+            const pId = currentModalProductId;
+            if (!pId) return;
+
+            const nameInput = document.getElementById('reviewer-name');
+            const ratingInput = document.getElementById('reviewer-rating');
+            const textInput = document.getElementById('reviewer-text');
+
+            const currentReviewsList = getProductReviews(pId);
+
+            // Push structured metadata properties object safely into local cache list indexes
+            currentReviewsList.unshift({
+                name: nameInput.value.trim() || "Anonymous Shopper",
+                rating: parseInt(ratingInput.value),
+                text: textInput.value.trim(),
+                date: "Just now"
+            });
+
+            // Re-render layout components instantly inside popup viewport structures
+            populateReviewsStream(pId);
+
+            // Clean input forms interface blocks smoothly
+            nameInput.value = '';
+            textInput.value = '';
+            ratingInput.value = '5';
+
+            showToast("Thank you for your feedback entry!");
         }
 
         function toggleCart() { cartSidebar.classList.toggle('translate-x-full'); cartOverlay.classList.toggle('hidden'); }
