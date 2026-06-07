@@ -1570,8 +1570,8 @@
                                     const canvas = document.createElement('canvas');
                                     const ctx = canvas.getContext('2d');
 
-                                    const MAX_WIDTH = 1000;
-                                    const MAX_HEIGHT = 1000;
+                                    const MAX_WIDTH = 800;
+                                    const MAX_HEIGHT = 800;
                                     let width = img.width;
                                     let height = img.height;
 
@@ -1599,7 +1599,7 @@
                                             console.warn("Canvas blob conversion failed. Falling back to raw file.");
                                             resolve(file);
                                         }
-                                    }, 'image/webp', 0.7);
+                                    }, 'image/webp', 0.6);
                                 } catch (canvasErr) {
                                     console.warn("Canvas drawing context failed. Falling back to raw file.", canvasErr);
                                     resolve(file);
