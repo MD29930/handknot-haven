@@ -1335,17 +1335,16 @@
         // 🌟 RE-ENGINEERED PRODUCT MODAL SYSTEM CONTROLS
         // =========================================================================
         let currentProductModalQuantity = 1;
-        let mockReviewsDatabase = {}; // Stores dynamically added review logs safely inside memory
 
-        function openProductModal(productId) {
-            const product = products.find(p => p.id === productId);
+        async function openProductModal(productId) {
+            const product = products.find(p => p.id === productId); 
             if (!product) return;
-
+            
             currentModalProductId = productId;
-            currentProductModalQuantity = 1; // Reset quantity baseline tracking pointer safely
+            currentProductModalQuantity = 1; 
             document.getElementById('modal-quantity-display').textContent = currentProductModalQuantity;
 
-            const rawPrice = Number(product.price || 0);
+            const rawPrice = Number(product.price || 0); 
             const discountPct = Number(product.discount || 0);
 
             if (discountPct > 0) {
@@ -1361,28 +1360,26 @@
                 document.getElementById('modal-price').innerHTML = `<span class="text-2xl font-serif text-brand-400">₹${rawPrice.toFixed(2)}</span>`;
             }
 
-            // Fill text variables securely
-            document.getElementById('modal-img').src = product.image || '';
+            document.getElementById('modal-img').src = product.image || ''; 
             document.getElementById('modal-category').textContent = product.category || 'Creations';
-            document.getElementById('modal-title').textContent = product.name || '';
-            document.getElementById('modal-desc').textContent = product.description || 'Hand-hooked precision craft selection choice detailing standard premium structure options.';
-
-            // Availability state flag
+            document.getElementById('modal-title').textContent = product.name || ''; 
+            document.getElementById('modal-desc').textContent = product.description || 'Handcrafted item matching premium studio standards.';
+            
             document.getElementById('modal-availability').textContent = SHOP_CONFIG.takingOrders ? "In Stock" : "Commissions Paused";
             document.getElementById('modal-availability').className = SHOP_CONFIG.takingOrders ? "text-emerald-400 font-medium" : "text-brand-500 font-medium";
 
-            // Toggle dimensional panel logic configurations
             document.getElementById('modal-size-section').classList.toggle('hidden', product.category !== 'Clothing' && product.category !== 'Tops');
 
-            // Reset local input placeholders smoothly
-            if (document.getElementById('measure-bust')) document.getElementById('measure-bust').value = '';
-            if (document.getElementById('measure-waist')) document.getElementById('measure-waist').value = '';
-            if (document.getElementById('measure-hips')) document.getElementById('measure-hips').value = '';
-            if (document.getElementById('measure-length')) document.getElementById('measure-length').value = '';
-            if (document.getElementById('modal-custom')) document.getElementById('modal-custom').value = '';
+            if(document.getElementById('measure-bust')) document.getElementById('measure-bust').value = '';
+            if(document.getElementById('measure-waist')) document.getElementById('measure-waist').value = '';
+            if(document.getElementById('measure-hips')) document.getElementById('measure-hips').value = '';
+            if(document.getElementById('measure-length')) document.getElementById('measure-length').value = '';
+            if(document.getElementById('modal-custom')) document.getElementById('modal-custom').value = '';
 
-            recalculateModalPrice();
-            populateReviewsStream(productId);
+            recalculateModalPrice(); 
+            
+            // 🌟 Realtime fetch trigger: Loads matching records explicitly for this product ID
+            await fetchAndRenderSupabaseReviews(productId);
             openModal(modals.product);
         }
 
@@ -1454,45 +1451,74 @@
         // =========================================================================
         // 🌟 LIGHTWEIGHT REACTIVE LOCAL REVIEWS ENGINE
         // =========================================================================
-        function getProductReviews(productId) {
-            if (!mockReviewsDatabase[productId]) {
-                // Preloaded fallback reviews stream log entries matching your catalog baseline indices
-                mockReviewsDatabase[productId] = [
-                    { name: "Anjali Sharma", rating: 5, text: "Absolutely stunning crochet work! Tightly hooked and exactly like the pictures.", date: "2 days ago" },
-                    { name: "Rahul Pune", rating: 4, text: "Gifted this item to my mother. She loved the textures. Premium organic feel.", date: "1 week ago" }
-                ];
-            }
-            return mockReviewsDatabase[productId];
-        }
-
-        function populateReviewsStream(productId) {
+        async function fetchAndRenderSupabaseReviews(productId) {
             const streamContainer = document.getElementById('modal-reviews-stream');
-            const reviewsList = getProductReviews(productId);
+            const starsContainer = document.getElementById('modal-stars-container');
+            const reviewsCountEl = document.getElementById('modal-reviews-count');
 
-            // Update total counters inside layout frames dynamically
-            document.getElementById('modal-reviews-count').textContent = `${reviewsList.length} review(s)`;
+            streamContainer.innerHTML = `
+                <div class="text-center py-4">
+                    <div class="loader mx-auto mb-2 border-white/10 border-t-brand-500"></div>
+                </div>`;
 
-            if (reviewsList.length === 0) {
-                streamContainer.innerHTML = `<div class="text-xs text-text-muted py-6 text-center font-light">No reviews left for this item yet. Be the first to share!</div>`;
+            // 🌟 Fetch database entries matching only this product
+            const { data: dbReviews, error } = await supabaseClient
+                .from('reviews')
+                .select('*')
+                .eq('product_id', productId)
+                .order('created_at', { ascending: false });
+
+            if (error) {
+                console.error("Error reading database:", error);
+                streamContainer.innerHTML = `<div class="text-xs text-brand-500 py-4 text-center">Failed to load reviews list.</div>`;
                 return;
             }
 
-            streamContainer.innerHTML = reviewsList.map(review => {
-                let ratingStars = '⭐'.repeat(review.rating);
+            const count = dbReviews.length;
+            reviewsCountEl.textContent = `${count} review(s)`;
+
+            if (count === 0) {
+                // Default fallback rating layout if product has zero reviews yet
+                starsContainer.innerHTML = '★'.repeat(5);
+                streamContainer.innerHTML = `<div class="text-xs text-text-muted py-6 text-center font-light">No reviews left for this item yet. Be the first to share your thoughts!</div>`;
+                return;
+            }
+
+            // 🌟 MATH ENGINE: Computes dynamic arithmetic average rating safely
+            const totalRatingSum = dbReviews.reduce((sum, item) => sum + item.rating, 0);
+            const mathematicallyCalculatedAverage = Math.round(totalRatingSum / count);
+
+            // Print stars matching the calculated mathematical average string block
+            let averageStarsMarkup = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= mathematicallyCalculatedAverage) {
+                    averageStarsMarkup += '<i class="fa-solid fa-star text-amber-400"></i>';
+                } else {
+                    averageStarsMarkup += '<i class="fa-regular fa-star text-neutral-600"></i>';
+                }
+            }
+            starsContainer.innerHTML = averageStarsMarkup;
+
+            // Render matching entries list inside the HTML panel view timeline
+            streamContainer.innerHTML = dbReviews.map(review => {
+                let individualStars = '⭐'.repeat(review.rating);
+                let readableDate = new Date(review.created_at).toLocaleDateString('en-IN', {
+                    day: 'numeric', month: 'short', year: 'numeric'
+                });
+
                 return `
                     <div class="p-3.5 bg-black/30 border border-white/5 rounded-xl text-left">
                         <div class="flex justify-between items-center mb-1">
                             <span class="text-xs font-bold text-text-main">${review.name}</span>
-                            <span class="text-[10px] text-text-muted font-light">${review.date}</span>
+                            <span class="text-[10px] text-text-muted font-light">${readableDate}</span>
                         </div>
-                        <div class="text-[10px] mb-1.5">${ratingStars}</div>
-                        <p class="text-xs text-text-muted font-light leading-relaxed">${review.text}</p>
-                    </div>
-                `;
+                        <div class="text-[10px] mb-1.5">${individualStars}</div>
+                        <p class="text-xs text-text-muted font-light leading-relaxed">${review.review_text}</p>
+                    </div>`;
             }).join('');
         }
 
-        function registerProductReview(event) {
+       async function registerProductReview(event) {
             event.preventDefault();
             const pId = currentModalProductId;
             if (!pId) return;
@@ -1501,27 +1527,35 @@
             const ratingInput = document.getElementById('reviewer-rating');
             const textInput = document.getElementById('reviewer-text');
 
-            const currentReviewsList = getProductReviews(pId);
-
-            // Push structured metadata properties object safely into local cache list indexes
-            currentReviewsList.unshift({
+            const reviewSubmissionPayload = {
+                product_id: parseInt(pId),
                 name: nameInput.value.trim() || "Anonymous Shopper",
                 rating: parseInt(ratingInput.value),
-                text: textInput.value.trim(),
-                date: "Just now"
-            });
+                review_text: textInput.value.trim()
+            };
 
-            // Re-render layout components instantly inside popup viewport structures
-            populateReviewsStream(pId);
+            // 🌟 PERSISTENCE ENGINE: Inserts data payload directly into your Supabase database row tracks
+            const { error } = await supabaseClient
+                .from('reviews')
+                .insert([reviewSubmissionPayload]);
 
-            // Clean input forms interface blocks smoothly
+            if (error) {
+                console.error("Supabase Save Exception:", error);
+                alert("Could not register review. Please check connection.");
+                return;
+            }
+
+            // Wipe input values cleanly
             nameInput.value = '';
             textInput.value = '';
             ratingInput.value = '5';
 
-            showToast("Thank you for your feedback entry!");
-        }
+            showToast("Review stored permanently!");
 
+            // Re-fetch ledger immediately to adjust star average totals live
+            await fetchAndRenderSupabaseReviews(pId);
+        }
+        
         function toggleCart() { cartSidebar.classList.toggle('translate-x-full'); cartOverlay.classList.toggle('hidden'); }
         function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('hidden'); }
         function removeFromCart(id) { cart = cart.filter(i => i.cartItemId !== id); updateCartUI(); }
