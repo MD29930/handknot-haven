@@ -442,6 +442,110 @@
                     </div>
                     <div class="flex overflow-x-auto gap-6 sm:gap-8 pt-6 pb-6 px-4 no-scrollbar items-start justify-start md:justify-center w-full max-w-5xl mx-auto mb-8"
                         id="category-filters">
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-100 scale-105 grayscale-0 cursor-pointer"
+                            data-filter="all">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring shadow-[0_0_15px_rgba(255,77,109,0.3)]">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800 flex items-center justify-center">
+                                    <i
+                                        class="fa-solid fa-border-all text-brand-400 text-xl sm:text-2xl pointer-events-none"></i>
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-main transition-colors filter-text pointer-events-none">All</span>
+                        </button>
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer"
+                            data-filter="Flowers">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1563241527-3004b7be0ffd?q=80&w=200&auto=format&fit=crop"
+                                        alt="Flowers" class="w-full h-full object-cover pointer-events-none"
+                                        loading="lazy">
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Flowers</span>
+                        </button>
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer"
+                            data-filter="Tops">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=200&auto=format&fit=crop"
+                                        alt="Tops" class="w-full h-full object-cover pointer-events-none"
+                                        loading="lazy">
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Tops</span>
+                        </button>
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer"
+                            data-filter="Keychains">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=200&auto=format&fit=crop"
+                                        alt="Keychains" class="w-full h-full object-cover pointer-events-none"
+                                        loading="lazy">
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Keychains</span>
+                        </button>
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer"
+                            data-filter="Purse">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1584916201218-f4242ceb4809?q=80&w=200&auto=format&fit=crop"
+                                        alt="Purse" class="w-full h-full object-cover pointer-events-none"
+                                        loading="lazy">
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Purse</span>
+                        </button>
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer"
+                            data-filter="Accessories">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 text-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?q=80&w=200&auto=format&fit=crop"
+                                        alt="Accessories" class="w-full h-full object-cover pointer-events-none"
+                                        loading="lazy">
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Accessories</span>
+                        </button>
+                        <button
+                            class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer"
+                            data-filter="Plushies">
+                            <div
+                                class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
+                                <div
+                                    class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
+                                    <img src="https://images.unsplash.com/photo-1556012018-50c5c0da73bf?q=80&w=200&auto=format&fit=crop"
+                                        alt="Plushies" class="w-full h-full object-cover pointer-events-none"
+                                        loading="lazy">
+                                </div>
+                            </div>
+                            <span
+                                class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">Plushies</span>
+                        </button>
                     </div>
                     <div class="grid grid-cols-2 gap-3 px-1 sm:px-0 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full"
                         id="product-grid">
@@ -1129,7 +1233,6 @@
             const savedCart = localStorage.getItem('handknot_cart');
             if (savedCart) { try { cart = JSON.parse(savedCart); updateCartUI(); } catch (e) { localStorage.removeItem('handknot_cart'); } }
 
-            fetchAndRenderCategories();
             renderProducts();
             applyShopStatus();
             setupFilters();
@@ -1974,48 +2077,6 @@
             }
             try { const { data } = await supabaseClient.from('store_settings').select('is_open').eq('id', 1).single(); if (data) applyStatus(data.is_open); } catch (e) { }
             supabaseClient.channel('store-settings-live').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'store_settings' }, payload => { applyStatus(payload.new.is_open); }).subscribe();
-        }
-
-        // Main Website JS
-        let storeCategories = [];
-
-        async function fetchAndRenderCategories() {
-            const filterContainer = document.getElementById('category-filters');
-            
-            // Fetch live categories from Supabase
-            const { data, error } = await supabaseClient.from('categories').select('*').order('created_at', { ascending: true });
-            if (error || !data) return;
-
-            storeCategories = data;
-
-            // 1. Always generate the static "All" button first
-            let htmlPayload = `
-                <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-100 scale-105 grayscale-0 cursor-pointer" data-filter="all">
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring shadow-[0_0_15px_rgba(255,77,109,0.3)]">
-                        <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800 flex items-center justify-center">
-                            <i class="fa-solid fa-border-all text-brand-400 text-xl sm:text-2xl pointer-events-none"></i>
-                        </div>
-                    </div>
-                    <span class="text-xs sm:text-sm font-medium text-text-main transition-colors filter-text pointer-events-none">All</span>
-                </button>
-            `;
-
-            // 2. Loop through database categories to generate the rest of the bubbles
-            htmlPayload += storeCategories.map(cat => `
-                <button class="filter-btn flex flex-col items-center gap-2 sm:gap-3 group transition-all duration-300 opacity-60 hover:opacity-100 grayscale-[30%] hover:grayscale-0 cursor-pointer" data-filter="${cat.name}">
-                    <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-brand-500 to-[#ffb3c6] p-[3px] transition-transform transform-gpu group-hover:scale-105 filter-ring">
-                        <div class="w-full h-full rounded-full border-[3px] border-surface-900 overflow-hidden bg-surface-800">
-                            <img src="${cat.image_url}" alt="${cat.name}" class="w-full h-full object-cover pointer-events-none" loading="lazy">
-                        </div>
-                    </div>
-                    <span class="text-xs sm:text-sm font-medium text-text-muted group-hover:text-text-main transition-colors whitespace-nowrap filter-text pointer-events-none">${cat.name}</span>
-                </button>
-            `).join('');
-
-            filterContainer.innerHTML = htmlPayload;
-            
-            // Re-bind the click event listeners to the new dynamic buttons
-            setupFilters();
         }
 
         document.addEventListener('DOMContentLoaded', () => { monitorShopStatus(); });
