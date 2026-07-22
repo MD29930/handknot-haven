@@ -350,13 +350,19 @@
             </div>
         </nav>
 
+        <!-- ====== REPLACE THIS SECTION IN YOUR HTML ====== -->
         <main class="flex-grow">
-            <div id="dynamic-festive-banners" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 lg:mt-32 relative z-10 flex flex-col gap-4">
-                <!-- Banners will be injected here if they exist -->
-            </div>
             <section id="home"
-                class="relative pt-28 pb-16 lg:pt-48 lg:pb-32 flex items-center min-h-[85vh] sm:min-h-[90vh]">
+                class="relative pt-24 pb-16 lg:pt-36 lg:pb-32 flex flex-col justify-center min-h-[85vh] sm:min-h-[90vh]">
+
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+                    <!-- 🌟 FIXED: Dynamic Festive Banners Wrapper moved INSIDE the hero section with corrected margins -->
+                    <div id="dynamic-festive-banners"
+                        class="w-full relative z-20 flex flex-col gap-4 mb-8 sm:mb-12 hidden">
+                        <!-- Banners will be injected here if they exist -->
+                    </div>
+
                     <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
                         <div class="lg:w-1/2 text-center lg:text-left z-10">
                             <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 mb-6 sm:mb-8">
@@ -1972,7 +1978,7 @@
 
         // ====== REPLACE YOUR EXISTING monitorShopStatus FUNCTION WITH THIS ======
         async function monitorShopStatus() {
-            const banner = document.getElementById('shop-status-banner'); 
+            const banner = document.getElementById('shop-status-banner');
             const promoBanner = document.getElementById('promo-banner');
             const promoTextEl = document.getElementById('promo-text');
             const nav = document.getElementById('navbar');
@@ -1991,33 +1997,38 @@
                 if (settings.promo_active && settings.promo_text) {
                     promoTextEl.textContent = settings.promo_text;
                     promoBanner.classList.remove('hidden');
-                    if(window.scrollY <= 10) nav.style.top = promoBanner.offsetHeight + 'px';
+                    if (window.scrollY <= 10) nav.style.top = promoBanner.offsetHeight + 'px';
                 } else {
                     promoBanner.classList.add('hidden');
-                    if(window.scrollY <= 10) nav.style.top = '0px';
+                    if (window.scrollY <= 10) nav.style.top = '0px';
                 }
             }
 
             try { const { data } = await supabaseClient.from('store_settings').select('*').eq('id', 1).single(); if (data) applySettings(data); } catch (e) { }
-            
+
             // Listen for live adjustments from admin
             supabaseClient.channel('store-settings-live')
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'store_settings' }, payload => { applySettings(payload.new); })
                 .subscribe();
         }
 
+        // ====== REPLACE YOUR EXISTING loadActiveFestiveBanners FUNCTION WITH THIS ======
         async function loadActiveFestiveBanners() {
             const container = document.getElementById('dynamic-festive-banners');
             const { data, error } = await supabaseClient.from('festive_banners').select('image_url').eq('is_active', true).order('created_at', { ascending: false });
             
             if (!error && data && data.length > 0) {
+                // 🌟 FIXED: Removed hardcoded aspect ratios and replaced object-cover with h-auto block to prevent truncation
                 container.innerHTML = data.map(b => `
-                    <div class="w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 animate-fade-in relative aspect-[21/9] sm:aspect-[32/9]">
-                        <img src="${b.image_url}" class="w-full h-full object-cover">
+                    <div class="w-full rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(255,77,109,0.15)] border border-brand-500/20 animate-fade-in relative flex">
+                        <img src="${b.image_url}" class="w-full h-auto block m-0 p-0" alt="Festive Special Offer">
                     </div>
                 `).join('');
+                
+                container.classList.remove('hidden'); // Reveal container only if banners exist
             } else {
                 container.innerHTML = '';
+                container.classList.add('hidden'); // Collapse space entirely if no banners exist
             }
         }
 
@@ -2026,7 +2037,7 @@
 
         async function fetchAndRenderCategories() {
             const filterContainer = document.getElementById('category-filters');
-            
+
             // Fetch live categories from Supabase
             const { data, error } = await supabaseClient.from('categories').select('*').order('created_at', { ascending: true });
             if (error || !data) return;
@@ -2058,7 +2069,7 @@
             `).join('');
 
             filterContainer.innerHTML = htmlPayload;
-            
+
             // Re-bind the click event listeners to the new dynamic buttons
             setupFilters();
         }
