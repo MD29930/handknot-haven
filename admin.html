@@ -93,8 +93,8 @@
         </nav>
 
         <div class="p-4 border-t border-brand-800">
-            <a href="#"
-                class="flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
+            <a href="#" id="nav-settings-tab" onclick="switchAdminTab('settings-tab'); return false;"
+                class="admin-nav-item flex items-center gap-3 px-4 py-3 text-brand-200 hover:bg-brand-800/50 hover:text-white rounded-xl font-semibold transition-colors">
                 <i class="fa-solid fa-gear w-5"></i> Store Settings
             </a>
         </div>
@@ -451,6 +451,37 @@
                     </div>
                     <button type="submit" id="form-category-submit-btn" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold shadow-lg transition-all mt-4">Save Category</button>
                 </form>
+            </div>
+        </div>
+        <!-- Store Settings & Banners View -->
+        <div id="settings-tab" class="admin-tab-content hidden p-6 md:p-10 w-full space-y-6">
+            <div class="pb-4 border-b border-neutral-200">
+                <h2 class="text-3xl font-serif font-bold text-neutral-800">Store Settings</h2>
+                <p class="text-sm text-neutral-500">Manage promotional text and festive image banners.</p>
+            </div>
+
+            <!-- Top Promo Banner Controls -->
+            <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-500"></i> Top Promo Banner</h3>
+                <div class="flex items-center gap-3 mb-4">
+                    <input type="checkbox" id="admin-promo-active" class="w-5 h-5 accent-brand-600 cursor-pointer">
+                    <label for="admin-promo-active" class="font-bold text-neutral-700 cursor-pointer">Show Promo Banner on Website</label>
+                </div>
+                <div class="mb-4">
+                    <label class="block font-bold text-neutral-700 mb-1">Banner Text:</label>
+                    <input type="text" id="admin-promo-text" class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 outline-none" placeholder="e.g. Opening Sale: Up to 30% Off Selected Creations">
+                </div>
+                <button onclick="savePromoBannerSettings()" class="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-brand-700 transition-colors">Save Text Banner</button>
+            </div>
+
+            <!-- Festive Image Banners Controls -->
+            <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-image text-brand-500"></i> Festive Banners</h3>
+                <form onsubmit="addFestiveBanner(event)" class="flex flex-col sm:flex-row gap-4 mb-6">
+                    <input type="url" id="admin-festive-url" required placeholder="Paste Image URL (https://...)" class="flex-1 p-3 border border-neutral-200 rounded-xl text-sm focus:border-brand-500 outline-none">
+                    <button type="submit" class="bg-brand-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-700 whitespace-nowrap transition-colors"><i class="fa-solid fa-plus"></i> Add Festive Banner</button>
+                </form>
+                <div id="admin-festive-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
     </main>
@@ -1229,6 +1260,74 @@
             if(confirm("Delete this category bubble?")) {
                 await supabaseClient.from('categories').delete().eq('id', id);
                 loadAdminCategories();
+            }
+        }
+        // =========================================================================
+        // 🌟 STORE SETTINGS & BANNERS ENGINE
+        // =========================================================================
+
+        async function loadStoreSettings() {
+            const { data, error } = await supabaseClient.from('store_settings').select('promo_text, promo_active').eq('id', 1).single();
+            if (data) {
+                document.getElementById('admin-promo-active').checked = data.promo_active || false;
+                document.getElementById('admin-promo-text').value = data.promo_text || '';
+            }
+        }
+
+        async function savePromoBannerSettings() {
+            const isActive = document.getElementById('admin-promo-active').checked;
+            const text = document.getElementById('admin-promo-text').value.trim();
+            const btn = event.target;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Saving...`;
+            
+            await supabaseClient.from('store_settings').update({ promo_active: isActive, promo_text: text }).eq('id', 1);
+            
+            btn.innerHTML = `Saved! <i class="fa-solid fa-check"></i>`;
+            setTimeout(() => btn.innerHTML = 'Save Text Banner', 2000);
+        }
+
+        async function loadFestiveBanners() {
+            const container = document.getElementById('admin-festive-list');
+            container.innerHTML = `<div class="col-span-full py-4"><i class="fa-solid fa-spinner animate-spin text-brand-500"></i></div>`;
+            
+            const { data, error } = await supabaseClient.from('festive_banners').select('*').order('created_at', { ascending: false });
+            if (error || !data || data.length === 0) {
+                container.innerHTML = `<p class="col-span-full text-neutral-400 text-sm">No festive banners uploaded yet.</p>`;
+                return;
+            }
+
+            container.innerHTML = data.map(b => `
+                <div class="border border-neutral-200 rounded-xl overflow-hidden shadow-sm bg-neutral-50 relative group">
+                    <img src="${b.image_url}" class="w-full h-32 object-cover ${!b.is_active ? 'opacity-40 grayscale' : ''}">
+                    <div class="p-3 bg-white flex justify-between items-center border-t border-neutral-200">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" ${b.is_active ? 'checked' : ''} onchange="toggleFestiveBanner(${b.id}, this.checked)" class="w-4 h-4 accent-brand-600 cursor-pointer">
+                            <span class="text-xs font-bold ${b.is_active ? 'text-green-600' : 'text-neutral-400'}">${b.is_active ? 'Visible' : 'Hidden'}</span>
+                        </div>
+                        <button onclick="deleteFestiveBanner(${b.id})" class="text-red-500 hover:text-red-700 text-xs font-bold p-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function addFestiveBanner(e) {
+            e.preventDefault();
+            const input = document.getElementById('admin-festive-url');
+            const url = input.value.trim();
+            await supabaseClient.from('festive_banners').insert([{ image_url: url, is_active: true }]);
+            input.value = '';
+            loadFestiveBanners();
+        }
+
+        async function toggleFestiveBanner(id, isActive) {
+            await supabaseClient.from('festive_banners').update({ is_active: isActive }).eq('id', id);
+            loadFestiveBanners();
+        }
+
+        async function deleteFestiveBanner(id) {
+            if(confirm("Permanently delete this festive banner?")) {
+                await supabaseClient.from('festive_banners').delete().eq('id', id);
+                loadFestiveBanners();
             }
         }
 

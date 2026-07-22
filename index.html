@@ -351,6 +351,9 @@
         </nav>
 
         <main class="flex-grow">
+            <div id="dynamic-festive-banners" class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 lg:mt-32 relative z-10 flex flex-col gap-4">
+                <!-- Banners will be injected here if they exist -->
+            </div>
             <section id="home"
                 class="relative pt-28 pb-16 lg:pt-48 lg:pb-32 flex items-center min-h-[85vh] sm:min-h-[90vh]">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
@@ -1965,15 +1968,55 @@
             if (error) { console.error("Database Error:", error); return false; } return true;
         }
 
+        // ====== REPLACE YOUR EXISTING monitorShopStatus FUNCTION WITH THIS ======
         async function monitorShopStatus() {
-            const banner = document.getElementById('shop-status-banner'); if (!banner) return;
-            function applyStatus(isOpen) {
-                SHOP_CONFIG.takingOrders = isOpen;
-                if (isOpen) { banner.classList.add('hidden'); banner.style.display = 'none'; } else { banner.innerHTML = `<i class="fa-solid fa-ban text-brand-600 text-xl"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden'); banner.style.display = 'flex'; }
+            const banner = document.getElementById('shop-status-banner'); 
+            const promoBanner = document.getElementById('promo-banner');
+            const promoTextEl = document.getElementById('promo-text');
+            const nav = document.getElementById('navbar');
+
+            function applySettings(settings) {
+                // Handle Orders Paused logic
+                SHOP_CONFIG.takingOrders = settings.is_open;
+                if (settings.is_open) {
+                    if (banner) { banner.classList.add('hidden'); banner.style.display = 'none'; }
+                } else {
+                    if (banner) { banner.innerHTML = `<i class="fa-solid fa-ban text-brand-600 text-xl"></i> <span>${SHOP_CONFIG.pausedMessage}</span>`; banner.classList.remove('hidden'); banner.style.display = 'flex'; }
+                }
                 applyShopStatus();
+
+                // Handle Dynamic Top Promo Banner logic
+                if (settings.promo_active && settings.promo_text) {
+                    promoTextEl.textContent = settings.promo_text;
+                    promoBanner.classList.remove('hidden');
+                    if(window.scrollY <= 10) nav.style.top = promoBanner.offsetHeight + 'px';
+                } else {
+                    promoBanner.classList.add('hidden');
+                    if(window.scrollY <= 10) nav.style.top = '0px';
+                }
             }
-            try { const { data } = await supabaseClient.from('store_settings').select('is_open').eq('id', 1).single(); if (data) applyStatus(data.is_open); } catch (e) { }
-            supabaseClient.channel('store-settings-live').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'store_settings' }, payload => { applyStatus(payload.new.is_open); }).subscribe();
+
+            try { const { data } = await supabaseClient.from('store_settings').select('*').eq('id', 1).single(); if (data) applySettings(data); } catch (e) { }
+            
+            // Listen for live adjustments from admin
+            supabaseClient.channel('store-settings-live')
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'store_settings' }, payload => { applySettings(payload.new); })
+                .subscribe();
+        }
+
+        async function loadActiveFestiveBanners() {
+            const container = document.getElementById('dynamic-festive-banners');
+            const { data, error } = await supabaseClient.from('festive_banners').select('image_url').eq('is_active', true).order('created_at', { ascending: false });
+            
+            if (!error && data && data.length > 0) {
+                container.innerHTML = data.map(b => `
+                    <div class="w-full rounded-2xl overflow-hidden shadow-2xl border border-white/10 animate-fade-in relative aspect-[21/9] sm:aspect-[32/9]">
+                        <img src="${b.image_url}" class="w-full h-full object-cover">
+                    </div>
+                `).join('');
+            } else {
+                container.innerHTML = '';
+            }
         }
 
         // Main Website JS
