@@ -1133,6 +1133,8 @@
             if (savedCart) { try { cart = JSON.parse(savedCart); updateCartUI(); } catch (e) { localStorage.removeItem('handknot_cart'); } }
 
             fetchAndRenderCategories();
+            loadActiveFestiveBanners();
+            fetchAndRenderCategories();
             renderProducts();
             applyShopStatus();
             setupFilters();

@@ -494,6 +494,8 @@
         async function init() {
             await loadOrders();
             await loadAdminProducts();
+            await loadStoreSettings();
+            await loadFestiveBanners();
 
             // LISTEN FOR LIVE CHANGES
             supabaseClient
