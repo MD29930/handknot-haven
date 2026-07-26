@@ -113,7 +113,7 @@
 
             <div class="flex items-center gap-6">
                 <div class="flex items-center gap-3 bg-neutral-50 px-4 py-2 rounded-full border border-neutral-200">
-                    <span class="text-sm font-bold text-neutral-600">Store Status:</span>
+                    <span class="text-sm font-bold text-neutral-600">Taking Orders:</span>
                     <button id="shop-status-toggle" onclick="toggleShopStatus()"
                         class="relative inline-flex h-6 w-11 items-center rounded-full bg-green-500 transition-colors focus:outline-none">
                         <span id="shop-status-knob"
@@ -213,7 +213,8 @@
                 <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                     <div>
                         <h2 class="text-3xl font-serif font-bold text-neutral-800">Master Orders Ledger</h2>
-                        <p class="text-sm text-neutral-500">Track every order, update delivery progress, and keep customer communication moving smoothly.</p>
+                        <p class="text-sm text-neutral-500">Comprehensive transaction registry mapping recent sales,
+                            custom items, and historical tracking analytics.</p>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
@@ -243,7 +244,8 @@
                 <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                     <div>
                         <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
-                        <p class="text-sm text-neutral-500">Review incoming ideas, respond quickly, and keep each bespoke request organized.</p>
+                        <p class="text-sm text-neutral-500">Review, price, and follow up on custom design request
+                            submissions.</p>
                     </div>
                 </div>
                 <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
@@ -460,8 +462,7 @@
 
             <!-- Top Promo Banner Controls -->
             <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
-                <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-500"></i> Top Promo Banner</h3>
-                <p class="text-sm text-neutral-500 mb-4">Use this to highlight seasonal offers or key launches on the storefront.</p>
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-500"></i> Top Promo Banner</h3>
                 <div class="flex items-center gap-3 mb-4">
                     <input type="checkbox" id="admin-promo-active" class="w-5 h-5 accent-brand-600 cursor-pointer">
                     <label for="admin-promo-active" class="font-bold text-neutral-700 cursor-pointer">Show Promo Banner on Website</label>
@@ -475,8 +476,7 @@
 
             <!-- Festive Image Banners Controls -->
             <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
-                <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-image text-brand-500"></i> Festive Banners</h3>
-                <p class="text-sm text-neutral-500 mb-4">Add attention-grabbing promotional visuals that appear across the storefront.</p>
+                <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-image text-brand-500"></i> Festive Banners</h3>
                 <form onsubmit="addFestiveBanner(event)" class="flex flex-col sm:flex-row gap-4 mb-6">
                     <input type="url" id="admin-festive-url" required placeholder="Paste Image URL (https://...)" class="flex-1 p-3 border border-neutral-200 rounded-xl text-sm focus:border-brand-500 outline-none">
                     <button type="submit" class="bg-brand-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-700 whitespace-nowrap transition-colors"><i class="fa-solid fa-plus"></i> Add Festive Banner</button>
@@ -492,27 +492,22 @@
 
         // --- INITIALIZATION ---
         async function init() {
-            await Promise.allSettled([
-                loadOrders(),
-                loadAdminProducts(),
-                loadStoreSettings(),
-                loadFestiveBanners(),
-                fetchInitialShopStatus()
-            ]);
+            await loadOrders();
+            await loadAdminProducts();
+            await loadStoreSettings();
+            await loadFestiveBanners();
 
-            try {
-                supabaseClient
-                    .channel('schema-db-changes')
-                    .on('postgres_changes',
-                        { event: 'UPDATE', schema: 'public', table: 'orders' },
-                        () => {
-                            loadOrders();
-                        }
-                    )
-                    .subscribe();
-            } catch (error) {
-                console.warn('Realtime orders listener failed to initialize:', error);
-            }
+            // LISTEN FOR LIVE CHANGES
+            supabaseClient
+                .channel('schema-db-changes')
+                .on('postgres_changes',
+                    { event: 'UPDATE', schema: 'public', table: 'orders' },
+                    payload => {
+                        console.log('Order updated in real-time!', payload);
+                        loadOrders();
+                    }
+                )
+                .subscribe();
         }
 
         // ====== REPLACE YOUR SHOP STATUS LOGIC IN THE ADMIN SCRIPT WITH THIS ======
@@ -534,23 +529,21 @@
 
         // 2. Triggered when you click the toggle button
         async function toggleShopStatus() {
-            const previousState = isShopOpen;
+            // Flip the visual state immediately (Optimistic UI)
             isShopOpen = !isShopOpen;
             updateToggleUI();
 
-            try {
-                const { error } = await supabaseClient
-                    .from('store_settings')
-                    .update({ is_open: isShopOpen })
-                    .eq('id', 1);
+            // Push the new state to Supabase
+            const { error } = await supabaseClient
+                .from('store_settings')
+                .update({ is_open: isShopOpen })
+                .eq('id', 1);
 
-                if (error) {
-                    throw error;
-                }
-            } catch (error) {
-                console.error('Failed to sync shop status:', error);
-                alert('Network error: Could not change store status.');
-                isShopOpen = previousState;
+            if (error) {
+                console.error("Failed to sync shop status:", error);
+                alert("Network error: Could not change store status.");
+                // Revert switch if database failed
+                isShopOpen = !isShopOpen;
                 updateToggleUI();
             }
         }
@@ -576,25 +569,21 @@
 
         // --- DATA FETCHING ---
         async function loadOrders() {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('orders')
-                    .select('*')
-                    .order('created_at', { ascending: false });
+            console.log("Fetching orders from Supabase...");
+            const { data, error } = await supabaseClient
+                .from('orders')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-                if (error) {
-                    throw error;
-                }
-
-                orders = data || [];
-                renderOrdersTable();
-                updateStats();
-            } catch (error) {
-                console.error('Fetch Error:', error);
-                orders = [];
-                renderOrdersTable();
-                updateStats();
+            if (error) {
+                console.error("Fetch Error:", error);
+                return;
             }
+
+            orders = data;
+            console.log("Orders loaded:", orders);
+            renderOrdersTable();
+            updateStats();
         }
 
         // --- RENDER TABLE WITH HIGHLIGHTED CUSTOM ORDERS ---
@@ -763,19 +752,16 @@
 
         // --- STATUS UPDATE (Triggered by dropdown) ---
         async function updateOrderStatus(id, newStatus) {
-            try {
-                const { error } = await supabaseClient
-                    .from('orders')
-                    .update({ order_status: newStatus })
-                    .eq('id', id);
+            const { error } = await supabaseClient
+                .from('orders')
+                .update({ order_status: newStatus })
+                .eq('id', id);
 
-                if (error) {
-                    throw error;
-                }
-
+            if (error) {
+                alert("Error updating status: " + error.message);
+            } else {
+                console.log("Status updated to:", newStatus);
                 await loadOrders();
-            } catch (error) {
-                alert('Error updating status: ' + error.message);
             }
         }
         // =========================================================================
@@ -866,27 +852,20 @@
 
         // 2. Open Modal in Add Mode
         function openProductFormModal() {
-            const form = document.getElementById('admin-product-form');
-            if (form) form.reset();
-            const hiddenId = document.getElementById('form-product-id');
-            if (hiddenId) hiddenId.value = '';
-            const title = document.getElementById('product-modal-title');
-            if (title) title.textContent = 'Add New Crochet Product';
+            document.getElementById('admin-product-form').reset();
+            document.getElementById('form-product-id').value = '';
+            document.getElementById('product-modal-title').textContent = 'Add New Crochet Product';
 
             const modal = document.getElementById('product-form-modal');
-            if (modal) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         // 3. Close Modal safely
         function closeProductFormModal() {
             const modal = document.getElementById('product-form-modal');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
         }
 
         // ====== PASTE THESE UTILITIES INTO YOUR ADMIN SCRIPT TAG AREA ======
@@ -976,79 +955,75 @@
         async function handleProductSubmit(event) {
             event.preventDefault();
 
+            // 1. FIXED: Safely target and define the submit button variables locally
             const submitBtn = document.getElementById('form-product-submit-btn');
-            const originalContent = submitBtn ? submitBtn.innerHTML : '';
+            const originalContent = submitBtn.innerHTML;
+
             const productId = document.getElementById('form-product-id').value;
 
             const productPayload = {
-                name: document.getElementById('form-product-name').value.trim(),
+                name: document.getElementById('form-product-name').value,
                 price: parseFloat(document.getElementById('form-product-price').value),
                 discount: parseInt(document.getElementById('form-product-discount').value) || 0,
                 category: document.getElementById('form-product-category').value,
-                badge: document.getElementById('form-product-badge').value.trim() || null,
-                crafting_time: document.getElementById('form-product-crafting').value.trim(),
-                image_url: document.getElementById('form-product-image').value.trim(),
-                description: document.getElementById('form-product-desc').value.trim(),
-                perfect_for: document.getElementById('form-product-perfect').value.trim(),
-                care_instructions: document.getElementById('form-product-care').value.trim(),
+                badge: document.getElementById('form-product-badge').value || null,
+                crafting_time: document.getElementById('form-product-crafting').value,
+                image_url: document.getElementById('form-product-image').value,
+                description: document.getElementById('form-product-desc').value,
+                perfect_for: document.getElementById('form-product-perfect').value,
+                care_instructions: document.getElementById('form-product-care').value,
                 allow_addons: document.getElementById('form-product-allow-addons').checked,
                 accessory_addons: gatherAdminAddonsPayload()
             };
 
-            if (!productPayload.name) {
-                alert('Please provide a product name.');
-                return;
+            let resultError = null;
+
+            // Turn on loader visual indicators
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-2"></i> Syncing Database...`;
+            submitBtn.disabled = true;
+
+            if (productId) {
+                // If a productId exists, we are editing an existing item row
+                const { error } = await supabaseClient
+                    .from('products')
+                    .update(productPayload)
+                    .eq('id', productId);
+                resultError = error;
+            } else {
+                // If no productId exists, we are inserting a completely fresh item row
+                const { error } = await supabaseClient
+                    .from('products')
+                    .insert([productPayload]);
+                resultError = error;
             }
 
-            if (submitBtn) {
-                submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin mr-2"></i> Syncing Database...`;
-                submitBtn.disabled = true;
-            }
+            // Reset submit button context states
+            submitBtn.innerHTML = originalContent;
+            submitBtn.disabled = false;
 
-            try {
-                if (productId) {
-                    const { error } = await supabaseClient
-                        .from('products')
-                        .update(productPayload)
-                        .eq('id', productId);
-                    if (error) throw error;
-                } else {
-                    const { error } = await supabaseClient
-                        .from('products')
-                        .insert([productPayload]);
-                    if (error) throw error;
-                }
-
-                closeProductFormModal();
-                await loadAdminProducts();
-            } catch (resultError) {
-                console.error('Database Transaction Failure:', resultError);
+            if (resultError) {
+                console.error("Database Transaction Failure:", resultError);
                 alert(`Error sync failed: ${resultError.message}`);
-            } finally {
-                if (submitBtn) {
-                    submitBtn.innerHTML = originalContent;
-                    submitBtn.disabled = false;
-                }
+            } else {
+                closeProductFormModal();
+                loadAdminProducts(); // Instantly update dashboard views
             }
         }
 
         // 6. Delete Target Record Execution Layer
         async function deleteProductFromCatalog(productId) {
-            if (!confirm('Are you sure you want to permanently delete this product from your store inventory catalog?')) {
-                return;
-            }
-
-            try {
+            if (confirm("Are you sure you want to permanently delete this product from your store inventory catalog? This action will immediately remove it from your customer-facing storefront website index.")) {
                 const { error } = await supabaseClient
                     .from('products')
                     .delete()
                     .eq('id', productId);
 
-                if (error) throw error;
-                await loadAdminProducts();
-            } catch (error) {
-                console.error('Catalog Removal Failure:', error);
-                alert('Could not complete delete task pipeline parameters.');
+                if (error) {
+                    console.error("Catalog Removal Failure:", error);
+                    alert("Could not complete delete task pipeline parameters.");
+                } else {
+                    loadAdminProducts(); // Instantly update view grid rows
+                }
             }
         }
 
@@ -1056,24 +1031,30 @@
         // Locate your existing switchAdminTab function and make sure it calls loadAdminProducts() when the view is matched.
         // --- ADMINISTRATIVE TAB NAVIGATION SWAP ENGINE ---
         function switchAdminTab(targetTabId) {
+            console.log("Routing active panel viewport tab to:", targetTabId);
+
+            // Hide all views globally
             const contentPanels = document.querySelectorAll('.admin-tab-content');
             contentPanels.forEach(panel => {
                 panel.classList.add('hidden');
                 panel.style.display = 'none';
             });
 
+            // Reset menu styling indicators
             const navigationItems = document.querySelectorAll('.admin-nav-item');
             navigationItems.forEach(item => {
                 item.classList.remove('bg-brand-800', 'text-white');
                 item.classList.add('text-brand-200', 'hover:bg-brand-800/50');
             });
 
+            // Target and uncover active container pane
             const selectedPanel = document.getElementById(targetTabId);
             if (selectedPanel) {
                 selectedPanel.classList.remove('hidden');
                 selectedPanel.style.display = 'block';
             }
 
+            // Assign active visual focus flags
             const activeSidebarButton = document.getElementById('nav-' + targetTabId);
             if (activeSidebarButton) {
                 activeSidebarButton.classList.remove('text-brand-200', 'hover:bg-brand-800/50');
@@ -1083,6 +1064,7 @@
             if (targetTabId === 'custom-requests-tab') {
                 loadAdminCustomRequests();
             }
+
             if (targetTabId === 'products-tab') {
                 loadAdminProducts();
             }
@@ -1351,11 +1333,8 @@
             }
         }
 
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+        // Run on load
+        init();
     </script>
 </body>
 

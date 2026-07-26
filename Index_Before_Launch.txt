@@ -920,7 +920,6 @@
                         class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form onsubmit="handleCheckoutForm(event)" class="p-5 sm:p-8 space-y-4 sm:space-y-5">
-                <p class="text-[11px] sm:text-xs text-text-muted uppercase tracking-[0.25em]">We’ll use these details to confirm your order and share updates.</p>
                 <div><input type="text" id="cust-name" required placeholder="Full Name"
                         class="w-full p-2.5 sm:p-3 rounded-lg text-sm" /></div>
                 <div><input type="tel" id="cust-phone" required placeholder="Phone Number"
@@ -931,7 +930,7 @@
                         class="w-full p-2.5 sm:p-3 rounded-lg text-sm resize-none"></textarea></div>
                 <button type="submit"
                     class="w-full bg-brand-500 text-surface-900 py-3.5 sm:py-4 rounded-xl font-bold text-sm sm:text-base hover:bg-brand-400 transition-all shadow-[0_0_15px_rgba(255,77,109,0.3)] mt-2">
-                    Continue to Secure Payment
+                    Continue to Payment
                 </button>
             </form>
         </div>
@@ -953,11 +952,10 @@
                         class="text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-widest mb-1 sm:mb-2">
                         Amount to Pay</p>
                     <h2 class="text-3xl sm:text-4xl font-serif text-text-main" id="payment-total-amount">₹0.00</h2>
-                    <p class="text-[11px] sm:text-xs text-text-muted mt-2">Choose a secure payment option below to confirm your order.</p>
                 </div>
                 <button id="razorpay-btn" onclick="initiateRazorpayPayment()"
                     class="w-full bg-white text-black py-3.5 sm:py-4 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors flex justify-center items-center gap-2 mb-5 sm:mb-6">
-                    <i class="fa-solid fa-building-columns"></i> Pay Securely with Razorpay
+                    <i class="fa-solid fa-building-columns"></i> Pay via Razorpay
                 </button>
                 <div class="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-6">
                     <div class="flex-1 h-px bg-white/10"></div>
@@ -967,7 +965,6 @@
                 <div class="bg-white/5 border border-white/10 rounded-xl p-5 sm:p-6 text-center">
                     <p class="text-xs sm:text-sm text-text-main mb-3 sm:mb-4">UPI: <span
                             class="font-bold text-brand-400 tracking-wide">handknothaven@upi</span></p>
-                    <p class="text-[11px] sm:text-xs text-text-muted mb-3">You can confirm after sending payment and we’ll verify it right away.</p>
                     <button id="manual-upi-btn" onclick="confirmManualUPIPayment()"
                         class="w-full bg-transparent border border-brand-500 text-brand-400 py-2.5 sm:py-3 rounded-lg text-xs sm:text-sm font-medium hover:bg-brand-500/10 transition-colors">
                         Confirm Manual Payment
@@ -1110,13 +1107,8 @@
         };
 
         let products = [];
-        let cart = [];
-        let currentFilter = 'all';
-        let currentModalProductId = null;
-        let userOrders = [];
-        let activeProductAddons = [];
-        let currentModalCalculatedBasePrice = 0;
-        let currentProductModalQuantity = 1;
+
+        let cart = []; let currentFilter = 'all'; let currentModalProductId = null; let userOrders = []; let activeProductAddons = []; let currentModalCalculatedBasePrice = 0;
 
         const productGrid = document.getElementById('product-grid');
         const filterBtns = document.querySelectorAll('.filter-btn');
@@ -1137,40 +1129,13 @@
             custom: { modal: document.getElementById('custom-order-modal'), content: document.querySelector('#custom-order-modal > div:last-child') }
         };
 
-        function calculateCartTotal() {
-            return cart.reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
-        }
-
-        function persistCart() {
-            try {
-                localStorage.setItem('handknot_cart', JSON.stringify(cart));
-            } catch (error) {
-                console.warn('Cart persistence failed:', error);
-            }
-        }
-
-        function normalizeCart() {
-            cart = (cart || []).filter(Boolean).map(item => ({
-                ...item,
-                quantity: Math.max(1, Number(item.quantity || 1))
-            }));
-            persistCart();
-        }
-
         function init() {
-            try {
-                const savedCart = localStorage.getItem('handknot_cart');
-                if (savedCart) {
-                    cart = JSON.parse(savedCart) || [];
-                    normalizeCart();
-                }
-            } catch (e) {
-                localStorage.removeItem('handknot_cart');
-                cart = [];
-            }
+            const savedCart = localStorage.getItem('handknot_cart');
+            if (savedCart) { try { cart = JSON.parse(savedCart); updateCartUI(); } catch (e) { localStorage.removeItem('handknot_cart'); } }
 
             fetchAndRenderCategories();
             loadActiveFestiveBanners();
+            fetchAndRenderCategories();
             renderProducts();
             applyShopStatus();
             setupFilters();
@@ -1280,6 +1245,7 @@
         // =========================================================================
         // 🌟 RE-ENGINEERED PRODUCT MODAL SYSTEM CONTROLS
         // =========================================================================
+        let currentProductModalQuantity = 1;
 
         function openProductModal(productId) {
             const product = products.find(p => p.id === productId);
@@ -1364,12 +1330,12 @@
                 customText: document.getElementById('modal-custom')?.value || ''
             });
 
-            normalizeCart();
             updateCartUI();
             showToast(`Added ${currentProductModalQuantity} item(s) to basket`);
             closeProductModal();
         }
 
+        // 🌟 NEW METHOD: Express bypass path allowing instant checkouts without manual exploration loops
         function executeModalBuyNow() {
             const product = products.find(p => p.id === currentModalProductId);
             if (!product || !SHOP_CONFIG.takingOrders) return;
@@ -1388,7 +1354,6 @@
                 customText: document.getElementById('modal-custom')?.value || ''
             });
 
-            normalizeCart();
             updateCartUI();
             closeProductModal();
 
@@ -1599,19 +1564,18 @@
         function updateQuantity(id, d) { const i = cart.find(x => x.cartItemId === id); if (i) { i.quantity += d; if (i.quantity <= 0) removeFromCart(id); else updateCartUI(); } }
 
         function updateCartUI() {
-            normalizeCart();
-            const totalItems = cart.reduce((sum, item) => sum + Number(item.quantity || 1), 0);
-            if (cartBadge) { cartBadge.textContent = totalItems; cartBadge.classList.toggle('hidden', totalItems === 0); }
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartBadge.textContent = totalItems; cartBadge.classList.toggle('hidden', totalItems === 0);
             document.querySelectorAll('.cart-item-row').forEach(el => el.remove());
 
-            if (cart.length === 0) { if (emptyCartMsg) emptyCartMsg.style.display = 'flex'; } else {
-                if (emptyCartMsg) emptyCartMsg.style.display = 'none';
+            if (cart.length === 0) { emptyCartMsg.style.display = 'flex'; } else {
+                emptyCartMsg.style.display = 'none';
                 cart.forEach(item => {
                     const row = document.createElement('div'); row.className = 'cart-item-row flex items-center gap-3 sm:gap-4 py-3 sm:py-4 border-b border-white/5 last:border-0';
                     row.innerHTML = `<img src="${item.image}" class="w-14 sm:w-16 h-14 sm:h-16 object-cover rounded-lg border border-white/10">
                     <div class="flex-1 min-w-0">
                         <h4 class="font-medium text-text-main text-xs sm:text-sm truncate mb-1">${item.name}</h4>
-                        <div class="text-brand-400 font-medium text-xs sm:text-sm mb-1.5 sm:mb-2">₹${(Number(item.price || 0) * Number(item.quantity || 1)).toFixed(2)}</div>
+                        <div class="text-brand-400 font-medium text-xs sm:text-sm mb-1.5 sm:mb-2">₹${(item.price * item.quantity).toFixed(2)}</div>
                         <div class="flex items-center gap-2 sm:gap-3">
                             <div class="flex items-center bg-black/30 border border-white/10 rounded px-1">
                                 <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-5 sm:w-6 h-5 sm:h-6 text-text-muted hover:text-brand-400 transition-colors flex items-center justify-center">-</button>
@@ -1623,109 +1587,43 @@
                     </div>`; cartItemsContainer.appendChild(row);
                 });
             }
-            if (cartTotalEl) cartTotalEl.textContent = `₹${calculateCartTotal().toFixed(2)}`;
-            persistCart();
+            cartTotalEl.textContent = `₹${cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}`;
+            localStorage.setItem('handknot_cart', JSON.stringify(cart));
         }
 
-        function checkout() {
-            if (!SHOP_CONFIG.takingOrders || cart.length === 0) {
-                showToast('Your basket is empty.');
-                return;
-            }
-            toggleCart();
-            openModal(modals.checkout);
-        }
+        function checkout() { if (!SHOP_CONFIG.takingOrders || cart.length === 0) return; toggleCart(); openModal(modals.checkout); }
         function closeCheckoutForm() { closeModal(modals.checkout); }
 
         function handleCheckoutForm(e) {
-            e.preventDefault();
-
-            const name = document.getElementById('cust-name').value.trim();
-            const email = document.getElementById('cust-email').value.trim();
-            const phone = document.getElementById('cust-phone').value.trim();
-            const address = document.getElementById('cust-address').value.trim();
-
-            if (!name || !email || !phone || !address) {
-                showToast('Please fill in your contact details before proceeding.');
-                return;
-            }
-
-            document.getElementById('payment-total-amount').textContent = '₹' + calculateCartTotal().toFixed(2);
-            closeCheckoutForm();
-            setTimeout(() => openModal(modals.payment), 400);
+            e.preventDefault(); document.getElementById('payment-total-amount').textContent = '₹' + cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+            closeCheckoutForm(); setTimeout(() => openModal(modals.payment), 400);
         }
         function closePaymentModal() { closeModal(modals.payment); }
 
         function initiateRazorpayPayment() {
-            const btn = document.getElementById('razorpay-btn');
-            const orig = btn ? btn.innerHTML : '';
-            const total = calculateCartTotal();
-            if (total <= 0 || !btn) return;
-
-            const options = {
-                key: 'rzp_test_SsoFERyvFbyjkb',
-                amount: Math.round(total * 100),
-                currency: 'INR',
-                name: 'HandKnot Haven',
-                handler: function () {
-                    btn.innerHTML = `<div class="loader mx-auto"></div>`;
-                    finalizeOrderProcess();
-                },
-                prefill: {
-                    name: document.getElementById('cust-name').value,
-                    email: document.getElementById('cust-email').value,
-                    contact: document.getElementById('cust-phone').value
-                },
-                theme: { color: '#120E0C' }
-            };
-
-            try {
-                const rzp1 = new Razorpay(options);
-                rzp1.on('payment.failed', function () {
-                    alert('Payment failed. Please try again or choose UPI.');
-                    btn.innerHTML = orig;
-                });
-                btn.innerHTML = `<div class="loader mx-auto"></div>`;
-                rzp1.open();
-            } catch (err) {
-                alert('Gateway is currently unavailable. Please try again in a moment.');
-                btn.innerHTML = orig;
-            }
+            const btn = document.getElementById('razorpay-btn'); const orig = btn.innerHTML; const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            if (total <= 0) return;
+            var options = { "key": "rzp_test_SsoFERyvFbyjkb", "amount": Math.round(total * 100), "currency": "INR", "name": "HandKnot Haven", "handler": function (res) { btn.innerHTML = `<div class="loader mx-auto"></div>`; finalizeOrderProcess(); }, "prefill": { "name": document.getElementById('cust-name').value, "email": document.getElementById('cust-email').value, "contact": document.getElementById('cust-phone').value }, "theme": { "color": "#120E0C" } };
+            try { var rzp1 = new Razorpay(options); rzp1.on('payment.failed', function (res) { alert("Failed"); btn.innerHTML = orig; }); btn.innerHTML = `<div class="loader mx-auto"></div>`; rzp1.open(); } catch (err) { alert("Gateway down. Use UPI."); btn.innerHTML = orig; }
         }
 
-        function confirmManualUPIPayment() {
-            const btn = document.getElementById('manual-upi-btn');
-            const orig = btn ? btn.innerHTML : '';
-            if (!btn) return;
-            btn.innerHTML = `<div class="loader mx-auto"></div>`;
-            setTimeout(() => { finalizeOrderProcess(); btn.innerHTML = orig; }, 1500);
-        }
+        function confirmManualUPIPayment() { const btn = document.getElementById('manual-upi-btn'); const orig = btn.innerHTML; btn.innerHTML = `<div class="loader mx-auto"></div>`; setTimeout(() => { finalizeOrderProcess(); btn.innerHTML = orig; }, 1500); }
 
         async function finalizeOrderProcess() {
-            if (cart.length === 0) return;
-
             const orderId = 'HKH' + Date.now().toString().slice(-3) + Math.floor(100 + Math.random() * 900);
             const d = new Date();
             d.setDate(d.getDate() + 7);
-            const totalPaid = calculateCartTotal();
+            const totalPaid = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-            const saved = await saveOrder(orderId, totalPaid);
-            if (!saved) {
-                showToast('Order could not be saved. Please try again.');
-                return;
-            }
+            await saveOrder(orderId, totalPaid);
 
-            try {
-                await emailjs.send('service_yt6ze52', 'template_xyc0kaq', {
-                    order_id: orderId,
-                    customer_email: document.getElementById('cust-email').value,
-                    customer_name: document.getElementById('cust-name').value,
-                    product_name: cart.map(i => i.name).join(', '),
-                    total_amount: totalPaid
-                });
-            } catch (e) {
-                console.warn('Email notification failed:', e);
-            }
+            emailjs.send("service_yt6ze52", "template_xyc0kaq", {
+                order_id: orderId,
+                customer_email: document.getElementById('cust-email').value,
+                customer_name: document.getElementById('cust-name').value,
+                product_name: cart.map(i => i.name).join(", "),
+                total_amount: totalPaid
+            }).catch(e => e);
 
             const placedDate = new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
             const formattedDate = d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -2068,27 +1966,9 @@
         }
 
         async function saveOrder(orderId, totalPaid) {
-            const orderData = {
-                id: orderId,
-                customer_name: document.getElementById('cust-name').value.trim(),
-                phone: document.getElementById('cust-phone').value.trim(),
-                email: document.getElementById('cust-email').value.trim().toLowerCase(),
-                address: document.getElementById('cust-address').value.trim(),
-                product_name: cart.map(item => item.name).join(', '),
-                quantity: cart.reduce((sum, item) => sum + Number(item.quantity || 1), 0),
-                total: Number(totalPaid || 0),
-                payment_status: 'paid',
-                order_status: 'confirmed'
-            };
-
-            try {
-                const { error } = await supabaseClient.from('orders').insert([orderData]);
-                if (error) { console.error('Database Error:', error); return false; }
-                return true;
-            } catch (error) {
-                console.error('Database Error:', error);
-                return false;
-            }
+            const orderData = { id: orderId, customer_name: document.getElementById('cust-name').value, phone: document.getElementById('cust-phone').value, email: document.getElementById('cust-email').value, address: document.getElementById('cust-address').value, product_name: cart.map(item => item.name).join(", "), quantity: cart.reduce((sum, item) => sum + item.quantity, 0), total: totalPaid, payment_status: "paid", order_status: "confirmed" };
+            const { data, error } = await supabaseClient.from('orders').insert([orderData]);
+            if (error) { console.error("Database Error:", error); return false; } return true;
         }
 
         // ====== REPLACE YOUR EXISTING monitorShopStatus FUNCTION WITH THIS ======
@@ -2189,16 +2069,8 @@
             setupFilters();
         }
 
-        function startPageRuntime() {
-            init();
-            monitorShopStatus();
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', startPageRuntime);
-        } else {
-            startPageRuntime();
-        }
+        document.addEventListener('DOMContentLoaded', () => { monitorShopStatus(); });
+        init();
     </script>
 </body>
 
