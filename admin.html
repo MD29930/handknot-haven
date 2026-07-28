@@ -397,6 +397,16 @@
                         </div>
                     </div>
 
+                    <!-- Add this below the Accessory Customization checkbox block -->
+                    <div class="border-t border-neutral-200 pt-4 mt-2">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="form-product-requires-url"
+                                class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
+                            <label for="form-product-requires-url"
+                                class="font-bold text-neutral-700 cursor-pointer">Requires Customer URL (For NFC Rakhi/Items)</label>
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block font-bold text-neutral-700 mb-1">Image URL *</label>
                         <input type="url" id="form-product-image" required placeholder="https://images.unsplash.com/..."
@@ -954,6 +964,8 @@
             document.getElementById('form-product-desc').value = product.description || '';
             document.getElementById('form-product-perfect').value = product.perfect_for || '';
             document.getElementById('form-product-care').value = product.care_instructions || '';
+            // Add this line where you map the other product values:
+            document.getElementById('form-product-requires-url').checked = product.requires_url || false;
 
             // 5. Build your accessory checkbox list mapping
             const allowAddons = product.allow_addons || false;
@@ -992,7 +1004,8 @@
                 perfect_for: document.getElementById('form-product-perfect').value.trim(),
                 care_instructions: document.getElementById('form-product-care').value.trim(),
                 allow_addons: document.getElementById('form-product-allow-addons').checked,
-                accessory_addons: gatherAdminAddonsPayload()
+                accessory_addons: gatherAdminAddonsPayload(),
+                requires_url: document.getElementById('form-product-requires-url').checked
             };
 
             if (!productPayload.name) {

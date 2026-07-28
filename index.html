@@ -810,6 +810,14 @@
                             </div>
                         </div>
 
+                        <!-- 🌟 ADD THIS: The hidden NFC URL input block -->
+                        <div id="modal-url-section" class="hidden mb-4 p-4 rounded-xl bg-brand-500/10 border border-brand-500/20">
+                            <h4 class="font-medium text-brand-400 mb-2 text-xs flex items-center gap-2"><i class="fa-solid fa-link"></i> Target URL Required <span class="text-white">*</span></h4>
+                            <input type="url" id="modal-nfc-url" placeholder="https://your-link.com" 
+                                class="w-full p-2.5 rounded-lg text-xs bg-surface-900 border border-brand-500/30 text-white outline-none focus:border-brand-400">
+                            <p class="text-[9px] text-text-muted mt-2 leading-relaxed">This link will be permanently programmed into your NFC item.</p>
+                        </div>
+
                         <div class="mb-6">
                             <h4 class="font-medium text-text-main mb-2 text-xs">Design Notes</h4>
                             <textarea id="modal-custom" rows="2" class="w-full p-2.5 rounded-lg text-xs resize-none"
@@ -1311,6 +1319,16 @@
             if (document.getElementById('measure-length')) document.getElementById('measure-length').value = '';
             if (document.getElementById('modal-custom')) document.getElementById('modal-custom').value = '';
 
+            // 🌟 ADD THIS: Reveal URL input if required
+            const urlSection = document.getElementById('modal-url-section');
+            const urlInput = document.getElementById('modal-nfc-url');
+            if (product.requires_url) {
+                urlSection.classList.remove('hidden');
+                urlInput.value = ''; // clear previous inputs
+            } else {
+                urlSection.classList.add('hidden');
+            }
+
             recalculateModalPrice();
 
             // 🚀 FIX 1: Open the modal panel instantly first, then fetch your reviews asynchronously!
@@ -1342,11 +1360,23 @@
             const product = products.find(p => p.id === currentModalProductId);
             if (!product || !SHOP_CONFIG.takingOrders) return;
 
+            // 🌟 URL Validation and Injection Logic
+            let finalProductName = product.name;
+            if (product.requires_url) {
+                const urlVal = document.getElementById('modal-nfc-url').value.trim();
+                if (!urlVal) {
+                    alert("Please provide the required NFC Target URL for this item.");
+                    return;
+                }
+                finalProductName = `${product.name} [NFC Link: ${urlVal}]`;
+            }
+
             let sizeText = (product.category === 'Clothing' || product.category === 'Tops') ?
                 `B: ${document.getElementById('measure-bust')?.value || '-'} | W: ${document.getElementById('measure-waist')?.value || '-'}` : null;
 
             cart.push({
                 ...product,
+                name: finalProductName, // 🌟 Saves the new name with the URL attached
                 price: currentModalCalculatedBasePrice,
                 cartItemId: Date.now() + Math.random(),
                 quantity: currentProductModalQuantity,
@@ -1364,6 +1394,17 @@
             const product = products.find(p => p.id === currentModalProductId);
             if (!product || !SHOP_CONFIG.takingOrders) return;
 
+            // 🌟 URL Validation and Injection Logic
+            let finalProductName = product.name;
+            if (product.requires_url) {
+                const urlVal = document.getElementById('modal-nfc-url').value.trim();
+                if (!urlVal) {
+                    alert("Please provide the required NFC Target URL for this item.");
+                    return;
+                }
+                finalProductName = `${product.name} [NFC Link: ${urlVal}]`;
+            }
+
             cart = [];
 
             let sizeText = (product.category === 'Clothing' || product.category === 'Tops') ?
@@ -1371,6 +1412,7 @@
 
             cart.push({
                 ...product,
+                name: finalProductName, // 🌟 Saves the new name with the URL attached
                 price: currentModalCalculatedBasePrice,
                 cartItemId: Date.now() + Math.random(),
                 quantity: currentProductModalQuantity,
@@ -2048,7 +2090,8 @@
                         id: p.id, name: p.name, price: Number(p.price), discount: Number(p.discount || 0),
                         category: p.category, image: p.image_url, badge: p.badge, description: p.description,
                         craftingTime: p.crafting_time, materialName: p.material_name, allowAddons: p.allow_addons,
-                        accessoryAddons: p.accessory_addons, perfectFor: p.perfect_for, careInstructions: p.care_instructions
+                        accessoryAddons: p.accessory_addons, perfectFor: p.perfect_for, careInstructions: p.care_instructions,
+                        requires_url: p.requires_url
                     }));
                     renderProducts();
                 }
