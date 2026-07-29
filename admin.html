@@ -213,7 +213,8 @@
                 <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                     <div>
                         <h2 class="text-3xl font-serif font-bold text-neutral-800">Master Orders Ledger</h2>
-                        <p class="text-sm text-neutral-500">Track every order, update delivery progress, and keep customer communication moving smoothly.</p>
+                        <p class="text-sm text-neutral-500">Track every order, update delivery progress, and keep
+                            customer communication moving smoothly.</p>
                     </div>
                 </div>
                 <div class="bg-white rounded-2xl border border-neutral-200 shadow-sm overflow-hidden">
@@ -243,7 +244,8 @@
                 <div class="flex justify-between items-center pb-4 border-b border-neutral-100">
                     <div>
                         <h2 class="text-3xl font-serif font-bold text-neutral-800">Custom Crochet Requests</h2>
-                        <p class="text-sm text-neutral-500">Review incoming ideas, respond quickly, and keep each bespoke request organized.</p>
+                        <p class="text-sm text-neutral-500">Review incoming ideas, respond quickly, and keep each
+                            bespoke request organized.</p>
                     </div>
                 </div>
                 <div class="bg-white rounded-3xl border border-neutral-200 shadow-sm overflow-hidden">
@@ -403,7 +405,8 @@
                             <input type="checkbox" id="form-product-requires-url"
                                 class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
                             <label for="form-product-requires-url"
-                                class="font-bold text-neutral-700 cursor-pointer">Requires Customer URL (For NFC Rakhi/Items)</label>
+                                class="font-bold text-neutral-700 cursor-pointer">Requires Customer URL (For NFC
+                                Rakhi/Items)</label>
                         </div>
                     </div>
 
@@ -419,6 +422,44 @@
                             class="w-full p-3 border border-neutral-200 rounded-xl focus:outline-none focus:border-brand-500 resize-none leading-relaxed"></textarea>
                     </div>
 
+                    <!-- 🌟 INVENTORY & VISIBILITY CONTROLS -->
+                    <div class="bg-neutral-50 p-4 rounded-2xl border border-neutral-200 space-y-3">
+                        <p class="text-xs font-bold text-neutral-500 uppercase tracking-wider">Inventory & Visibility
+                        </p>
+
+                        <!-- Toggle 1: Hide Product -->
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="form-product-hidden"
+                                class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
+                            <label for="form-product-hidden" class="font-bold text-neutral-700 cursor-pointer">Hide
+                                Product from Website (Draft / Unlisted)</label>
+                        </div>
+
+                        <!-- Toggle 2: Mark Sold Out -->
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="form-product-sold-out"
+                                class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
+                            <label for="form-product-sold-out" class="font-bold text-neutral-700 cursor-pointer">Mark as
+                                Sold Out</label>
+                        </div>
+
+                        <!-- Stock Quantity & Display Toggle -->
+                        <div class="grid grid-cols-2 gap-4 pt-2 border-t border-neutral-200 items-center">
+                            <div>
+                                <label class="block font-bold text-neutral-700 mb-1 text-xs">Stock Quantity *</label>
+                                <input type="number" id="form-product-stock" min="0" default="10"
+                                    class="w-full p-2.5 border border-neutral-200 rounded-xl focus:border-brand-500 font-medium">
+                            </div>
+                            <div class="flex items-center gap-2 pt-5">
+                                <input type="checkbox" id="form-product-show-stock"
+                                    class="w-4 h-4 accent-brand-600 rounded cursor-pointer">
+                                <label for="form-product-show-stock"
+                                    class="font-bold text-neutral-700 cursor-pointer text-xs">Show "X Left"
+                                    Badge</label>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="submit" id="form-product-submit-btn"
                         class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold text-base shadow-lg transition-all flex items-center justify-center gap-2 mt-2">
                         Save Product Configuration <i class="fa-solid fa-cloud-arrow-up"></i>
@@ -428,12 +469,14 @@
         </div>
         <!-- Categories Manager View -->
         <div id="categories-tab" class="admin-tab-content hidden p-6 md:p-10 w-full space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-neutral-200">
+            <div
+                class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-4 border-b border-neutral-200">
                 <div>
                     <h2 class="text-3xl font-serif font-bold text-neutral-800">Category Filters</h2>
                     <p class="text-sm text-neutral-500">Manage the storefront bubble filters and their images.</p>
                 </div>
-                <button onclick="openCategoryFormModal()" class="px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2 text-sm cursor-pointer">
+                <button onclick="openCategoryFormModal()"
+                    class="px-5 py-3 bg-brand-600 hover:bg-brand-700 text-white font-bold rounded-xl transition-all shadow-md flex items-center gap-2 text-sm cursor-pointer">
                     <i class="fa-solid fa-plus"></i> Add Category
                 </button>
             </div>
@@ -441,23 +484,32 @@
         </div>
 
         <!-- Category Form Modal -->
-        <div id="category-form-modal" class="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-            <div class="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden transform transition-all flex flex-col">
+        <div id="category-form-modal"
+            class="fixed inset-0 bg-neutral-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+            <div
+                class="bg-white rounded-3xl w-full max-w-sm shadow-2xl overflow-hidden transform transition-all flex flex-col">
                 <div class="p-6 bg-brand-50 border-b border-brand-100 flex justify-between items-center">
                     <h3 class="text-xl font-serif font-bold text-brand-900">Add New Category</h3>
-                    <button onclick="closeCategoryFormModal()" class="text-neutral-400 hover:text-brand-600 text-2xl transition-colors focus:outline-none"><i class="fa-solid fa-xmark"></i></button>
+                    <button onclick="closeCategoryFormModal()"
+                        class="text-neutral-400 hover:text-brand-600 text-2xl transition-colors focus:outline-none"><i
+                            class="fa-solid fa-xmark"></i></button>
                 </div>
-                <form id="admin-category-form" onsubmit="handleCategorySubmit(event)" class="p-6 space-y-4 text-sm text-left">
+                <form id="admin-category-form" onsubmit="handleCategorySubmit(event)"
+                    class="p-6 space-y-4 text-sm text-left">
                     <input type="hidden" id="form-category-id">
                     <div>
                         <label class="block font-bold text-neutral-700 mb-1">Category Name *</label>
-                        <input type="text" id="form-category-name" required class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 font-medium">
+                        <input type="text" id="form-category-name" required
+                            class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 font-medium">
                     </div>
                     <div>
                         <label class="block font-bold text-neutral-700 mb-1">Image URL *</label>
-                        <input type="url" id="form-category-image" required placeholder="https://..." class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 font-mono text-xs">
+                        <input type="url" id="form-category-image" required placeholder="https://..."
+                            class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 font-mono text-xs">
                     </div>
-                    <button type="submit" id="form-category-submit-btn" class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold shadow-lg transition-all mt-4">Save Category</button>
+                    <button type="submit" id="form-category-submit-btn"
+                        class="w-full bg-brand-600 hover:bg-brand-700 text-white py-3.5 rounded-xl font-bold shadow-lg transition-all mt-4">Save
+                        Category</button>
                 </form>
             </div>
         </div>
@@ -470,26 +522,38 @@
 
             <!-- Top Promo Banner Controls -->
             <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
-                <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-bullhorn text-brand-500"></i> Top Promo Banner</h3>
-                <p class="text-sm text-neutral-500 mb-4">Use this to highlight seasonal offers or key launches on the storefront.</p>
+                <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i
+                        class="fa-solid fa-bullhorn text-brand-500"></i> Top Promo Banner</h3>
+                <p class="text-sm text-neutral-500 mb-4">Use this to highlight seasonal offers or key launches on the
+                    storefront.</p>
                 <div class="flex items-center gap-3 mb-4">
                     <input type="checkbox" id="admin-promo-active" class="w-5 h-5 accent-brand-600 cursor-pointer">
-                    <label for="admin-promo-active" class="font-bold text-neutral-700 cursor-pointer">Show Promo Banner on Website</label>
+                    <label for="admin-promo-active" class="font-bold text-neutral-700 cursor-pointer">Show Promo Banner
+                        on Website</label>
                 </div>
                 <div class="mb-4">
                     <label class="block font-bold text-neutral-700 mb-1">Banner Text:</label>
-                    <input type="text" id="admin-promo-text" class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 outline-none" placeholder="e.g. Opening Sale: Up to 30% Off Selected Creations">
+                    <input type="text" id="admin-promo-text"
+                        class="w-full p-3 border border-neutral-200 rounded-xl focus:border-brand-500 outline-none"
+                        placeholder="e.g. Opening Sale: Up to 30% Off Selected Creations">
                 </div>
-                <button onclick="savePromoBannerSettings()" class="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-brand-700 transition-colors">Save Text Banner</button>
+                <button onclick="savePromoBannerSettings()"
+                    class="bg-brand-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-brand-700 transition-colors">Save
+                    Text Banner</button>
             </div>
 
             <!-- Festive Image Banners Controls -->
             <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
-                <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i class="fa-solid fa-image text-brand-500"></i> Festive Banners</h3>
-                <p class="text-sm text-neutral-500 mb-4">Add attention-grabbing promotional visuals that appear across the storefront.</p>
+                <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i
+                        class="fa-solid fa-image text-brand-500"></i> Festive Banners</h3>
+                <p class="text-sm text-neutral-500 mb-4">Add attention-grabbing promotional visuals that appear across
+                    the storefront.</p>
                 <form onsubmit="addFestiveBanner(event)" class="flex flex-col sm:flex-row gap-4 mb-6">
-                    <input type="url" id="admin-festive-url" required placeholder="Paste Image URL (https://...)" class="flex-1 p-3 border border-neutral-200 rounded-xl text-sm focus:border-brand-500 outline-none">
-                    <button type="submit" class="bg-brand-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-700 whitespace-nowrap transition-colors"><i class="fa-solid fa-plus"></i> Add Festive Banner</button>
+                    <input type="url" id="admin-festive-url" required placeholder="Paste Image URL (https://...)"
+                        class="flex-1 p-3 border border-neutral-200 rounded-xl text-sm focus:border-brand-500 outline-none">
+                    <button type="submit"
+                        class="bg-brand-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-700 whitespace-nowrap transition-colors"><i
+                            class="fa-solid fa-plus"></i> Add Festive Banner</button>
                 </form>
                 <div id="admin-festive-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
@@ -836,12 +900,18 @@
                     discountBadge = `<span class="bg-green-100 text-green-800 text-[10px] font-black px-2 py-0.5 rounded border border-green-200 uppercase">${discountPct}% OFF</span>`;
                 }
 
+                // Inside loadAdminProducts(), add these status tags inside the card's image block:
+                const hiddenTag = p.is_hidden ? `<span class="absolute top-2 right-2 bg-neutral-900 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider shadow-sm">Hidden</span>` : '';
+                const soldOutTag = p.is_sold_out ? `<span class="absolute bottom-2 left-2 bg-red-600 text-white text-[9px] font-black px-2 py-0.5 rounded uppercase tracking-wider shadow-sm">Sold Out</span>` : '';
+
                 return `
                     <div class="bg-white rounded-2xl border border-neutral-200 overflow-hidden shadow-sm flex flex-col group transition-all hover:shadow-md">
                         <div class="h-44 overflow-hidden relative bg-neutral-50 border-b">
                             <img src="${p.image_url || 'https://images.unsplash.com/photo-1584992236310-6edddc08acff'}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                             ${p.badge ? `<span class="absolute top-2 left-2 bg-brand-900 text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shadow-sm">${p.badge}</span>` : ''}
                         </div>
+                            ${hiddenTag}
+                            ${soldOutTag}
                         <div class="p-4 flex flex-col flex-1">
                             <div class="flex justify-between items-center gap-2 mb-1">
                                 <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">${p.category || 'Uncategorized'}</span>
@@ -964,6 +1034,10 @@
             document.getElementById('form-product-desc').value = product.description || '';
             document.getElementById('form-product-perfect').value = product.perfect_for || '';
             document.getElementById('form-product-care').value = product.care_instructions || '';
+            document.getElementById('form-product-hidden').checked = product.is_hidden || false;
+            document.getElementById('form-product-sold-out').checked = product.is_sold_out || false;
+            document.getElementById('form-product-stock').value = product.stock_quantity ?? 10;
+            document.getElementById('form-product-show-stock').checked = product.show_stock || false;
             // Add this line where you map the other product values:
             document.getElementById('form-product-requires-url').checked = product.requires_url || false;
 
@@ -1005,7 +1079,11 @@
                 care_instructions: document.getElementById('form-product-care').value.trim(),
                 allow_addons: document.getElementById('form-product-allow-addons').checked,
                 accessory_addons: gatherAdminAddonsPayload(),
-                requires_url: document.getElementById('form-product-requires-url').checked
+                requires_url: document.getElementById('form-product-requires-url').checked,
+                is_hidden: document.getElementById('form-product-hidden').checked,
+                is_sold_out: document.getElementById('form-product-sold-out').checked,
+                stock_quantity: parseInt(document.getElementById('form-product-stock').value) || 0,
+                show_stock: document.getElementById('form-product-show-stock').checked
             };
 
             if (!productPayload.name) {
@@ -1241,9 +1319,9 @@
 
             const { data, error } = await supabaseClient.from('categories').select('*').order('created_at', { ascending: true });
             if (error) return console.error(error);
-            
+
             globalCategories = data || [];
-            
+
             // Populate Product Form Category Dropdown dynamically based on these results
             const productCatSelect = document.getElementById('form-product-category');
             if (productCatSelect) {
@@ -1290,7 +1368,7 @@
 
         // Delete Category
         async function deleteCategory(id) {
-            if(confirm("Delete this category bubble?")) {
+            if (confirm("Delete this category bubble?")) {
                 await supabaseClient.from('categories').delete().eq('id', id);
                 loadAdminCategories();
             }
@@ -1312,9 +1390,9 @@
             const text = document.getElementById('admin-promo-text').value.trim();
             const btn = event.target;
             btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Saving...`;
-            
+
             await supabaseClient.from('store_settings').update({ promo_active: isActive, promo_text: text }).eq('id', 1);
-            
+
             btn.innerHTML = `Saved! <i class="fa-solid fa-check"></i>`;
             setTimeout(() => btn.innerHTML = 'Save Text Banner', 2000);
         }
@@ -1322,7 +1400,7 @@
         async function loadFestiveBanners() {
             const container = document.getElementById('admin-festive-list');
             container.innerHTML = `<div class="col-span-full py-4"><i class="fa-solid fa-spinner animate-spin text-brand-500"></i></div>`;
-            
+
             const { data, error } = await supabaseClient.from('festive_banners').select('*').order('created_at', { ascending: false });
             if (error || !data || data.length === 0) {
                 container.innerHTML = `<p class="col-span-full text-neutral-400 text-sm">No festive banners uploaded yet.</p>`;
@@ -1358,7 +1436,7 @@
         }
 
         async function deleteFestiveBanner(id) {
-            if(confirm("Permanently delete this festive banner?")) {
+            if (confirm("Permanently delete this festive banner?")) {
                 await supabaseClient.from('festive_banners').delete().eq('id', id);
                 loadFestiveBanners();
             }

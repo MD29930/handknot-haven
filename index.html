@@ -1230,10 +1230,18 @@
                 let optimizedImage = product.image || 'https://via.placeholder.com/300';
                 if (optimizedImage.includes('unsplash.com')) optimizedImage += '&fmt=webp&q=70&w=600';
 
+                let stockBadge = '';
+                if (product.isSoldOut) {
+                    stockBadge = `<span class="absolute bottom-2 right-2 bg-red-600/90 backdrop-blur-md text-white border border-red-400 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded z-10">Sold Out</span>`;
+                } else if (product.showStock && product.stockQuantity > 0) {
+                    stockBadge = `<span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-md text-amber-400 border border-amber-400/30 text-[9px] font-bold tracking-wide px-2 py-0.5 rounded z-10">Only ${product.stockQuantity} Left</span>`;
+                }
+
                 card.innerHTML = `
     <div class="relative aspect-[4/3] overflow-hidden bg-surface-900 border-b border-white/5">
       ${product.badge ? `<span class="absolute top-3 left-3 bg-surface-900 text-brand-400 border-[1.5px] border-amber-400 shadow-[0_4px_12px_rgba(0,0,0,0.8)] text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md z-10">${product.badge}</span>` : ''}
-        <img loading="lazy" src="${optimizedImage}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu pointer-events-none">
+      ${stockBadge}
+      <img loading="lazy" src="${optimizedImage}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 transform-gpu pointer-events-none">
     </div>
     <div class="p-3 sm:p-5 flex flex-col flex-grow relative z-20">
         <p class="text-[9px] sm:text-[10px] text-brand-500 font-medium uppercase tracking-widest mb-1 flex items-center gap-1">${product.category} ${discountBadge}</p>
@@ -1308,9 +1316,28 @@
             document.getElementById('modal-title').textContent = product.name || '';
             document.getElementById('modal-desc').textContent = product.description || 'Handcrafted item matching premium studio standards.';
 
-            document.getElementById('modal-availability').textContent = SHOP_CONFIG.takingOrders ? "In Stock" : "Commissions Paused";
-            document.getElementById('modal-availability').className = SHOP_CONFIG.takingOrders ? "text-emerald-400 font-medium" : "text-brand-500 font-medium";
+           const availabilityEl = document.getElementById('modal-availability');
+            const addToCartBtn = document.getElementById('modal-add-to-cart-btn');
 
+            if (product.isSoldOut) {
+                availabilityEl.textContent = "Sold Out";
+                availabilityEl.className = "text-red-500 font-bold";
+                addToCartBtn.disabled = true;
+                addToCartBtn.classList.replace('bg-brand-500', 'bg-neutral-600');
+                addToCartBtn.innerHTML = `<i class="fa-solid fa-ban"></i> Currently Sold Out`;
+            } else {
+                let statusText = "In Stock";
+                if (product.showStock && product.stockQuantity > 0) {
+                    statusText = `In Stock (${product.stockQuantity} remaining)`;
+                }
+                availabilityEl.textContent = SHOP_CONFIG.takingOrders ? statusText : "Commissions Paused";
+                availabilityEl.className = SHOP_CONFIG.takingOrders ? "text-emerald-400 font-medium" : "text-brand-500 font-medium";
+                addToCartBtn.disabled = !SHOP_CONFIG.takingOrders;
+                if (SHOP_CONFIG.takingOrders) {
+                    addToCartBtn.classList.replace('bg-neutral-600', 'bg-brand-500');
+                    addToCartBtn.innerHTML = `<i class="fa-solid fa-basket-shopping"></i> ADD TO CART`;
+                }
+            }
             document.getElementById('modal-size-section').classList.toggle('hidden', product.category !== 'Clothing' && product.category !== 'Tops');
 
             if (document.getElementById('measure-bust')) document.getElementById('measure-bust').value = '';
@@ -1359,6 +1386,12 @@
         function addToCartFromModal() {
             const product = products.find(p => p.id === currentModalProductId);
             if (!product || !SHOP_CONFIG.takingOrders) return;
+
+            // 🌟 PASTE IT RIGHT HERE:
+            if (product.isSoldOut) {
+                alert("Sorry, this creation is currently Sold Out!");
+                return;
+            }
 
             // 🌟 URL Validation and Injection Logic
             let finalProductName = product.name;
@@ -1747,6 +1780,8 @@
                 return;
             }
 
+            await deductPurchasedStock(cart);
+
             try {
                 await emailjs.send('service_yt6ze52', 'template_xyc0kaq', {
                     order_id: orderId,
@@ -2084,19 +2119,65 @@
 
         async function loadProducts() {
             try {
-                const { data, error } = await supabaseClient.from('products').select('*');
+                // 🌟 FIXED: Add .eq('is_hidden', false) so hidden products never load on the website!
+                const { data, error } = await supabaseClient
+                    .from('products')
+                    .select('*')
+                    .eq('is_hidden', false);
                 if (data && data.length > 0) {
                     products = data.map(p => ({
                         id: p.id, name: p.name, price: Number(p.price), discount: Number(p.discount || 0),
                         category: p.category, image: p.image_url, badge: p.badge, description: p.description,
                         craftingTime: p.crafting_time, materialName: p.material_name, allowAddons: p.allow_addons,
                         accessoryAddons: p.accessory_addons, perfectFor: p.perfect_for, careInstructions: p.care_instructions,
-                        requires_url: p.requires_url
+                        requires_url: p.requires_url,
+                        isSoldOut: p.is_sold_out || false,
+                        stockQuantity: p.stock_quantity ?? 10,
+                        showStock: p.show_stock || false
                     }));
                     renderProducts();
                 }
             } catch (err) {
                 console.warn("Using fallback product catalog due to Supabase connection.");
+            }
+        }
+
+        // 🌟 AUTOMATIC STOCK DEDUCTION & SOLD-OUT ENGINE
+        async function deductPurchasedStock(purchasedCart) {
+            for (const item of purchasedCart) {
+                // 1. Fetch the absolute latest stock number from Supabase to prevent mismatches
+                const { data: productData, error: fetchError } = await supabaseClient
+                    .from('products')
+                    .select('stock_quantity, is_sold_out')
+                    .eq('id', item.id)
+                    .single();
+
+                if (fetchError || !productData) {
+                    console.error(`Could not verify stock for item ID ${item.id}:`, fetchError);
+                    continue;
+                }
+
+                // 2. Calculate remaining stock after deducting the quantity bought
+                const currentStock = Number(productData.stock_quantity || 0);
+                const newStock = Math.max(0, currentStock - item.quantity);
+                
+                // 3. If new stock hits 0, automatically flip is_sold_out to true!
+                const shouldMarkSoldOut = (newStock === 0) || productData.is_sold_out;
+
+                // 4. Update the live product row in Supabase
+                const { error: updateError } = await supabaseClient
+                    .from('products')
+                    .update({ 
+                        stock_quantity: newStock,
+                        is_sold_out: shouldMarkSoldOut 
+                    })
+                    .eq('id', item.id);
+
+                if (updateError) {
+                    console.error(`Failed to update stock for item ID ${item.id}:`, updateError);
+                } else {
+                    console.log(`Stock updated for ${item.name}: ${currentStock} -> ${newStock} (Sold Out: ${shouldMarkSoldOut})`);
+                }
             }
         }
 
