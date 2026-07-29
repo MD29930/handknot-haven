@@ -1188,6 +1188,17 @@
                     ticking = true;
                 }
             }, { passive: true });
+            supabaseClient
+                .channel('public:products-live-stock')
+                .on('postgres_changes', { 
+                    event: 'UPDATE', 
+                    schema: 'public', 
+                    table: 'products' 
+                }, () => {
+                    console.log('Stock change detected live! Refreshing products...');
+                    loadProducts();
+                })
+                .subscribe();
         }
 
         function applyShopStatus() {
@@ -1316,15 +1327,26 @@
             document.getElementById('modal-title').textContent = product.name || '';
             document.getElementById('modal-desc').textContent = product.description || 'Handcrafted item matching premium studio standards.';
 
-           const availabilityEl = document.getElementById('modal-availability');
+            const availabilityEl = document.getElementById('modal-availability');
             const addToCartBtn = document.getElementById('modal-add-to-cart-btn');
+            const buyNowBtn = document.getElementById('modal-buy-now-btn');
 
             if (product.isSoldOut) {
                 availabilityEl.textContent = "Sold Out";
                 availabilityEl.className = "text-red-500 font-bold";
+                
+                // Lock Add to Cart button
                 addToCartBtn.disabled = true;
                 addToCartBtn.classList.replace('bg-brand-500', 'bg-neutral-600');
                 addToCartBtn.innerHTML = `<i class="fa-solid fa-ban"></i> Currently Sold Out`;
+                
+                // 🌟 Lock Buy Now button as well!
+                if (buyNowBtn) {
+                    buyNowBtn.disabled = true;
+                    buyNowBtn.classList.replace('bg-white', 'bg-neutral-700');
+                    buyNowBtn.classList.replace('text-surface-900', 'text-neutral-400');
+                    buyNowBtn.innerHTML = `SOLD OUT`;
+                }
             } else {
                 let statusText = "In Stock";
                 if (product.showStock && product.stockQuantity > 0) {
@@ -1332,10 +1354,20 @@
                 }
                 availabilityEl.textContent = SHOP_CONFIG.takingOrders ? statusText : "Commissions Paused";
                 availabilityEl.className = SHOP_CONFIG.takingOrders ? "text-emerald-400 font-medium" : "text-brand-500 font-medium";
+                
+                // Enable Add to Cart button
                 addToCartBtn.disabled = !SHOP_CONFIG.takingOrders;
                 if (SHOP_CONFIG.takingOrders) {
                     addToCartBtn.classList.replace('bg-neutral-600', 'bg-brand-500');
                     addToCartBtn.innerHTML = `<i class="fa-solid fa-basket-shopping"></i> ADD TO CART`;
+                }
+
+                // 🌟 Restore Buy Now button when available
+                if (buyNowBtn) {
+                    buyNowBtn.disabled = !SHOP_CONFIG.takingOrders;
+                    buyNowBtn.classList.replace('bg-neutral-700', 'bg-white');
+                    buyNowBtn.classList.replace('text-neutral-400', 'text-surface-900');
+                    buyNowBtn.innerHTML = `BUY NOW &gt;`;
                 }
             }
             document.getElementById('modal-size-section').classList.toggle('hidden', product.category !== 'Clothing' && product.category !== 'Tops');
@@ -1781,6 +1813,7 @@
             }
 
             await deductPurchasedStock(cart);
+            await loadProducts();
 
             try {
                 await emailjs.send('service_yt6ze52', 'template_xyc0kaq', {
