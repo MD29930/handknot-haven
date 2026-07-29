@@ -759,6 +759,15 @@
                     <img id="modal-img" src="" class="w-full h-full object-cover">
                 </div>
 
+                <!-- Left Hand Graphic Display Box -->
+                <div class="w-full md:w-1/2 min-h-[300px] md:h-auto bg-surface-900 relative shrink-0 flex flex-col justify-between">
+                    <div class="absolute inset-0 bg-brand-500/5 mix-blend-overlay z-10 pointer-events-none"></div>
+                    <img id="modal-img" src="" class="w-full h-full object-cover flex-1">
+                    
+                    <!-- 🌟 ADD THIS: Image Gallery Thumbnail Strip -->
+                    <div id="modal-gallery-thumbnails" class="hidden flex items-center gap-2 p-3 bg-surface-800/90 border-t border-white/5 overflow-x-auto no-scrollbar z-20"></div>
+                </div>
+
                 <!-- Right Hand Metadata Configurator Column -->
                 <div class="w-full md:w-1/2 p-5 sm:p-8 flex flex-col justify-between">
                     <div>
@@ -1332,6 +1341,27 @@
             }
 
             document.getElementById('modal-img').src = product.image || '';
+
+            // 🌟 MULTI-IMAGE GALLERY THUMBNAILS ENGINE
+            const thumbnailsContainer = document.getElementById('modal-gallery-thumbnails');
+            const mainModalImg = document.getElementById('modal-img');
+            
+            // Collect main image + any extra gallery images into an array
+            const extraImages = product.imageGallery ? product.imageGallery.split(',').map(url => url.trim()).filter(Boolean) : [];
+            const allImages = [product.image, ...extraImages].filter(Boolean);
+
+            if (allImages.length > 1) {
+                thumbnailsContainer.classList.remove('hidden');
+                thumbnailsContainer.innerHTML = allImages.map((imgUrl, idx) => `
+                    <button type="button" onclick="document.getElementById('modal-img').src='${imgUrl}'; document.querySelectorAll('.gallery-thumb').forEach(b => b.classList.remove('border-brand-500')); this.classList.add('border-brand-500');" 
+                        class="gallery-thumb w-12 h-12 rounded-lg overflow-hidden border-2 ${idx === 0 ? 'border-brand-500' : 'border-white/10'} shrink-0 transition-all hover:opacity-100 opacity-80 cursor-pointer">
+                        <img src="${imgUrl}" class="w-full h-full object-cover pointer-events-none">
+                    </button>
+                `).join('');
+            } else {
+                thumbnailsContainer.classList.add('hidden');
+                thumbnailsContainer.innerHTML = '';
+            }
             document.getElementById('modal-category').textContent = product.category || 'Creations';
             document.getElementById('modal-title').textContent = product.name || '';
             document.getElementById('modal-desc').textContent = product.description || 'Handcrafted item matching premium studio standards.';
@@ -1773,7 +1803,7 @@
             if (shippingTag) {
                 shippingTag.classList.toggle('hidden', !SHOP_CONFIG.freeShipping);
             }
-            
+
             closeCheckoutForm();
             setTimeout(() => openModal(modals.payment), 400);
         }
@@ -2192,7 +2222,8 @@
                         requires_url: p.requires_url,
                         isSoldOut: p.is_sold_out || false,
                         stockQuantity: p.stock_quantity ?? 10,
-                        showStock: p.show_stock || false
+                        showStock: p.show_stock || false,
+                        imageGallery: p.image_gallery || ''
                     }));
                     renderProducts();
                 }
