@@ -753,12 +753,17 @@
 
             <!-- Top Core Half Split View Panel Layout -->
             <div class="flex flex-col md:flex-row w-full border-b border-white/5">
-                <!-- Left Hand Graphic Display Box -->
-                <div class="w-full md:w-1/2 min-h-[300px] md:h-auto bg-surface-900 relative shrink-0">
+                <!-- ✅ Left Hand Graphic Display Box (Fixed Overflow & Thumbnail Alignment) -->
+                <div class="w-full md:w-1/2 min-h-[320px] md:min-h-[450px] bg-surface-900 relative shrink-0 flex flex-col overflow-hidden">
                     <div class="absolute inset-0 bg-brand-500/5 mix-blend-overlay z-10 pointer-events-none"></div>
-                    <img id="modal-img" src="" class="w-full h-full object-cover">
-                    <!-- 🌟 ADD THIS: Image Gallery Thumbnail Strip -->
-                    <div id="modal-gallery-thumbnails" class="hidden flex items-center gap-2 p-3 bg-surface-800/90 border-t border-white/5 overflow-x-auto no-scrollbar z-20"></div>
+                    
+                    <!-- Image Wrapper keeps the photo from pushing the thumbnails out -->
+                    <div class="relative w-full flex-1 min-h-[260px] overflow-hidden">
+                        <img id="modal-img" src="" class="absolute inset-0 w-full h-full object-cover">
+                    </div>
+                    
+                    <!-- 🌟 Image Gallery Thumbnail Strip (Locked at bottom of the photo box) -->
+                    <div id="modal-gallery-thumbnails" class="hidden flex items-center gap-2.5 p-3 bg-surface-900/95 border-t border-white/10 overflow-x-auto no-scrollbar z-20 shrink-0"></div>
                 </div>
 
                 <!-- Right Hand Metadata Configurator Column -->
