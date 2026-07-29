@@ -520,6 +520,15 @@
                 <p class="text-sm text-neutral-500">Manage promotional text and festive image banners.</p>
             </div>
 
+            <!-- 🌟 FREE SHIPPING MASTER TOGGLE -->
+                    <div class="flex items-center gap-3 bg-neutral-50 border border-neutral-200 px-4 py-2.5 rounded-xl">
+                        <input type="checkbox" id="admin-free-shipping-toggle" onchange="toggleFreeShippingSetting(this.checked)"
+                            class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
+                        <label for="admin-free-shipping-toggle" class="font-bold text-neutral-700 cursor-pointer text-xs uppercase tracking-wider">
+                            Enable Free Shipping Sitewide
+                        </label>
+                    </div>
+
             <!-- Top Promo Banner Controls -->
             <div class="bg-white p-6 rounded-2xl border border-neutral-200 shadow-sm">
                 <h3 class="font-bold text-lg mb-2 flex items-center gap-2"><i
@@ -571,7 +580,8 @@
                 loadAdminProducts(),
                 loadStoreSettings(),
                 loadFestiveBanners(),
-                fetchInitialShopStatus()
+                fetchInitialShopStatus(),
+                loadFreeShippingSetting() // 🌟 ADD IT RIGHT HERE!
             ]);
 
             try {
@@ -1371,6 +1381,42 @@
             if (confirm("Delete this category bubble?")) {
                 await supabaseClient.from('categories').delete().eq('id', id);
                 loadAdminCategories();
+            }
+        }
+
+        // 🌟 LOAD FREE SHIPPING TOGGLE STATE ON ADMIN LOAD
+        async function loadFreeShippingSetting() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('store_settings')
+                    .select('free_shipping')
+                    .eq('id', 1)
+                    .single();
+                
+                if (data && document.getElementById('admin-free-shipping-toggle')) {
+                    document.getElementById('admin-free-shipping-toggle').checked = data.free_shipping ?? true;
+                }
+            } catch (err) {
+                console.warn("Could not load free shipping setting:", err);
+            }
+        }
+
+        // 🌟 SAVE FREE SHIPPING TOGGLE TO DATABASE
+        async function toggleFreeShippingSetting(isFree) {
+            try {
+                const { error } = await supabaseClient
+                    .from('store_settings')
+                    .update({ free_shipping: isFree })
+                    .eq('id', 1);
+
+                if (error) {
+                    alert("Failed to update Free Shipping setting!");
+                    console.error(error);
+                } else {
+                    console.log("Free Shipping set to:", isFree);
+                }
+            } catch (err) {
+                console.error("Error updating setting:", err);
             }
         }
         // =========================================================================

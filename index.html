@@ -784,6 +784,8 @@
                         </div>
 
                         <div class="mb-4" id="modal-price"></div>
+                        <!-- 🌟 FREE SHIPPING BADGE IN PRODUCT MODAL -->
+                        <div id="modal-shipping-badge" class="hidden text-xs text-text-muted mb-4 bg-brand-500/10 border border-brand-500/20 px-3 py-1.5 rounded-lg w-max flex items-center gap-2"></div>
 
                         <!-- Reactive Live Calculation Subtotal Tracker Output -->
                         <div
@@ -951,6 +953,12 @@
                         class="text-[10px] sm:text-xs font-medium text-text-muted uppercase tracking-widest mb-1 sm:mb-2">
                         Amount to Pay</p>
                     <h2 class="text-3xl sm:text-4xl font-serif text-text-main" id="payment-total-amount">₹0.00</h2>
+
+                    <!-- 🌟 ADD THIS RIGHT BELOW #payment-total-amount IN YOUR PAYMENT MODAL -->
+                    <div id="payment-shipping-tag" class="text-xs font-semibold text-emerald-400 mt-1 mb-2 hidden">
+                        <i class="fa-solid fa-tag"></i> Includes FREE Delivery
+                    </div>
+                    
                     <p class="text-[11px] sm:text-xs text-text-muted mt-2">Choose a secure payment option below to confirm your order.</p>
                 </div>
                 <button id="razorpay-btn" onclick="initiateRazorpayPayment()"
@@ -1104,7 +1112,8 @@
             takingOrders: true,
             pausedMessage: "Commissions are currently paused.",
             showSaleBanner: true,
-            saleMessage: "Opening Sale: Up to 30% Off Selected Creations"
+            saleMessage: "Opening Sale: Up to 30% Off Selected Creations",
+            freeShipping: true // 🌟 ADD THIS LINE
         };
 
         let products = [];
@@ -1328,6 +1337,16 @@
             document.getElementById('modal-desc').textContent = product.description || 'Handcrafted item matching premium studio standards.';
 
             const availabilityEl = document.getElementById('modal-availability');
+            // Inside openProductModal(productId), right after setting availabilityEl:
+            const shippingBadgeEl = document.getElementById('modal-shipping-badge');
+            if (shippingBadgeEl) {
+                if (SHOP_CONFIG.freeShipping) {
+                    shippingBadgeEl.innerHTML = `<i class="fa-solid fa-truck-fast text-brand-400"></i> <span class="text-text-main font-semibold">Free Shipping</span> across India`;
+                    shippingBadgeEl.classList.remove('hidden');
+                } else {
+                    shippingBadgeEl.classList.add('hidden');
+                }
+            }
             const addToCartBtn = document.getElementById('modal-add-to-cart-btn');
             const buyNowBtn = document.getElementById('modal-buy-now-btn');
 
@@ -1748,6 +1767,13 @@
             }
 
             document.getElementById('payment-total-amount').textContent = '₹' + calculateCartTotal().toFixed(2);
+
+            // 🌟 ADD THIS: Reveal free delivery tag on checkout if enabled
+            const shippingTag = document.getElementById('payment-shipping-tag');
+            if (shippingTag) {
+                shippingTag.classList.toggle('hidden', !SHOP_CONFIG.freeShipping);
+            }
+            
             closeCheckoutForm();
             setTimeout(() => openModal(modals.payment), 400);
         }
@@ -2263,6 +2289,9 @@
                 } else {
                     promoBanner.classList.add('hidden');
                     if (window.scrollY <= 10) nav.style.top = '0px';
+                }
+                if (settings.free_shipping !== undefined) {
+                    SHOP_CONFIG.freeShipping = settings.free_shipping;
                 }
             }
 
