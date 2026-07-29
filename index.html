@@ -843,7 +843,7 @@
                         </div>
 
                         <!-- Express Buy Now Bypass Path Trigger -->
-                        <button onclick="executeModalBuyNow()"
+                        <button id="modal-buy-now-btn" onclick="executeModalBuyNow()"
                             class="w-full bg-white text-black h-12 rounded-xl font-bold text-sm hover:bg-neutral-200 transition-colors flex justify-center items-center gap-2 tracking-wide">
                             BUY NOW <i class="fa-solid fa-chevron-right text-xs"></i>
                         </button>
@@ -1343,8 +1343,8 @@
                 // 🌟 Lock Buy Now button as well!
                 if (buyNowBtn) {
                     buyNowBtn.disabled = true;
-                    buyNowBtn.classList.replace('bg-white', 'bg-neutral-700');
-                    buyNowBtn.classList.replace('text-surface-900', 'text-neutral-400');
+                    buyNowBtn.classList.remove('bg-white', 'hover:bg-neutral-200', 'text-black');
+                    buyNowBtn.classList.add('bg-neutral-700', 'text-neutral-400', 'cursor-not-allowed');
                     buyNowBtn.innerHTML = `SOLD OUT`;
                 }
             } else {
@@ -1365,9 +1365,9 @@
                 // 🌟 Restore Buy Now button when available
                 if (buyNowBtn) {
                     buyNowBtn.disabled = !SHOP_CONFIG.takingOrders;
-                    buyNowBtn.classList.replace('bg-neutral-700', 'bg-white');
-                    buyNowBtn.classList.replace('text-neutral-400', 'text-surface-900');
-                    buyNowBtn.innerHTML = `BUY NOW &gt;`;
+                    buyNowBtn.classList.remove('bg-neutral-700', 'text-neutral-400', 'cursor-not-allowed');
+                    buyNowBtn.classList.add('bg-white', 'hover:bg-neutral-200', 'text-black');
+                    buyNowBtn.innerHTML = `BUY NOW <i class="fa-solid fa-chevron-right text-xs"></i>`;
                 }
             }
             document.getElementById('modal-size-section').classList.toggle('hidden', product.category !== 'Clothing' && product.category !== 'Tops');
