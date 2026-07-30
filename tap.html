@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HandKnot Haven | Access Your Message</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        surface: { 900: '#050203', 800: '#0f0508', 700: '#1a080d' },
+                        brand: { 400: '#ff8fa3', 500: '#ff4d6d', 600: '#c9184a' }
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #050203; color: #ffffff; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 179, 198, 0.1);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+
+<body class="font-sans min-h-screen flex flex-col justify-between relative overflow-x-hidden">
+
+    <!-- Ambient Festive Background Glow -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute w-[350px] h-[350px] top-[-10%] left-[-10%] rounded-full bg-brand-500/15 blur-[100px]"></div>
+        <div class="absolute w-[400px] h-[400px] bottom-[-10%] right-[-10%] rounded-full bg-brand-600/10 blur-[120px]"></div>
+    </div>
+
+    <!-- Header / Logo -->
+    <header class="w-full py-6 px-6 flex justify-center relative z-10 border-b border-white/5">
+        <a href="index.html" class="font-serif text-xl sm:text-2xl font-medium text-white flex items-center gap-2.5">
+            <img src="https://khsndsegwznolzqydizh.supabase.co/storage/v1/object/public/product-images/Official_Logo(w).png"
+                alt="Logo" class="w-7 h-7">
+            HandKnot Haven
+        </a>
+    </header>
+
+    <!-- Main Search Card -->
+    <main class="flex-1 flex items-center justify-center p-4 sm:p-6 relative z-10">
+        <div class="glass-card max-w-md w-full rounded-3xl p-6 sm:p-10 text-center shadow-2xl relative overflow-hidden">
+            
+            <!-- Icon -->
+            <div class="w-16 h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl shadow-inner">
+                <i class="fa-solid fa-mobile-screen-button"></i>
+            </div>
+
+            <!-- Titles -->
+            <h1 class="text-2xl sm:text-3xl font-serif text-white mb-2">Having Trouble Tapping?</h1>
+            <p class="text-xs sm:text-sm text-[#ffb3c6] font-light leading-relaxed mb-8">
+                Enter your <strong class="text-white font-semibold">Order ID</strong> or the <strong class="text-white font-semibold">6-Digit Tag Code</strong> printed on your NFC card to unlock your personal message.
+            </p>
+
+            <!-- Search Form -->
+            <form onsubmit="unlockCustomerMessage(event)" class="space-y-4">
+                <div class="relative">
+                    <input type="text" id="nfc-lookup-input" required
+                        placeholder="e.g., HK4821 or Order ID"
+                        class="w-full bg-black/40 border border-white/15 rounded-2xl px-4 py-3.5 text-center text-white text-base tracking-wider uppercase placeholder:normal-case placeholder:tracking-normal placeholder:text-white/30 focus:outline-none focus:border-brand-500 transition-all font-semibold">
+                </div>
+
+                <button type="submit" id="unlock-btn"
+                    class="w-full bg-brand-500 hover:bg-brand-400 text-surface-900 font-bold py-3.5 rounded-2xl transition-all shadow-[0_0_20px_rgba(255,77,109,0.3)] active:scale-95 flex items-center justify-center gap-2 cursor-pointer text-sm sm:text-base">
+                    <span>Unlock My Message</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                </button>
+            </form>
+
+            <!-- Dynamic Feedback Area -->
+            <div id="lookup-status" class="mt-6 text-xs hidden rounded-xl p-3"></div>
+
+            <!-- Help Footer Text -->
+            <div class="mt-8 pt-6 border-t border-white/5 text-[11px] text-white/50 leading-relaxed">
+                Your message is privately linked to your order. If you need assistance, please contact our studio via <a href="https://wa.me/919925617845" target="_blank" class="text-brand-400 underline">WhatsApp</a>.
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-6 text-center text-[11px] text-white/40 border-t border-white/5 relative z-10">
+        &copy; 2026 HandKnot Haven. All rights reserved.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        const supabaseUrl = 'https://khsndsegwznolzqydizh.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtoc25kc2Vnd3pub2x6cXlkaXpoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgxNTExNzcsImV4cCI6MjA5MzcyNzE3N30.YNhafRlkJB-Gceyda8RDXjxBna3o47YVdgbrNEZVliY';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function unlockCustomerMessage(e) {
+            e.preventDefault();
+            const inputEl = document.getElementById('nfc-lookup-input');
+            const btnEl = document.getElementById('unlock-btn');
+            const statusEl = document.getElementById('lookup-status');
+
+            const queryVal = inputEl.value.trim().toUpperCase();
+            if (!queryVal) return;
+
+            // 1. UI Loading State
+            const origText = btnEl.innerHTML;
+            btnEl.disabled = true;
+            btnEl.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Checking Studio Records...`;
+            statusEl.classList.add('hidden');
+
+            try {
+                // 2. Query Supabase: Search matching ID OR matching 6-digit NFC short code
+                const { data, error } = await supabaseClient
+                    .from('orders')
+                    .select('id, product_name, nfc_code')
+                    .or(`id.ilike.${queryVal},nfc_code.ilike.${queryVal}`)
+                    .limit(1)
+                    .maybeSingle();
+
+                if (error || !data) {
+                    showStatus('error', 'We could not find an active message linked to that Code or Order ID. Please double-check your spelling.');
+                    return;
+                }
+
+                // 3. Securely parse out the NFC Target URL from their saved item name
+                // When we save NFC items to the cart, the string looks like: "Product Name [NFC Link: https://...]"
+                const urlMatch = data.product_name.match(/\[NFC Link:\s*(https?:\/\/[^\]]+)\]/i);
+
+                if (!urlMatch || !urlMatch[1]) {
+                    showStatus('error', 'An order record was found, but no personal video/message link was programmed for this item.');
+                    return;
+                }
+
+                const targetUrl = urlMatch[1].trim();
+
+                // 4. Success UI & Instant Redirect
+                showStatus('success', `Message located for Order #${data.id}! Redirecting you now...`);
+                
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 1200);
+
+            } catch (err) {
+                console.error("NFC Lookup Error:", err);
+                showStatus('error', 'Something went wrong while connecting to our server. Please try again.');
+            } finally {
+                btnEl.disabled = false;
+                btnEl.innerHTML = origText;
+            }
+        }
+
+        function showStatus(type, msg) {
+            const statusEl = document.getElementById('lookup-status');
+            statusEl.textContent = msg;
+            statusEl.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/30', 'text-red-400', 'bg-green-500/10', 'border-green-500/30', 'text-green-400');
+
+            if (type === 'error') {
+                statusEl.classList.add('bg-red-500/10', 'border', 'border-red-500/30', 'text-red-400');
+            } else {
+                statusEl.classList.add('bg-green-500/10', 'border', 'border-green-500/30', 'text-green-400');
+            }
+        }
+    </script>
+</body>
+</html>
