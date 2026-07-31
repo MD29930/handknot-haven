@@ -378,6 +378,15 @@
                         </div>
                     </div>
                     <div class="border-t border-neutral-200 pt-4 space-y-3 text-left">
+                        <!-- 🌟 DESIGN NOTES TOGGLE -->
+                        <div class="border-t border-neutral-200 pt-4 mt-2">
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="form-product-allow-design-notes" checked
+                                    class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
+                                <label for="form-product-allow-design-notes"
+                                    class="font-bold text-neutral-700 cursor-pointer">Allow Customer "Design Notes" Box on Website</label>
+                            </div>
+                        </div>
                         <div class="flex items-center gap-3">
                             <input type="checkbox" id="form-product-allow-addons" onchange="toggleAdminAddonWorkspace()"
                                 class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
@@ -1049,6 +1058,7 @@
             document.getElementById('form-product-crafting').value = product.crafting_time || '';
             document.getElementById('form-product-material').value = product.material || 'Organic Cotton';
             document.getElementById('form-product-image').value = product.image_url || '';
+            document.getElementById('form-product-allow-design-notes').checked = product.allow_design_notes ?? true;
             // Add this line where you map the other product values:
             document.getElementById('form-product-gallery').value = product.image_gallery || '';
             document.getElementById('form-product-desc').value = product.description || '';
@@ -1101,6 +1111,7 @@
                 allow_addons: document.getElementById('form-product-allow-addons').checked,
                 accessory_addons: gatherAdminAddonsPayload(),
                 requires_url: document.getElementById('form-product-requires-url').checked,
+                allow_design_notes: document.getElementById('form-product-allow-design-notes').checked,
                 is_hidden: document.getElementById('form-product-hidden').checked,
                 is_sold_out: document.getElementById('form-product-sold-out').checked,
                 stock_quantity: parseInt(document.getElementById('form-product-stock').value) || 0,

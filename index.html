@@ -804,6 +804,22 @@
                         <p class="text-text-muted font-light mb-6 leading-relaxed text-xs sm:text-sm" id="modal-desc">
                         </p>
 
+                        <!-- 🌟 ADDED: Perfect For & Care Instructions Info Cards -->
+                        <div id="modal-extra-info" class="space-y-2 mb-5 hidden">
+                            <div id="modal-perfect-container" class="hidden bg-white/[0.02] border border-white/5 p-3 rounded-xl text-left">
+                                <span class="text-[10px] font-bold text-brand-400 uppercase tracking-widest block mb-1">
+                                    <i class="fa-solid fa-gift mr-1"></i> Perfect For
+                                </span>
+                                <p id="modal-perfect-for" class="text-xs text-text-muted leading-relaxed"></p>
+                            </div>
+                            <div id="modal-care-container" class="hidden bg-white/[0.02] border border-white/5 p-3 rounded-xl text-left">
+                                <span class="text-[10px] font-bold text-brand-400 uppercase tracking-widest block mb-1">
+                                    <i class="fa-solid fa-hand-holding-heart mr-1"></i> Care Instructions
+                                </span>
+                                <p id="modal-care-instructions" class="text-xs text-text-muted leading-relaxed"></p>
+                            </div>
+                        </div>
+
                         <!-- Custom Sizing Specs Parameters Engine -->
                         <div id="modal-size-section" class="hidden mb-4">
                             <h4 class="font-medium text-text-main mb-2 text-xs">Measurements (Optional)</h4>
@@ -825,6 +841,13 @@
                             <input type="url" id="modal-nfc-url" placeholder="https://your-link.com" 
                                 class="w-full p-2.5 rounded-lg text-xs bg-surface-900 border border-brand-500/30 text-white outline-none focus:border-brand-400">
                             <p class="text-[9px] text-text-muted mt-2 leading-relaxed">This link will be permanently programmed into your NFC item.</p>
+                        </div>
+
+                        <!-- 🌟 DESIGN NOTES SECTION (Wrapped with ID for Toggling) -->
+                        <div id="modal-design-notes-section" class="mb-6">
+                            <h4 class="font-medium text-text-main mb-2 text-xs">Design Notes</h4>
+                            <textarea id="modal-custom" rows="2" class="w-full p-2.5 rounded-lg text-xs resize-none"
+                                placeholder="Preferred color overrides..."></textarea>
                         </div>
 
                         <div class="mb-6">
@@ -1363,6 +1386,42 @@
             document.getElementById('modal-category').textContent = product.category || 'Creations';
             document.getElementById('modal-title').textContent = product.name || '';
             document.getElementById('modal-desc').textContent = product.description || 'Handcrafted item matching premium studio standards.';
+
+            // 🌟 DISPLAY PERFECT FOR & CARE INSTRUCTIONS
+            const extraInfoWrapper = document.getElementById('modal-extra-info');
+            const perfectContainer = document.getElementById('modal-perfect-container');
+            const careContainer = document.getElementById('modal-care-container');
+            const perfectEl = document.getElementById('modal-perfect-for');
+            const careEl = document.getElementById('modal-care-instructions');
+
+            let hasExtraInfo = false;
+
+            if (product.perfectFor && product.perfectFor.trim() !== '') {
+                perfectEl.textContent = product.perfectFor;
+                perfectContainer.classList.remove('hidden');
+                hasExtraInfo = true;
+            } else {
+                perfectContainer.classList.add('hidden');
+            }
+
+            if (product.careInstructions && product.careInstructions.trim() !== '') {
+                careEl.textContent = product.careInstructions;
+                careContainer.classList.remove('hidden');
+                hasExtraInfo = true;
+            } else {
+                careContainer.classList.add('hidden');
+            }
+
+            if (extraInfoWrapper) {
+                extraInfoWrapper.classList.toggle('hidden', !hasExtraInfo);
+            }
+
+            // 🌟 SHOW OR HIDE DESIGN NOTES BOX PER PRODUCT
+            const designNotesSection = document.getElementById('modal-design-notes-section');
+            if (designNotesSection) {
+                const shouldShowDesignNotes = product.allowDesignNotes ?? true;
+                designNotesSection.classList.toggle('hidden', !shouldShowDesignNotes);
+            }
 
             const availabilityEl = document.getElementById('modal-availability');
             // Inside openProductModal(productId), right after setting availabilityEl:
@@ -2221,7 +2280,8 @@
                         isSoldOut: p.is_sold_out || false,
                         stockQuantity: p.stock_quantity ?? 10,
                         showStock: p.show_stock || false,
-                        imageGallery: p.image_gallery || ''
+                        imageGallery: p.image_gallery || '',
+                        allowDesignNotes: p.allow_design_notes ?? true
                     }));
                     renderProducts();
                 }
