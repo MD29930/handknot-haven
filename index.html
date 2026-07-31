@@ -1252,6 +1252,27 @@
             productGrid.innerHTML = '';
             const filteredProducts = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
 
+            // 🌟 ADDED: Graceful "Coming Soon" placeholder when a category has zero visible products
+            if (filteredProducts.length === 0) {
+                productGrid.innerHTML = `
+                    <div class="col-span-full py-16 px-4 text-center">
+                        <div class="max-w-md mx-auto glass-card p-8 sm:p-10 border border-white/5 bg-surface-800/40 backdrop-blur-md rounded-3xl">
+                            <div class="w-16 h-16 bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl shadow-inner">
+                                <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+                            </div>
+                            <h3 class="text-xl sm:text-2xl font-serif text-text-main mb-2">Creations Coming Soon</h3>
+                            <p class="text-xs sm:text-sm text-text-muted font-light leading-relaxed mb-6">
+                                We are currently hooking new designs for <span class="text-white font-medium">${currentFilter === 'all' ? 'our collection' : currentFilter}</span>. Check back soon for fresh handcrafted drops!
+                            </p>
+                            <button type="button" onclick="document.querySelector('.filter-btn[data-filter=\\'all\\']')?.click();"
+                                class="inline-flex items-center gap-2 px-6 py-2.5 bg-white/5 hover:bg-brand-500 hover:text-surface-900 border border-white/10 hover:border-brand-500 text-xs sm:text-sm font-semibold rounded-full transition-all duration-300">
+                                <i class="fa-solid fa-arrow-left"></i> View All Available Items
+                            </button>
+                        </div>
+                    </div>`;
+                return;
+            }
+
             filteredProducts.forEach(product => {
                 const card = document.createElement('div');
 
