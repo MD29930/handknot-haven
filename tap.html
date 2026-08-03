@@ -68,14 +68,14 @@
             <!-- Titles -->
             <h1 class="text-2xl sm:text-3xl font-serif text-white mb-2">Having Trouble Tapping?</h1>
             <p class="text-xs sm:text-sm text-[#ffb3c6] font-light leading-relaxed mb-8">
-                Enter your <strong class="text-white font-semibold">Order ID</strong> or the <strong class="text-white font-semibold">6-Digit Tag Code</strong> printed on your NFC card to unlock your personal message.
+                Enter your <strong class="text-white font-semibold">Order ID</strong> to unlock your personal message.
             </p>
 
             <!-- Search Form -->
             <form onsubmit="unlockCustomerMessage(event)" class="space-y-4">
                 <div class="relative">
                     <input type="text" id="nfc-lookup-input" required
-                        placeholder="e.g., HK4821 or Order ID"
+                        placeholder="Enter Order ID (e.g., HKH123)"
                         class="w-full bg-black/40 border border-white/15 rounded-2xl px-4 py-3.5 text-center text-white text-base tracking-wider uppercase placeholder:normal-case placeholder:tracking-normal placeholder:text-white/30 focus:outline-none focus:border-brand-500 transition-all font-semibold">
                 </div>
 
@@ -91,7 +91,7 @@
 
             <!-- Help Footer Text -->
             <div class="mt-8 pt-6 border-t border-white/5 text-[11px] text-white/50 leading-relaxed">
-                Your message is privately linked to your order. If you need assistance, please contact our studio via <a href="https://wa.me/919925617845" target="_blank" class="text-brand-400 underline">WhatsApp</a>.
+                Your message is privately linked to your order. If you need assistance, please contact our studio via <a href="https://wa.me/918469678146" target="_blank" class="text-brand-400 underline">WhatsApp</a>.
             </div>
 
         </div>
@@ -134,7 +134,7 @@
                     .maybeSingle();
 
                 if (error || !data) {
-                    showStatus('error', 'We could not find an active message linked to that Code or Order ID. Please double-check your spelling.');
+                    showStatus('error', 'We could not find an active message linked to that Order ID. Please double-check your spelling.');
                     return;
                 }
 
