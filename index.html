@@ -829,12 +829,20 @@
                             </div>
                         </div>
 
-                        <!-- 🌟 ADD THIS: The hidden NFC URL input block -->
+                        <!-- The hidden NFC URL input block -->
                         <div id="modal-url-section" class="hidden mb-4 p-4 rounded-xl bg-brand-500/10 border border-brand-500/20">
-                            <h4 class="font-medium text-brand-400 mb-2 text-xs flex items-center gap-2"><i class="fa-solid fa-link"></i> Target URL Required <span class="text-white">*</span></h4>
+                            <h4 class="font-medium text-brand-400 mb-2 text-xs flex items-center gap-2">
+                                <i class="fa-solid fa-link"></i> Target URL Required <span class="text-white">*</span>
+                            </h4>
                             <input type="url" id="modal-nfc-url" placeholder="https://your-link.com" 
                                 class="w-full p-2.5 rounded-lg text-xs bg-surface-900 border border-brand-500/30 text-white outline-none focus:border-brand-400">
                             <p class="text-[9px] text-text-muted mt-2 leading-relaxed">This link will be permanently programmed into your NFC item.</p>
+                            
+                            <!-- 🌟 NEW: YouTube Tutorial Link -->
+                            <a href="https://youtube.com/shorts/lh8HxcAFve8?si=afkXO0UmjskfhH2J" target="_blank" 
+                                class="inline-flex items-center gap-1.5 mt-2 text-[10px] text-brand-400 hover:text-brand-300 font-semibold transition-colors">
+                                <i class="fa-brands fa-youtube text-red-500 text-xs"></i> Watch: How to upload a video & get your link
+                            </a>
                         </div>
 
                         <!-- 🌟 DESIGN NOTES SECTION (Wrapped with ID for Toggling) -->
