@@ -460,6 +460,13 @@
                                 Sold Out</label>
                         </div>
 
+                        <!-- 🌟 NEW: Pre-order Toggle -->
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="form-product-allow-preorder" checked
+                                class="w-5 h-5 accent-brand-600 rounded cursor-pointer">
+                            <label for="form-product-allow-preorder" class="font-bold text-neutral-700 cursor-pointer">Allow Pre-orders when out of stock</label>
+                        </div>
+
                         <!-- Stock Quantity & Display Toggle -->
                         <div class="grid grid-cols-2 gap-4 pt-2 border-t border-neutral-200 items-center">
                             <div>
@@ -1066,6 +1073,8 @@
             document.getElementById('form-product-care').value = product.care_instructions || '';
             document.getElementById('form-product-hidden').checked = product.is_hidden || false;
             document.getElementById('form-product-sold-out').checked = product.is_sold_out || false;
+            // Add this line where you map the checkboxes
+            document.getElementById('form-product-allow-preorder').checked = product.allow_preorder ?? true;
             document.getElementById('form-product-stock').value = product.stock_quantity ?? 10;
             document.getElementById('form-product-show-stock').checked = product.show_stock || false;
             // Add this line where you map the other product values:
@@ -1114,6 +1123,8 @@
                 allow_design_notes: document.getElementById('form-product-allow-design-notes').checked,
                 is_hidden: document.getElementById('form-product-hidden').checked,
                 is_sold_out: document.getElementById('form-product-sold-out').checked,
+                // Add this line inside the productPayload object
+                allow_preorder: document.getElementById('form-product-allow-preorder').checked,
                 stock_quantity: parseInt(document.getElementById('form-product-stock').value) || 0,
                 show_stock: document.getElementById('form-product-show-stock').checked
             };

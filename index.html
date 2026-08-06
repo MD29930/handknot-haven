@@ -1287,8 +1287,12 @@
                 if (optimizedImage.includes('unsplash.com')) optimizedImage += '&fmt=webp&q=70&w=600';
 
                 let stockBadge = '';
-                if (product.isSoldOut) {
-                    stockBadge = `<span class="absolute bottom-2 right-2 bg-red-600/90 backdrop-blur-md text-white border border-red-400 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded z-10">Sold Out</span>`;
+                if (product.isSoldOut || (product.showStock && product.stockQuantity <= 0)) {
+                    if (product.allowPreorder) {
+                        stockBadge = `<span class="absolute bottom-2 right-2 bg-purple-600/90 backdrop-blur-md text-white border border-purple-400 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded z-10 shadow-[0_0_10px_rgba(147,51,234,0.5)]">Pre-Order</span>`;
+                    } else {
+                        stockBadge = `<span class="absolute bottom-2 right-2 bg-red-600/90 backdrop-blur-md text-white border border-red-400 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded z-10">Sold Out</span>`;
+                    }
                 } else if (product.showStock && product.stockQuantity > 0) {
                     stockBadge = `<span class="absolute bottom-2 right-2 bg-black/70 backdrop-blur-md text-amber-400 border border-amber-400/30 text-[9px] font-bold tracking-wide px-2 py-0.5 rounded z-10">Only ${product.stockQuantity} Left</span>`;
                 }
@@ -1443,23 +1447,43 @@
             const addToCartBtn = document.getElementById('modal-add-to-cart-btn');
             const buyNowBtn = document.getElementById('modal-buy-now-btn');
 
-            if (product.isSoldOut) {
-                availabilityEl.textContent = "Sold Out";
-                availabilityEl.className = "text-red-500 font-bold";
-                
-                // Lock Add to Cart button
-                addToCartBtn.disabled = true;
-                addToCartBtn.classList.replace('bg-brand-500', 'bg-neutral-600');
-                addToCartBtn.innerHTML = `<i class="fa-solid fa-ban"></i> Currently Sold Out`;
-                
-                // 🌟 Lock Buy Now button as well!
-                if (buyNowBtn) {
-                    buyNowBtn.disabled = true;
-                    buyNowBtn.classList.remove('bg-white', 'hover:bg-neutral-200', 'text-black');
-                    buyNowBtn.classList.add('bg-neutral-700', 'text-neutral-400', 'cursor-not-allowed');
-                    buyNowBtn.innerHTML = `SOLD OUT`;
+            if (product.isSoldOut || product.stockQuantity <= 0) {
+                if (product.allowPreorder) {
+                    availabilityEl.textContent = `Pre-order Available (${product.craftingTime || 'Made to order'})`;
+                    availabilityEl.className = "text-purple-400 font-bold";
+                    
+                    // Enable & Transform Add to Cart button
+                    addToCartBtn.disabled = !SHOP_CONFIG.takingOrders;
+                    if (SHOP_CONFIG.takingOrders) {
+                        addToCartBtn.classList.remove('bg-neutral-600');
+                        addToCartBtn.classList.add('bg-brand-500');
+                        addToCartBtn.innerHTML = `<i class="fa-solid fa-clock-rotate-left"></i> PRE-ORDER NOW`;
+                    }
+
+                    // Enable & Transform Buy Now button
+                    if (buyNowBtn) {
+                        buyNowBtn.disabled = !SHOP_CONFIG.takingOrders;
+                        buyNowBtn.classList.remove('bg-neutral-700', 'text-neutral-400', 'cursor-not-allowed');
+                        buyNowBtn.classList.add('bg-white', 'hover:bg-neutral-200', 'text-black');
+                        buyNowBtn.innerHTML = `PRE-ORDER NOW <i class="fa-solid fa-chevron-right text-xs"></i>`;
+                    }
+                } else {
+                    availabilityEl.textContent = "Sold Out";
+                    availabilityEl.className = "text-red-500 font-bold";
+                    
+                    addToCartBtn.disabled = true;
+                    addToCartBtn.classList.replace('bg-brand-500', 'bg-neutral-600');
+                    addToCartBtn.innerHTML = `<i class="fa-solid fa-ban"></i> Currently Sold Out`;
+                    
+                    if (buyNowBtn) {
+                        buyNowBtn.disabled = true;
+                        buyNowBtn.classList.remove('bg-white', 'hover:bg-neutral-200', 'text-black');
+                        buyNowBtn.classList.add('bg-neutral-700', 'text-neutral-400', 'cursor-not-allowed');
+                        buyNowBtn.innerHTML = `SOLD OUT`;
+                    }
                 }
             } else {
+                // Standard "In Stock" Logic
                 let statusText = "In Stock";
                 if (product.showStock && product.stockQuantity > 0) {
                     statusText = `In Stock (${product.stockQuantity} remaining)`;
@@ -1467,14 +1491,12 @@
                 availabilityEl.textContent = SHOP_CONFIG.takingOrders ? statusText : "Commissions Paused";
                 availabilityEl.className = SHOP_CONFIG.takingOrders ? "text-emerald-400 font-medium" : "text-brand-500 font-medium";
                 
-                // Enable Add to Cart button
                 addToCartBtn.disabled = !SHOP_CONFIG.takingOrders;
                 if (SHOP_CONFIG.takingOrders) {
                     addToCartBtn.classList.replace('bg-neutral-600', 'bg-brand-500');
                     addToCartBtn.innerHTML = `<i class="fa-solid fa-basket-shopping"></i> ADD TO CART`;
                 }
 
-                // 🌟 Restore Buy Now button when available
                 if (buyNowBtn) {
                     buyNowBtn.disabled = !SHOP_CONFIG.takingOrders;
                     buyNowBtn.classList.remove('bg-neutral-700', 'text-neutral-400', 'cursor-not-allowed');
@@ -1532,7 +1554,7 @@
             if (!product || !SHOP_CONFIG.takingOrders) return;
 
             // 🌟 PASTE IT RIGHT HERE:
-            if (product.isSoldOut) {
+            if (product.isSoldOut && !product.allowPreorder) {
                 alert("Sorry, this creation is currently Sold Out!");
                 return;
             }
@@ -2283,6 +2305,7 @@
                         accessoryAddons: p.accessory_addons, perfectFor: p.perfect_for, careInstructions: p.care_instructions,
                         requires_url: p.requires_url,
                         isSoldOut: p.is_sold_out || false,
+                        allowPreorder: p.allow_preorder ?? true,
                         stockQuantity: p.stock_quantity ?? 10,
                         showStock: p.show_stock || false,
                         imageGallery: p.image_gallery || '',
