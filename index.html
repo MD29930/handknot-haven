@@ -1464,7 +1464,7 @@
 
             if (product.isSoldOut || product.stockQuantity <= 0) {
                 if (product.allowPreorder) {
-                    availabilityEl.textContent = `Pre-order Available (${product.craftingTime || 'Made to order'})`;
+                    availabilityEl.textContent = "Pre-order Available (Dispatch timeline will be shared via email)";
                     availabilityEl.className = "text-purple-400 font-bold";
                     
                     // Enable & Transform Add to Cart button
